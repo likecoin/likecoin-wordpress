@@ -3,6 +3,8 @@ let address = null;
 
 const likecoinId = document.querySelector('#likecoinId');
 const loginBtn = document.querySelector('.loginBtn');
+const updateBtn = document.querySelector('#updateLikeCoinId');
+const updateStatus = document.querySelector('#updateLikeCoinIdStatus');
 
 function show(selector) {
   const elem = document.querySelector(`.likecoin${selector}`);
@@ -64,6 +66,20 @@ async function login() {
   }
 }
 
+async function handleUpdateId(newId) {
+  const id = newId || likecoinId.value;
+  const res = await fetch(AJAX_URL, {
+    body: 'action=likecoin_update_id&likecoin_id=' + id,
+    credentials: 'include',
+    headers: {
+      'content-type': 'application/x-www-form-urlencoded',
+    },
+    method: 'POST'
+  });
+  updateStatus.textContent = await res.text();
+}
+
 loginBtn.addEventListener('click', login);
+updateBtn.addEventListener('click', () => handleUpdateId());
 
 likecoinInit();

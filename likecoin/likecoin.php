@@ -35,6 +35,40 @@ function likecoin_register_meta_boxes() {
 add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
 add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 
+/* Ajax related */
+
+function likecoin_update_id() {
+  $user = wp_get_current_user();
+  if (isset($_POST['likecoin_id'])) {
+    global $wpdb;
+    $table_name = $wpdb->prefix . 'likecoin_author';
+    $results = $wpdb->query( $wpdb->prepare("
+        INSERT INTO $table_name (author_id, likecoin_id) VALUES (%d, %s)
+        ON DUPLICATE KEY UPDATE likecoin_id = %s;
+      ",
+      $user->ID,
+      $_POST['likecoin_id'],
+      $_POST['likecoin_id']
+    ) );
+    switch ($results) {
+      case '1':
+        echo 'Created';
+        break;
+      case '2':
+        echo 'Updated';
+        break;
+      case '0':
+        echo 'Unchanged';
+        break;
+    }
+  }
+  // ajax handlers must die
+  die;
+}
+
+// wp_ajax_ is the prefix, likecoin_update_id is the action used in client side code
+add_action('wp_ajax_likecoin_update_id', 'likecoin_update_id');
+
 /* Init / Upgrade related */
 
 function handle_init_and_upgrade() {
