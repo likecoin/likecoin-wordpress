@@ -2,6 +2,7 @@ const challengeUrl = 'https://api.rinkeby.like.co/api/users/challenge';
 let address = null;
 
 const likecoinId = document.querySelector('#likecoinId');
+const loginBtn = document.querySelector('.loginBtn');
 
 function show(selector) {
   const elem = document.querySelector(`.likecoin${selector}`);
@@ -34,5 +35,35 @@ async function likecoinInit() {
     show('.needLikeCoinId');
   }
 }
+
+async function login() {
+  try {
+    let res = await fetch(`${challengeUrl}?wallet=${address}`);
+    const { challenge } = await res.json();
+    web3.personal.sign(challenge, address, async (err, signature) => {
+      if (err || !signature) {
+        return;
+      }
+      const body = JSON.stringify({ challenge, signature, wallet: address });
+      res = await fetch(challengeUrl, {
+        body,
+        headers: {
+          'content-type': 'application/json',
+        },
+        method: 'POST'
+      });
+      const { user } = await res.json();
+      if (!likecoinId.value.length) {
+        handleUpdateId(user);
+      }
+      likecoinId.value = user;
+      show('.hasLikeCoinId');
+    });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+loginBtn.addEventListener('click', login);
 
 likecoinInit();
