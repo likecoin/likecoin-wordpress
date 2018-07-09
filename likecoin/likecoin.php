@@ -14,6 +14,19 @@ Author URI: http://like.co/
 
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 
+/* Utils related */
+function get_author_likecoin_id($post) {
+  global $wpdb;
+  $table_name = $wpdb->prefix . 'likecoin_author';
+  $author = $post->post_author;
+  $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE author_id = $author" );
+  $likecoin_id = '';
+  if (sizeof($results) > 0) {
+    $likecoin_id = $results[0]->likecoin_id;
+  }
+  return $likecoin_id;
+}
+
 /* Meta Box related */
 
 function likecoin_display_meta_box($post) {
@@ -34,6 +47,25 @@ function likecoin_register_meta_boxes() {
 
 add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
 add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
+
+/* Widget related */
+
+function likecoin_add_widget($content) {
+  global $post;
+  if (is_single()) {
+    $likecoin_id = get_author_likecoin_id($post);
+    if (strlen($likecoin_id) > 0) {
+      $permalink = urlencode(get_permalink($post));
+      return $content . '<iframe scrolling="no" frameborder="0" ' .
+        'style="height: 162px; width: 100%;"'.
+        'src="https://like.co/in/embed/'. $likecoin_id .
+        '/?referrer=' . $permalink . '"></iframe>';
+    }
+  }
+  return $content;
+}
+
+add_filter( 'the_content', 'likecoin_add_widget', 999 );
 
 /* Ajax related */
 

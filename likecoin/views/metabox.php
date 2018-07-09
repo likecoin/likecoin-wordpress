@@ -1,12 +1,7 @@
 <?php
   function likecoin_add_meta_box($post) {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'likecoin_author';
-    $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE author_id = 1" );
-    $likecoin_id = '';
-    if (sizeof($results) > 0) {
-      $likecoin_id = $results[0]->likecoin_id;
-    }
+    $author = $post->post_author;
+    $likecoin_id = get_author_likecoin_id($post);
 ?>
 <div class="likecoin metaMask" style="display: none">
   <h3>Need Meta Mask Plugin</h3>
@@ -24,7 +19,7 @@
   <h3><a class="loginBtn" style="cursor: pointer">Login to get Like Coin Id</a></h3>
 </div>
 <div class="likecoin hasLikeCoinId" style="<?php echo strlen($likecoin_id) > 0 ? '' : 'display: none'; ?>">
-  <label>Author Id: <?php echo $post->post_author; ?></label>
+  <label>Author Id: <?php echo $author; ?></label>
   <label>LikeCoin Id:
     <input type="text" id="likecoinId" name="likecoinId" value="<?php echo $likecoin_id; ?>" />
   </label>
