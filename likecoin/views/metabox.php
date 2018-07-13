@@ -29,7 +29,7 @@
 <script>
 const AJAX_URL = '<?php echo admin_url('admin-ajax.php'); ?>';
 </script>
-<script src="/wp-content/plugins/likecoin/assets/js/likecoin.js"></script>
 <?php
+  wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.js', false );
   }
 ?>
