@@ -1,7 +1,6 @@
 const challengeUrl = 'https://api.rinkeby.like.co/api/users/challenge';
 let address = null;
 
-const likecoinId = document.querySelector('#likecoinId');
 const loginBtn = document.querySelector('.loginBtn');
 const updateBtn = document.querySelector('#updateLikeCoinId');
 const updateStatus = document.querySelector('#updateLikeCoinIdStatus');
@@ -54,11 +53,8 @@ async function login() {
         },
         method: 'POST'
       });
-      const { user } = await res.json();
-      if (!likecoinId.value.length) {
-        handleUpdateId(user);
-      }
-      likecoinId.value = user;
+      const { user, wallet } = await res.json();
+      handleUpdateId(user, wallet);
       show('.hasLikeCoinId');
     });
   } catch (e) {
@@ -66,10 +62,9 @@ async function login() {
   }
 }
 
-async function handleUpdateId(newId) {
-  const id = newId || likecoinId.value;
-  const res = await fetch(AJAX_URL, {
-    body: 'action=likecoin_update_id&likecoin_id=' + id,
+async function handleUpdateId(newId, newWallet) {
+  const res = await fetch(WP_CONFIG.adminAjaxUrl, {
+    body: 'action=likecoin_update_id&likecoin_id=' + newId + '&likecoin_wallet=' + newWallet,
     credentials: 'include',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
@@ -80,6 +75,5 @@ async function handleUpdateId(newId) {
 }
 
 loginBtn.addEventListener('click', login);
-updateBtn.addEventListener('click', () => handleUpdateId());
 
 likecoinInit();

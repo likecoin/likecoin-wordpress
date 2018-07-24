@@ -1,7 +1,8 @@
 <?php
   function likecoin_add_meta_box($post) {
     $author = $post->post_author;
-    $likecoin_id = get_author_likecoin_id($post);
+    $likecoin_id = get_user_meta($post->post_author, 'lc_likecoin_id', true);
+    $likecoin_wallet = get_user_meta($post->post_author, 'lc_likecoin_wallet', true);
 ?>
 <div class="likecoin metaMask" style="display: none">
   <h3>Need Meta Mask Plugin</h3>
@@ -19,17 +20,19 @@
   <h3><a class="loginBtn" style="cursor: pointer">Login to get Like Coin Id</a></h3>
 </div>
 <div class="likecoin hasLikeCoinId" style="<?php echo strlen($likecoin_id) > 0 ? '' : 'display: none'; ?>">
-  <label>Author Id: <?php echo $author; ?></label>
-  <label>LikeCoin Id:
-    <input type="text" id="likecoinId" name="likecoinId" value="<?php echo $likecoin_id; ?>" />
-  </label>
-  <button id="updateLikeCoinId" type="button">Update</button>
+  <label>Author Id: <?php echo esc_attr($author); ?></label>
+  <label>LikeCoin Id: <?php echo esc_attr($likecoin_id); ?></label>
+  <label>LikeCoin Wallet: <?php echo esc_attr($likecoin_wallet); ?></label>
   <div id="updateLikeCoinIdStatus"></div>
 </div>
-<script>
-const AJAX_URL = '<?php echo admin_url('admin-ajax.php'); ?>';
-</script>
 <?php
   wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.js', false );
+  wp_localize_script(
+    'lc_metabox',
+    'WP_CONFIG',
+    [
+      'adminAjaxUrl' => admin_url('admin-ajax.php'),
+    ]
+  );
   }
 ?>

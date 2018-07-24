@@ -71,31 +71,31 @@ add_filter( 'the_content', 'likecoin_add_widget', 999 );
 
 function likecoin_update_id() {
   $user = wp_get_current_user();
-  if (isset($_POST['likecoin_id'])) {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'likecoin_author';
-    $results = $wpdb->query( $wpdb->prepare("
-        INSERT INTO $table_name (author_id, likecoin_id) VALUES (%d, %s)
-        ON DUPLICATE KEY UPDATE likecoin_id = %s;
-      ",
-      $user->ID,
-      $_POST['likecoin_id'],
-      $_POST['likecoin_id']
-    ) );
-    switch ($results) {
-      case '1':
-        echo 'Created';
-        break;
-      case '2':
-        echo 'Updated';
-        break;
-      case '0':
-        echo 'Unchanged';
-        break;
-    }
+  $user_id = $user->ID;
+  if (!current_user_can('edit_user', $user_id)) {
+    return wp_die('error editing');
   }
-  // ajax handlers must die
-  die;
+  if (isset($_POST['likecoin_id']) && isset($_POST['likecoin_wallet'])) {
+    $result = update_user_meta(
+      $user_id,
+      'lc_likecoin_id',
+      $_POST['likecoin_id']
+    );
+    update_user_meta(
+      $user_id,
+      'lc_likecoin_wallet',
+      $_POST['likecoin_wallet']
+    );
+    if ($result === true) {
+      echo 'Updated';
+    } else if ($result === false) {
+      echo 'Unchanged';
+    } else {
+      echo 'Created';
+    }
+
+  }
+  wp_die();
 }
 
 // wp_ajax_ is the prefix, likecoin_update_id is the action used in client side code
