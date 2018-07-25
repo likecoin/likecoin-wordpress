@@ -50,16 +50,33 @@ add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 
 /* Widget related */
 
+function likecoin_save_postdata($post_id) {
+  if (array_key_exists('lc_widget_option', $_POST)) {
+    update_post_meta(
+      $post_id,
+      'lc_widget_position',
+      sanitize_text_field($_POST['lc_widget_option'])
+    );
+  }
+}
+
+add_action('save_post', 'likecoin_save_postdata');
+
 function likecoin_add_widget($content) {
   global $post;
   if (is_single()) {
     $likecoin_id = get_author_likecoin_id($post);
+    $widget_position = get_post_meta($post->ID, 'lc_widget_position', true);
     if (strlen($likecoin_id) > 0) {
       $permalink = urlencode(get_permalink($post));
-      return $content . '<iframe scrolling="no" frameborder="0" ' .
-        'style="height: 162px; width: 100%;"'.
-        'src="https://like.co/in/embed/'. $likecoin_id .
-        '/?referrer=' . $permalink . '"></iframe>';
+      $widget_code = '<iframe scrolling="no" frameborder="0" ' .
+        'style="height: 212px; width: 100%;"'.
+        'src="https://button.like.co/in/embed/'. $likecoin_id . '/button' .
+        '?referrer=' . $permalink . '"></iframe>';
+      if ($widget_position === 'both') return $widget_code . $content . $widget_code;
+      else if ($widget_position === 'top') return $widget_code . $content;
+      else if ($widget_position === 'bottom') return $content . $widget_code;
+      return $content;
     }
   }
   return $content;

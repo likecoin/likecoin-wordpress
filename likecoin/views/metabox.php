@@ -19,6 +19,13 @@
 <div class="likecoin needLogin" style="display: none">
   <h3><a class="loginBtn" style="cursor: pointer">Login to get Like Coin Id</a></h3>
 </div>
+<label for="lc_widget_option">Description for this field</label>
+<select name="lc_widget_option" id="lc_widget_option" class="postbox">
+    <option value="both">Top and bottom</option>
+    <option value="top">Top</option>
+    <option value="bottom">Bottom</option>
+    <option value="none">None</option>
+</select>
 <div class="likecoin hasLikeCoinId" style="<?php echo strlen($likecoin_id) > 0 ? '' : 'display: none'; ?>">
   <label>Author Id: <?php echo esc_attr($author); ?></label>
   <label>LikeCoin Id: <?php echo esc_attr($likecoin_id); ?></label>
