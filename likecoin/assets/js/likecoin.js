@@ -2,6 +2,9 @@ const challengeUrl = 'https://api.rinkeby.like.co/api/users/challenge';
 let address = null;
 
 const loginBtn = document.querySelector('.loginBtn');
+const likecoinId = document.querySelector('#likecoinId');
+const likecoinWallet = document.querySelector('#likecoinWallet');
+const likecoinPreview = document.querySelector('#likecoinPreview');
 const updateBtn = document.querySelector('#updateLikeCoinId');
 const updateStatus = document.querySelector('#updateLikeCoinIdStatus');
 
@@ -10,9 +13,15 @@ function show(selector) {
   elem.style.display = '';
 }
 
+function hide(selector) {
+  const elem = document.querySelector(`.likecoin${selector}`);
+  elem.style.display = 'none';
+}
+
 async function likecoinInit() {
   if (!window.web3) {
     show('.needMetaMask');
+    console.error('no web3');
     return;
   }
   const {
@@ -21,9 +30,11 @@ async function likecoinInit() {
   } = web3.currentProvider.publicConfigStore._state;
   if (networkVersion !== '1') {
     show('.needMainNet');
+    console.error('not mainnet');
     return;
   } else if (!selectedAddress) {
     show('.needUnlock');
+    console.error('not unlocked');
     return;
   }
 
@@ -55,7 +66,13 @@ async function login() {
       });
       const { user, wallet } = await res.json();
       handleUpdateId(user, wallet);
-      show('.hasLikeCoinId');
+      if (user) {
+        likecoinId.innerHTML = user;
+        likecoinWallet.innerHTML = wallet;
+        likecoinPreview.src = 'https://button.like.co/in/embed/' + user + '/button';
+        hide('.loginSection');
+        show('.optionsSection');
+      }
     });
   } catch (e) {
     console.error(e);
