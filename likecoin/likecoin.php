@@ -16,14 +16,8 @@ define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 
 /* Utils related */
 function get_author_likecoin_id($post) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . 'likecoin_author';
   $author = $post->post_author;
-  $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE author_id = $author" );
-  $likecoin_id = '';
-  if (sizeof($results) > 0) {
-    $likecoin_id = $results[0]->likecoin_id;
-  }
+  $likecoin_id = get_user_meta( $author, 'lc_likecoin_id', true );
   return $likecoin_id;
 }
 
