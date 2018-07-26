@@ -51,6 +51,12 @@ function likecoin_save_postdata($post_id) {
       'lc_widget_position',
       sanitize_text_field($_POST['lc_widget_option'])
     );
+    $post = get_post($post_id);
+    update_user_meta(
+      $post->post_author,
+      'lc_widget_position',
+      sanitize_text_field($_POST['lc_widget_option'])
+    );
   }
 }
 
