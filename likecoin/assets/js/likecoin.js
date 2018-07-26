@@ -1,4 +1,4 @@
-const challengeUrl = 'https://api.rinkeby.like.co/api/users/challenge';
+const challengeUrl = 'https://api.like.co/api/users/challenge';
 let address = null;
 
 const loginBtn = document.querySelector('.loginBtn');
