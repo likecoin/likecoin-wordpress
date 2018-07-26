@@ -29,7 +29,8 @@
   <div style="display:flex">
     <section>
       <div id="updateLikeCoinIdStatus"></div>
-      <div>LikeCoin Id: <span id="likecoinId"><?php echo sanitize_text_field($likecoin_id); ?></span></div>
+      <div>LikeCoin Id: <span id="likecoinId"><?php echo sanitize_text_field($likecoin_id); ?></span>
+        <a class="changeBtn" style="cursor: pointer">change</a></div>
       <div>LikeCoin Wallet: <span id="likecoinWallet"><?php echo sanitize_text_field($likecoin_wallet); ?></span></div>
       <label for="lc_widget_option">Display Option</label>
       <select name="lc_widget_option" id="lc_widget_option" class="postbox">

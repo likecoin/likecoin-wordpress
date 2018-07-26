@@ -2,6 +2,7 @@ const challengeUrl = 'https://api.rinkeby.like.co/api/users/challenge';
 let address = null;
 
 const loginBtn = document.querySelector('.loginBtn');
+const changeBtn = document.querySelector('.changeBtn');
 const likecoinId = document.querySelector('#likecoinId');
 const likecoinWallet = document.querySelector('#likecoinWallet');
 const likecoinPreview = document.querySelector('#likecoinPreview');
@@ -92,5 +93,6 @@ async function handleUpdateId(newId, newWallet) {
 }
 
 loginBtn.addEventListener('click', login);
+changeBtn.addEventListener('click', login);
 
 likecoinInit();
