@@ -96,12 +96,12 @@ function likecoin_update_id() {
     $result = update_user_meta(
       $user_id,
       'lc_likecoin_id',
-      $_POST['likecoin_id']
+      sanitize_text_field($_POST['likecoin_id'])
     );
     update_user_meta(
       $user_id,
       'lc_likecoin_wallet',
-      $_POST['likecoin_wallet']
+      sanitize_text_field($_POST['likecoin_wallet'])
     );
     if ($result === true) {
       echo 'Updated';
