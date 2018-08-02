@@ -80,6 +80,11 @@ async function login() {
   }
 }
 
+async function change() {
+  show('.loginSection');
+  hide('.optionsSection');
+}
+
 async function handleUpdateId(newId, newWallet) {
   const res = await fetch(WP_CONFIG.adminAjaxUrl, {
     body: 'action=likecoin_update_id&likecoin_id=' + newId + '&likecoin_wallet=' + newWallet,
@@ -93,6 +98,6 @@ async function handleUpdateId(newId, newWallet) {
 }
 
 loginBtn.addEventListener('click', login);
-changeBtn.addEventListener('click', login);
+changeBtn.addEventListener('click', change);
 
 likecoinInit();
