@@ -9,19 +9,19 @@
     $has_likecoin_id = strlen($likecoin_id) > 0;
 ?>
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
-  <div class="likecoin metaMask" style="display: none">
+  <div class="likecoin webThreeError metaMask" style="display: none">
     <h3>Need Meta Mask Plugin</h3>
   </div>
-  <div class="likecoin needMainNet" style="display: none">
+  <div class="likecoin webThreeError needMainNet" style="display: none">
     <h3>Please switch to Main Network</h3>
   </div>
-  <div class="likecoin needUnlock" style="display: none">
+  <div class="likecoin webThreeError needUnlock" style="display: none">
     <h3>Please unlock your wallet</h3>
   </div>
-  <div class="likecoin needLikeCoinId" style="display: none">
+  <div class="likecoin webThreeError needLikeCoinId" style="display: none">
     <h3>Need Like Coin Id</h3>
   </div>
-  <div class="likecoin needLogin" style="display: none">
+  <div class="likecoin webThreeError needLogin" style="display: none">
     <h3><a class="loginBtn" style="cursor: pointer">Login to get Like Coin Id</a></h3>
   </div>
 </section>

@@ -1,5 +1,6 @@
 const challengeUrl = 'https://api.like.co/api/users/challenge';
 let address = null;
+let webThreeError = null;
 let webThreeInstance = null;
 
 const loginBtn = document.querySelector('.loginBtn');
@@ -20,38 +21,41 @@ function hide(selector) {
   elem.style.display = 'none';
 }
 
-async function likecoinInit() {
+
+function showError(selector) {
+  webThreeError = selector;
+  const elems = document.querySelectorAll(`.likecoin.webThreeError`);
+  elems.forEach((elem) => elem.style.display = 'none');
+  show(selector);
+}
+
+
+async function pollForWebThree() {
   if (!window.web3) {
-    show('.needMetaMask');
+    showError('.needMetaMask');
     console.error('no web3');
     return;
   }
   webThreeInstance = new Web3(window.web3.currentProvider);
   const network = await webThreeInstance.eth.net.getNetworkType();
   if (network !== 'main') {
-    show('.needMainNet');
+    showError('.needMainNet');
     console.error('not mainnet');
     return;
   }
   const accounts = await webThreeInstance.eth.getAccounts();
   if (!accounts || !accounts[0]) {
-    show('.needUnlock');
+    showError('.needUnlock');
     console.error('not unlocked');
     return;
   }
   const selectedAddress = accounts[0];
-
-  address = webThreeInstance.utils.toChecksumAddress(selectedAddress);
-  try {
-    const res = await fetch(`${challengeUrl}?wallet=${address}`);
-    await res.json();
-    show('.needLogin');
-  } catch (e) {
-    show('.needLikeCoinId');
-  }
+  webThreeError = null;
+  return webThreeInstance.utils.toChecksumAddress(selectedAddress);
 }
 
 async function login() {
+  if (webThreeError) return;
   let res = await fetch(`${challengeUrl}?wallet=${address}`);
   const { challenge } = await res.json();
   const signature = await webThreeInstance.eth.personal.sign(challenge, address);
@@ -113,4 +117,26 @@ async function handleUpdateId(newId, newWallet) {
 loginBtn.addEventListener('click', onLoginClick);
 changeBtn.addEventListener('click', onChangeClick);
 
+async function fetchLikeCoinID(newAddress) {
+  try {
+    const res = await fetch(`${challengeUrl}?wallet=${newAddress}`);
+    await res.json();
+    address = newAddress;
+    showError('.needLogin');
+  } catch (e) {
+    showError('.needLikeCoinId');
+  }
+}
+
+async function likecoinInit() {
+  const newAddress = await pollForWebThree();
+  if (address !== newAddress && newAddress) {
+    await fetchLikeCoinID(newAddress);
+  }
+}
+
 likecoinInit();
+setInterval(async () => {
+  likecoinInit(); // loop for web3 changes
+}, 3000);
+
