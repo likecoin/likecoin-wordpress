@@ -1,5 +1,6 @@
 const challengeUrl = 'https://api.like.co/api/users/challenge';
 let address = null;
+let webThreeInstance = null;
 
 const loginBtn = document.querySelector('.loginBtn');
 const changeBtn = document.querySelector('.changeBtn');
@@ -25,21 +26,22 @@ async function likecoinInit() {
     console.error('no web3');
     return;
   }
-  const {
-    networkVersion,
-    selectedAddress,
-  } = web3.currentProvider.publicConfigStore._state;
-  if (networkVersion !== '1') {
+  webThreeInstance = new Web3(window.web3.currentProvider);
+  const network = await webThreeInstance.eth.net.getNetworkType();
+  if (network !== 'main') {
     show('.needMainNet');
     console.error('not mainnet');
     return;
-  } else if (!selectedAddress) {
+  }
+  const accounts = await webThreeInstance.eth.getAccounts();
+  if (!accounts || !accounts[0]) {
     show('.needUnlock');
     console.error('not unlocked');
     return;
   }
+  const selectedAddress = accounts[0];
 
-  address = web3.toChecksumAddress(selectedAddress);
+  address = webThreeInstance.utils.toChecksumAddress(selectedAddress);
   try {
     const res = await fetch(`${challengeUrl}?wallet=${address}`);
     await res.json();
@@ -50,40 +52,51 @@ async function likecoinInit() {
 }
 
 async function login() {
+  let res = await fetch(`${challengeUrl}?wallet=${address}`);
+  const { challenge } = await res.json();
+  const signature = await webThreeInstance.eth.personal.sign(challenge, address);
+  if (err || !signature) {
+    throw (err || 'No signature');
+  }
+  const body = JSON.stringify({ challenge, signature, wallet: address });
+  res = await fetch(challengeUrl, {
+    body,
+    headers: {
+      'content-type': 'application/json',
+    },
+    method: 'POST'
+  });
+  const { user, wallet } = await res.json();
+  handleUpdateId(user, wallet);
+  if (user) {
+    likecoinId.innerHTML = user;
+    likecoinWallet.innerHTML = wallet;
+    likecoinPreview.src = 'https://button.like.co/in/embed/' + user + '/button';
+    hide('.loginSection');
+    show('.optionsSection');
+  }
+}
+
+async function onLoginClick() {
   try {
-    let res = await fetch(`${challengeUrl}?wallet=${address}`);
-    const { challenge } = await res.json();
-    web3.personal.sign(challenge, address, async (err, signature) => {
-      if (err || !signature) {
-        return;
-      }
-      const body = JSON.stringify({ challenge, signature, wallet: address });
-      res = await fetch(challengeUrl, {
-        body,
-        headers: {
-          'content-type': 'application/json',
-        },
-        method: 'POST'
-      });
-      const { user, wallet } = await res.json();
-      handleUpdateId(user, wallet);
-      if (user) {
-        likecoinId.innerHTML = user;
-        likecoinWallet.innerHTML = wallet;
-        likecoinPreview.src = 'https://button.like.co/in/embed/' + user + '/button';
-        hide('.loginSection');
-        show('.optionsSection');
-      }
-    });
+    await login();
   } catch (e) {
     console.error(e);
   }
 }
 
-async function change() {
+async function onChangeClick() {
   show('.loginSection');
   hide('.optionsSection');
+  try {
+    await login();
+  } catch (e) {
+    console.error(e);
+    hide('.loginSection');
+    show('.optionsSection');
+  }
 }
+
 
 async function handleUpdateId(newId, newWallet) {
   const res = await fetch(WP_CONFIG.adminAjaxUrl, {
@@ -97,7 +110,7 @@ async function handleUpdateId(newId, newWallet) {
   updateStatus.textContent = await res.text();
 }
 
-loginBtn.addEventListener('click', login);
-changeBtn.addEventListener('click', change);
+loginBtn.addEventListener('click', onLoginClick);
+changeBtn.addEventListener('click', onChangeClick);
 
 likecoinInit();
