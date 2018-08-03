@@ -16,14 +16,8 @@ define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 
 /* Utils related */
 function get_author_likecoin_id($post) {
-  global $wpdb;
-  $table_name = $wpdb->prefix . 'likecoin_author';
   $author = $post->post_author;
-  $results = $wpdb->get_results( "SELECT * FROM $table_name WHERE author_id = $author" );
-  $likecoin_id = '';
-  if (sizeof($results) > 0) {
-    $likecoin_id = $results[0]->likecoin_id;
-  }
+  $likecoin_id = get_user_meta( $author, 'lc_likecoin_id', true );
   return $likecoin_id;
 }
 
@@ -50,16 +44,39 @@ add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 
 /* Widget related */
 
+function likecoin_save_postdata($post_id) {
+  if (array_key_exists('lc_widget_option', $_POST)) {
+    update_post_meta(
+      $post_id,
+      'lc_widget_position',
+      sanitize_text_field($_POST['lc_widget_option'])
+    );
+    $post = get_post($post_id);
+    update_user_meta(
+      $post->post_author,
+      'lc_widget_position',
+      sanitize_text_field($_POST['lc_widget_option'])
+    );
+  }
+}
+
+add_action('save_post', 'likecoin_save_postdata');
+
 function likecoin_add_widget($content) {
   global $post;
   if (is_single()) {
     $likecoin_id = get_author_likecoin_id($post);
     if (strlen($likecoin_id) > 0) {
+      $widget_position = get_post_meta($post->ID, 'lc_widget_position', true);
       $permalink = urlencode(get_permalink($post));
-      return $content . '<iframe scrolling="no" frameborder="0" ' .
-        'style="height: 162px; width: 100%;"'.
-        'src="https://like.co/in/embed/'. $likecoin_id .
-        '/?referrer=' . $permalink . '"></iframe>';
+      $widget_code = '<iframe scrolling="no" frameborder="0" ' .
+        'style="height: 212px; width: 100%;"'.
+        'src="https://button.like.co/in/embed/'. $likecoin_id . '/button' .
+        '?referrer=' . $permalink . '"></iframe>';
+      if ($widget_position === 'both') return $widget_code . $content . $widget_code;
+      else if ($widget_position === 'top') return $widget_code . $content;
+      else if ($widget_position === 'bottom') return $content . $widget_code;
+      return $content;
     }
   }
   return $content;
@@ -71,31 +88,31 @@ add_filter( 'the_content', 'likecoin_add_widget', 999 );
 
 function likecoin_update_id() {
   $user = wp_get_current_user();
-  if (isset($_POST['likecoin_id'])) {
-    global $wpdb;
-    $table_name = $wpdb->prefix . 'likecoin_author';
-    $results = $wpdb->query( $wpdb->prepare("
-        INSERT INTO $table_name (author_id, likecoin_id) VALUES (%d, %s)
-        ON DUPLICATE KEY UPDATE likecoin_id = %s;
-      ",
-      $user->ID,
-      $_POST['likecoin_id'],
-      $_POST['likecoin_id']
-    ) );
-    switch ($results) {
-      case '1':
-        echo 'Created';
-        break;
-      case '2':
-        echo 'Updated';
-        break;
-      case '0':
-        echo 'Unchanged';
-        break;
-    }
+  $user_id = $user->ID;
+  if (!current_user_can('edit_user', $user_id)) {
+    return wp_die('error editing');
   }
-  // ajax handlers must die
-  die;
+  if (isset($_POST['likecoin_id']) && isset($_POST['likecoin_wallet'])) {
+    $result = update_user_meta(
+      $user_id,
+      'lc_likecoin_id',
+      sanitize_text_field($_POST['likecoin_id'])
+    );
+    update_user_meta(
+      $user_id,
+      'lc_likecoin_wallet',
+      sanitize_text_field($_POST['likecoin_wallet'])
+    );
+    if ($result === true) {
+      echo 'Updated';
+    } else if ($result === false) {
+      echo 'Unchanged';
+    } else {
+      echo 'Created';
+    }
+
+  }
+  wp_die();
 }
 
 // wp_ajax_ is the prefix, likecoin_update_id is the action used in client side code
