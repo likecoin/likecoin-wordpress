@@ -59,8 +59,8 @@ async function login() {
   let res = await fetch(`${CHALLENGE_URL}?wallet=${address}`);
   const { challenge } = await res.json();
   const signature = await webThreeInstance.eth.personal.sign(challenge, address);
-  if (err || !signature) {
-    throw (err || 'No signature');
+  if (!signature) {
+    throw ('No signature');
   }
   const body = JSON.stringify({ challenge, signature, wallet: address });
   res = await fetch(CHALLENGE_URL, {
