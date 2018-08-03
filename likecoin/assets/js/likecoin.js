@@ -1,4 +1,4 @@
-const challengeUrl = 'https://api.like.co/api/users/challenge';
+const CHALLENGE_URL = 'https://api.like.co/api/users/challenge';
 let address = null;
 let webThreeError = null;
 let webThreeInstance = null;
@@ -24,7 +24,7 @@ function hide(selector) {
 
 function showError(selector) {
   webThreeError = selector;
-  const elems = document.querySelectorAll(`.likecoin.webThreeError`);
+  const elems = document.querySelectorAll('.likecoin.webThreeError');
   elems.forEach((elem) => elem.style.display = 'none');
   show(selector);
 }
@@ -56,28 +56,33 @@ async function pollForWebThree() {
 
 async function login() {
   if (webThreeError) return;
-  let res = await fetch(`${challengeUrl}?wallet=${address}`);
+  let res = await fetch(`${CHALLENGE_URL}?wallet=${address}`);
   const { challenge } = await res.json();
   const signature = await webThreeInstance.eth.personal.sign(challenge, address);
   if (err || !signature) {
     throw (err || 'No signature');
   }
   const body = JSON.stringify({ challenge, signature, wallet: address });
-  res = await fetch(challengeUrl, {
+  res = await fetch(CHALLENGE_URL, {
     body,
     headers: {
       'content-type': 'application/json',
     },
     method: 'POST'
   });
-  const { user, wallet } = await res.json();
-  handleUpdateId(user, wallet);
+  const payload = await res.json();
+  const { user, wallet } = payload;
   if (user) {
+    handleUpdateId(user, wallet);
     likecoinId.innerHTML = user;
     likecoinWallet.innerHTML = wallet;
     likecoinPreview.src = 'https://button.like.co/in/embed/' + user + '/button';
     hide('.loginSection');
     show('.optionsSection');
+  } else {
+    // TODO: Add error msg display to UI
+    console.error('Error: user is undefined');
+    console.error(payload);
   }
 }
 
@@ -119,7 +124,7 @@ changeBtn.addEventListener('click', onChangeClick);
 
 async function fetchLikeCoinID(newAddress) {
   try {
-    const res = await fetch(`${challengeUrl}?wallet=${newAddress}`);
+    const res = await fetch(`${CHALLENGE_URL}?wallet=${newAddress}`);
     await res.json();
     address = newAddress;
     showError('.needLogin');
@@ -135,8 +140,18 @@ async function likecoinInit() {
   }
 }
 
-likecoinInit();
-setInterval(async () => {
-  likecoinInit(); // loop for web3 changes
-}, 3000);
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
 
+/* loop for web3 changes */
+(async () => {
+  while (true) {
+    try {
+      await likecoinInit();
+    } catch (err) {
+      console.error(err);
+    }
+    await sleep(3000);
+  }
+})();

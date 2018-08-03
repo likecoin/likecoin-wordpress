@@ -66,8 +66,8 @@ function likecoin_add_widget($content) {
   global $post;
   if (is_single()) {
     $likecoin_id = get_author_likecoin_id($post);
-    $widget_position = get_post_meta($post->ID, 'lc_widget_position', true);
     if (strlen($likecoin_id) > 0) {
+      $widget_position = get_post_meta($post->ID, 'lc_widget_position', true);
       $permalink = urlencode(get_permalink($post));
       $widget_code = '<iframe scrolling="no" frameborder="0" ' .
         'style="height: 212px; width: 100%;"'.
