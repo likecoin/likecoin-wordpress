@@ -38,7 +38,7 @@ function likecoin_load_scripts( $hook ) {
 	if ( 'post-new.php' !== $hook && 'post.php' !== $hook ) {
 		return;
 	}
-	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, '1.0.0-beta34' );
+	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, '1.0.0-beta34', true );
 }
 
 function likecoin_register_meta_boxes() {
@@ -51,6 +51,10 @@ add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 /* Widget related */
 
 function likecoin_save_postdata( $post_id ) {
+	/* Check nonce */
+	if ( ! wp_verify_nonce( $_POST['lc_metabox_nonce'], 'lc_save_post' ) ) {
+		return;
+	}
 	if ( array_key_exists( 'lc_widget_option', $_POST ) ) {
 		update_post_meta(
 			$post_id,
@@ -74,7 +78,7 @@ function likecoin_add_widget( $content ) {
 		$likecoin_id = get_author_likecoin_id( $post );
 		if ( strlen( $likecoin_id ) > 0 ) {
 			$widget_position = get_post_meta( $post->ID, 'lc_widget_position', true );
-			$permalink       = urlencode( get_permalink( $post ) );
+			$permalink       = rawurlencode( get_permalink( $post ) );
 			$widget_code     = '<iframe scrolling="no" frameborder="0" ' .
 			'style="height: 212px; width: 100%;"' .
 			'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
@@ -102,6 +106,7 @@ function likecoin_update_id() {
 	if ( ! current_user_can( 'edit_user', $user_id ) ) {
 		return wp_die( 'error editing' );
 	}
+	check_ajax_referer( 'lc_metabox_ajax', 'nonce' );
 	if ( isset( $_POST['likecoin_id'] ) && isset( $_POST['likecoin_wallet'] ) ) {
 		$result = update_user_meta(
 			$user_id,

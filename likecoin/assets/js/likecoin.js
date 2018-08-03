@@ -109,7 +109,7 @@ async function onChangeClick() {
 
 async function handleUpdateId(newId, newWallet) {
   const res = await fetch(WP_CONFIG.adminAjaxUrl, {
-    body: 'action=likecoin_update_id&likecoin_id=' + newId + '&likecoin_wallet=' + newWallet,
+    body: `action=likecoin_update_id&likecoin_id=${newId}&likecoin_wallet=${newWallet}&nonce=${WP_CONFIG.nonce}`,
     credentials: 'include',
     headers: {
       'content-type': 'application/x-www-form-urlencoded',
