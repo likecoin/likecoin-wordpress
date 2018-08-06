@@ -118,8 +118,9 @@ async function onChangeClick() {
     await login();
   } catch (e) {
     console.error(e); // eslint-disable-line no-console
-    hide('.loginSection');
-    show('.optionsSection');
+    /* Disabled due to poor ux */
+    // hide('.loginSection');
+    // show('.optionsSection');
   }
 }
 

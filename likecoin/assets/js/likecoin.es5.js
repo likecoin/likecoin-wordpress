@@ -1100,7 +1100,7 @@
 	            return login();
 
 	          case 5:
-	            _context6.next = 12;
+	            _context6.next = 10;
 	            break;
 
 	          case 7:
@@ -1108,10 +1108,11 @@
 	            _context6.t0 = _context6["catch"](2);
 	            console.error(_context6.t0); // eslint-disable-line no-console
 
-	            hide('.loginSection');
-	            show('.optionsSection');
+	            /* Disabled due to poor ux */
+	            // hide('.loginSection');
+	            // show('.optionsSection');
 
-	          case 12:
+	          case 10:
 	          case "end":
 	            return _context6.stop();
 	        }
