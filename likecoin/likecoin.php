@@ -20,6 +20,7 @@ Author URI: https://like.co/
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LC_PLUGIN_VERSION', '0.2' );
+define( 'LC_WEB3_VERSION', '1.0.0-beta34' );
 
 /* Utils related */
 function get_author_likecoin_id( $post ) {
@@ -39,7 +40,7 @@ function likecoin_load_scripts( $hook ) {
 	if ( 'post-new.php' !== $hook && 'post.php' !== $hook ) {
 		return;
 	}
-	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, '1.0.0-beta34', true );
+	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, LC_WEB3_VERSION, true );
 }
 
 function likecoin_register_meta_boxes() {
@@ -139,27 +140,23 @@ add_action( 'wp_ajax_likecoin_update_id', 'likecoin_update_id' );
 function handle_init_and_upgrade() {
 	global $wpdb;
 	global $charset_collate;
-	$version    = get_option( 'likecoin_plugin_version', '0.1' );
-	$table_name = $wpdb->prefix . 'likecoin_author';
-	$sql        = "CREATE TABLE IF NOT EXISTS $table_name (
-		`author_id` int NOT NULL,
-		`likecoin_id` varchar(255) NOT NULL,
-		PRIMARY KEY (`author_id`)
-	) $charset_collate;";
-	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-	dbDelta( $sql );
+	$version = get_option( 'likecoin_plugin_version', LC_PLUGIN_VERSION );
 
-	if ( version_compare( $version, '1.0' ) < 0 ) {
-		update_option( 'likecoin_plugin_version', '0.1' );
+	if ( version_compare( $version, LC_PLUGIN_VERSION ) < 0 ) {
+		update_option( 'likecoin_plugin_version', LC_PLUGIN_VERSION );
 	}
+
 }
 
 function handle_uninstall() {
-	global $wpdb;
-	$table_name = $wpdb->prefix . 'likecoin_author';
-	$sql        = "DROP TABLE IF NOT EXISTS $table_name;";
-	require_once ABSPATH . 'wp-admin/includes/upgrade.php';
-	dbDelta( $sql );
+
+	/* clean up all user metadata */
+	delete_metadata( 'user', 0, 'lc_likecoin_id', '', true );
+	delete_metadata( 'user', 0, 'lc_likecoin_wallet', '', true );
+	delete_metadata( 'user', 0, 'lc_widget_position', '', true );
+	/* clean up all post metadata */
+	delete_metadata( 'post', 0, 'lc_widget_position', '', true );
+
 	delete_option( 'likecoin_plugin_version' );
 }
 
