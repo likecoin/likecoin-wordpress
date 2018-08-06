@@ -5,7 +5,7 @@
  * Plugin for embbeding LikeCoin functionalities into WordPress.
  *
  * @package LikeCoin
- * @version 0.2
+ * @version 0.3
  */
 
 /*
@@ -13,7 +13,7 @@
 	Plugin URI: http://wordpress.org/plugins/likecoin/
 	Description: For LikeCoin integration
 	Author: like.co
-	Version: 0.2
+	Version: 0.3
 	Author URI: https://like.co/
 
 	This program is free software: you can redistribute it and/or modify
@@ -32,7 +32,7 @@
 
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
-define( 'LC_PLUGIN_VERSION', '0.2' );
+define( 'LC_PLUGIN_VERSION', '0.3' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta34' );
 
 /* Utils related */
