@@ -82,7 +82,15 @@ function likecoin_add_meta_box( $post ) {
 	</section>
 	<section class="previewSection">
 		<span>This LikeCoin Widget will be shown in your post:</span>
-		<a class="icon" href="https://like.co/in" target="_blank"><?php echo file_get_contents( LC_DIR . 'assets/icon/settings.svg' ); ?></a>
+		<a class="icon" href="https://like.co/in" target="_blank">
+		<?php
+		/* output actual <svg> to allow styling */
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
+	  // phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		echo file_get_contents( LC_DIR . 'assets/icon/settings.svg' );
+		// phpcs:enable
+		?>
+		</a>
 		<iframe id="likecoinPreview" scrolling="no" frameborder="0"
 		style="pointer-events: none; height: 212px; width: 100%;"
 		src="
@@ -98,8 +106,8 @@ function likecoin_add_meta_box( $post ) {
 	<?php wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' ); ?>
 </section>
 	<?php
-	wp_register_style( 'lc_metabox', LC_URI . 'assets/css/metabox.css' );
-  wp_enqueue_style( 'lc_metabox' );
+	wp_register_style( 'lc_metabox', LC_URI . 'assets/css/metabox.css', false, LC_PLUGIN_VERSION );
+	wp_enqueue_style( 'lc_metabox' );
 	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', false, LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_metabox',
