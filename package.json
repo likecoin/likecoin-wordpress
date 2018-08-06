@@ -5,7 +5,9 @@
   "scripts": {
     "build": "rollup -c",
     "test": "npm run lint",
-    "lint": "eslint ."
+    "lint": "npm run lint:es && npm run lint:style",
+    "lint:es": "eslint .",
+    "lint:style": "stylelint 'likecoin/assets/css'"
   },
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.56",
@@ -17,6 +19,9 @@
     "rollup": "^0.63.5",
     "rollup-plugin-babel": "^4.0.0-beta.8",
     "rollup-plugin-commonjs": "^9.1.4",
-    "rollup-plugin-node-resolve": "^3.3.0"
+    "rollup-plugin-node-resolve": "^3.3.0",
+    "stylelint": "^9.4.0",
+    "stylelint-config-recommended": "^2.1.0",
+    "stylelint-order": "^0.8.1"
   }
 }

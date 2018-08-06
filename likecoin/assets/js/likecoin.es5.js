@@ -964,45 +964,47 @@
 	      while (1) {
 	        switch (_context4.prev = _context4.next) {
 	          case 0:
-	            if (!webThreeError) {
+	            if (!(webThreeError && webThreeError !== '.needLogin')) {
 	              _context4.next = 2;
 	              break;
 	            }
 
-	            return _context4.abrupt("return");
+	            throw new Error(webThreeError);
 
 	          case 2:
-	            _context4.next = 4;
+	            show('.loading');
+	            _context4.next = 5;
 	            return fetch("".concat(CHALLENGE_URL, "?wallet=").concat(address));
 
-	          case 4:
+	          case 5:
 	            res = _context4.sent;
-	            _context4.next = 7;
+	            _context4.next = 8;
 	            return res.json();
 
-	          case 7:
+	          case 8:
 	            _ref2 = _context4.sent;
 	            challenge = _ref2.challenge;
-	            _context4.next = 11;
+	            hide('.loading');
+	            _context4.next = 13;
 	            return webThreeInstance.eth.personal.sign(challenge, address);
 
-	          case 11:
+	          case 13:
 	            signature = _context4.sent;
 
 	            if (signature) {
-	              _context4.next = 14;
+	              _context4.next = 16;
 	              break;
 	            }
 
 	            throw new Error('No signature');
 
-	          case 14:
+	          case 16:
 	            body = JSON.stringify({
 	              challenge: challenge,
 	              signature: signature,
 	              wallet: address
 	            });
-	            _context4.next = 17;
+	            _context4.next = 19;
 	            return fetch(CHALLENGE_URL, {
 	              body: body,
 	              headers: {
@@ -1011,12 +1013,12 @@
 	              method: 'POST'
 	            });
 
-	          case 17:
+	          case 19:
 	            res = _context4.sent;
-	            _context4.next = 20;
+	            _context4.next = 22;
 	            return res.json();
 
-	          case 20:
+	          case 22:
 	            payload = _context4.sent;
 	            user = payload.user, wallet = payload.wallet;
 
@@ -1034,7 +1036,7 @@
 	              console.error(payload); // eslint-disable-line no-console
 	            }
 
-	          case 23:
+	          case 25:
 	          case "end":
 	            return _context4.stop();
 	        }

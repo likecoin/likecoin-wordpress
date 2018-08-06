@@ -18,6 +18,7 @@ Author URI: https://like.co/
 */
 
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
+define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LC_PLUGIN_VERSION', '0.2' );
 
 /* Utils related */
