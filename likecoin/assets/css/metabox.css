@@ -1,0 +1,71 @@
+.likecoin {
+  font-family: 'Open Sans', 'Source Sans Pro', 'Noto Sans', 'Microsoft JhengHei', Arial, sans-serif;
+}
+
+.likecoin h3 {
+  color: #462405;
+}
+
+.likecoin a {
+  color: #28646e;
+}
+
+.likecoin section {
+  padding: 0 10px;
+  border: 1px solid #f7f7f7;
+}
+
+.likecoin .icon svg {
+  float: right;
+  color: #737373;
+  width: 22px;
+  height: 22px;
+  fill: currentColor;
+}
+
+.likecoin.optionsSection .optionsContainer {
+  display:flex;
+}
+
+.likecoin.optionsSection .loginBtn {
+  color: white;
+  background-color: #28646e;
+}
+
+.likecoin.optionsSection .changeBtn {
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 12px;
+}
+
+.likecoin.optionsSection .label {
+  color: #462814;
+  font-size: 14px;
+  margin: 20px 10px;
+}
+
+.likecoin.optionsSection .field {
+  font-size: 18px;
+  margin: 5px 0;
+}
+
+.likecoin.optionsSection .field a {
+  text-decoration: none;
+}
+
+.likecoin.optionsSection .previewSection{
+  flex: 1;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  color: #d8d8d8;
+  padding: 20px 40px;
+}
+
+
+.likecoin.optionsSection .previewSection span{
+  margin: 20px 0;
+}
+
+.likecoin #likecoinId {
+  color: #28646e;
+}
