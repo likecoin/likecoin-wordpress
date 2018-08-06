@@ -950,6 +950,57 @@
 	  return _handleUpdateId.apply(this, arguments);
 	}
 
+	function fetchLikeCoinID(_x3) {
+	  return _fetchLikeCoinID.apply(this, arguments);
+	}
+
+	function _fetchLikeCoinID() {
+	  _fetchLikeCoinID = asyncToGenerator(
+	  /*#__PURE__*/
+	  regenerator.mark(function _callee4(currentAddress) {
+	    var res, _ref2, challenge;
+
+	    return regenerator.wrap(function _callee4$(_context4) {
+	      while (1) {
+	        switch (_context4.prev = _context4.next) {
+	          case 0:
+	            show('.loading');
+	            _context4.next = 3;
+	            return fetch("".concat(CHALLENGE_URL, "?wallet=").concat(currentAddress));
+
+	          case 3:
+	            res = _context4.sent;
+	            hide('.loading');
+	            address = currentAddress;
+
+	            if (!(res.status === 404)) {
+	              _context4.next = 9;
+	              break;
+	            }
+
+	            showError('.needLikeCoinId');
+	            throw new Error('.needLikeCoinId');
+
+	          case 9:
+	            _context4.next = 11;
+	            return res.json();
+
+	          case 11:
+	            _ref2 = _context4.sent;
+	            challenge = _ref2.challenge;
+	            showError('.needLogin');
+	            return _context4.abrupt("return", challenge);
+
+	          case 15:
+	          case "end":
+	            return _context4.stop();
+	        }
+	      }
+	    }, _callee4, this);
+	  }));
+	  return _fetchLikeCoinID.apply(this, arguments);
+	}
+
 	function login() {
 	  return _login.apply(this, arguments);
 	}
@@ -957,54 +1008,53 @@
 	function _login() {
 	  _login = asyncToGenerator(
 	  /*#__PURE__*/
-	  regenerator.mark(function _callee4() {
-	    var res, _ref2, challenge, signature, body, payload, user, wallet;
-
-	    return regenerator.wrap(function _callee4$(_context4) {
+	  regenerator.mark(function _callee5() {
+	    var challenge, signature, body, res, payload, user, wallet;
+	    return regenerator.wrap(function _callee5$(_context5) {
 	      while (1) {
-	        switch (_context4.prev = _context4.next) {
+	        switch (_context5.prev = _context5.next) {
 	          case 0:
+	            if (address) {
+	              _context5.next = 2;
+	              break;
+	            }
+
+	            throw new Error('cannot get web3 address');
+
+	          case 2:
 	            if (!(webThreeError && webThreeError !== '.needLogin')) {
-	              _context4.next = 2;
+	              _context5.next = 4;
 	              break;
 	            }
 
 	            throw new Error(webThreeError);
 
-	          case 2:
-	            show('.loading');
-	            _context4.next = 5;
-	            return fetch("".concat(CHALLENGE_URL, "?wallet=").concat(address));
+	          case 4:
+	            _context5.next = 6;
+	            return fetchLikeCoinID(address);
 
-	          case 5:
-	            res = _context4.sent;
-	            _context4.next = 8;
-	            return res.json();
-
-	          case 8:
-	            _ref2 = _context4.sent;
-	            challenge = _ref2.challenge;
-	            hide('.loading');
-	            _context4.next = 13;
+	          case 6:
+	            challenge = _context5.sent;
+	            _context5.next = 9;
 	            return webThreeInstance.eth.personal.sign(challenge, address);
 
-	          case 13:
-	            signature = _context4.sent;
+	          case 9:
+	            signature = _context5.sent;
 
 	            if (signature) {
-	              _context4.next = 16;
+	              _context5.next = 12;
 	              break;
 	            }
 
 	            throw new Error('No signature');
 
-	          case 16:
+	          case 12:
 	            body = JSON.stringify({
 	              challenge: challenge,
 	              signature: signature,
 	              wallet: address
 	            });
-	            _context4.next = 19;
+	            _context5.next = 15;
 	            return fetch(CHALLENGE_URL, {
 	              body: body,
 	              headers: {
@@ -1013,13 +1063,13 @@
 	              method: 'POST'
 	            });
 
-	          case 19:
-	            res = _context4.sent;
-	            _context4.next = 22;
+	          case 15:
+	            res = _context5.sent;
+	            _context5.next = 18;
 	            return res.json();
 
-	          case 22:
-	            payload = _context4.sent;
+	          case 18:
+	            payload = _context5.sent;
 	            user = payload.user, wallet = payload.wallet;
 
 	            if (user) {
@@ -1036,12 +1086,12 @@
 	              console.error(payload); // eslint-disable-line no-console
 	            }
 
-	          case 25:
+	          case 21:
 	          case "end":
-	            return _context4.stop();
+	            return _context5.stop();
 	        }
 	      }
-	    }, _callee4, this);
+	    }, _callee5, this);
 	  }));
 	  return _login.apply(this, arguments);
 	}
@@ -1053,30 +1103,30 @@
 	function _onLoginClick() {
 	  _onLoginClick = asyncToGenerator(
 	  /*#__PURE__*/
-	  regenerator.mark(function _callee5() {
-	    return regenerator.wrap(function _callee5$(_context5) {
+	  regenerator.mark(function _callee6() {
+	    return regenerator.wrap(function _callee6$(_context6) {
 	      while (1) {
-	        switch (_context5.prev = _context5.next) {
+	        switch (_context6.prev = _context6.next) {
 	          case 0:
-	            _context5.prev = 0;
-	            _context5.next = 3;
+	            _context6.prev = 0;
+	            _context6.next = 3;
 	            return login();
 
 	          case 3:
-	            _context5.next = 8;
+	            _context6.next = 8;
 	            break;
 
 	          case 5:
-	            _context5.prev = 5;
-	            _context5.t0 = _context5["catch"](0);
-	            console.error(_context5.t0); // eslint-disable-line no-console
+	            _context6.prev = 5;
+	            _context6.t0 = _context6["catch"](0);
+	            console.error(_context6.t0); // eslint-disable-line no-console
 
 	          case 8:
 	          case "end":
-	            return _context5.stop();
+	            return _context6.stop();
 	        }
 	      }
-	    }, _callee5, this, [[0, 5]]);
+	    }, _callee6, this, [[0, 5]]);
 	  }));
 	  return _onLoginClick.apply(this, arguments);
 	}
@@ -1088,25 +1138,25 @@
 	function _onChangeClick() {
 	  _onChangeClick = asyncToGenerator(
 	  /*#__PURE__*/
-	  regenerator.mark(function _callee6() {
-	    return regenerator.wrap(function _callee6$(_context6) {
+	  regenerator.mark(function _callee7() {
+	    return regenerator.wrap(function _callee7$(_context7) {
 	      while (1) {
-	        switch (_context6.prev = _context6.next) {
+	        switch (_context7.prev = _context7.next) {
 	          case 0:
 	            show('.loginSection');
 	            hide('.optionsSection');
-	            _context6.prev = 2;
-	            _context6.next = 5;
+	            _context7.prev = 2;
+	            _context7.next = 5;
 	            return login();
 
 	          case 5:
-	            _context6.next = 10;
+	            _context7.next = 10;
 	            break;
 
 	          case 7:
-	            _context6.prev = 7;
-	            _context6.t0 = _context6["catch"](2);
-	            console.error(_context6.t0); // eslint-disable-line no-console
+	            _context7.prev = 7;
+	            _context7.t0 = _context7["catch"](2);
+	            console.error(_context7.t0); // eslint-disable-line no-console
 
 	            /* Disabled due to poor ux */
 	            // hide('.loginSection');
@@ -1114,59 +1164,16 @@
 
 	          case 10:
 	          case "end":
-	            return _context6.stop();
+	            return _context7.stop();
 	        }
 	      }
-	    }, _callee6, this, [[2, 7]]);
+	    }, _callee7, this, [[2, 7]]);
 	  }));
 	  return _onChangeClick.apply(this, arguments);
 	}
 
 	loginBtn.addEventListener('click', onLoginClick);
 	changeBtn.addEventListener('click', onChangeClick);
-
-	function fetchLikeCoinID(_x3) {
-	  return _fetchLikeCoinID.apply(this, arguments);
-	}
-
-	function _fetchLikeCoinID() {
-	  _fetchLikeCoinID = asyncToGenerator(
-	  /*#__PURE__*/
-	  regenerator.mark(function _callee7(newAddress) {
-	    var res;
-	    return regenerator.wrap(function _callee7$(_context7) {
-	      while (1) {
-	        switch (_context7.prev = _context7.next) {
-	          case 0:
-	            _context7.prev = 0;
-	            _context7.next = 3;
-	            return fetch("".concat(CHALLENGE_URL, "?wallet=").concat(newAddress));
-
-	          case 3:
-	            res = _context7.sent;
-	            _context7.next = 6;
-	            return res.json();
-
-	          case 6:
-	            address = newAddress;
-	            showError('.needLogin');
-	            _context7.next = 13;
-	            break;
-
-	          case 10:
-	            _context7.prev = 10;
-	            _context7.t0 = _context7["catch"](0);
-	            showError('.needLikeCoinId');
-
-	          case 13:
-	          case "end":
-	            return _context7.stop();
-	        }
-	      }
-	    }, _callee7, this, [[0, 10]]);
-	  }));
-	  return _fetchLikeCoinID.apply(this, arguments);
-	}
 
 	function likecoinInit() {
 	  return _likecoinInit.apply(this, arguments);
