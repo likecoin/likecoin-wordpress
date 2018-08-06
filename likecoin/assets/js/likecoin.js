@@ -71,8 +71,10 @@ async function login() {
   if (webThreeError && webThreeError !== '.needLogin') {
     throw new Error(webThreeError);
   }
+  show('.loading');
   let res = await fetch(`${CHALLENGE_URL}?wallet=${address}`);
   const { challenge } = await res.json();
+  hide('.loading');
   const signature = await webThreeInstance.eth.personal.sign(challenge, address);
   if (!signature) {
     throw new Error('No signature');

@@ -12,6 +12,7 @@ function likecoin_add_meta_box( $post ) {
 	}
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>
+<section class="likecoin loading" style="display: none">Loading...</section>
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
 	<div class="likecoin webThreeError needMetaMask" style="display: none">
 		<h3>Need <a href="https://metamask.io/" target="_blank">Meta Mask Plugin</a></h3>
