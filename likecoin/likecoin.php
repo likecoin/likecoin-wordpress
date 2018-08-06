@@ -52,20 +52,21 @@ add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 
 function likecoin_save_postdata( $post_id ) {
 	/* Check nonce */
-	if ( ! wp_verify_nonce( $_POST['lc_metabox_nonce'], 'lc_save_post' ) ) {
+	if ( ! ( isset( $_POST['lc_metabox_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['lc_metabox_nonce'] ), 'lc_save_post' ) ) ) {
 		return;
 	}
-	if ( array_key_exists( 'lc_widget_option', $_POST ) ) {
+
+	if ( isset( $_POST['lc_widget_option'] ) ) {
 		update_post_meta(
 			$post_id,
 			'lc_widget_position',
-			sanitize_text_field( $_POST['lc_widget_option'] )
+			sanitize_key( $_POST['lc_widget_option'] )
 		);
 		$post = get_post( $post_id );
 		update_user_meta(
 			$post->post_author,
 			'lc_widget_position',
-			sanitize_text_field( $_POST['lc_widget_option'] )
+			sanitize_key( $_POST['lc_widget_option'] )
 		);
 	}
 }
@@ -111,12 +112,12 @@ function likecoin_update_id() {
 		$result = update_user_meta(
 			$user_id,
 			'lc_likecoin_id',
-			sanitize_text_field( $_POST['likecoin_id'] )
+			sanitize_text_field( wp_unslash( $_POST['likecoin_id'] ) )
 		);
 		update_user_meta(
 			$user_id,
 			'lc_likecoin_wallet',
-			sanitize_text_field( $_POST['likecoin_wallet'] )
+			sanitize_text_field( wp_unslash( $_POST['likecoin_wallet'] ) )
 		);
 		if ( true === $result ) {
 			echo 'Updated';
