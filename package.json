@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "cd likecoin/assets/js && BABEL_ENV=production babel likecoin.js --out-file 'likecoin.es5.js'",
+    "build": "rollup -c",
     "test": "npm run lint",
     "lint": "eslint ."
   },
@@ -13,6 +13,10 @@
     "@wordpress/babel-preset-default": "^2.0.3",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
-    "eslint-plugin-import": "^2.13.0"
+    "eslint-plugin-import": "^2.13.0",
+    "rollup": "^0.63.5",
+    "rollup-plugin-babel": "^4.0.0-beta.8",
+    "rollup-plugin-commonjs": "^9.1.4",
+    "rollup-plugin-node-resolve": "^3.3.0"
   }
 }
