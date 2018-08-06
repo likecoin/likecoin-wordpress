@@ -13,8 +13,8 @@ function likecoin_add_meta_box( $post ) {
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
-	<div class="likecoin webThreeError metaMask" style="display: none">
-	<h3>Need Meta Mask Plugin</h3>
+	<div class="likecoin webThreeError needMetaMask" style="display: none">
+	<h3>Need <a href="https://metamask.io/" target="_blank">Meta Mask Plugin</a></h3>
 	</div>
 	<div class="likecoin webThreeError needMainNet" style="display: none">
 	<h3>Please switch to Main Network</h3>
@@ -84,7 +84,7 @@ function likecoin_add_meta_box( $post ) {
 	<?php wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' ); ?>
 </section>
 	<?php
-	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.js', false, LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', false, LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_metabox',
 		'WP_CONFIG',
