@@ -40,6 +40,13 @@ jobs:
       - run:
           name: Lint Test
           command: npm run lint
+      - run:
+          name: Build Test
+          command: |
+            cd likecoin/assets/js
+            mv likecoin.es5.js likecoin.original.es5.js
+            npm run build
+            diff likecoin.es5.js likecoin.original.es5.js
       - save_cache:
           key: likecoin-wordpress-{{ .Environment.CACHE_UUID }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:

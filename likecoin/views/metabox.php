@@ -84,7 +84,7 @@ function likecoin_add_meta_box( $post ) {
 	<?php wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' ); ?>
 </section>
 	<?php
-	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.js', false, LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', false, LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_metabox',
 		'WP_CONFIG',
