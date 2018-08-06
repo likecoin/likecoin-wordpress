@@ -23,13 +23,33 @@
   fill: currentColor;
 }
 
-.likecoin.optionsSection .optionsContainer {
-  display:flex;
+.likecoin.loginSection {
+  padding: 32px;
 }
 
-.likecoin.optionsSection .loginBtn {
+.likecoin .likeCoinButton {
   color: white;
+  cursor: pointer;
   background-color: #28646e;
+  text-decoration: none;
+  box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
+  font-size: 16px;
+  min-width: 200px;
+  text-align: center;
+  padding: 8px;
+}
+
+.likecoin.loginSection .webThreeError {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.likecoin.optionsSection .optionsContainer {
+  display:flex;
 }
 
 .likecoin.optionsSection .changeBtn {

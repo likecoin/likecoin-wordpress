@@ -68,7 +68,9 @@ async function handleUpdateId(newId, newWallet) {
 }
 
 async function login() {
-  if (webThreeError) return;
+  if (webThreeError && webThreeError !== '.needLogin') {
+    throw new Error(webThreeError);
+  }
   let res = await fetch(`${CHALLENGE_URL}?wallet=${address}`);
   const { challenge } = await res.json();
   const signature = await webThreeInstance.eth.personal.sign(challenge, address);

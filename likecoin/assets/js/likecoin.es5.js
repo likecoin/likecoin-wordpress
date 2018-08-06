@@ -964,12 +964,12 @@
 	      while (1) {
 	        switch (_context4.prev = _context4.next) {
 	          case 0:
-	            if (!webThreeError) {
+	            if (!(webThreeError && webThreeError !== '.needLogin')) {
 	              _context4.next = 2;
 	              break;
 	            }
 
-	            return _context4.abrupt("return");
+	            throw new Error(webThreeError);
 
 	          case 2:
 	            _context4.next = 4;

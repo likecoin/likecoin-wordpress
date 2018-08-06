@@ -14,19 +14,21 @@ function likecoin_add_meta_box( $post ) {
 	?>
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
 	<div class="likecoin webThreeError needMetaMask" style="display: none">
-	<h3>Need <a href="https://metamask.io/" target="_blank">Meta Mask Plugin</a></h3>
+		<h3>Need <a href="https://metamask.io/" target="_blank">Meta Mask Plugin</a></h3>
 	</div>
 	<div class="likecoin webThreeError needMainNet" style="display: none">
-	<h3>Please switch to Main Network</h3>
+		<h3>Please switch to Main Network</h3>
+		<img src="<?php echo esc_attr( LC_URI . 'assets/img/mainnet.png' ); ?>">
 	</div>
 	<div class="likecoin webThreeError needUnlock" style="display: none">
-	<h3>Please unlock your wallet</h3>
+		<h3>Please unlock your wallet</h3>
+		<img src="<?php echo esc_attr( LC_URI . 'assets/img/unlock.png' ); ?>">
 	</div>
 	<div class="likecoin webThreeError needLikeCoinId" style="display: none">
-	<h3><a href="https://like.co/in/register" target="_blank">Please register a LikeCoin Id first</a></h3>
+		<a class="likeCoinButton" href="https://like.co/in/register" target="_blank">Please register a LikeCoin ID first</a>
 	</div>
 	<div class="likecoin webThreeError needLogin" style="display: none">
-	<h3><a class="loginBtn" style="cursor: pointer">Login to get LikeCoin Id</a></h3>
+		<a class="likeCoinButton loginBtn">Login to get LikeCoin ID</a>
 	</div>
 </section>
 <section class="likecoin optionsSection" style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>">
