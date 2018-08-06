@@ -41,25 +41,29 @@ function likecoin_add_meta_box( $post ) {
 			<option value="both" 
 			<?php
 			if ( 'both' === $widget_position ) {
-				echo 'selected';}
+				echo 'selected';
+			}
 			?>
 			>Top and bottom</option>
 			<option value="top" 
 			<?php
 			if ( 'top' === $widget_position ) {
-				echo 'selected';}
+				echo 'selected';
+			}
 			?>
 			>Top</option>
 			<option value="bottom" 
 			<?php
 			if ( 'bottom' === $widget_position ) {
-				echo 'selected';}
+				echo 'selected';
+			}
 			?>
 			>Bottom</option>
 			<option value="none" 
 			<?php
 			if ( 'none' === $widget_position ) {
-				echo 'selected';}
+				echo 'selected';
+			}
 			?>
 			>None</option>
 		</select>
@@ -70,7 +74,8 @@ function likecoin_add_meta_box( $post ) {
 		src="
 		<?php
 		if ( $has_likecoin_id ) {
-			echo esc_url( 'https://button.like.co/in/embed/' . $likecoin_id . '/button' );}
+			echo esc_url( 'https://button.like.co/in/embed/' . $likecoin_id . '/button' );
+		}
 		?>
 		"
 		></iframe>

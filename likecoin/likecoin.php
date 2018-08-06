@@ -11,7 +11,7 @@
 /*
 Plugin Name: LikeCoin
 Plugin URI: http://wordpress.org/plugins/likecoin/
-Description: For like coin integration
+Description: For LikeCoin integration
 Author: like.co
 Version: 0.2
 Author URI: https://like.co/
@@ -42,7 +42,7 @@ function likecoin_load_scripts( $hook ) {
 }
 
 function likecoin_register_meta_boxes() {
-	add_meta_box( 'like-coin', __( 'Like Coin', 'textdomain' ), 'likecoin_display_meta_box', 'post' );
+	add_meta_box( 'like-coin', __( 'LikeCoin', 'textdomain' ), 'likecoin_display_meta_box', 'post' );
 }
 
 add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
