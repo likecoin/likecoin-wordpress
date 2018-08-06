@@ -59,16 +59,19 @@ function likecoin_save_postdata( $post_id ) {
 	}
 
 	if ( isset( $_POST['lc_widget_option'] ) ) {
+		$option = array(
+			'lc_widget_position' => sanitize_key( $_POST['lc_widget_option'] ),
+		);
 		update_post_meta(
 			$post_id,
-			'lc_widget_position',
-			sanitize_key( $_POST['lc_widget_option'] )
+			'lc_widget_option',
+			$option
 		);
 		$post = get_post( $post_id );
 		update_user_meta(
 			$post->post_author,
-			'lc_widget_position',
-			sanitize_key( $_POST['lc_widget_option'] )
+			'lc_widget_option',
+			$option
 		);
 	}
 }
@@ -80,7 +83,8 @@ function likecoin_add_widget( $content ) {
 	if ( is_single() ) {
 		$likecoin_id = get_author_likecoin_id( $post );
 		if ( strlen( $likecoin_id ) > 0 ) {
-			$widget_position = get_post_meta( $post->ID, 'lc_widget_position', true );
+			$widget_option   = get_post_meta( $post->ID, 'lc_widget_option', true );
+			$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
 			$permalink       = rawurlencode( get_permalink( $post ) );
 			$widget_code     = '<iframe scrolling="no" frameborder="0" ' .
 			'style="height: 212px; width: 100%;"' .
@@ -153,8 +157,10 @@ function handle_uninstall() {
 	/* clean up all user metadata */
 	delete_metadata( 'user', 0, 'lc_likecoin_id', '', true );
 	delete_metadata( 'user', 0, 'lc_likecoin_wallet', '', true );
+	delete_metadata( 'user', 0, 'lc_widget_option', '', true );
 	delete_metadata( 'user', 0, 'lc_widget_position', '', true );
 	/* clean up all post metadata */
+	delete_metadata( 'user', 0, 'lc_widget_option', '', true );
 	delete_metadata( 'post', 0, 'lc_widget_position', '', true );
 
 	delete_option( 'likecoin_plugin_version' );

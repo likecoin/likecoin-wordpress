@@ -3,12 +3,11 @@ function likecoin_add_meta_box( $post ) {
 	$author          = $post->post_author;
 	$likecoin_id     = get_user_meta( $author, 'lc_likecoin_id', true );
 	$likecoin_wallet = get_user_meta( $author, 'lc_likecoin_wallet', true );
-	$widget_position = get_post_meta( $post->ID, 'lc_widget_position', true );
+	$widget_option   = get_post_meta( $post->ID, 'lc_widget_option', true );
+	$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
 	if ( ! $widget_position ) {
-		$widget_position = get_user_meta( $author, 'lc_widget_position', true );
-	}
-	if ( ! $widget_position ) {
-		$widget_position = '';
+		$widget_option   = get_user_meta( $author, 'lc_widget_option', true );
+		$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
 	}
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>
