@@ -1,14 +1,29 @@
 <?php
+
+/*
+	This program is free software: you can redistribute it and/or modify
+	it under the terms of the GNU General Public License as published by
+	the Free Software Foundation, either version 3 of the License, or
+	(at your option) any later version.
+
+	This program is distributed in the hope that it will be useful,
+	but WITHOUT ANY WARRANTY; without even the implied warranty of
+	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	GNU General Public License for more details.
+
+	You should have received a copy of the GNU General Public License
+	along with this program.  If not, see <https://www.gnu.org/licenses/>.
+*/
+
 function likecoin_add_meta_box( $post ) {
 	$author          = $post->post_author;
 	$likecoin_id     = get_user_meta( $author, 'lc_likecoin_id', true );
 	$likecoin_wallet = get_user_meta( $author, 'lc_likecoin_wallet', true );
-	$widget_position = get_post_meta( $post->ID, 'lc_widget_position', true );
+	$widget_option   = get_post_meta( $post->ID, 'lc_widget_option', true );
+	$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
 	if ( ! $widget_position ) {
-		$widget_position = get_user_meta( $author, 'lc_widget_position', true );
-	}
-	if ( ! $widget_position ) {
-		$widget_position = '';
+		$widget_option   = get_user_meta( $author, 'lc_widget_option', true );
+		$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
 	}
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>

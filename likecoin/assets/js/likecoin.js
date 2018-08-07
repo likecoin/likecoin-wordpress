@@ -67,20 +67,34 @@ async function handleUpdateId(newId, newWallet) {
   updateStatus.textContent = await res.text();
 }
 
+async function fetchLikeCoinID(currentAddress) {
+  show('.loading');
+  const res = await fetch(`${CHALLENGE_URL}?wallet=${currentAddress}`);
+  hide('.loading');
+  address = currentAddress;
+  if (res.status === 404) {
+    showError('.needLikeCoinId');
+    throw new Error('.needLikeCoinId');
+  }
+  const { challenge } = await res.json();
+  showError('.needLogin');
+  return challenge;
+}
+
 async function login() {
+  if (!address) {
+    throw new Error('cannot get web3 address');
+  }
   if (webThreeError && webThreeError !== '.needLogin') {
     throw new Error(webThreeError);
   }
-  show('.loading');
-  let res = await fetch(`${CHALLENGE_URL}?wallet=${address}`);
-  const { challenge } = await res.json();
-  hide('.loading');
+  const challenge = await fetchLikeCoinID(address);
   const signature = await webThreeInstance.eth.personal.sign(challenge, address);
   if (!signature) {
     throw new Error('No signature');
   }
   const body = JSON.stringify({ challenge, signature, wallet: address });
-  res = await fetch(CHALLENGE_URL, {
+  const res = await fetch(CHALLENGE_URL, {
     body,
     headers: {
       'content-type': 'application/json',
@@ -118,24 +132,14 @@ async function onChangeClick() {
     await login();
   } catch (e) {
     console.error(e); // eslint-disable-line no-console
-    hide('.loginSection');
-    show('.optionsSection');
+    /* Disabled due to poor ux */
+    // hide('.loginSection');
+    // show('.optionsSection');
   }
 }
 
 loginBtn.addEventListener('click', onLoginClick);
 changeBtn.addEventListener('click', onChangeClick);
-
-async function fetchLikeCoinID(newAddress) {
-  try {
-    const res = await fetch(`${CHALLENGE_URL}?wallet=${newAddress}`);
-    await res.json();
-    address = newAddress;
-    showError('.needLogin');
-  } catch (e) {
-    showError('.needLikeCoinId');
-  }
-}
 
 async function likecoinInit() {
   const newAddress = await pollForWebThree();
