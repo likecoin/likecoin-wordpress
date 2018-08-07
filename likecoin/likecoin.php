@@ -33,8 +33,12 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
+define( 'LC_PLUGIN_SLUG', plugin_basename( __FILE__ ) );
+define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '0.3' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta34' );
 
@@ -182,7 +186,28 @@ function handle_uninstall() {
 	delete_option( 'likecoin_plugin_version' );
 }
 
+function add_privacy_policy_content() {
+	if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
+		return;
+	}
+	$content = sprintf(
+		/* translators: %s is the policy url, e.g. https://like.co/in/policies/privacy */
+		__( 'When you use the LikeCoin embed, we automatically collect basic visitor informations,
+		e.g. IP address, user agent, etc. These kind of information might be used as analytics purpose.
+		For the purpose of applying personal site preferences, We might also identify a registered 
+		LikeCoin ID owner by the use of cookie.
+		More details can be found in like.co privacy policy <a href="%s" target="_blank">here</a>.',
+		LC_PLUGIN_SLUG ),
+		'https://like.co/in/policies/privacy'
+	);
+	wp_add_privacy_policy_content(
+		LC_PLUGIN_NAME,
+		wp_kses_post( wpautop( $content, false ) )
+	);
+}
+
 register_activation_hook( __FILE__, 'handle_init_and_upgrade' );
 add_action( 'upgrader_process_complete', 'handle_init_and_upgrade' );
 add_action( 'init', 'handle_init_and_upgrade' );
+add_action( 'admin_init', 'add_privacy_policy_content' );
 register_uninstall_hook( __FILE__, 'handle_uninstall' );

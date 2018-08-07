@@ -15,6 +15,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 function likecoin_add_meta_box( $post ) {
 	$author          = $post->post_author;
 	$likecoin_id     = get_user_meta( $author, 'lc_likecoin_id', true );
@@ -100,10 +102,9 @@ function likecoin_add_meta_box( $post ) {
 		<a class="icon" href="https://like.co/in" target="_blank">
 		<?php
 		/* output actual <svg> to allow styling */
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-	  // phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		echo file_get_contents( LC_DIR . 'assets/icon/settings.svg' );
-		// phpcs:enable
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		?>
 		</a>
 		<iframe id="likecoinPreview" scrolling="no" frameborder="0"
