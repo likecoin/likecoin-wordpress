@@ -4,31 +4,34 @@
  *
  * Plugin for embbeding LikeCoin functionalities into WordPress.
  *
- * @package LikeCoin
- * @version 0.3
+ * @package   LikeCoin
+ * @author    LikeCoin Foundation <team@like.co>
+ * @license   GPLv3
+ * @link      https://github.com/likecoin/likecoin-wordpress
+ * @copyright 2018 LikeCoin Foundation
+
+ * Plugin Name:  LikeCoin
+ * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
+ * Description:  For LikeCoin integration
+ * Version:      0.3
+ * Author:       LikeCoin Foundation
+ * Author URI:   https://like.co/
+ * License:      GPLv3
+ * License URI:  https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
-
-/*
-	Plugin Name: LikeCoin
-	Plugin URI: http://wordpress.org/plugins/likecoin/
-	Description: For LikeCoin integration
-	Author: like.co
-	Version: 0.3
-	Author URI: https://like.co/
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
 
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
