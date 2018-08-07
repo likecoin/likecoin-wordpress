@@ -1,4 +1,5 @@
 === LikeCoin ===
+
 Contributors: likecoin,williamchong007
 Tags: LikeCoin,LikeButton
 Donate link: https://like.co/foundation
@@ -12,9 +13,11 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 Integrate LikeCoin ID with WordPress, allow embedding LikeButton into your post.
 
 == Description ==
+
 This plugin integrates LikeCoin ID with WordPress, allow embedding LikeButton into your post.
 
 == Installation ==
+
 1. Activate the plugin.
 2. Make sure you have already installed MetaMask plugin, the plugin is unlocked, and you have a valid LikeCoin ID associated with the address.
 Please refer to FAQ if you don\'t have a LikeCoin ID yet.
@@ -23,12 +26,16 @@ Please refer to FAQ if you don\'t have a LikeCoin ID yet.
 
 
 == Frequently Asked Questions ==
+
 Q:How to register a LikeCoin ID?
 A: Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer
 
 == Screenshots ==
+
 1. LikeCoin widget metabox
 
 == Changelog ==
-0.3
- - Initial release
+
+= 0.3 =
+
+* Initial release
