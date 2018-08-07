@@ -51,9 +51,27 @@ jobs:
           key: likecoin-wordpress-{{ .Environment.CACHE_UUID }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
+  build_zip:
+    working_directory: ~/likecoin-wordpress
+    docker:
+      - image: alpine:3.8
+    steps:
+      - run:
+          name: Dependencies
+          command: apk add git zip
+      - checkout
+      - run:
+          name: Zip plugin
+          command: zip -r likecoin.zip likecoin/
+      - store_artifacts:
+          path: ./likecoin.zip
 workflows:
   version: 2
   build_and_test:
     jobs:
       - php_lint
       - eslint
+      - build_zip:
+          requires:
+            - php_lint
+            - eslint
