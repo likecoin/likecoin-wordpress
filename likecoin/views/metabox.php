@@ -29,24 +29,38 @@ function likecoin_add_meta_box( $post ) {
 	}
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>
-<section class="likecoin loading" style="display: none">Loading...</section>
+<section class="likecoin loading" style="display: none">
+	<?php esc_html_e( 'Loading...', LC_PLUGIN_SLUG ); ?>
+</section>
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
 	<div class="likecoin webThreeError needMetaMask" style="display: none">
-		<h3>Need <a href="https://metamask.io/" target="_blank">Meta Mask Plugin</a></h3>
+		<h3>
+			<?php
+			echo esc_html__( 'Please install' ) . '&nbsp<a href="https://metamask.io/" target="_blank">' . esc_html__( 'MetaMask Plugin' ) . '</a>';
+			?>
+		</h3>
 	</div>
 	<div class="likecoin webThreeError needMainNet" style="display: none">
-		<h3>Please switch to Main Network</h3>
+		<h3>
+			<?php esc_html_e( 'Please switch to Main Network', LC_PLUGIN_SLUG ); ?>
+		</h3>
 		<img src="<?php echo esc_attr( LC_URI . 'assets/img/mainnet.png' ); ?>">
 	</div>
 	<div class="likecoin webThreeError needUnlock" style="display: none">
-		<h3>Please unlock your wallet</h3>
+		<h3>
+			<?php esc_html_e( 'Please unlock your wallet', LC_PLUGIN_SLUG ); ?>
+		</h3>
 		<img src="<?php echo esc_attr( LC_URI . 'assets/img/unlock.png' ); ?>">
 	</div>
 	<div class="likecoin webThreeError needLikeCoinId" style="display: none">
-		<a class="likeCoinButton" href="https://like.co/in/register" target="_blank">Please register a LikeCoin ID first</a>
+		<a class="likeCoinButton" href="https://like.co/in/register" target="_blank">
+			<?php esc_html_e( 'Please register a LikeCoin ID first', LC_PLUGIN_SLUG ); ?>
+		</a>
 	</div>
 	<div class="likecoin webThreeError needLogin" style="display: none">
-		<a class="likeCoinButton loginBtn">Login to get LikeCoin ID</a>
+		<a class="likeCoinButton loginBtn">
+			<?php esc_html_e( 'Login to get LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+		</a>
 	</div>
 </section>
 <section class="likecoin optionsSection" style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>">
@@ -60,11 +74,14 @@ function likecoin_add_meta_box( $post ) {
 				</a>
 			</div>
 		</div>
-		<div class="label">LikeCoin Wallet
+		<div class="label">
+			<?php esc_html_e( 'LikeCoin Wallet', LC_PLUGIN_SLUG ); ?>
 			<div class="field" id="likecoinWallet"><?php echo esc_html( substr( $likecoin_wallet, 0, 6 ) . '...' . substr( $likecoin_wallet, 38, 4 ) ); ?></div>
 		</div>
 		<div class="label">
-			<label for="lc_widget_option">Display Option</label>
+			<label for="lc_widget_option">
+				<?php esc_html_e( 'Display Option', LC_PLUGIN_SLUG ); ?>
+			</label>
 			<div><select name="lc_widget_option" id="lc_widget_option" class="postbox">
 				<option value="both" 
 				<?php
@@ -72,33 +89,41 @@ function likecoin_add_meta_box( $post ) {
 					echo 'selected';
 				}
 				?>
-				>Top and bottom</option>
+				>
+					<?php esc_html_e( 'Top and bottom', LC_PLUGIN_SLUG ); ?>
+				</option>
 				<option value="top" 
 				<?php
 				if ( 'top' === $widget_position ) {
 					echo 'selected';
 				}
 				?>
-				>Top</option>
+				>
+					<?php esc_html_e( 'Top', LC_PLUGIN_SLUG ); ?>
+				</option>
 				<option value="bottom" 
 				<?php
 				if ( 'bottom' === $widget_position ) {
 					echo 'selected';
 				}
 				?>
-				>Bottom</option>
+				>
+					<?php esc_html_e( 'Bottom', LC_PLUGIN_SLUG ); ?>
+				</option>
 				<option value="none" 
 				<?php
 				if ( 'none' === $widget_position ) {
 					echo 'selected';
 				}
 				?>
-				>None</option>
+				>
+					<?php esc_html_e( 'None', LC_PLUGIN_SLUG ); ?>
+				</option>
 			</select></div>
 		</div>
 	</section>
 	<section class="previewSection">
-		<span>This LikeCoin Widget will be shown in your post:</span>
+		<span><?php esc_html_e( 'This LikeCoin Widget will be shown in your post:', LC_PLUGIN_SLUG ); ?></span>
 		<a class="icon" href="https://like.co/in" target="_blank">
 		<?php
 		/* output actual <svg> to allow styling */
