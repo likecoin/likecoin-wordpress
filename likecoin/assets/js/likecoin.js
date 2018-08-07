@@ -1,4 +1,4 @@
-/* global Web3, WP_CONFIG */
+/* global jQuery, Web3, WP_CONFIG */
 
 const CHALLENGE_URL = 'https://api.like.co/api/users/challenge';
 let address = null;
@@ -56,29 +56,35 @@ async function pollForWebThree() {
 }
 
 async function handleUpdateId(newId, newWallet) {
-  const res = await fetch(WP_CONFIG.adminAjaxUrl, {
-    body: `action=likecoin_update_id&likecoin_id=${newId}&likecoin_wallet=${newWallet}&nonce=${WP_CONFIG.nonce}`,
-    credentials: 'include',
-    headers: {
-      'content-type': 'application/x-www-form-urlencoded',
-    },
+  const res = await jQuery.ajax({
+    url: WP_CONFIG.adminAjaxUrl,
     method: 'POST',
+    data: {
+      action: 'likecoin_update_id',
+      likecoin_id: newId,
+      likecoin_wallet: newWallet,
+      nonce: WP_CONFIG.nonce,
+    },
+    xhrFields: {
+      withCredentials: true,
+    },
   });
-  updateStatus.textContent = await res.text();
+  updateStatus.textContent = res;
 }
 
 async function fetchLikeCoinID(currentAddress) {
-  show('.loading');
-  const res = await fetch(`${CHALLENGE_URL}?wallet=${currentAddress}`);
-  hide('.loading');
-  address = currentAddress;
-  if (res.status === 404) {
-    showError('.needLikeCoinId');
-    throw new Error('.needLikeCoinId');
+  try {
+    show('.loading');
+    address = currentAddress; // mark we tried fetching this address
+    const { challenge } = await jQuery.ajax({ url: `${CHALLENGE_URL}?wallet=${currentAddress}` });
+    hide('.loading');
+    showError('.needLogin');
+    return challenge;
+  } catch (err) {
+    hide('.loading');
+    if ((err || {}).status === 404) showError('.needLikeCoinId');
+    throw err;
   }
-  const { challenge } = await res.json();
-  showError('.needLogin');
-  return challenge;
 }
 
 async function login() {

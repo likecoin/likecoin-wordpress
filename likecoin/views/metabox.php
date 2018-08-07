@@ -124,14 +124,14 @@ function likecoin_add_meta_box( $post ) {
 	<?php
 	wp_register_style( 'lc_metabox', LC_URI . 'assets/css/metabox.css', false, LC_PLUGIN_VERSION );
 	wp_enqueue_style( 'lc_metabox' );
-	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', false, LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_metabox',
 		'WP_CONFIG',
-		[
+		array(
 			'nonce'        => wp_create_nonce( 'lc_metabox_ajax' ),
 			'adminAjaxUrl' => admin_url( 'admin-ajax.php' ),
-		]
+		)
 	);
 }
 ?>
