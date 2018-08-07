@@ -1,19 +1,21 @@
 <?php
 
-/*
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
+/**
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 function likecoin_add_meta_box( $post ) {
 	$author          = $post->post_author;
@@ -100,10 +102,9 @@ function likecoin_add_meta_box( $post ) {
 		<a class="icon" href="https://like.co/in" target="_blank">
 		<?php
 		/* output actual <svg> to allow styling */
-		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped
-	  // phpcs:disable WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		echo file_get_contents( LC_DIR . 'assets/icon/settings.svg' );
-		// phpcs:enable
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		?>
 		</a>
 		<iframe id="likecoinPreview" scrolling="no" frameborder="0"
@@ -123,14 +124,14 @@ function likecoin_add_meta_box( $post ) {
 	<?php
 	wp_register_style( 'lc_metabox', LC_URI . 'assets/css/metabox.css', false, LC_PLUGIN_VERSION );
 	wp_enqueue_style( 'lc_metabox' );
-	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', false, LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_metabox',
 		'WP_CONFIG',
-		[
+		array(
 			'nonce'        => wp_create_nonce( 'lc_metabox_ajax' ),
 			'adminAjaxUrl' => admin_url( 'admin-ajax.php' ),
-		]
+		)
 	);
 }
 ?>

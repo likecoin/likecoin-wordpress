@@ -4,34 +4,41 @@
  *
  * Plugin for embbeding LikeCoin functionalities into WordPress.
  *
- * @package LikeCoin
- * @version 0.3
+ * @package   LikeCoin
+ * @author    LikeCoin Foundation <team@like.co>
+ * @license   GPLv3
+ * @link      https://github.com/likecoin/likecoin-wordpress
+ * @copyright 2018 LikeCoin Foundation
+
+ * Plugin Name:  LikeCoin
+ * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
+ * Description:  For LikeCoin integration
+ * Version:      0.3
+ * Author:       LikeCoin Foundation
+ * Author URI:   https://like.co/
+ * License:      GPLv3
+ * License URI:  https://www.gnu.org/licenses/gpl-3.0.html
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/*
-	Plugin Name: LikeCoin
-	Plugin URI: http://wordpress.org/plugins/likecoin/
-	Description: For LikeCoin integration
-	Author: like.co
-	Version: 0.3
-	Author URI: https://like.co/
-
-	This program is free software: you can redistribute it and/or modify
-	it under the terms of the GNU General Public License as published by
-	the Free Software Foundation, either version 3 of the License, or
-	(at your option) any later version.
-
-	This program is distributed in the hope that it will be useful,
-	but WITHOUT ANY WARRANTY; without even the implied warranty of
-	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-	GNU General Public License for more details.
-
-	You should have received a copy of the GNU General Public License
-	along with this program.  If not, see <https://www.gnu.org/licenses/>.
-*/
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
+define( 'LC_PLUGIN_SLUG', plugin_basename( __FILE__ ) );
+define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '0.3' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta34' );
 
@@ -179,7 +186,28 @@ function handle_uninstall() {
 	delete_option( 'likecoin_plugin_version' );
 }
 
+function add_privacy_policy_content() {
+	if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
+		return;
+	}
+	$content = sprintf(
+		/* translators: %s is the policy url, e.g. https://like.co/in/policies/privacy */
+		__( 'When you use the LikeCoin embed, we automatically collect basic visitor informations,
+		e.g. IP address, user agent, etc. These kind of information might be used as analytics purpose.
+		For the purpose of applying personal site preferences, We might also identify a registered 
+		LikeCoin ID owner by the use of cookie.
+		More details can be found in like.co privacy policy <a href="%s" target="_blank">here</a>.',
+		LC_PLUGIN_SLUG ),
+		'https://like.co/in/policies/privacy'
+	);
+	wp_add_privacy_policy_content(
+		LC_PLUGIN_NAME,
+		wp_kses_post( wpautop( $content, false ) )
+	);
+}
+
 register_activation_hook( __FILE__, 'handle_init_and_upgrade' );
 add_action( 'upgrader_process_complete', 'handle_init_and_upgrade' );
 add_action( 'init', 'handle_init_and_upgrade' );
+add_action( 'admin_init', 'add_privacy_policy_content' );
 register_uninstall_hook( __FILE__, 'handle_uninstall' );

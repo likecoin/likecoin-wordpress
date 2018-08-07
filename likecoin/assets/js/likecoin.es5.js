@@ -804,7 +804,7 @@
 
 	var asyncToGenerator = _asyncToGenerator;
 
-	/* global Web3, WP_CONFIG */
+	/* global jQuery, Web3, WP_CONFIG */
 	var CHALLENGE_URL = 'https://api.like.co/api/users/challenge';
 	var address = null;
 	var webThreeError = null;
@@ -923,24 +923,25 @@
 	        switch (_context3.prev = _context3.next) {
 	          case 0:
 	            _context3.next = 2;
-	            return fetch(WP_CONFIG.adminAjaxUrl, {
-	              body: "action=likecoin_update_id&likecoin_id=".concat(newId, "&likecoin_wallet=").concat(newWallet, "&nonce=").concat(WP_CONFIG.nonce),
-	              credentials: 'include',
-	              headers: {
-	                'content-type': 'application/x-www-form-urlencoded'
+	            return jQuery.ajax({
+	              url: WP_CONFIG.adminAjaxUrl,
+	              method: 'POST',
+	              data: {
+	                action: 'likecoin_update_id',
+	                likecoin_id: newId,
+	                likecoin_wallet: newWallet,
+	                nonce: WP_CONFIG.nonce
 	              },
-	              method: 'POST'
+	              xhrFields: {
+	                withCredentials: true
+	              }
 	            });
 
 	          case 2:
 	            res = _context3.sent;
-	            _context3.next = 5;
-	            return res.text();
+	            updateStatus.textContent = res;
 
-	          case 5:
-	            updateStatus.textContent = _context3.sent;
-
-	          case 6:
+	          case 4:
 	          case "end":
 	            return _context3.stop();
 	        }
@@ -958,45 +959,41 @@
 	  _fetchLikeCoinID = asyncToGenerator(
 	  /*#__PURE__*/
 	  regenerator.mark(function _callee4(currentAddress) {
-	    var res, _ref2, challenge;
+	    var _ref2, challenge;
 
 	    return regenerator.wrap(function _callee4$(_context4) {
 	      while (1) {
 	        switch (_context4.prev = _context4.next) {
 	          case 0:
+	            _context4.prev = 0;
 	            show('.loading');
-	            _context4.next = 3;
-	            return fetch("".concat(CHALLENGE_URL, "?wallet=").concat(currentAddress));
+	            address = currentAddress; // mark we tried fetching this address
 
-	          case 3:
-	            res = _context4.sent;
-	            hide('.loading');
-	            address = currentAddress;
+	            _context4.next = 5;
+	            return jQuery.ajax({
+	              url: "".concat(CHALLENGE_URL, "?wallet=").concat(currentAddress)
+	            });
 
-	            if (!(res.status === 404)) {
-	              _context4.next = 9;
-	              break;
-	            }
-
-	            showError('.needLikeCoinId');
-	            throw new Error('.needLikeCoinId');
-
-	          case 9:
-	            _context4.next = 11;
-	            return res.json();
-
-	          case 11:
+	          case 5:
 	            _ref2 = _context4.sent;
 	            challenge = _ref2.challenge;
+	            hide('.loading');
 	            showError('.needLogin');
 	            return _context4.abrupt("return", challenge);
 
-	          case 15:
+	          case 12:
+	            _context4.prev = 12;
+	            _context4.t0 = _context4["catch"](0);
+	            hide('.loading');
+	            if ((_context4.t0 || {}).status === 404) showError('.needLikeCoinId');
+	            throw _context4.t0;
+
+	          case 17:
 	          case "end":
 	            return _context4.stop();
 	        }
 	      }
-	    }, _callee4, this);
+	    }, _callee4, this, [[0, 12]]);
 	  }));
 	  return _fetchLikeCoinID.apply(this, arguments);
 	}
