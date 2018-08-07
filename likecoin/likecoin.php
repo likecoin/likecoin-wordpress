@@ -42,20 +42,32 @@ define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '0.3' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta34' );
 
-/* Utils related */
+/**
+ * Get post author's LikeCoin ID from post
+ *
+ * @param object| $post WordPress post object.
+ */
 function get_author_likecoin_id( $post ) {
 	$author      = $post->post_author;
 	$likecoin_id = get_user_meta( $author, 'lc_likecoin_id', true );
 	return $likecoin_id;
 }
 
-/* Meta Box related */
-
+/**
+ * Displays metabox
+ *
+ * @param object| $post WordPress post object.
+ */
 function likecoin_display_meta_box( $post ) {
 	include_once 'views/metabox.php';
 	likecoin_add_meta_box( $post );
 }
 
+/**
+ * Inject web3.js on related admin pages
+ *
+ * @param string| $hook The current admin page filename.
+ */
 function likecoin_load_scripts( $hook ) {
 	if ( 'post-new.php' !== $hook && 'post.php' !== $hook ) {
 		return;
@@ -63,6 +75,9 @@ function likecoin_load_scripts( $hook ) {
 	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, LC_WEB3_VERSION, true );
 }
 
+/**
+ * Register our metabox
+ */
 function likecoin_register_meta_boxes() {
 	add_meta_box( 'like-coin', __( 'LikeCoin Widget', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box', 'post' );
 }
@@ -70,8 +85,11 @@ function likecoin_register_meta_boxes() {
 add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
 add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 
-/* Widget related */
-
+/**
+ * Save the post-specific widget option to post meta and user meta
+ *
+ * @param int| $post_id The post id of the target post.
+ */
 function likecoin_save_postdata( $post_id ) {
 	/* Check nonce */
 	if ( ! ( isset( $_POST['lc_metabox_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['lc_metabox_nonce'] ), 'lc_save_post' ) ) ) {
@@ -98,6 +116,11 @@ function likecoin_save_postdata( $post_id ) {
 
 add_action( 'save_post', 'likecoin_save_postdata' );
 
+/**
+ * Add LikeCoin widget to post content if suitable
+ *
+ * @param string| $content The original post content.
+ */
 function likecoin_add_widget( $content ) {
 	global $post;
 	if ( is_single() ) {
@@ -125,8 +148,9 @@ function likecoin_add_widget( $content ) {
 
 add_filter( 'the_content', 'likecoin_add_widget', 999 );
 
-/* Ajax related */
-
+/**
+ * Ajax handler of user LikeCoinId/data update
+ */
 function likecoin_update_id() {
 	$user    = wp_get_current_user();
 	$user_id = $user->ID;
@@ -156,11 +180,12 @@ function likecoin_update_id() {
 	wp_die();
 }
 
-// wp_ajax_ is the prefix, likecoin_update_id is the action used in client side code
+// wp_ajax_ is the prefix, likecoin_update_id is the action used in client side code.
 add_action( 'wp_ajax_likecoin_update_id', 'likecoin_update_id' );
 
-/* Init / Upgrade related */
-
+/**
+ * Handle plugin init and upgrade
+ */
 function handle_init_and_upgrade() {
 	global $wpdb;
 	global $charset_collate;
@@ -172,6 +197,9 @@ function handle_init_and_upgrade() {
 
 }
 
+/**
+ * Handle plugin uninstall
+ */
 function handle_uninstall() {
 
 	/* clean up all user metadata */
@@ -186,6 +214,9 @@ function handle_uninstall() {
 	delete_option( 'likecoin_plugin_version' );
 }
 
+/**
+ * Adds privacy policy to wp global privacy policy
+ */
 function add_privacy_policy_content() {
 	if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
 		return;

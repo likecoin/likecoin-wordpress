@@ -19,8 +19,11 @@ jobs:
             fi
             ./vendor/bin/phpcs --config-set installed_paths `pwd`/wpcs
       - run:
-          name: Lint Test
+          name: Basic Lint Test
           command: ./vendor/bin/phpcs likecoin --standard=WordPress-Extra --extensions=php
+      - run:
+          name: Complete Lint Test
+          command: ./vendor/bin/phpcs likecoin --standard=WordPress --extensions=php
       - save_cache:
           key: likecoin-wordpress-{{ .Environment.CACHE_UUID }}-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
           paths:
