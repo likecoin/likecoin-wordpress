@@ -64,7 +64,7 @@ function likecoin_load_scripts( $hook ) {
 }
 
 function likecoin_register_meta_boxes() {
-	add_meta_box( 'like-coin', __( 'LikeCoin', 'textdomain' ), 'likecoin_display_meta_box', 'post' );
+	add_meta_box( 'like-coin', __( 'LikeCoin Widget', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box', 'post' );
 }
 
 add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
@@ -146,11 +146,11 @@ function likecoin_update_id() {
 			sanitize_text_field( wp_unslash( $_POST['likecoin_wallet'] ) )
 		);
 		if ( true === $result ) {
-			echo 'Updated';
+			esc_html_e( 'Updated', LC_PLUGIN_SLUG );
 		} elseif ( false === $result ) {
-			echo 'Unchanged';
+			esc_html_e( 'Unchanged', LC_PLUGIN_SLUG );
 		} else {
-			echo 'Created';
+			esc_html_e( 'Created', LC_PLUGIN_SLUG );
 		}
 	}
 	wp_die();
