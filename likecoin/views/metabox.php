@@ -1,6 +1,11 @@
 <?php
-
 /**
+ * LikeCoin Widget Metabox
+ *
+ * LikeCoin widget metabox render logics
+ *
+ * @package   LikeCoin
+ *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
@@ -17,6 +22,12 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
+
+/**
+ * Add the likecoin widget metabox
+ *
+ * @param object| $post WordPress post object.
+ */
 function likecoin_add_meta_box( $post ) {
 	$author          = $post->post_author;
 	$likecoin_id     = get_user_meta( $author, 'lc_likecoin_id', true );
@@ -127,6 +138,7 @@ function likecoin_add_meta_box( $post ) {
 		<a class="icon" href="https://like.co/in" target="_blank">
 		<?php
 		/* output actual <svg> to allow styling */
+
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		echo file_get_contents( LC_DIR . 'assets/icon/settings.svg' );
 		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
