@@ -12,8 +12,8 @@
 
  * Plugin Name:  LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
- * Description:  For LikeCoin integration
- * Version:      0.3
+ * Description:  Integrate LikeCoin ID with WordPress, allow users to add LikeButton into posts.
+ * Version:      1.0
  * Author:       LikeCoin Foundation
  * Author URI:   https://like.co/
  * License:      GPLv3
@@ -39,7 +39,7 @@ define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LC_PLUGIN_SLUG', plugin_basename( __FILE__ ) );
 define( 'LC_PLUGIN_NAME', 'LikeCoin' );
-define( 'LC_PLUGIN_VERSION', '0.3' );
+define( 'LC_PLUGIN_VERSION', '1.0' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta34' );
 
 /**

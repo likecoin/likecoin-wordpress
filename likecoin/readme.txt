@@ -10,11 +10,11 @@ Stable tag: trunk
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Integrate LikeCoin ID with WordPress, allow embedding LikeButton into your post.
+Integrate LikeCoin ID with WordPress, allow you to add LikeButton into your post.
 
 == Description ==
 
-This plugin integrates LikeCoin ID with WordPress, allow embedding LikeButton into your post.
+This plugin integrates LikeCoin ID with WordPress, allow you to add LikeButton into your post.
 
 == Installation ==
 
@@ -36,6 +36,6 @@ A: Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoi
 
 == Changelog ==
 
-= 0.3 =
+= 1.0 =
 
 * Initial release
