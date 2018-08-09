@@ -32,7 +32,8 @@ A: Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoi
 
 == Screenshots ==
 
-1. LikeCoin widget metabox
+1. LikeButton in Posts
+2. LikeCoin Widget Metabox
 
 == Changelog ==
 
