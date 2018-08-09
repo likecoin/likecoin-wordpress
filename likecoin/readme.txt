@@ -37,10 +37,14 @@ A: Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoi
 
 == Changelog ==
 
+= 1.0.1 =
+
+* Add localization headers
+
 = 1.0 =
 
 * Initial release
 
 == Upgrade Notice ==
 
-Initial release
+Upgrade to support localization
