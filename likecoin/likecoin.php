@@ -18,6 +18,8 @@
  * Author URI:   https://like.co/
  * License:      GPLv3
  * License URI:  https://www.gnu.org/licenses/gpl-3.0.html
+ * Text Domain:  likecoin
+ * Domain Path:  /languages/
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -237,8 +239,16 @@ function add_privacy_policy_content() {
 	);
 }
 
+/**
+ * Loads localization .mo files
+ */
+function lc_load_plugin_textdomain() {
+	load_plugin_textdomain( LC_PLUGIN_SLUG, false, basename( dirname( __FILE__ ) ) . '/languages/' );
+}
+
 register_activation_hook( __FILE__, 'handle_init_and_upgrade' );
 add_action( 'upgrader_process_complete', 'handle_init_and_upgrade' );
 add_action( 'init', 'handle_init_and_upgrade' );
 add_action( 'admin_init', 'add_privacy_policy_content' );
+add_action( 'plugins_loaded', 'lc_load_plugin_textdomain' );
 register_uninstall_hook( __FILE__, 'handle_uninstall' );
