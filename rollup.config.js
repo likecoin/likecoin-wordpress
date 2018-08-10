@@ -2,6 +2,7 @@
 import babel from 'rollup-plugin-babel';
 import nodeResolve from 'rollup-plugin-node-resolve';
 import commonjs from 'rollup-plugin-commonjs';
+import { uglify } from 'rollup-plugin-uglify';
 
 export default {
   entry: 'likecoin/assets/js/likecoin.js',
@@ -17,5 +18,6 @@ export default {
       runtimeHelpers: true,
       exclude: 'node_modules/**',
     }),
+    (process.env.NODE_ENV === 'production' && uglify()),
   ],
 };

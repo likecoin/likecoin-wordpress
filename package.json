@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "rollup -c",
+    "build": "NODE_ENV=production rollup -c",
     "test": "npm run lint",
     "lint": "npm run lint:es && npm run lint:style",
     "lint:es": "eslint .",
@@ -20,6 +20,7 @@
     "rollup-plugin-babel": "^4.0.0-beta.8",
     "rollup-plugin-commonjs": "^9.1.4",
     "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-uglify": "^4.0.0",
     "stylelint": "^9.4.0",
     "stylelint-config-recommended": "^2.1.0",
     "stylelint-order": "^0.8.1"
