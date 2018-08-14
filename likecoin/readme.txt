@@ -30,13 +30,13 @@ Please refer to FAQ if you don't have a LikeCoin ID yet.
 Q: How to register a LikeCoin ID?
 A: Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer
 
-Q: Why the LikeCoin widget does not show up after I edited posts written by other authors?
-A: Due to current constraint, post author's account must be linked to a LikeCoin ID for the widget to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. This behaviour will likely be fixed in the future.
+Q: Why the LikeButton does not show up after I edited posts written by other authors?
+A: Due to current constraint, post author's account must be linked to a LikeCoin ID for the LikeButon to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. This behaviour will likely be fixed in the future.
 
 == Screenshots ==
 
 1. LikeButton in Posts
-2. LikeCoin Widget Metabox
+2. LikeCoin Plugin Metabox
 
 == Changelog ==
 

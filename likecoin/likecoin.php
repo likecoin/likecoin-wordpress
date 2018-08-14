@@ -81,7 +81,7 @@ function likecoin_load_scripts( $hook ) {
  * Register our metabox
  */
 function likecoin_register_meta_boxes() {
-	add_meta_box( 'like-coin', __( 'LikeCoin Widget', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box', 'post' );
+	add_meta_box( 'like-coin', __( 'LikeCoin Plugin', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box', 'post' );
 }
 
 add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );

@@ -134,7 +134,7 @@ function likecoin_add_meta_box( $post ) {
 		</div>
 	</section>
 	<section class="previewSection">
-		<span><?php esc_html_e( 'This LikeCoin Widget will be shown in your post:', LC_PLUGIN_SLUG ); ?></span>
+		<span><?php esc_html_e( 'This LikeButton will be shown in your post:', LC_PLUGIN_SLUG ); ?></span>
 		<a class="icon" href="https://like.co/in" target="_blank">
 		<?php
 		/* output actual <svg> to allow styling */
