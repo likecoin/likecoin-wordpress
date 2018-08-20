@@ -44,6 +44,8 @@ define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '1.0.2' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta35' );
 
+define( 'LC_SITE_OPTIONS_PAGE', 'lc_site_options');
+define( 'LC_USER_OPTIONS_PAGE', 'lc_user_options' );
 /**
  * Get post author's LikeCoin ID from post
  *
@@ -65,23 +67,18 @@ function likecoin_display_meta_box( $post ) {
 	likecoin_add_meta_box( $post );
 }
 
-/**
- * Add option menu
- */
-function likecoin_add_top_options_page() {
-	echo '<div></div>';
-}
 
 /**
  * Displays option menu
  */
 function likecoin_display_top_options_page() {
+	include_once 'views/site-options.php';
 	add_menu_page(
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		'manage_options',
-		'lc_site_options',
-		'likecoin_add_top_options_page',
+		LC_SITE_OPTIONS_PAGE,
+		'likecoin_add_site_options_page',
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/likecoin.svg' ) ),
 		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
@@ -89,21 +86,21 @@ function likecoin_display_top_options_page() {
 	);
 
 	add_submenu_page(
-		'lc_site_options',
+		LC_SITE_OPTIONS_PAGE,
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'Plugin Setting', LC_PLUGIN_SLUG ),
 		'publish_posts',
-		'lc_site_options',
-		'likecoin_add_top_options_page'
+		LC_SITE_OPTIONS_PAGE,
+		'likecoin_add_site_options_page'
 	);
 
 	add_submenu_page(
-		'lc_site_options',
+		LC_SITE_OPTIONS_PAGE,
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'Your LikeButton', LC_PLUGIN_SLUG ),
 		'publish_posts',
 		'lc_user_options',
-		'likecoin_add_top_options_page'
+		'likecoin_add_user_options_page'
 	);
 }
 add_action( 'admin_menu', 'likecoin_display_top_options_page' );
@@ -115,7 +112,7 @@ add_action( 'admin_menu', 'likecoin_display_top_options_page' );
  * @param string| $hook The current admin page filename.
  */
 function likecoin_load_scripts( $hook ) {
-	if ( 'post-new.php' !== $hook && 'post.php' !== $hook ) {
+	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_l'. LC_USER_OPTIONS_PAGE !== $hook ) {
 		return;
 	}
 	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, LC_WEB3_VERSION, true );
@@ -237,6 +234,11 @@ function handle_init_and_upgrade() {
 	global $charset_collate;
 	$version = get_option( 'likecoin_plugin_version', LC_PLUGIN_VERSION );
 
+	if ( version_compare( $version, '1.1' ) < 0 ) {
+		delete_metadata( 'user', 0, 'lc_widget_option', '', true );
+		delete_metadata( 'user', 0, 'lc_widget_position', '', true );
+	}
+
 	if ( version_compare( $version, LC_PLUGIN_VERSION ) < 0 ) {
 		update_option( 'likecoin_plugin_version', LC_PLUGIN_VERSION );
 	}
@@ -259,6 +261,37 @@ function handle_uninstall() {
 
 	delete_option( 'likecoin_plugin_version' );
 }
+
+function likecoin_init_settings() {
+	include_once 'views/site-options.php';
+
+	register_setting( LC_SITE_OPTIONS_PAGE, 'lc_plugin_options' );
+
+	add_settings_section(
+		'lc_site_likecoin_id_options',
+		__( 'Site LikeCoinID', LC_PLUGIN_SLUG ),
+		null,
+		LC_SITE_OPTIONS_PAGE
+	);
+
+	add_settings_field(
+		'lc_site_likecoin_id_toggle',
+		__( 'Use Only oneLikeCoin ID', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_likecoin_id_toggle',
+		LC_SITE_OPTIONS_PAGE,
+		'lc_site_likecoin_id_options'
+	);
+
+	add_settings_field(
+		'lc_site_likecoin_id_table',
+		__( 'Site LikeCoin ID', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_likecoin_id_table',
+		LC_SITE_OPTIONS_PAGE,
+		'lc_site_likecoin_id_options'
+	);
+
+}
+
 
 /**
  * Adds privacy policy to wp global privacy policy
@@ -283,6 +316,11 @@ function likecoin_add_privacy_policy_content() {
 	);
 }
 
+function likecoin_admin_init() {
+	likecoin_init_settings();
+	likecoin_add_privacy_policy_content();
+}
+
 /**
  * Loads localization .mo files
  */
@@ -293,6 +331,6 @@ function likecoin_load_plugin_textdomain() {
 register_activation_hook( __FILE__, 'handle_init_and_upgrade' );
 add_action( 'upgrader_process_complete', 'handle_init_and_upgrade' );
 add_action( 'init', 'handle_init_and_upgrade' );
-add_action( 'admin_init', 'likecoin_add_privacy_policy_content' );
+add_action( 'admin_init', 'likecoin_admin_init' );
 add_action( 'plugins_loaded', 'likecoin_load_plugin_textdomain' );
 register_uninstall_hook( __FILE__, 'handle_uninstall' );
