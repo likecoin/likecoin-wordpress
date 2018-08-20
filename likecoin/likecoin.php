@@ -66,6 +66,50 @@ function likecoin_display_meta_box( $post ) {
 }
 
 /**
+ * Add option menu
+ */
+function likecoin_add_top_options_page() {
+	echo '<div></div>';
+}
+
+/**
+ * Displays option menu
+ */
+function likecoin_display_top_options_page() {
+	add_menu_page(
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		'manage_options',
+		'lc_site_options',
+		'likecoin_add_top_options_page',
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/likecoin.svg' ) ),
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+		50
+	);
+
+	add_submenu_page(
+		'lc_site_options',
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		__( 'Plugin Setting', LC_PLUGIN_SLUG ),
+		'publish_posts',
+		'lc_site_options',
+		'likecoin_add_top_options_page'
+	);
+
+	add_submenu_page(
+		'lc_site_options',
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		__( 'Your LikeButton', LC_PLUGIN_SLUG ),
+		'publish_posts',
+		'lc_user_options',
+		'likecoin_add_top_options_page'
+	);
+}
+add_action( 'admin_menu', 'likecoin_display_top_options_page' );
+
+
+/**
  * Inject web3.js on related admin pages
  *
  * @param string| $hook The current admin page filename.
