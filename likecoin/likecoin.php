@@ -263,7 +263,7 @@ function handle_uninstall() {
 /**
  * Adds privacy policy to wp global privacy policy
  */
-function add_privacy_policy_content() {
+function likecoin_add_privacy_policy_content() {
 	if ( ! function_exists( 'wp_add_privacy_policy_content' ) ) {
 		return;
 	}
@@ -286,13 +286,13 @@ function add_privacy_policy_content() {
 /**
  * Loads localization .mo files
  */
-function lc_load_plugin_textdomain() {
+function likecoin_load_plugin_textdomain() {
 	load_plugin_textdomain( LC_PLUGIN_SLUG, false, basename( dirname( __FILE__ ) ) . '/languages/' );
 }
 
 register_activation_hook( __FILE__, 'handle_init_and_upgrade' );
 add_action( 'upgrader_process_complete', 'handle_init_and_upgrade' );
 add_action( 'init', 'handle_init_and_upgrade' );
-add_action( 'admin_init', 'add_privacy_policy_content' );
-add_action( 'plugins_loaded', 'lc_load_plugin_textdomain' );
+add_action( 'admin_init', 'likecoin_add_privacy_policy_content' );
+add_action( 'plugins_loaded', 'likecoin_load_plugin_textdomain' );
 register_uninstall_hook( __FILE__, 'handle_uninstall' );
