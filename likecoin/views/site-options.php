@@ -90,52 +90,23 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
 function likecoin_add_site_likecoin_id_table( $args ) {
-	$options               = get_option( LC_OPTION_NAME );
-	$likecoin_id           = isset( $options[ $args['label_for'] ] ['likecoin_id'] ) ? $options[ $args['label_for'] ] ['likecoin_id'] : '';
-	$likecoin_display_name = isset( $options[ $args['label_for'] ] ['display_name'] ) ? $options[ $args['label_for'] ] ['display_name'] : '';
-	$likecoin_wallet       = isset( $options[ $args['label_for'] ] ['wallet'] ) ? $options[ $args['label_for'] ] ['wallet'] : '';
-	?>
-	<table>
-		<tr>
-			<td><?php esc_html_e( 'LikeCoin ID', LC_PLUGIN_SLUG ); ?></td>
-			<td><?php esc_html_e( 'Display Name', LC_PLUGIN_SLUG ); ?></td>
-			<td><?php esc_html_e( 'Wallet', LC_PLUGIN_SLUG ); ?></td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>
-				<span id="likecoinId"><?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></span>
-				<input type="hidden"
-					class="likecoinId"
-					name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . '][likecoin_id]' ); ?>"
-					value="<?php echo esc_attr( $likecoin_id ); ?>"
-				>
-			</td>
-			<td>
-				<span id="likecoinDisplayName"><?php echo esc_html( $likecoin_display_name ? $likecoin_display_name : '-' ); ?></span>
-				<input type="hidden"
-					class="likecoinDisplayName"
-					name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . '][display_name]' ); ?>"
-					value="<?php echo esc_attr( $likecoin_display_name ); ?>"
-				>
-			</td>
-			<td>
-				<span id="likecoinWallet"><?php echo esc_html( $likecoin_wallet ? $likecoin_wallet : '-' ); ?></span>
-				<input type="hidden"
-					class="likecoinWallet"
-					name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . '][wallet]' ); ?>"
-					value="<?php echo esc_attr( $likecoin_wallet ); ?>"
-				>
-			</td>
-			<td>
-				<input id="likecoinLoginBtn"
-					type="button"
-					value="<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>"
-				>
-			</td>
-		</tr>
-	</table>
-	<?php
+	include_once 'components.php';
+	$options                    = get_option( LC_OPTION_NAME );
+	$likecoin_id                = isset( $options[ $args['label_for'] ] ['likecoin_id'] ) ? $options[ $args['label_for'] ] ['likecoin_id'] : '';
+	$likecoin_display_name      = isset( $options[ $args['label_for'] ] ['display_name'] ) ? $options[ $args['label_for'] ] ['display_name'] : '';
+	$likecoin_wallet            = isset( $options[ $args['label_for'] ] ['wallet'] ) ? $options[ $args['label_for'] ] ['wallet'] : '';
+	$likecoin_id_name           = LC_OPTION_NAME . '[' . $args['label_for'] . '][likecoin_id]';
+	$likecoin_display_name_name = LC_OPTION_NAME . '[' . $args['label_for'] . '][display_name]';
+	$likecoin_wallet_name       = LC_OPTION_NAME . '[' . $args['label_for'] . '][wallet]';
+	$params                     = (object) array(
+		'likecoin_id'                => $likecoin_id,
+		'likecoin_display_name'      => $likecoin_display_name,
+		'likecoin_wallet'            => $likecoin_wallet,
+		'likecoin_id_name'           => $likecoin_id_name,
+		'likecoin_display_name_name' => $likecoin_display_name_name,
+		'likecoin_wallet_name'       => $likecoin_wallet_name,
+	);
+	likecoin_add_likecoin_info_table( $params );
 }
 
 /**

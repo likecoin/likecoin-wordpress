@@ -115,7 +115,7 @@ add_action( 'admin_menu', 'likecoin_display_top_options_page' );
  * @param string| $hook The current admin page filename.
  */
 function likecoin_load_scripts( $hook ) {
-	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_l' . LC_USER_OPTIONS_PAGE !== $hook ) {
+	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_' . LC_USER_OPTIONS_PAGE !== $hook ) {
 		return;
 	}
 	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, LC_WEB3_VERSION, true );
@@ -195,39 +195,43 @@ function likecoin_add_widget( $content ) {
 add_filter( 'the_content', 'likecoin_add_widget', 999 );
 
 /**
- * Ajax handler of user LikeCoinId/data update
+ * Admin post handler of user LikeCoinId/data update
  */
-function likecoin_update_id() {
+function likecoin_update_user_id() {
 	$user    = wp_get_current_user();
 	$user_id = $user->ID;
 	if ( ! current_user_can( 'edit_user', $user_id ) ) {
 		return wp_die( 'error editing' );
 	}
-	check_ajax_referer( 'lc_metabox_ajax', 'nonce' );
-	if ( isset( $_POST['likecoin_id'] ) && isset( $_POST['likecoin_wallet'] ) ) {
-		$result = update_user_meta(
+	check_admin_referer( 'likecoin_update_user_id' );
+	if ( isset( $_POST['likecoin_id'] ) ) {
+		update_user_meta(
 			$user_id,
 			'lc_likecoin_id',
 			sanitize_text_field( wp_unslash( $_POST['likecoin_id'] ) )
 		);
+	}
+	if ( isset( $_POST['likecoin_wallet'] ) ) {
 		update_user_meta(
 			$user_id,
 			'lc_likecoin_wallet',
 			sanitize_text_field( wp_unslash( $_POST['likecoin_wallet'] ) )
 		);
-		if ( true === $result ) {
-			esc_html_e( 'Updated', LC_PLUGIN_SLUG );
-		} elseif ( false === $result ) {
-			esc_html_e( 'Unchanged', LC_PLUGIN_SLUG );
-		} else {
-			esc_html_e( 'Created', LC_PLUGIN_SLUG );
-		}
 	}
-	wp_die();
+	if ( isset( $_POST['likecoin_display_name'] ) ) {
+		update_user_meta(
+			$user_id,
+			'lc_likecoin_display_name',
+			sanitize_text_field( wp_unslash( $_POST['likecoin_display_name'] ) )
+		);
+	}
+	if ( isset( $_POST['_wp_http_referer'] ) ) {
+		wp_safe_redirect( esc_url_raw( add_query_arg( 'settings-updated', '1', wp_get_referer() ) ) );
+	}
+	exit();
 }
 
-// wp_ajax_ is the prefix, likecoin_update_id is the action used in client side code.
-add_action( 'wp_ajax_likecoin_update_id', 'likecoin_update_id' );
+add_action( 'admin_post_likecoin_update_user_id', 'likecoin_update_user_id' );
 
 /**
  * Handle plugin init and upgrade

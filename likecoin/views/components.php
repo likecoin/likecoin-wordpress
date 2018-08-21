@@ -23,15 +23,25 @@
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 /**
+ * Add loading section
+ */
+function likecoin_add_loading_section() {
+	?>
+	<section class="likecoin loading" style="display: none">
+		<?php esc_html_e( 'Loading...', LC_PLUGIN_SLUG ); ?>
+	</section>
+	<?php
+}
+
+/**
  * Add option menu
  *
  * @param boolean| $has_login_button Render the login button or not.
  */
 function likecoin_add_web3_section( $has_login_button ) {
-	?><section class="likecoin loading" style="display: none">
-	<?php esc_html_e( 'Loading...', LC_PLUGIN_SLUG ); ?>
-	</section>
-	<section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
+	likecoin_add_loading_section();
+	?>
+	<section class="likecoin loginSection" style="display: none">
 		<div class="likecoin webThreeError needMetaMask" style="display: none">
 			<h3>
 				<?php
@@ -64,5 +74,61 @@ function likecoin_add_web3_section( $has_login_button ) {
 			</div>
 		<?php } ?>
 	</section>
+	<?php
+}
+
+/**
+ * Add the LikeCoin ID table UI
+ *
+ * @param array| $args display option for LikeCoin ID table.
+ */
+function likecoin_add_likecoin_info_table( $args ) {
+	$likecoin_id                = $args->likecoin_id;
+	$likecoin_display_name      = $args->likecoin_display_name;
+	$likecoin_wallet            = $args->likecoin_wallet;
+	$likecoin_id_name           = $args->likecoin_id_name;
+	$likecoin_display_name_name = $args->likecoin_display_name_name;
+	$likecoin_wallet_name       = $args->likecoin_wallet_name;
+	?>
+	<table  class="form-table">
+		<tr>
+			<td><?php esc_html_e( 'LikeCoin ID', LC_PLUGIN_SLUG ); ?></td>
+			<td><?php esc_html_e( 'Display Name', LC_PLUGIN_SLUG ); ?></td>
+			<td><?php esc_html_e( 'Wallet', LC_PLUGIN_SLUG ); ?></td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>
+				<span id="likecoinId"><?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></span>
+				<input type="hidden"
+					class="likecoinId"
+					name="<?php echo esc_attr( $likecoin_id_name ); ?>"
+					value="<?php echo esc_attr( $likecoin_id ); ?>"
+				>
+			</td>
+			<td>
+				<span id="likecoinDisplayName"><?php echo esc_html( $likecoin_display_name ? $likecoin_display_name : '-' ); ?></span>
+				<input type="hidden"
+					class="likecoinDisplayName"
+					name="<?php echo esc_attr( $likecoin_display_name_name ); ?>"
+					value="<?php echo esc_attr( $likecoin_display_name ); ?>"
+				>
+			</td>
+			<td>
+				<span id="likecoinWallet"><?php echo esc_html( $likecoin_wallet ? $likecoin_wallet : '-' ); ?></span>
+				<input type="hidden"
+					class="likecoinWallet"
+					name="<?php echo esc_attr( $likecoin_wallet_name ); ?>"
+					value="<?php echo esc_attr( $likecoin_wallet ); ?>"
+				>
+			</td>
+			<td>
+				<input id="likecoinLoginBtn"
+					type="button"
+					value="<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>"
+				>
+			</td>
+		</tr>
+	</table>
 	<?php
 }
