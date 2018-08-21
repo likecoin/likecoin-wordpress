@@ -44,8 +44,9 @@ define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '1.0.2' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta35' );
 
-define( 'LC_SITE_OPTIONS_PAGE', 'lc_site_options');
+define( 'LC_SITE_OPTIONS_PAGE', 'lc_site_options' );
 define( 'LC_USER_OPTIONS_PAGE', 'lc_user_options' );
+define( 'LC_OPTION_NAME', 'lc_plugin_options' );
 /**
  * Get post author's LikeCoin ID from post
  *
@@ -112,7 +113,7 @@ add_action( 'admin_menu', 'likecoin_display_top_options_page' );
  * @param string| $hook The current admin page filename.
  */
 function likecoin_load_scripts( $hook ) {
-	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_l'. LC_USER_OPTIONS_PAGE !== $hook ) {
+	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_l' . LC_USER_OPTIONS_PAGE !== $hook ) {
 		return;
 	}
 	wp_enqueue_script( 'web3', LC_URI . 'assets/js/web3.min.js', false, LC_WEB3_VERSION, true );
@@ -262,10 +263,13 @@ function handle_uninstall() {
 	delete_option( 'likecoin_plugin_version' );
 }
 
+/**
+ * Init settings api for plugin
+ */
 function likecoin_init_settings() {
 	include_once 'views/site-options.php';
 
-	register_setting( LC_SITE_OPTIONS_PAGE, 'lc_plugin_options' );
+	register_setting( LC_SITE_OPTIONS_PAGE, LC_OPTION_NAME );
 
 	add_settings_section(
 		'lc_site_likecoin_id_options',
@@ -279,7 +283,10 @@ function likecoin_init_settings() {
 		__( 'Use Only oneLikeCoin ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_toggle',
 		LC_SITE_OPTIONS_PAGE,
-		'lc_site_likecoin_id_options'
+		'lc_site_likecoin_id_options',
+		[
+			'label_for' => 'lc_site_likecoin_id_toggle',
+		]
 	);
 
 	add_settings_field(
@@ -287,7 +294,10 @@ function likecoin_init_settings() {
 		__( 'Site LikeCoin ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_table',
 		LC_SITE_OPTIONS_PAGE,
-		'lc_site_likecoin_id_options'
+		'lc_site_likecoin_id_options',
+		[
+			'label_for' => 'lc_site_likecoin_id_object',
+		]
 	);
 
 }
@@ -302,12 +312,14 @@ function likecoin_add_privacy_policy_content() {
 	}
 	$content = sprintf(
 		/* translators: %s is the policy url, e.g. https://like.co/in/policies/privacy */
-		__( 'When you use the LikeCoin embed, we automatically collect basic visitor informations,
+		__(
+			'When you use the LikeCoin embed, we automatically collect basic visitor informations,
 		e.g. IP address, user agent, etc. These kind of information might be used as analytics purpose.
 		For the purpose of applying personal site preferences, We might also identify a registered 
 		LikeCoin ID owner by the use of cookie.
 		More details can be found in like.co privacy policy <a href="%s" target="_blank">here</a>.',
-		LC_PLUGIN_SLUG ),
+			LC_PLUGIN_SLUG
+		),
 		'https://like.co/in/policies/privacy'
 	);
 	wp_add_privacy_policy_content(
@@ -316,6 +328,9 @@ function likecoin_add_privacy_policy_content() {
 	);
 }
 
+/**
+ * Run all functions for admin_init hook
+ */
 function likecoin_admin_init() {
 	likecoin_init_settings();
 	likecoin_add_privacy_policy_content();

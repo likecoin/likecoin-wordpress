@@ -26,45 +26,74 @@
  * Add option menu
  */
 function likecoin_add_site_options_page() {
-	echo '<form action="options.php" method="post">';
-	// output security fields for the registered setting "wporg"
-	settings_fields( 'lc_site_options' );
-	// output setting sections and their fields
-	// (sections are registered for "wporg", each field is registered to a specific	section)
-	// echo '<table>';
-	// do_settings_fields( 'lc_site_options', 'lc_site_likecoin_id_options' );
-	// echo '</table>';
-	do_settings_sections( 'lc_site_options' );
-	// output save settings button
-	submit_button( 'Save Settings' );
-	echo '</form></div>';
+	include_once 'components.php';
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	// For display only, probably no security concern.
+	// phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification
+	if ( isset( $_GET['settings-updated'] ) ) {
+	// phpcs:enable WordPress.Security.NonceVerification.NoNonceVerification
+		add_settings_error(
+			'lc_settings_messages',
+			'updated',
+			__( 'Settings Saved', LC_PLUGIN_SLUG ),
+			'updated'
+		);
+	}
+	settings_errors( 'lc_settings_messages' );
+	?>
+	<div class="wrap">
+	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+	<?php likecoin_add_web3_section( false ); ?>
+	<form action="options.php" method="post">
+	<?php
+		settings_fields( LC_SITE_OPTIONS_PAGE );
+		do_settings_sections( LC_SITE_OPTIONS_PAGE );
+		submit_button( __( 'Save Settings' ) );
+	?>
+	</form>
+	</div>
+	<?php
+	wp_register_style( 'lc_metabox', LC_URI . 'assets/css/metabox.css', false, LC_PLUGIN_VERSION );
+	wp_enqueue_style( 'lc_metabox' );
+	wp_enqueue_script( 'lc_metabox', LC_URI . 'assets/js/likecoin.es5.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
 }
 
 /**
  * Add the likecoin plugin site options menu
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
  */
-
 function likecoin_add_site_likecoin_id_toggle( $args ) {
-	// get the value of the setting we've registered with register_setting()
-	$options = get_option( 'wporg_options' );
-	// output the field
+	$options = get_option( LC_OPTION_NAME );
 	?>
-  	<input type="checkbox"
-  	name="vehicle"
-  	value="Bike"
-  	>
-  	<label for="vehicle">Only one LikeCoin ID</label>
+	<input type="checkbox"
+	name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+	value="true"
+	<?php
+	if ( isset( $options[ $args['label_for'] ] ) ) {
+		echo esc_attr( 'checked' );
+	}
+	?>
+	>
+	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
+		<?php esc_html_e( 'Only one LikeCoin ID' ); ?>
+	</label>
 	<?php
 }
 
 /**
  * Add the likecoin plugin site options menu
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
  */
-
 function likecoin_add_site_likecoin_id_table( $args ) {
-	// get the value of the setting we've registered with register_setting()
-	$options = get_option( 'wporg_options' );
-	// output the field
+	$options               = get_option( LC_OPTION_NAME );
+	$likecoin_id           = isset( $options[ $args['label_for'] ] ['likecoin_id'] ) ? $options[ $args['label_for'] ] ['likecoin_id'] : '';
+	$likecoin_display_name = isset( $options[ $args['label_for'] ] ['display_name'] ) ? $options[ $args['label_for'] ] ['display_name'] : '';
+	$likecoin_wallet       = isset( $options[ $args['label_for'] ] ['wallet'] ) ? $options[ $args['label_for'] ] ['wallet'] : '';
 	?>
 	<table>
 		<tr>
@@ -74,17 +103,37 @@ function likecoin_add_site_likecoin_id_table( $args ) {
 			<td></td>
 		</tr>
 		<tr>
-			<td>-</td>
-			<td>-</td>
-			<td>-</td>
-			<td>Connect</td>
+			<td>
+				<span id="likecoinId"><?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></span>
+				<input type="hidden"
+					class="likecoinId"
+					name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . '][likecoin_id]' ); ?>"
+					value="<?php echo esc_attr( $likecoin_id ); ?>"
+				>
+			</td>
+			<td>
+				<span id="likecoinDisplayName"><?php echo esc_html( $likecoin_display_name ? $likecoin_display_name : '-' ); ?></span>
+				<input type="hidden"
+					class="likecoinDisplayName"
+					name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . '][display_name]' ); ?>"
+					value="<?php echo esc_attr( $likecoin_display_name ); ?>"
+				>
+			</td>
+			<td>
+				<span id="likecoinWallet"><?php echo esc_html( $likecoin_wallet ? $likecoin_wallet : '-' ); ?></span>
+				<input type="hidden"
+					class="likecoinWallet"
+					name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . '][wallet]' ); ?>"
+					value="<?php echo esc_attr( $likecoin_wallet ); ?>"
+				>
+			</td>
+			<td>
+				<input id="likecoinLoginBtn"
+					type="button"
+					value="<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>"
+				>
+			</td>
 		</tr>
 	</table>
-	<?php
-}
-
-function wporg_section_developers_cb( $args ) {
-	?>
-	<p id="<?php echo esc_attr( $args['id'] ); ?>"><?php esc_html_e( 'Follow the white rabbit.', 'wporg' ); ?></p>
 	<?php
 }
