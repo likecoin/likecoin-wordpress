@@ -74,6 +74,8 @@ function likecoin_display_meta_box( $post ) {
  */
 function likecoin_display_top_options_page() {
 	include_once 'views/site-options.php';
+	include_once 'views/user-options.php';
+
 	add_menu_page(
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
@@ -278,6 +280,13 @@ function likecoin_init_settings() {
 		LC_SITE_OPTIONS_PAGE
 	);
 
+	add_settings_section(
+		'lc_site_likebutton_options',
+		__( 'Site LikeButton Setting', LC_PLUGIN_SLUG ),
+		null,
+		LC_SITE_OPTIONS_PAGE
+	);
+
 	add_settings_field(
 		'lc_site_likecoin_id_toggle',
 		__( 'Use Only oneLikeCoin ID', LC_PLUGIN_SLUG ),
@@ -300,6 +309,27 @@ function likecoin_init_settings() {
 		]
 	);
 
+	add_settings_field(
+		'lc_site_likebutton_show',
+		__( 'Show option', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_likebutton_display_option',
+		LC_SITE_OPTIONS_PAGE,
+		'lc_site_likebutton_options',
+		[
+			'label_for' => 'lc_site_likebutton_show',
+		]
+	);
+
+	add_settings_field(
+		'lc_site_likebutton_allow_author_override',
+		__( 'Author override', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_likebutton_allow_author_override',
+		LC_SITE_OPTIONS_PAGE,
+		'lc_site_likebutton_options',
+		[
+			'label_for' => 'lc_site_likebutton_allow_author_override',
+		]
+	);
 }
 
 

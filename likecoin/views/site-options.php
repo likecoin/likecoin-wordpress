@@ -62,7 +62,7 @@ function likecoin_add_site_options_page() {
 }
 
 /**
- * Add the likecoin plugin site options menu
+ * Add the site likecoin id on/off
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
@@ -85,7 +85,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 }
 
 /**
- * Add the likecoin plugin site options menu
+ * Add the site likecoin id info table
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
@@ -137,3 +137,55 @@ function likecoin_add_site_likecoin_id_table( $args ) {
 	</table>
 	<?php
 }
+
+/**
+ * Add the likebutton select option
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
+function likecoin_add_site_likebutton_display_option( $args ) {
+	$options = get_option( LC_OPTION_NAME );
+	?>
+	<select id="<?php echo esc_attr( $args['label_for'] ); ?>"
+		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+	>
+	<option value="always"
+		<?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'always', false ) ) : ( '' ); ?>>
+		<?php esc_html_e( 'Always Show', LC_PLUGIN_SLUG ); ?>
+	</option>
+	<option value="post"
+		<?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'post', false ) ) : ( '' ); ?>>
+		<?php esc_html_e( 'Post Only', LC_PLUGIN_SLUG ); ?>
+	</option>
+	<option value="none"
+		<?php echo isset( $options[ $args['label_for'] ] ) ? ( selected( $options[ $args['label_for'] ], 'none', false ) ) : ( '' ); ?>>
+		<?php esc_html_e( 'None', LC_PLUGIN_SLUG ); ?>
+	</option>
+
+	</select>
+	<?php
+}
+
+/**
+ * Add the likebutton author checkbox
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
+function likecoin_add_site_likebutton_allow_author_override( $args ) {
+	$options = get_option( LC_OPTION_NAME );
+	?>
+	<input type="checkbox"
+		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		value="true"
+	<?php
+	if ( isset( $options[ $args['label_for'] ] ) ) {
+		echo esc_attr( 'checked' );
+	}
+	?>
+	>
+	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
+		<?php esc_html_e( 'Allow author to cusomtize this setting' ); ?>
+	</label>
+	<?php
+}
+
