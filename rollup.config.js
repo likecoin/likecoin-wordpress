@@ -5,12 +5,16 @@ import commonjs from 'rollup-plugin-commonjs';
 import { uglify } from 'rollup-plugin-uglify';
 
 export default {
-  entry: 'likecoin/assets/js/likecoin.js',
-  dest: 'likecoin/assets/js/likecoin.es5.js',
-  format: 'iife',
-  sourceMap: true,
+  input: 'likecoin/assets/js/likecoin.js',
+  output: {
+    file: 'likecoin/assets/js/likecoin.es5.js',
+    format: 'iife',
+    sourcemap: true,
+  },
   plugins: [
-    nodeResolve(),
+    nodeResolve({
+      browser: true,
+    }),
     commonjs({
       include: 'node_modules/**',
     }),

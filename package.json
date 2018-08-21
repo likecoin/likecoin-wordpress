@@ -12,7 +12,7 @@
   "devDependencies": {
     "@babel/cli": "^7.0.0-beta.56",
     "@babel/core": "^7.0.0-beta.56",
-    "@wordpress/babel-preset-default": "^2.0.3",
+    "@wordpress/babel-preset-default": "^2.0.4",
     "eslint": "^4.19.1",
     "eslint-config-airbnb-base": "^13.0.0",
     "eslint-plugin-import": "^2.13.0",
