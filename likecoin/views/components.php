@@ -91,12 +91,12 @@ function likecoin_add_likecoin_info_table( $args ) {
 	$likecoin_wallet_name       = $args->likecoin_wallet_name;
 	$has_likecoin_id            = strlen( $likecoin_id ) > 0;
 	?>
-	<table  class="form-table">
+	<table class="form-table likecoinTable">
 		<tr>
-			<td><?php esc_html_e( 'LikeCoin ID', LC_PLUGIN_SLUG ); ?></td>
-			<td><?php esc_html_e( 'Display Name', LC_PLUGIN_SLUG ); ?></td>
-			<td><?php esc_html_e( 'Wallet', LC_PLUGIN_SLUG ); ?></td>
-			<td></td>
+			<th><span><?php esc_html_e( 'LikeCoin ID', LC_PLUGIN_SLUG ); ?></span></th>
+			<th><?php esc_html_e( 'Display Name', LC_PLUGIN_SLUG ); ?></th>
+			<th><?php esc_html_e( 'Wallet', LC_PLUGIN_SLUG ); ?></th>
+			<th class="actions"></th>
 		</tr>
 		<tr>
 			<td>
@@ -123,22 +123,31 @@ function likecoin_add_likecoin_info_table( $args ) {
 					value="<?php echo esc_attr( $likecoin_wallet ); ?>"
 				>
 			</td>
-			<td>
-				<?php if ( $has_likecoin_id ) { ?>
-					<input id="likecoinChangeBtn"
-						type="button"
-						value="<?php esc_attr_e( 'Change', LC_PLUGIN_SLUG ); ?>"
-					>
-					<input id="likecoinLogoutBtn"
-						type="button"
-						value="<?php esc_attr_e( 'Disconnect', LC_PLUGIN_SLUG ); ?>"
-					>
-				<?php } else { ?>
-					<input id="likecoinChangeBtn"
-						type="button"
-						value="<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>"
-					>
-				<?php } ?>
+			<td class="actions">
+			<?php if ( $has_likecoin_id ) { ?>
+				<span class="actionWrapper">
+					<a target="_blank"
+						id="likecoinChangeBtn"
+						type="button">
+						<?php esc_attr_e( 'Change', LC_PLUGIN_SLUG ); ?>
+					</a>
+				</span>
+				<span class="actionWrapper">
+					<a target="_blank"
+						id="likecoinLogoutBtn"
+						type="button">
+						<?php esc_attr_e( 'Disconnect', LC_PLUGIN_SLUG ); ?>
+					</a>
+				</span>
+			<?php } else { ?>
+				<span class="actionWrapper">
+					<a target="_blank"
+						id="likecoinChangeBtn"
+						type="button">
+						<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>
+					</a>
+				</span>
+			<?php } ?>
 			</td>
 		</tr>
 	</table>

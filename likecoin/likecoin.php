@@ -65,10 +65,10 @@ function get_author_likecoin_id( $post ) {
  */
 function likecoin_display_meta_box( $post ) {
 	include_once 'views/metabox.php';
-	$option          = get_option( LC_OPTION_NAME );
+	$option      = get_option( LC_OPTION_NAME );
 	$is_disabled = false;
-	if (isset( $option['lc_site_likebutton_allow_author_override'] )) {
-		$is_disabled = !$option['lc_site_likebutton_allow_author_override'];
+	if ( isset( $option['lc_site_likebutton_allow_author_override'] ) ) {
+		$is_disabled = ! $option['lc_site_likebutton_allow_author_override'];
 	}
 	likecoin_add_meta_box( $post, $is_disabled );
 }

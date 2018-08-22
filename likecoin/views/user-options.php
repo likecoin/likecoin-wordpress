@@ -71,8 +71,11 @@ function likecoin_add_user_options_page() {
 		likecoin_add_web3_section( false );
 		echo '<h2>' . esc_html__( 'Your LikeButton' ) . '</h2>';
 		likecoin_add_button_preview( $likecoin_id );
-		submit_button( __( 'Save Settings' ) );
 	?>
+		<p class="submit">
+			<input type="submit" name="submit" id="submit" class="likecoinButton"
+				value="<?php esc_attr_e( 'Confirm' ); ?>">
+		</p>
 	</form>
 	</div>
 	<?php
@@ -90,17 +93,18 @@ function likecoin_add_button_preview( $likecoin_id ) {
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
-	<a class="links" href="https://like.co/in" target="_blank">
-		<?php esc_html_e( 'Create your LikeCoin ID', LC_PLUGIN_SLUG ); ?>
-	</a>
-	<div class="centerContainer">
-		<a id="likecoinLoginBtn" class="likecoinButton loginBtn">
-			<?php esc_html_e( 'Login to get LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+	<section class="previewSection">
+		<a class="links" href="https://like.co/in" target="_blank">
+			<?php esc_html_e( 'Create your LikeCoin ID', LC_PLUGIN_SLUG ); ?>
 		</a>
-	</div>
+		<div class="centerContainer" style="min-height: 220px;">
+			<a id="likecoinLoginBtn" class="likecoinButton loginBtn">
+				<?php esc_html_e( 'Connect to LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+			</a>
+		</div>
+	</section>
 </section>
 <section class="likecoin optionsSection" style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>">
-	<div class="optionsContainer">
 	<section class="previewSection">
 		<span><?php esc_html_e( 'Preview', LC_PLUGIN_SLUG ); ?></span>
 		<a class="icon" href="https://like.co/in" target="_blank">
@@ -112,8 +116,9 @@ function likecoin_add_button_preview( $likecoin_id ) {
 		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 		?>
 		</a>
+		<div class="centerContainer">
 		<iframe id="likecoinPreview" scrolling="no" frameborder="0"
-		style="pointer-events: none; height: 212px; width: 100%;"
+		style="pointer-events: none; height: 212px; width: 500px;"
 		src="
 		<?php
 		if ( $has_likecoin_id ) {
@@ -122,8 +127,8 @@ function likecoin_add_button_preview( $likecoin_id ) {
 		?>
 		"
 		></iframe>
-	</section>
 	</div>
+	</section>
 </section>
 	<?php
 }

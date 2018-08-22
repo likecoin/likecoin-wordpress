@@ -50,8 +50,11 @@ function likecoin_add_site_options_page() {
 	<?php
 		settings_fields( LC_SITE_OPTIONS_PAGE );
 		do_settings_sections( LC_SITE_OPTIONS_PAGE );
-		submit_button( __( 'Save Settings' ) );
 	?>
+		<p class="submit">
+			<input type="submit" name="submit" id="submit" class="likecoinButton"
+				value="<?php esc_attr_e( 'Confirm' ); ?>">
+		</p>
 	</form>
 	</div>
 	<?php

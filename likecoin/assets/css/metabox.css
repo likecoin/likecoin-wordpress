@@ -30,9 +30,9 @@
 
 .likecoin .likecoinButton {
 
-  min-width: 200px;
+  min-width: 256px;
 
-  padding: 8px;
+  padding: 8px 16px;
 
   cursor: pointer;
 
@@ -41,15 +41,14 @@
   text-decoration: none;
 
   color: white;
+  border: 0;
 
   background-color: #28646e;
 
-  box-shadow: 0 2px 4px 0 rgba(0,0,0,.5);
-
-  font-size: 16px;
+  font-size: 24px;
 }
 
-.likecoin.loginSection .centerContainer {
+.likecoin .centerContainer {
 
   display: flex;
   align-items: center;
@@ -60,10 +59,6 @@
   height: 100%;
 }
 
-.likecoin.optionsSection .optionsContainer {
-  display:flex;
-}
-
 .likecoin.optionsSection .changeBtn {
   cursor: pointer;
   text-decoration: underline;
@@ -71,21 +66,96 @@
   font-size: 12px;
 }
 
-.likecoin.optionsSection .previewSection{
+.likecoin .previewSection{
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
 
   padding: 20px 40px;
-
   color: #d8d8d8;
+
+  background: white;
 }
 
-
-.likecoin.optionsSection .previewSection span{
+.likecoin .previewSection span{
   margin: 20px 0;
 }
 
 .likecoin .likecoinId {
   color: #28646e;
 }
+
+/* likecoin ID table*/
+
+.likecoin .likecoinTable {
+  border: solid 1px #e6e6e6;
+  background: #f9f9f9;
+}
+
+.likecoin .likecoinTable tr {
+  border: solid 1px #e6e6e6;
+}
+
+.likecoin .likecoinTable th {
+
+  height: 40px;
+
+  padding: 0 14px;
+
+  vertical-align: middle;
+  background: white;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.likecoin .likecoinTable td {
+
+  height: 64px;
+  padding: 8px 14px;
+
+  font-size: 14px;
+}
+
+.likecoin .likecoinTable td.actions {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 0;
+  padding: 16px;
+
+  white-space: nowrap;
+}
+
+.likecoin .likecoinTable td.actions .actionWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+
+  height: 48px;
+  border-right: solid 1px #d8d8d8;
+
+  border-left: solid 1px #d8d8d8;
+}
+
+.likecoin .likecoinTable td.actions a {
+  cursor: pointer;
+
+  text-align: center;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+.likecoin #likecoinChangeBtn{
+  color: #4a90e2;
+}
+
+.likecoin #likecoinLogoutBtn{
+  color: #d0021b;
+}
+
