@@ -163,36 +163,70 @@ function likecoin_save_postdata( $post_id ) {
 add_action( 'save_post', 'likecoin_save_postdata' );
 
 /**
- * Add LikeCoin widget to post content if suitable
+ * Add LikeButton to post content if suitable
  *
  * @param string| $content The original post content.
  */
-function likecoin_add_widget( $content ) {
+function likecoin_add_likebutton( $content ) {
 	global $post;
-	if ( is_single() ) {
-		$likecoin_id = get_author_likecoin_id( $post );
+	$option          = get_option( LC_OPTION_NAME );
+	$post_type_query = '';
+
+	do {
+		if ( isset( $option['lc_site_likebutton_allow_author_override'] ) ) {
+			if ( $option['lc_site_likebutton_allow_author_override'] ) {
+				$widget_option   = get_post_meta( $post->ID, 'lc_widget_option', true );
+				$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
+				if ( strlen( $widget_position ) > 0 && 'none' !== $widget_position ) {
+					// if set post_meta, cont to render.
+					break;
+				}
+				// otherwise judge by switch case below.
+			}
+		}
+		if ( isset( $option['lc_site_likebutton_show'] ) ) {
+			$type = $option['lc_site_likebutton_show'];
+			switch ( $type ) {
+				case 'none':
+					// set to none, exit early.
+					return $content;
+				case 'post':
+					$post_type_query = 'post';
+					break;
+				case 'always':
+					// no op.
+					break;
+			}
+		} else {
+			// default not show, exit early.
+			return $content;
+		}
+	} while ( false );
+
+	if ( is_singular( $post_type_query ) && in_the_loop() && is_main_query() ) {
+		$should_use_site_id = false;
+		$likecoin_id        = '';
+
+		if ( isset( $option['lc_site_likecoin_id_toggle'] ) && isset( $option['lc_site_likecoin_id_object'] ) ) {
+			$should_use_site_id = (bool) $option['lc_site_likecoin_id_toggle'];
+			$likecoin_id        = $option['lc_site_likecoin_id_object']['likecoin_id'];
+		} else {
+			$likecoin_id = get_author_likecoin_id( $post );
+		}
+
 		if ( strlen( $likecoin_id ) > 0 ) {
-			$widget_option   = get_post_meta( $post->ID, 'lc_widget_option', true );
-			$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
-			$permalink       = rawurlencode( get_permalink( $post ) );
-			$widget_code     = '<iframe scrolling="no" frameborder="0" ' .
+			$permalink   = rawurlencode( get_permalink( $post ) );
+			$widget_code = '<iframe scrolling="no" frameborder="0" ' .
 			'style="height: 212px; width: 100%;"' .
 			'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
 			'?referrer=' . $permalink . '"></iframe>';
-			if ( 'both' === $widget_position ) {
-				return $widget_code . $content . $widget_code;
-			} elseif ( 'top' === $widget_position ) {
-				return $widget_code . $content;
-			} elseif ( 'bottom' === $widget_position ) {
-				return $content . $widget_code;
-			}
-			return $content;
+			return $content . $widget_code;
 		}
 	}
 	return $content;
 }
 
-add_filter( 'the_content', 'likecoin_add_widget', 999 );
+add_filter( 'the_content', 'likecoin_add_likebutton', 9 );
 
 /**
  * Admin post handler of user LikeCoinId/data update
@@ -266,6 +300,7 @@ function handle_uninstall() {
 	delete_metadata( 'user', 0, 'lc_widget_option', '', true );
 	delete_metadata( 'post', 0, 'lc_widget_position', '', true );
 
+	delete_option( LC_OPTION_NAME );
 	delete_option( 'likecoin_plugin_version' );
 }
 
