@@ -58,10 +58,10 @@ async function handleUpdateId(user, wallet, displayName) {
   const likecoinIdInput = document.querySelector('input.likecoinId');
   const likecoinDisplayNameInput = document.querySelector('input.likecoinDisplayName');
   const likecoinWalletInput = document.querySelector('input.likecoinWallet');
-  if (likecoinId) likecoinId.innerHTML = user;
-  if (likecoinWallet) likecoinWallet.innerHTML = wallet;
-  if (likecoinDisplayName) likecoinDisplayName.innerHTML = displayName;
-  if (likecoinPreview) likecoinPreview.src = `https://button.like.co/in/embed/${user}/button`;
+  if (likecoinId) likecoinId.innerHTML = user || '-';
+  if (likecoinWallet) likecoinWallet.innerHTML = wallet || '-';
+  if (likecoinDisplayName) likecoinDisplayName.innerHTML = displayName || '-';
+  if (likecoinPreview) likecoinPreview.src = user ? `https://button.like.co/in/embed/${user}/button` : 'about:blank';
   if (likecoinIdInput) likecoinIdInput.value = user;
   if (likecoinWalletInput) likecoinWalletInput.value = wallet;
   if (likecoinDisplayNameInput) likecoinDisplayNameInput.value = displayName;
@@ -155,10 +155,16 @@ async function onLoginClick() {
   }
 }
 
+function onLogoutClick() {
+  handleUpdateId('', '', '');
+}
+
 (() => {
   const loginBtn = document.querySelector('#likecoinLoginBtn');
   const changeBtn = document.querySelector('#likecoinChangeBtn');
+  const logoutBtn = document.querySelector('#likecoinLogoutBtn');
   if (loginBtn) loginBtn.addEventListener('click', onLoginClick);
   if (changeBtn) changeBtn.addEventListener('click', onLoginClick);
+  if (logoutBtn) logoutBtn.addEventListener('click', onLogoutClick);
   checkForWebThree({ slient: true });
 })();

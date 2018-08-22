@@ -89,6 +89,7 @@ function likecoin_add_likecoin_info_table( $args ) {
 	$likecoin_id_name           = $args->likecoin_id_name;
 	$likecoin_display_name_name = $args->likecoin_display_name_name;
 	$likecoin_wallet_name       = $args->likecoin_wallet_name;
+	$has_likecoin_id = strlen($likecoin_id) > 0;
 	?>
 	<table  class="form-table">
 		<tr>
@@ -123,10 +124,21 @@ function likecoin_add_likecoin_info_table( $args ) {
 				>
 			</td>
 			<td>
-				<input id="likecoinLoginBtn"
+				<?php if ($has_likecoin_id) { ?>
+					<input id="likecoinChangeBtn"
+						type="button"
+						value="<?php esc_attr_e( 'Change', LC_PLUGIN_SLUG ); ?>"
+					>
+					<input id="likecoinLogoutBtn"
+						type="button"
+						value="<?php esc_attr_e( 'Disconnect', LC_PLUGIN_SLUG ); ?>"
+					>
+				<?php } else { ?>
+					<input id="likecoinChangeBtn"
 					type="button"
 					value="<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>"
 				>
+				<?php } ?>
 			</td>
 		</tr>
 	</table>
