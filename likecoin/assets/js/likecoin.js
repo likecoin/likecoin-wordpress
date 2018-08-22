@@ -92,7 +92,6 @@ async function login() {
     throw new Error(webThreeError);
   }
   const challenge = await fetchLikeCoinID(address);
-  console.log(challenge);
   const signature = await webThreeInstance.eth.personal.sign(challenge, address);
   if (!signature) {
     throw new Error('No signature');
