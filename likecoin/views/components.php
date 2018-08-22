@@ -41,33 +41,33 @@ function likecoin_add_loading_section() {
 function likecoin_add_web3_section( $has_login_button ) {
 	likecoin_add_loading_section();
 	?>
-	<section class="likecoin loginSection" style="display: none">
-		<div class="likecoin webThreeError needMetaMask" style="display: none">
+	<section class="likecoin loginSection">
+		<div class="likecoin centerContainer webThreeError needMetaMask" style="display: none">
 			<h3>
 				<?php
 				echo esc_html__( 'Please install' ) . '&nbsp<a href="https://metamask.io/" target="_blank">' . esc_html__( 'MetaMask Plugin' ) . '</a>';
 				?>
 			</h3>
 		</div>
-		<div class="likecoin webThreeError needMainNet" style="display: none">
+		<div class="likecoin centerContainer webThreeError needMainNet" style="display: none">
 			<h3>
 				<?php esc_html_e( 'Please switch to Main Network', LC_PLUGIN_SLUG ); ?>
 			</h3>
 			<img src="<?php echo esc_attr( LC_URI . 'assets/img/mainnet.png' ); ?>">
 		</div>
-		<div class="likecoin webThreeError needUnlock" style="display: none">
+		<div class="likecoin centerContainer webThreeError needUnlock" style="display: none">
 			<h3>
 				<?php esc_html_e( 'Please unlock your wallet', LC_PLUGIN_SLUG ); ?>
 			</h3>
 			<img src="<?php echo esc_attr( LC_URI . 'assets/img/unlock.png' ); ?>">
 		</div>
-		<div class="likecoin webThreeError needLikeCoinId" style="display: none">
+		<div class="likecoin centerContainer webThreeError needLikeCoinId" style="display: none">
 			<a class="likeCoinButton" href="https://like.co/in/register" target="_blank">
 				<?php esc_html_e( 'Please register a LikeCoin ID first', LC_PLUGIN_SLUG ); ?>
 			</a>
 		</div>
 		<?php if ( $has_login_button ) { ?>
-			<div class="likecoin webThreeError needLogin" style="display: none">
+			<div class="likecoin centerContainer webThreeError needLogin" style="display: none">
 				<a class="likeCoinButton loginBtn">
 					<?php esc_html_e( 'Login to get LikeCoin ID', LC_PLUGIN_SLUG ); ?>
 				</a>
@@ -89,7 +89,7 @@ function likecoin_add_likecoin_info_table( $args ) {
 	$likecoin_id_name           = $args->likecoin_id_name;
 	$likecoin_display_name_name = $args->likecoin_display_name_name;
 	$likecoin_wallet_name       = $args->likecoin_wallet_name;
-	$has_likecoin_id = strlen($likecoin_id) > 0;
+	$has_likecoin_id            = strlen( $likecoin_id ) > 0;
 	?>
 	<table  class="form-table">
 		<tr>
@@ -100,7 +100,7 @@ function likecoin_add_likecoin_info_table( $args ) {
 		</tr>
 		<tr>
 			<td>
-				<span id="likecoinId"><?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></span>
+				<span id="likecoinId" class="likecoinId"><?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></span>
 				<input type="hidden"
 					class="likecoinId"
 					name="<?php echo esc_attr( $likecoin_id_name ); ?>"
@@ -124,7 +124,7 @@ function likecoin_add_likecoin_info_table( $args ) {
 				>
 			</td>
 			<td>
-				<?php if ($has_likecoin_id) { ?>
+				<?php if ( $has_likecoin_id ) { ?>
 					<input id="likecoinChangeBtn"
 						type="button"
 						value="<?php esc_attr_e( 'Change', LC_PLUGIN_SLUG ); ?>"
@@ -135,9 +135,9 @@ function likecoin_add_likecoin_info_table( $args ) {
 					>
 				<?php } else { ?>
 					<input id="likecoinChangeBtn"
-					type="button"
-					value="<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>"
-				>
+						type="button"
+						value="<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>"
+					>
 				<?php } ?>
 			</td>
 		</tr>

@@ -46,9 +46,8 @@ function likecoin_add_user_options_page() {
 	}
 	settings_errors( 'lc_settings_messages' );
 	?>
-	<div class="wrap">
+	<div class="wrap likecoin">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-	<?php likecoin_add_loading_section(); ?>
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
 	<input type="hidden" name="action" value="likecoin_update_user_id">
 	<?php
@@ -69,6 +68,7 @@ function likecoin_add_user_options_page() {
 		);
 		echo '<h2>' . esc_html__( 'Your LikeCoin ID' ) . '</h2>';
 		likecoin_add_likecoin_info_table( $params );
+		likecoin_add_web3_section( false );
 		echo '<h2>' . esc_html__( 'LikeButton' ) . '</h2>';
 		likecoin_add_button_preview( $likecoin_id );
 		submit_button( __( 'Save Settings' ) );
@@ -90,32 +90,11 @@ function likecoin_add_button_preview( $likecoin_id ) {
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
-	<div class="likecoin webThreeError needMetaMask" style="display: none">
-		<h3>
-			<?php
-			echo esc_html__( 'Please install' ) . '&nbsp<a href="https://metamask.io/" target="_blank">' . esc_html__( 'MetaMask Plugin' ) . '</a>';
-			?>
-		</h3>
-	</div>
-	<div class="likecoin webThreeError needMainNet" style="display: none">
-		<h3>
-			<?php esc_html_e( 'Please switch to Main Network', LC_PLUGIN_SLUG ); ?>
-		</h3>
-		<img src="<?php echo esc_attr( LC_URI . 'assets/img/mainnet.png' ); ?>">
-	</div>
-	<div class="likecoin webThreeError needUnlock" style="display: none">
-		<h3>
-			<?php esc_html_e( 'Please unlock your wallet', LC_PLUGIN_SLUG ); ?>
-		</h3>
-		<img src="<?php echo esc_attr( LC_URI . 'assets/img/unlock.png' ); ?>">
-	</div>
-	<div class="likecoin webThreeError needLikeCoinId" style="display: none">
-		<a class="likeCoinButton" href="https://like.co/in/register" target="_blank">
-			<?php esc_html_e( 'Please register a LikeCoin ID first', LC_PLUGIN_SLUG ); ?>
-		</a>
-	</div>
-	<div class="likecoin webThreeError needLogin" style="display: none">
-		<a class="likeCoinButton loginBtn">
+	<a class="links" href="https://like.co/in" target="_blank">
+		<?php esc_html_e( 'Create your LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+	</a>
+	<div class="centerContainer">
+		<a id="likecoinLoginBtn" class="likeCoinButton loginBtn">
 			<?php esc_html_e( 'Login to get LikeCoin ID', LC_PLUGIN_SLUG ); ?>
 		</a>
 	</div>

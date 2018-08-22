@@ -44,9 +44,8 @@ function likecoin_add_site_options_page() {
 	}
 	settings_errors( 'lc_settings_messages' );
 	?>
-	<div class="wrap">
+	<div class="wrap likecoin">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
-	<?php likecoin_add_web3_section( false ); ?>
 	<form action="options.php" method="post">
 	<?php
 		settings_fields( LC_SITE_OPTIONS_PAGE );
@@ -107,6 +106,7 @@ function likecoin_add_site_likecoin_id_table( $args ) {
 		'likecoin_wallet_name'       => $likecoin_wallet_name,
 	);
 	likecoin_add_likecoin_info_table( $params );
+	likecoin_add_web3_section( false );
 }
 
 /**

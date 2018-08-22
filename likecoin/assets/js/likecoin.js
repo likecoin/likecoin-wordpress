@@ -7,13 +7,13 @@ let webThreeInstance = null;
 let isInited = false;
 
 function show(selector) {
-  const elem = document.querySelector(`.likecoin${selector}`);
-  if (elem) elem.style.display = '';
+  const elems = document.querySelectorAll(`.likecoin${selector}`);
+  elems.forEach((elem) => { elem.style.display = ''; }); // eslint-disable-line no-param-reassign
 }
 
 function hide(selector) {
-  const elem = document.querySelector(`.likecoin${selector}`);
-  if (elem) elem.style.display = 'none';
+  const elems = document.querySelectorAll(`.likecoin${selector}`);
+  elems.forEach((elem) => { elem.style.display = 'none'; }); // eslint-disable-line no-param-reassign
 }
 
 
