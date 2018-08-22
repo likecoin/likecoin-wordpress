@@ -326,14 +326,14 @@ function likecoin_init_settings() {
 
 	add_settings_section(
 		'lc_site_likebutton_options',
-		__( 'Site LikeButton Setting', LC_PLUGIN_SLUG ),
+		__( 'Site LikeButton Display Setting', LC_PLUGIN_SLUG ),
 		null,
 		LC_SITE_OPTIONS_PAGE
 	);
 
 	add_settings_field(
 		'lc_site_likecoin_id_toggle',
-		__( 'Use Only oneLikeCoin ID', LC_PLUGIN_SLUG ),
+		__( 'Enable site LikeCoin ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_toggle',
 		LC_SITE_OPTIONS_PAGE,
 		'lc_site_likecoin_id_options',
@@ -355,7 +355,7 @@ function likecoin_init_settings() {
 
 	add_settings_field(
 		'lc_site_likebutton_show',
-		__( 'Show option', LC_PLUGIN_SLUG ),
+		__( 'Display option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_display_option',
 		LC_SITE_OPTIONS_PAGE,
 		'lc_site_likebutton_options',
@@ -366,7 +366,7 @@ function likecoin_init_settings() {
 
 	add_settings_field(
 		'lc_site_likebutton_allow_author_override',
-		__( 'Author override', LC_PLUGIN_SLUG ),
+		__( 'Allow per Post option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_allow_author_override',
 		LC_SITE_OPTIONS_PAGE,
 		'lc_site_likebutton_options',

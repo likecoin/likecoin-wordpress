@@ -62,13 +62,13 @@ function likecoin_add_web3_section( $has_login_button ) {
 			<img src="<?php echo esc_attr( LC_URI . 'assets/img/unlock.png' ); ?>">
 		</div>
 		<div class="likecoin centerContainer webThreeError needLikeCoinId" style="display: none">
-			<a class="likeCoinButton" href="https://like.co/in/register" target="_blank">
+			<a class="likecoinButton" href="https://like.co/in/register" target="_blank">
 				<?php esc_html_e( 'Please register a LikeCoin ID first', LC_PLUGIN_SLUG ); ?>
 			</a>
 		</div>
 		<?php if ( $has_login_button ) { ?>
 			<div class="likecoin centerContainer webThreeError needLogin" style="display: none">
-				<a class="likeCoinButton loginBtn">
+				<a class="likecoinButton loginBtn">
 					<?php esc_html_e( 'Login to get LikeCoin ID', LC_PLUGIN_SLUG ); ?>
 				</a>
 			</div>

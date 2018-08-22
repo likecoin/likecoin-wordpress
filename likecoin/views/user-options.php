@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin Widget Metabox
+ * LikeCoin Site User Options Menu
  *
- * LikeCoin widget metabox render logics
+ * LikeCoin  Plugin options submenu for user settings
  *
  * @package   LikeCoin
  *
@@ -69,7 +69,7 @@ function likecoin_add_user_options_page() {
 		echo '<h2>' . esc_html__( 'Your LikeCoin ID' ) . '</h2>';
 		likecoin_add_likecoin_info_table( $params );
 		likecoin_add_web3_section( false );
-		echo '<h2>' . esc_html__( 'LikeButton' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Your LikeButton' ) . '</h2>';
 		likecoin_add_button_preview( $likecoin_id );
 		submit_button( __( 'Save Settings' ) );
 	?>
@@ -94,7 +94,7 @@ function likecoin_add_button_preview( $likecoin_id ) {
 		<?php esc_html_e( 'Create your LikeCoin ID', LC_PLUGIN_SLUG ); ?>
 	</a>
 	<div class="centerContainer">
-		<a id="likecoinLoginBtn" class="likeCoinButton loginBtn">
+		<a id="likecoinLoginBtn" class="likecoinButton loginBtn">
 			<?php esc_html_e( 'Login to get LikeCoin ID', LC_PLUGIN_SLUG ); ?>
 		</a>
 	</div>
@@ -102,7 +102,7 @@ function likecoin_add_button_preview( $likecoin_id ) {
 <section class="likecoin optionsSection" style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>">
 	<div class="optionsContainer">
 	<section class="previewSection">
-		<span><?php esc_html_e( 'This LikeButton will be shown in your post:', LC_PLUGIN_SLUG ); ?></span>
+		<span><?php esc_html_e( 'Preview', LC_PLUGIN_SLUG ); ?></span>
 		<a class="icon" href="https://like.co/in" target="_blank">
 		<?php
 		/* output actual <svg> to allow styling */

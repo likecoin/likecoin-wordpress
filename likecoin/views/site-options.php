@@ -78,7 +78,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 	?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Only one LikeCoin ID' ); ?>
+		<?php esc_html_e( 'Override all LikeButton with site LikeCoin ID' ); ?>
 	</label>
 	<?php
 }
@@ -155,7 +155,7 @@ function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Allow author to cusomtize this setting' ); ?>
+		<?php esc_html_e( 'Allow editors to cusomtize display setting per post' ); ?>
 	</label>
 	<?php
 }
