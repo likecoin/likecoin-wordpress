@@ -65,7 +65,12 @@ function get_author_likecoin_id( $post ) {
  */
 function likecoin_display_meta_box( $post ) {
 	include_once 'views/metabox.php';
-	likecoin_add_meta_box( $post );
+	$option          = get_option( LC_OPTION_NAME );
+	$is_disabled = false;
+	if (isset( $option['lc_site_likebutton_allow_author_override'] )) {
+		$is_disabled = !$option['lc_site_likebutton_allow_author_override'];
+	}
+	likecoin_add_meta_box( $post, $is_disabled );
 }
 
 
@@ -92,7 +97,7 @@ function likecoin_display_top_options_page() {
 		LC_SITE_OPTIONS_PAGE,
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'Plugin Setting', LC_PLUGIN_SLUG ),
-		'publish_posts',
+		'manage_options',
 		LC_SITE_OPTIONS_PAGE,
 		'likecoin_add_site_options_page'
 	);
@@ -125,7 +130,7 @@ function likecoin_load_scripts( $hook ) {
  * Register our metabox
  */
 function likecoin_register_meta_boxes() {
-	add_meta_box( 'like-coin', __( 'LikeCoin Plugin', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box', 'post' );
+	add_meta_box( 'like-coin', __( 'LikeCoin Plugin', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
 }
 
 add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
