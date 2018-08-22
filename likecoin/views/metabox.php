@@ -65,7 +65,7 @@ function likecoin_add_meta_box( $post, $is_disabled ) {
 			<?php
 			wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 }
-		wp_register_style( 'lc_metabox', LC_URI . 'assets/css/metabox.css', false, LC_PLUGIN_VERSION );
-		wp_enqueue_style( 'lc_metabox' );
+		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
+		wp_enqueue_style( 'lc_css_common' );
 }
 ?>
