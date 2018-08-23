@@ -44,9 +44,8 @@ define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '1.0.2' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta35' );
 
-define( 'LC_SITE_OPTIONS_PAGE', 'lc_site_options' );
-define( 'LC_USER_OPTIONS_PAGE', 'lc_user_options' );
-define( 'LC_OPTION_NAME', 'lc_plugin_options' );
+require_once 'includes/constant/options.php';
+
 /**
  * Get post author's LikeCoin ID from post
  *
@@ -54,7 +53,7 @@ define( 'LC_OPTION_NAME', 'lc_plugin_options' );
  */
 function get_author_likecoin_id( $post ) {
 	$author      = $post->post_author;
-	$likecoin_id = get_user_meta( $author, 'lc_likecoin_id', true );
+	$likecoin_id = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
 	return $likecoin_id;
 }
 
@@ -67,8 +66,8 @@ function likecoin_display_meta_box( $post ) {
 	include_once 'views/metabox.php';
 	$option      = get_option( LC_OPTION_NAME );
 	$is_disabled = false;
-	if ( isset( $option['lc_site_likebutton_allow_author_override'] ) ) {
-		$is_disabled = ! $option['lc_site_likebutton_allow_author_override'];
+	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) ) {
+		$is_disabled = ! $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ];
 	}
 	likecoin_add_meta_box( $post, $is_disabled );
 }
@@ -107,7 +106,7 @@ function likecoin_display_top_options_page() {
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'Your LikeButton', LC_PLUGIN_SLUG ),
 		'publish_posts',
-		'lc_user_options',
+		LC_USER_OPTIONS_PAGE,
 		'likecoin_add_user_options_page'
 	);
 }
@@ -147,19 +146,13 @@ function likecoin_save_postdata( $post_id ) {
 		return;
 	}
 
-	if ( isset( $_POST['lc_widget_option'] ) ) {
+	if ( isset( $_POST[ LC_OPTION_WIDGET_OPTION ] ) ) {
 		$option = array(
-			'lc_widget_position' => sanitize_key( $_POST['lc_widget_option'] ),
+			LC_OPTION_WIDGET_POSITION => sanitize_key( $_POST[ LC_OPTION_WIDGET_OPTION ] ),
 		);
 		update_post_meta(
 			$post_id,
-			'lc_widget_option',
-			$option
-		);
-		$post = get_post( $post_id );
-		update_user_meta(
-			$post->post_author,
-			'lc_widget_option',
+			LC_OPTION_WIDGET_OPTION,
 			$option
 		);
 	}
@@ -178,10 +171,10 @@ function likecoin_add_likebutton( $content ) {
 	$post_type_query = '';
 
 	do {
-		if ( isset( $option['lc_site_likebutton_allow_author_override'] ) ) {
-			if ( $option['lc_site_likebutton_allow_author_override'] ) {
-				$widget_option   = get_post_meta( $post->ID, 'lc_widget_option', true );
-				$widget_position = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
+		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) ) {
+			if ( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
+				$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
+				$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
 				if ( strlen( $widget_position ) > 0 && 'none' !== $widget_position ) {
 					// if set post_meta, cont to render.
 					break;
@@ -189,8 +182,8 @@ function likecoin_add_likebutton( $content ) {
 				// otherwise judge by switch case below.
 			}
 		}
-		if ( isset( $option['lc_site_likebutton_show'] ) ) {
-			$type = $option['lc_site_likebutton_show'];
+		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
+			$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
 			switch ( $type ) {
 				case 'none':
 					// set to none, exit early.
@@ -212,9 +205,9 @@ function likecoin_add_likebutton( $content ) {
 		$should_use_site_id = false;
 		$likecoin_id        = '';
 
-		if ( isset( $option['lc_site_likecoin_id_toggle'] ) && isset( $option['lc_site_likecoin_id_object'] ) ) {
-			$should_use_site_id = (bool) $option['lc_site_likecoin_id_toggle'];
-			$likecoin_id        = $option['lc_site_likecoin_id_object']['likecoin_id'];
+		if ( isset( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && isset( $option[ LC_OPTION_SITE_LIKECOIN_USER ] ) ) {
+			$should_use_site_id = (bool) $option[ LC_OPTION_SITE_BUTTON_ENABLED ];
+			$likecoin_id        = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
 		} else {
 			$likecoin_id = get_author_likecoin_id( $post );
 		}
@@ -243,25 +236,26 @@ function likecoin_update_user_id() {
 		return wp_die( 'error editing' );
 	}
 	check_admin_referer( 'likecoin_update_user_id' );
-	if ( isset( $_POST['likecoin_id'] ) ) {
+	if ( isset( $_POST[ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
 		update_user_meta(
 			$user_id,
-			'lc_likecoin_id',
-			sanitize_text_field( wp_unslash( $_POST['likecoin_id'] ) )
+			LC_USER_LIKECOIN_ID,
+			sanitize_text_field( wp_unslash( $_POST[ LC_LIKECOIN_USER_ID_FIELD ] ) )
 		);
-	}
-	if ( isset( $_POST['likecoin_wallet'] ) ) {
+		$likecoin_user = array();
+		if ( isset( $_POST[ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
+			$likecoin_user[ LC_LIKECOIN_USER_ID_FIELD ] = sanitize_text_field( wp_unslash( $_POST[ LC_LIKECOIN_USER_ID_FIELD ] ) );
+		}
+		if ( isset( $_POST[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) ) {
+			$likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] = sanitize_text_field( wp_unslash( $_POST[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) );
+		}
+		if ( isset( $_POST[ LC_LIKECOIN_USER_WALLET_FIELD ] ) ) {
+			$likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] = sanitize_text_field( wp_unslash( $_POST[ LC_LIKECOIN_USER_WALLET_FIELD ] ) );
+		}
 		update_user_meta(
 			$user_id,
-			'lc_likecoin_wallet',
-			sanitize_text_field( wp_unslash( $_POST['likecoin_wallet'] ) )
-		);
-	}
-	if ( isset( $_POST['likecoin_display_name'] ) ) {
-		update_user_meta(
-			$user_id,
-			'lc_likecoin_display_name',
-			sanitize_text_field( wp_unslash( $_POST['likecoin_display_name'] ) )
+			LC_USER_LIKECOIN_USER,
+			$likecoin_user
 		);
 	}
 	if ( isset( $_POST['_wp_http_referer'] ) ) {
@@ -317,28 +311,31 @@ function likecoin_init_settings() {
 
 	register_setting( LC_SITE_OPTIONS_PAGE, LC_OPTION_NAME );
 
+	$site_likecoin_id_options_section = 'lc_site_likecoin_id_options';
+	$site_likebutton_options_section  = 'lc_site_likebutton_options';
+
 	add_settings_section(
-		'lc_site_likecoin_id_options',
+		$site_likecoin_id_options_section,
 		__( 'Site LikeCoinID', LC_PLUGIN_SLUG ),
 		null,
 		LC_SITE_OPTIONS_PAGE
 	);
 
 	add_settings_section(
-		'lc_site_likebutton_options',
+		$site_likebutton_options_section,
 		__( 'Site LikeButton Display Setting', LC_PLUGIN_SLUG ),
 		null,
 		LC_SITE_OPTIONS_PAGE
 	);
 
 	add_settings_field(
-		'lc_site_likecoin_id_toggle',
+		LC_OPTION_SITE_BUTTON_ENABLED,
 		__( 'Enable site LikeCoin ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_toggle',
 		LC_SITE_OPTIONS_PAGE,
-		'lc_site_likecoin_id_options',
+		$site_likecoin_id_options_section,
 		[
-			'label_for' => 'lc_site_likecoin_id_toggle',
+			'label_for' => LC_OPTION_SITE_BUTTON_ENABLED,
 		]
 	);
 
@@ -347,31 +344,31 @@ function likecoin_init_settings() {
 		__( 'Site LikeCoin ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_table',
 		LC_SITE_OPTIONS_PAGE,
-		'lc_site_likecoin_id_options',
+		$site_likecoin_id_options_section,
 		[
-			'label_for' => 'lc_site_likecoin_id_object',
+			'label_for' => LC_OPTION_SITE_LIKECOIN_USER,
 		]
 	);
 
 	add_settings_field(
-		'lc_site_likebutton_show',
+		LC_OPTION_BUTTON_DISPLAY_OPTION,
 		__( 'Display option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_display_option',
 		LC_SITE_OPTIONS_PAGE,
-		'lc_site_likebutton_options',
+		$site_likebutton_options_section,
 		[
-			'label_for' => 'lc_site_likebutton_show',
+			'label_for' => LC_OPTION_BUTTON_DISPLAY_OPTION,
 		]
 	);
 
 	add_settings_field(
-		'lc_site_likebutton_allow_author_override',
+		LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
 		__( 'Allow per Post option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_allow_author_override',
 		LC_SITE_OPTIONS_PAGE,
-		'lc_site_likebutton_options',
+		$site_likebutton_options_section,
 		[
-			'label_for' => 'lc_site_likebutton_allow_author_override',
+			'label_for' => LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
 		]
 	);
 }

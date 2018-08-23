@@ -31,9 +31,9 @@
  */
 function likecoin_add_meta_box( $post, $is_disabled ) {
 	$author            = $post->post_author;
-	$likecoin_id       = get_user_meta( $author, 'lc_likecoin_id', true );
-	$widget_option     = get_post_meta( $post->ID, 'lc_widget_option', true );
-	$widget_position   = isset( $widget_option['lc_widget_position'] ) ? $widget_option['lc_widget_position'] : '';
+	$likecoin_id       = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
+	$widget_option     = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
+	$widget_position   = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
 	$is_widget_enabled = strlen( $widget_position ) > 0 && 'none' !== $widget_position;
 	$has_likecoin_id   = strlen( $likecoin_id ) > 0;
 	?>
@@ -48,16 +48,16 @@ function likecoin_add_meta_box( $post, $is_disabled ) {
 				<?php esc_html_e( 'Author has no LikeCoin ID yet.', LC_PLUGIN_SLUG ); ?>
 			</a>
 		<?php } else { ?>
-			<input type='hidden' name="<?php echo esc_attr( 'lc_widget_option' ); ?>" value="none">
+			<input type='hidden' name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>" value="none">
 			<input type="checkbox"
-				name="<?php echo esc_attr( 'lc_widget_option' ); ?>"
+				name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>"
 				value="bottom"
 				<?php
 				if ( $is_widget_enabled ) {
 					echo esc_attr( 'checked' );}
 				?>
 			>
-			<label for="<?php echo esc_attr( 'lc_widget_option' ); ?>">
+			<label for="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>">
 				<?php esc_html_e( 'Enabled LikeButton in this post', LC_PLUGIN_SLUG ); ?>
 			</label>
 		</section>

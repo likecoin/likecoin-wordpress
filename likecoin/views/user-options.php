@@ -52,12 +52,13 @@ function likecoin_add_user_options_page() {
 	<input type="hidden" name="action" value="likecoin_update_user_id">
 	<?php
 		wp_nonce_field( 'likecoin_update_user_id' );
-		$likecoin_id                = get_user_meta( $user_id, 'lc_likecoin_id', true );
-		$likecoin_display_name      = get_user_meta( $user_id, 'lc_likecoin_display_name', true );
-		$likecoin_wallet            = get_user_meta( $user_id, 'lc_likecoin_wallet', true );
-		$likecoin_id_name           = 'likecoin_id';
-		$likecoin_display_name_name = 'likecoin_display_name';
-		$likecoin_wallet_name       = 'likecoin_wallet';
+		$likecoin_id                = get_user_meta( $user_id, LC_USER_LIKECOIN_ID, true );
+		$likecoin_user              = get_user_meta( $user_id, LC_USER_LIKECOIN_USER, true );
+		$likecoin_display_name      = isset( $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] : '';
+		$likecoin_wallet            = isset( $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] : '';
+		$likecoin_id_name           = LC_LIKECOIN_USER_ID_FIELD;
+		$likecoin_display_name_name = LC_LIKECOIN_USER_DISPLAY_NAME_FIELD;
+		$likecoin_wallet_name       = LC_LIKECOIN_USER_WALLET_FIELD;
 		$params                     = (object) array(
 			'likecoin_id'                => $likecoin_id,
 			'likecoin_display_name'      => $likecoin_display_name,
