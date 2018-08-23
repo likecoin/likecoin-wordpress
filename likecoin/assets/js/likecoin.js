@@ -120,10 +120,10 @@ async function login() {
   });
   const payload = await res.json();
   const {
-    user,
-    wallet,
-    displayName,
-    avatar,
+    user = '',
+    wallet = '',
+    displayName = '',
+    avatar = '',
   } = payload;
   if (user) {
     handleUpdateId({
