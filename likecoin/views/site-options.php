@@ -98,16 +98,20 @@ function likecoin_add_site_likecoin_id_table( $args ) {
 	$likecoin_id                = isset( $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_ID_FIELD ] ) ? $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_ID_FIELD ] : '';
 	$likecoin_display_name      = isset( $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) ? $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] : '';
 	$likecoin_wallet            = isset( $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_WALLET_FIELD ] ) ? $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_WALLET_FIELD ] : '';
+	$likecoin_avatar            = isset( $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_AVATAR_FIELD ] ) ? $options[ $args['label_for'] ] [ LC_LIKECOIN_USER_AVATAR_FIELD ] : '';
 	$likecoin_id_name           = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_ID_FIELD . ']';
 	$likecoin_display_name_name = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_DISPLAY_NAME_FIELD . ']';
 	$likecoin_wallet_name       = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_WALLET_FIELD . ']';
+	$likecoin_avatar_name       = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_AVATAR_FIELD . ']';
 	$params                     = (object) array(
 		'likecoin_id'                => $likecoin_id,
 		'likecoin_display_name'      => $likecoin_display_name,
 		'likecoin_wallet'            => $likecoin_wallet,
+		'likecoin_avatar'            => $likecoin_avatar,
 		'likecoin_id_name'           => $likecoin_id_name,
 		'likecoin_display_name_name' => $likecoin_display_name_name,
 		'likecoin_wallet_name'       => $likecoin_wallet_name,
+		'likecoin_avatar_name'       => $likecoin_avatar_name,
 	);
 	likecoin_add_likecoin_info_table( $params );
 	likecoin_add_web3_section( false );

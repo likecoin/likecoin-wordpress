@@ -86,9 +86,12 @@ function likecoin_add_likecoin_info_table( $args ) {
 	$likecoin_id                = $args->likecoin_id;
 	$likecoin_display_name      = $args->likecoin_display_name;
 	$likecoin_wallet            = $args->likecoin_wallet;
+	$likecoin_wallet            = substr( $likecoin_wallet, 0, 6 ) . '...' . substr( $likecoin_wallet, 38, 4 );
+	$likecoin_avatar            = $args->likecoin_avatar;
 	$likecoin_id_name           = $args->likecoin_id_name;
 	$likecoin_display_name_name = $args->likecoin_display_name_name;
 	$likecoin_wallet_name       = $args->likecoin_wallet_name;
+	$likecoin_avatar_name       = $args->likecoin_avatar_name;
 	$has_likecoin_id            = strlen( $likecoin_id ) > 0;
 	?>
 	<table class="form-table likecoinTable">
@@ -100,12 +103,26 @@ function likecoin_add_likecoin_info_table( $args ) {
 		</tr>
 		<tr>
 			<td>
-				<span id="likecoinId" class="likecoinId"><?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></span>
-				<input type="hidden"
-					class="likecoinId"
-					name="<?php echo esc_attr( $likecoin_id_name ); ?>"
-					value="<?php echo esc_attr( $likecoin_id ); ?>"
-				>
+				<div class="avatarWrapper">
+					<img id="likecoinAvatar"
+						class="likecoinAvatar"
+						src="<?php echo esc_url( $likecoin_avatar ? $likecoin_avatar : 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=' ); ?>">
+					<input type="hidden"
+						class="likecoinAvatar"
+						name="<?php echo esc_attr( $likecoin_avatar_name ); ?>"
+						value="<?php echo esc_url( $likecoin_avatar ); ?>"
+					>
+					<a id="likecoinId"
+						href="<?php echo esc_url( 'https://like.co/' . $likecoin_id ); ?>"
+						class="likecoinId"
+					>
+						<?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></a>
+					<input type="hidden"
+						class="likecoinId"
+						name="<?php echo esc_attr( $likecoin_id_name ); ?>"
+						value="<?php echo esc_attr( $likecoin_id ); ?>"
+					>
+				</div>
 			</td>
 			<td>
 				<span id="likecoinDisplayName"><?php echo esc_html( $likecoin_display_name ? $likecoin_display_name : '-' ); ?></span>

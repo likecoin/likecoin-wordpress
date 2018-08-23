@@ -6,6 +6,11 @@ let webThreeError = null;
 let webThreeInstance = null;
 let isInited = false;
 
+function formatWallet(wallet) {
+  if (!wallet) return wallet;
+  return `${wallet.substr(0, 6)}...${wallet.substr(38, 4)}`;
+}
+
 function show(selector) {
   const elems = document.querySelectorAll(`.likecoin${selector}`);
   elems.forEach((elem) => { elem.style.display = ''; }); // eslint-disable-line no-param-reassign
@@ -50,21 +55,30 @@ async function checkForWebThree() {
   return webThreeInstance.utils.toChecksumAddress(selectedAddress);
 }
 
-async function handleUpdateId(user, wallet, displayName) {
+async function handleUpdateId({
+  user,
+  wallet,
+  displayName,
+  avatar,
+}) {
   const likecoinId = document.querySelector('#likecoinId');
   const likecoinWallet = document.querySelector('#likecoinWallet');
   const likecoinDisplayName = document.querySelector('#likecoinDisplayName');
+  const likecoinAvatar = document.querySelector('#likecoinAvatar');
   const likecoinPreview = document.querySelector('#likecoinPreview');
   const likecoinIdInput = document.querySelector('input.likecoinId');
   const likecoinDisplayNameInput = document.querySelector('input.likecoinDisplayName');
   const likecoinWalletInput = document.querySelector('input.likecoinWallet');
+  const likecoinAvatarInput = document.querySelector('input.likecoinAvatar');
   if (likecoinId) likecoinId.innerHTML = user || '-';
-  if (likecoinWallet) likecoinWallet.innerHTML = wallet || '-';
+  if (likecoinWallet) likecoinWallet.innerHTML = formatWallet(wallet) || '-';
   if (likecoinDisplayName) likecoinDisplayName.innerHTML = displayName || '-';
+  if (likecoinAvatar) likecoinAvatar.src = avatar || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
   if (likecoinPreview) likecoinPreview.src = user ? `https://button.like.co/in/embed/${user}/button` : 'about:blank';
   if (likecoinIdInput) likecoinIdInput.value = user;
   if (likecoinWalletInput) likecoinWalletInput.value = wallet;
   if (likecoinDisplayNameInput) likecoinDisplayNameInput.value = displayName;
+  if (likecoinAvatarInput) likecoinAvatarInput.value = avatar;
   hide('.loginSection');
   show('.optionsSection');
 }
@@ -105,9 +119,19 @@ async function login() {
     method: 'POST',
   });
   const payload = await res.json();
-  const { user, wallet, displayName } = payload;
+  const {
+    user,
+    wallet,
+    displayName,
+    avatar,
+  } = payload;
   if (user) {
-    handleUpdateId(user, wallet, displayName);
+    handleUpdateId({
+      user,
+      wallet,
+      displayName,
+      avatar,
+    });
   } else {
     // TODO: Add error msg display to UI
     console.error('Error: user is undefined'); // eslint-disable-line no-console
@@ -155,7 +179,12 @@ async function onLoginClick() {
 }
 
 function onLogoutClick() {
-  handleUpdateId('', '', '');
+  handleUpdateId({
+    user: '',
+    wallet: '',
+    displayName: '',
+    avatar: '',
+  });
 }
 
 (() => {

@@ -252,6 +252,9 @@ function likecoin_update_user_id() {
 		if ( isset( $_POST[ LC_LIKECOIN_USER_WALLET_FIELD ] ) ) {
 			$likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] = sanitize_text_field( wp_unslash( $_POST[ LC_LIKECOIN_USER_WALLET_FIELD ] ) );
 		}
+		if ( isset( $_POST[ LC_LIKECOIN_USER_AVATAR_FIELD ] ) ) {
+			$likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] = $_POST[ LC_LIKECOIN_USER_AVATAR_FIELD ];
+		}
 		update_user_meta(
 			$user_id,
 			LC_USER_LIKECOIN_USER,

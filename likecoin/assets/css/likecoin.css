@@ -83,7 +83,13 @@
 }
 
 .likecoin .likecoinId {
-  color: #28646e;
+
+  text-decoration: none;
+
+  color: #4a90e2;
+
+  font-size: 14px;
+  font-weight: 600;
 }
 
 /* likecoin ID table*/
@@ -93,7 +99,25 @@
   background: #f9f9f9;
 }
 
+.likecoin .likecoinTable .likecoinAvatar {
+  max-width: 64px;
+  max-height: 64px;
+
+  margin-right: 16px;
+
+  border-radius: 50%;
+}
+
+.likecoin .likecoinTable .avatarWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
 .likecoin .likecoinTable tr {
+
+  white-space: nowrap;
+
   border: solid 1px #e6e6e6;
 }
 

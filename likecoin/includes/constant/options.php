@@ -30,6 +30,7 @@ define( 'LC_USER_LIKECOIN_USER', 'lc_likecoin_user' );
 define( 'LC_LIKECOIN_USER_ID_FIELD', 'likecoin_id' );
 define( 'LC_LIKECOIN_USER_DISPLAY_NAME_FIELD', 'display_name' );
 define( 'LC_LIKECOIN_USER_WALLET_FIELD', 'wallet' );
+define( 'LC_LIKECOIN_USER_AVATAR_FIELD', 'avatar' );
 
 define( 'LC_OPTION_WIDGET_OPTION', 'lc_widget_option' );
 define( 'LC_OPTION_WIDGET_POSITION', 'lc_widget_position' );

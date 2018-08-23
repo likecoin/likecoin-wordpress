@@ -56,16 +56,20 @@ function likecoin_add_user_options_page() {
 		$likecoin_user              = get_user_meta( $user_id, LC_USER_LIKECOIN_USER, true );
 		$likecoin_display_name      = isset( $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] : '';
 		$likecoin_wallet            = isset( $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] : '';
+		$likecoin_avatar            = isset( $likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] : '';
 		$likecoin_id_name           = LC_LIKECOIN_USER_ID_FIELD;
 		$likecoin_display_name_name = LC_LIKECOIN_USER_DISPLAY_NAME_FIELD;
 		$likecoin_wallet_name       = LC_LIKECOIN_USER_WALLET_FIELD;
+		$likecoin_avatar_name       = LC_LIKECOIN_USER_AVATAR_FIELD;
 		$params                     = (object) array(
 			'likecoin_id'                => $likecoin_id,
 			'likecoin_display_name'      => $likecoin_display_name,
 			'likecoin_wallet'            => $likecoin_wallet,
+			'likecoin_avatar'            => $likecoin_avatar,
 			'likecoin_id_name'           => $likecoin_id_name,
 			'likecoin_display_name_name' => $likecoin_display_name_name,
 			'likecoin_wallet_name'       => $likecoin_wallet_name,
+			'likecoin_avatar_name'       => $likecoin_avatar_name,
 		);
 		echo '<h2>' . esc_html__( 'Your LikeCoin ID' ) . '</h2>';
 		likecoin_add_likecoin_info_table( $params );
