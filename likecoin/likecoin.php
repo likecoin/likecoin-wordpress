@@ -98,14 +98,18 @@ function likecoin_display_top_options_page() {
 		'likecoin_add_site_options_page'
 	);
 
-	add_submenu_page(
-		LC_SITE_OPTIONS_PAGE,
-		__( 'LikeCoin', LC_PLUGIN_SLUG ),
-		__( 'Your LikeButton', LC_PLUGIN_SLUG ),
-		'publish_posts',
-		LC_USER_OPTIONS_PAGE,
-		'likecoin_add_user_options_page'
-	);
+	// hide if site likecoin id enabled and user is not admin.
+	$option = get_option( LC_OPTION_NAME );
+	if ( empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) || current_user_can( 'manage_options' ) ) {
+		add_submenu_page(
+			LC_SITE_OPTIONS_PAGE,
+			__( 'LikeCoin', LC_PLUGIN_SLUG ),
+			__( 'Your LikeButton', LC_PLUGIN_SLUG ),
+			'publish_posts',
+			LC_USER_OPTIONS_PAGE,
+			'likecoin_add_user_options_page'
+		);
+	}
 }
 add_action( 'admin_menu', 'likecoin_display_top_options_page' );
 
@@ -250,7 +254,10 @@ function likecoin_update_user_id() {
 			$likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] = sanitize_text_field( wp_unslash( $_POST[ LC_LIKECOIN_USER_WALLET_FIELD ] ) );
 		}
 		if ( isset( $_POST[ LC_LIKECOIN_USER_AVATAR_FIELD ] ) ) {
-			$likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] = $_POST[ LC_LIKECOIN_USER_AVATAR_FIELD ];
+			// url might contain octets.
+			// phpcs:disable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+			$likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] = wp_unslash( $_POST[ LC_LIKECOIN_USER_AVATAR_FIELD ] );
+			// phpcs:enable WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 		}
 		update_user_meta(
 			$user_id,
@@ -304,12 +311,37 @@ function handle_uninstall() {
 }
 
 /**
+ * Settings api validation function
+ *
+ * @param array| $option The form input data for options api.
+ */
+function likecoin_settings_validation( $option ) {
+	if ( isset( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && $option[ LC_OPTION_SITE_BUTTON_ENABLED ]
+	&& ( ! isset( $option[ LC_OPTION_SITE_LIKECOIN_USER ] ) || empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) ) {
+		add_settings_error(
+			'lc_settings_messages',
+			'missing_site_id',
+			__( 'Site LikeCoin ID is missing', LC_PLUGIN_SLUG ),
+			'error'
+		);
+		return null;
+	}
+	add_settings_error(
+		'lc_settings_messages',
+		'updated',
+		__( 'Settings Saved', LC_PLUGIN_SLUG ),
+		'updated'
+	);
+	return $option;
+}
+
+/**
  * Init settings api for plugin
  */
 function likecoin_init_settings() {
 	include_once 'views/site-options.php';
 
-	register_setting( LC_SITE_OPTIONS_PAGE, LC_OPTION_NAME );
+	register_setting( LC_SITE_OPTIONS_PAGE, LC_OPTION_NAME, 'likecoin_settings_validation' );
 
 	$site_likecoin_id_options_section = 'lc_site_likecoin_id_options';
 	$site_likebutton_options_section  = 'lc_site_likebutton_options';

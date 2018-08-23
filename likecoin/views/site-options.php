@@ -31,17 +31,6 @@ function likecoin_add_site_options_page() {
 	if ( ! current_user_can( 'manage_options' ) ) {
 		return;
 	}
-	// For display only, probably no security concern.
-	// phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification
-	if ( isset( $_GET['settings-updated'] ) ) {
-	// phpcs:enable WordPress.Security.NonceVerification.NoNonceVerification
-		add_settings_error(
-			'lc_settings_messages',
-			'updated',
-			__( 'Settings Saved', LC_PLUGIN_SLUG ),
-			'updated'
-		);
-	}
 	settings_errors( 'lc_settings_messages' );
 	?>
 	<div class="wrap likecoin">
