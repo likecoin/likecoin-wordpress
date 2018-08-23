@@ -65,10 +65,7 @@ function get_author_likecoin_id( $post ) {
 function likecoin_display_meta_box( $post ) {
 	include_once 'views/metabox.php';
 	$option      = get_option( LC_OPTION_NAME );
-	$is_disabled = false;
-	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) ) {
-		$is_disabled = ! $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ];
-	}
+	$is_disabled = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
 	likecoin_add_meta_box( $post, $is_disabled );
 }
 

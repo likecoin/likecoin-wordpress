@@ -41,10 +41,14 @@ function likecoin_add_meta_box( $post, $is_disabled ) {
 		<section class="likecoin">
 		<?php
 		if ( $is_disabled ) {
-			esc_html_e( 'LikeButton custom setting is disabled by admin.', LC_PLUGIN_SLUG );
+			?>
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_SITE_OPTIONS_PAGE ) ); ?>">
+				<?php esc_html_e( 'LikeButton per post setting is disabled by admin.', LC_PLUGIN_SLUG ); ?>
+			</a>
+			<?php
 		} elseif ( ! $has_likecoin_id ) {
 			?>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=lc_site_options' ) ); ?>">
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_USER_OPTIONS_PAGE ) ); ?>">
 				<?php esc_html_e( 'Author has no LikeCoin ID yet.', LC_PLUGIN_SLUG ); ?>
 			</a>
 		<?php } else { ?>
