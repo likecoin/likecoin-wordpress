@@ -50,6 +50,7 @@ function likecoin_add_meta_box( $post, $is_disabled ) {
 		<?php } else { ?>
 			<input type='hidden' name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>" value="none">
 			<input type="checkbox"
+				id="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>"
 				name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>"
 				value="bottom"
 				<?php

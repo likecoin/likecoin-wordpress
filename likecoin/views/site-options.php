@@ -72,6 +72,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 	$options = get_option( LC_OPTION_NAME );
 	?>
 	<input type="checkbox"
+	id="<?php echo esc_attr( $args['label_for'] ); ?>"
 	name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 	value="true"
 	<?php
@@ -149,6 +150,7 @@ function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	$options = get_option( LC_OPTION_NAME );
 	?>
 	<input type="checkbox"
+		id="<?php echo esc_attr( $args['label_for'] ); ?>"
 		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 		value="true"
 	<?php
