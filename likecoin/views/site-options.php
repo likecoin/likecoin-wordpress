@@ -153,7 +153,7 @@ function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Allow editors to cusomtize display setting per post' ); ?>
+		<?php esc_html_e( 'Allow editors to customize display setting per post' ); ?>
 	</label>
 	<?php
 }
