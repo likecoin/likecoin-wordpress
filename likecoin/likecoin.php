@@ -300,12 +300,13 @@ function handle_uninstall() {
 	/* clean up all user metadata */
 	delete_metadata( 'user', 0, 'lc_likecoin_id', '', true );
 	delete_metadata( 'user', 0, 'lc_likecoin_wallet', '', true );
+	delete_metadata( 'user', 0, 'lc_likecoin_user', '', true );
 	delete_metadata( 'user', 0, 'lc_widget_option', '', true );
 	delete_metadata( 'user', 0, 'lc_widget_position', '', true );
 	/* clean up all post metadata */
-	delete_metadata( 'user', 0, 'lc_widget_option', '', true );
+	delete_metadata( 'post', 0, 'lc_widget_option', '', true );
 	delete_metadata( 'post', 0, 'lc_widget_position', '', true );
-
+	/* clean up all option */
 	delete_option( LC_OPTION_NAME );
 	delete_option( 'likecoin_plugin_version' );
 }
