@@ -172,16 +172,15 @@ function likecoin_add_likebutton( $content ) {
 	$post_type_query = '';
 
 	do {
-		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) ) {
-			if ( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
-				$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
-				$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-				if ( strlen( $widget_position ) > 0 && 'none' !== $widget_position ) {
-					// if set post_meta, cont to render.
-					break;
-				}
-				// otherwise judge by switch case below.
+		// follow post meta if option is not set yet.
+		if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
+			$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
+			$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
+			if ( strlen( $widget_position ) > 0 && 'none' !== $widget_position ) {
+				// if set post_meta, cont to render.
+				break;
 			}
+			// otherwise judge by switch case below.
 		}
 		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
 			$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
@@ -317,15 +316,14 @@ function handle_uninstall() {
  * @param array| $option The form input data for options api.
  */
 function likecoin_settings_validation( $option ) {
-	if ( isset( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && $option[ LC_OPTION_SITE_BUTTON_ENABLED ]
-	&& ( ! isset( $option[ LC_OPTION_SITE_LIKECOIN_USER ] ) || empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) ) {
+	if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
 		add_settings_error(
 			'lc_settings_messages',
 			'missing_site_id',
 			__( 'Site LikeCoin ID is missing', LC_PLUGIN_SLUG ),
 			'error'
 		);
-		return null;
+		return get_option( LC_OPTION_NAME );
 	}
 	add_settings_error(
 		'lc_settings_messages',

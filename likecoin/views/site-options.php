@@ -60,15 +60,14 @@ function likecoin_add_site_options_page() {
 function likecoin_add_site_likecoin_id_toggle( $args ) {
 	$options = get_option( LC_OPTION_NAME );
 	?>
+	<input type='hidden'
+		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		value="0">
 	<input type="checkbox"
 	id="<?php echo esc_attr( $args['label_for'] ); ?>"
 	name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
-	value="true"
-	<?php
-	if ( isset( $options[ $args['label_for'] ] ) ) {
-		echo esc_attr( 'checked' );
-	}
-	?>
+	value="1"
+	<?php isset( $options[ $args['label_for'] ] ) && checked( $options[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
 		<?php esc_html_e( 'Override all LikeButton with site LikeCoin ID' ); ?>
@@ -142,15 +141,14 @@ function likecoin_add_site_likebutton_display_option( $args ) {
 function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	$options = get_option( LC_OPTION_NAME );
 	?>
+	<input type='hidden'
+		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		value="0">
 	<input type="checkbox"
 		id="<?php echo esc_attr( $args['label_for'] ); ?>"
 		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
-		value="true"
-	<?php
-	if ( isset( $options[ $args['label_for'] ] ) ) {
-		echo esc_attr( 'checked' );
-	}
-	?>
+		value="1"
+	<?php isset( $options[ $args['label_for'] ] ) && checked( $options[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
 		<?php esc_html_e( 'Allow editors to customize display setting per post' ); ?>
