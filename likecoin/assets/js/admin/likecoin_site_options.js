@@ -12,9 +12,9 @@ function onToggleSiteButton() {
 }
 
 if (siteCheckbox) {
-	siteCheckbox.addEventListener('change', onToggleSiteButton);
-	if (!siteCheckbox.checked) {
-		const element = document.querySelector('.site_liekcoin_id_table');
-    	element.style.display = 'none';
-	}
+  siteCheckbox.addEventListener('change', onToggleSiteButton);
+  if (!siteCheckbox.checked) {
+    const element = document.querySelector('.site_liekcoin_id_table');
+    element.style.display = 'none';
+  }
 }

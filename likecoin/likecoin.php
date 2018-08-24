@@ -178,7 +178,7 @@ function likecoin_add_likebutton( $content ) {
 			$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
 			if ( strlen( $widget_position ) > 0 ) {
 				if ( 'none' === $widget_position ) {
-					// set to none, exit early
+					// set to none, exit early.
 					return $content;
 				}
 				// else if set post_meta, cont to render.

@@ -80,7 +80,8 @@ function likecoin_add_web3_section( $has_login_button ) {
 /**
  * Add the LikeCoin ID table UI
  *
- * @param array| $info display option for LikeCoin ID table.
+ * @param array|   $info display option for LikeCoin ID table.
+ * @param boolean| $editable Show action buttons or not.
  */
 function likecoin_add_likecoin_info_table( $info, $editable = true ) {
 	$likecoin_id                = $info['likecoin_id'];
@@ -99,7 +100,10 @@ function likecoin_add_likecoin_info_table( $info, $editable = true ) {
 			<th><span><?php esc_html_e( 'LikeCoin ID', LC_PLUGIN_SLUG ); ?></span></th>
 			<th><?php esc_html_e( 'Display Name', LC_PLUGIN_SLUG ); ?></th>
 			<th><?php esc_html_e( 'Wallet', LC_PLUGIN_SLUG ); ?></th>
-			<th class="actions"></th>
+			<?php
+			if ( $editable ) {
+				echo '<th class="actions"></th>';}
+			?>
 		</tr>
 		<tr>
 			<td>
@@ -140,8 +144,9 @@ function likecoin_add_likecoin_info_table( $info, $editable = true ) {
 					value="<?php echo esc_attr( $likecoin_wallet ); ?>"
 				>
 			</td>
+			<?php if ( $editable ) { ?>
 			<td class="actions">
-			<?php if ( $has_likecoin_id ) { ?>
+				<?php if ( $has_likecoin_id ) { ?>
 				<span class="actionWrapper">
 					<a target="_blank"
 						id="likecoinChangeBtn"
@@ -166,6 +171,7 @@ function likecoin_add_likecoin_info_table( $info, $editable = true ) {
 				</span>
 			<?php } ?>
 			</td>
+			<?php } ?>
 		</tr>
 	</table>
 	<?php
