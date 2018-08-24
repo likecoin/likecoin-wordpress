@@ -177,7 +177,7 @@ function likecoin_add_likebutton( $content ) {
 			$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
 			$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
 			if ( strlen( $widget_position ) > 0 ) {
-				if ('none' === $widget_position ) {
+				if ( 'none' === $widget_position ) {
 					// set to none, exit early
 					return $content;
 				}
@@ -380,6 +380,7 @@ function likecoin_init_settings() {
 		$site_likecoin_id_options_section,
 		[
 			'label_for' => LC_OPTION_SITE_LIKECOIN_USER,
+			'class'     => 'site_liekcoin_id_table',
 		]
 	);
 

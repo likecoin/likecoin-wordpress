@@ -73,6 +73,14 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 		<?php esc_html_e( 'Override all LikeButton with site LikeCoin ID' ); ?>
 	</label>
 	<?php
+	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_options.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
+	wp_localize_script(
+		'lc_js_site_options',
+		'WP_CONFIG',
+		array(
+			'siteButtonCheckboxId' => esc_attr( $args['label_for'] ),
+		)
+	);
 }
 
 /**
