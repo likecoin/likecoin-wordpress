@@ -95,7 +95,7 @@ function likecoin_add_user_options_page() {
 	<?php
 	wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 	wp_enqueue_style( 'lc_css_common' );
-	wp_enqueue_script( 'lc_js_common', LC_URI . 'assets/js/likecoin.es5.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_js_common', LC_URI . 'assets/js/dist/likecoin.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
 }
 
 /**
