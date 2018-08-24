@@ -80,18 +80,18 @@ function likecoin_add_web3_section( $has_login_button ) {
 /**
  * Add the LikeCoin ID table UI
  *
- * @param array| $args display option for LikeCoin ID table.
+ * @param array| $info display option for LikeCoin ID table.
  */
-function likecoin_add_likecoin_info_table( $args ) {
-	$likecoin_id                = $args->likecoin_id;
-	$likecoin_display_name      = $args->likecoin_display_name;
-	$likecoin_wallet            = $args->likecoin_wallet;
+function likecoin_add_likecoin_info_table( $info, $editable = true ) {
+	$likecoin_id                = $info['likecoin_id'];
+	$likecoin_display_name      = $info['likecoin_display_name'];
+	$likecoin_wallet            = $info['likecoin_wallet'];
 	$likecoin_wallet            = substr( $likecoin_wallet, 0, 6 ) . '...' . substr( $likecoin_wallet, 38, 4 );
-	$likecoin_avatar            = $args->likecoin_avatar;
-	$likecoin_id_name           = $args->likecoin_id_name;
-	$likecoin_display_name_name = $args->likecoin_display_name_name;
-	$likecoin_wallet_name       = $args->likecoin_wallet_name;
-	$likecoin_avatar_name       = $args->likecoin_avatar_name;
+	$likecoin_avatar            = $info['likecoin_avatar'];
+	$likecoin_id_name           = $info['likecoin_id_name'];
+	$likecoin_display_name_name = $info['likecoin_display_name_name'];
+	$likecoin_wallet_name       = $info['likecoin_wallet_name'];
+	$likecoin_avatar_name       = $info['likecoin_avatar_name'];
 	$has_likecoin_id            = strlen( $likecoin_id ) > 0;
 	?>
 	<table class="form-table likecoinTable">

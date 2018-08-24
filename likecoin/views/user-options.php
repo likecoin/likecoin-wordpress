@@ -28,6 +28,7 @@
 function likecoin_add_user_options_page() {
 	include_once 'components.php';
 
+	$option  = get_option( LC_OPTION_NAME );
 	$user    = wp_get_current_user();
 	$user_id = $user->ID;
 	if ( ! current_user_can( 'edit_user', $user_id ) ) {
@@ -51,36 +52,44 @@ function likecoin_add_user_options_page() {
 	<form action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" method="post">
 	<input type="hidden" name="action" value="likecoin_update_user_id">
 	<?php
+		$is_site_button_enabled = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
+		$params                 = array();
 		wp_nonce_field( 'likecoin_update_user_id' );
-		$likecoin_id                = get_user_meta( $user_id, LC_USER_LIKECOIN_ID, true );
-		$likecoin_user              = get_user_meta( $user_id, LC_USER_LIKECOIN_USER, true );
-		$likecoin_display_name      = isset( $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] : '';
-		$likecoin_wallet            = isset( $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] : '';
-		$likecoin_avatar            = isset( $likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] : '';
-		$likecoin_id_name           = LC_LIKECOIN_USER_ID_FIELD;
-		$likecoin_display_name_name = LC_LIKECOIN_USER_DISPLAY_NAME_FIELD;
-		$likecoin_wallet_name       = LC_LIKECOIN_USER_WALLET_FIELD;
-		$likecoin_avatar_name       = LC_LIKECOIN_USER_AVATAR_FIELD;
-		$params                     = (object) array(
-			'likecoin_id'                => $likecoin_id,
-			'likecoin_display_name'      => $likecoin_display_name,
-			'likecoin_wallet'            => $likecoin_wallet,
-			'likecoin_avatar'            => $likecoin_avatar,
-			'likecoin_id_name'           => $likecoin_id_name,
-			'likecoin_display_name_name' => $likecoin_display_name_name,
-			'likecoin_wallet_name'       => $likecoin_wallet_name,
-			'likecoin_avatar_name'       => $likecoin_avatar_name,
-		);
+		$likecoin_id = '';
+	if ( $is_site_button_enabled ) {
+		$likecoin_id                          = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
+		$params['likecoin_id']                = $likecoin_id;
+		$params['likecoin_display_name']      = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ];
+		$params['likecoin_wallet']            = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_WALLET_FIELD ];
+		$params['likecoin_avatar']            = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_AVATAR_FIELD ];
+		$params['likecoin_id_name']           = '';
+		$params['likecoin_display_name_name'] = '';
+		$params['likecoin_wallet_name']       = '';
+		$params['likecoin_avatar_name']       = '';
+	} else {
+		$likecoin_user                        = get_user_meta( $user_id, LC_USER_LIKECOIN_USER, true );
+		$likecoin_id                          = get_user_meta( $user_id, LC_USER_LIKECOIN_ID, true );
+		$params['likecoin_id']                = $likecoin_id;
+		$params['likecoin_display_name']      = isset( $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] : '';
+		$params['likecoin_wallet']            = isset( $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ] : '';
+		$params['likecoin_avatar']            = isset( $likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] ) ? $likecoin_user[ LC_LIKECOIN_USER_AVATAR_FIELD ] : '';
+		$params['likecoin_id_name']           = LC_LIKECOIN_USER_ID_FIELD;
+		$params['likecoin_display_name_name'] = LC_LIKECOIN_USER_DISPLAY_NAME_FIELD;
+		$params['likecoin_wallet_name']       = LC_LIKECOIN_USER_WALLET_FIELD;
+		$params['likecoin_avatar_name']       = LC_LIKECOIN_USER_AVATAR_FIELD;
+	}
 		echo '<h2>' . esc_html__( 'Your LikeCoin ID' ) . '</h2>';
-		likecoin_add_likecoin_info_table( $params );
+		likecoin_add_likecoin_info_table( $params, ! $is_site_button_enabled );
 		likecoin_add_web3_section( false );
 		echo '<h2>' . esc_html__( 'Your LikeButton' ) . '</h2>';
 		likecoin_add_button_preview( $likecoin_id );
-	?>
+	if ( ! $is_site_button_enabled ) {
+		?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="likecoinButton"
 				value="<?php esc_attr_e( 'Confirm' ); ?>">
 		</p>
+	<?php } ?>
 	</form>
 	</div>
 	<?php
