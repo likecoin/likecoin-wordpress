@@ -64,10 +64,21 @@ function get_author_likecoin_id( $post ) {
  */
 function likecoin_display_meta_box( $post ) {
 	include_once 'views/metabox.php';
-	$option        = get_option( LC_OPTION_NAME );
-	$is_disabled   = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
-	$skip_id_check = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
-	likecoin_add_meta_box( $post, $is_disabled, $skip_id_check );
+	$option          = get_option( LC_OPTION_NAME );
+	$is_disabled     = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
+	$skip_id_check   = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
+	$is_page         = 'page' === $post->post_type;
+	$default_checked = false;
+	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
+		if ( $is_page ) {
+			if ( 'always' === $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
+				$default_checked = true;
+			}
+		} elseif ( 'none' !== $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
+			$default_checked = true;
+		}
+	}
+	likecoin_add_meta_box( $post, $default_checked, $is_disabled, $skip_id_check );
 }
 
 

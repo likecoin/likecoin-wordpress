@@ -27,15 +27,16 @@
  * Add the likecoin widget metabox
  *
  * @param object|  $post WordPress post object.
+ * @param boolean| $default_checked Default status for checkbox.
  * @param boolean| $is_disabled Show metabox disabled message.
  * @param boolean| $skip_id_check Skip author LikeCoin ID check.
  */
-function likecoin_add_meta_box( $post, $is_disabled = false, $skip_id_check = false ) {
+function likecoin_add_meta_box( $post, $default_checked = false, $is_disabled = false, $skip_id_check = false ) {
 	$author            = $post->post_author;
 	$likecoin_id       = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
 	$widget_option     = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
 	$widget_position   = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-	$is_widget_enabled = strlen( $widget_position ) > 0 && 'none' !== $widget_position;
+	$is_widget_enabled = ( strlen( $widget_position ) > 0 && 'none' !== $widget_position ) || $default_checked;
 	$has_likecoin_id   = strlen( $likecoin_id ) > 0;
 	?>
 	<div class="wrapper">
