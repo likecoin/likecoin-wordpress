@@ -28,8 +28,9 @@
  *
  * @param object|  $post WordPress post object.
  * @param boolean| $is_disabled Show metabox disabled message.
+ * @param boolean| $skip_id_check Skip author LikeCoin ID check.
  */
-function likecoin_add_meta_box( $post, $is_disabled ) {
+function likecoin_add_meta_box( $post, $is_disabled = false, $skip_id_check = false ) {
 	$author            = $post->post_author;
 	$likecoin_id       = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
 	$widget_option     = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
@@ -46,7 +47,7 @@ function likecoin_add_meta_box( $post, $is_disabled ) {
 				<?php esc_html_e( 'LikeButton per post setting is disabled by admin.', LC_PLUGIN_SLUG ); ?>
 			</a>
 			<?php
-		} elseif ( ! $has_likecoin_id ) {
+		} elseif ( ! $skip_id_check && ! $is_site_button_enabled ) {
 			?>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_USER_OPTIONS_PAGE ) ); ?>">
 				<?php esc_html_e( 'Author has no LikeCoin ID yet.', LC_PLUGIN_SLUG ); ?>

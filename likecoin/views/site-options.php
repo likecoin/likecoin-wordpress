@@ -126,7 +126,7 @@ function likecoin_add_site_likebutton_display_option( $args ) {
 	>
 	<option value="always"
 		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'always', false ) ) : ( '' ); ?>>
-		<?php esc_html_e( 'Always Show', LC_PLUGIN_SLUG ); ?>
+		<?php esc_html_e( 'Page and Post', LC_PLUGIN_SLUG ); ?>
 	</option>
 	<option value="post"
 		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'post', false ) ) : ( '' ); ?>>
