@@ -110,7 +110,7 @@ function likecoin_display_top_options_page() {
 		'likecoin_add_site_options_page'
 	);
 
-	// hide if site likecoin id enabled and user is not admin.
+	// hide if site LikeCoin ID enabled and user is not admin.
 	$option = get_option( LC_OPTION_NAME );
 	if ( empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) || current_user_can( 'manage_options' ) ) {
 		add_submenu_page(
@@ -361,7 +361,7 @@ function likecoin_init_settings() {
 
 	add_settings_section(
 		$site_likecoin_id_options_section,
-		__( 'Site LikeCoinID', LC_PLUGIN_SLUG ),
+		__( 'Site LikeCoin ID', LC_PLUGIN_SLUG ),
 		null,
 		LC_SITE_OPTIONS_PAGE
 	);

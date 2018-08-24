@@ -53,7 +53,7 @@ function likecoin_add_site_options_page() {
 }
 
 /**
- * Add the site likecoin id on/off
+ * Add the site LikeCoin ID on/off
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
@@ -84,7 +84,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 }
 
 /**
- * Add the site likecoin id info table
+ * Add the site LikeCoin ID info table
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */

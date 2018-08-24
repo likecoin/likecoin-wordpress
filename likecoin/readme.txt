@@ -32,7 +32,7 @@ Q: How to register a LikeCoin ID?
 A: Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer
 
 Q: Why the LikeButton does not show up after I edited posts written by other authors?
-A: Post author's account must be linked to a LikeCoin ID for the LikeButon to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site LikeCoinID" option to make every posts use a same LikeCoin ID.
+A: Post author's account must be linked to a LikeCoin ID for the LikeButon to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site LikeCoin ID" option to make every posts use a same LikeCoin ID.
 
 == Screenshots ==
 
