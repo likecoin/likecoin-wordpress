@@ -202,12 +202,10 @@ function likecoin_add_likebutton( $content ) {
 	} while ( false );
 
 	if ( is_singular( $post_type_query ) && in_the_loop() && is_main_query() ) {
-		$should_use_site_id = false;
-		$likecoin_id        = '';
+		$likecoin_id = '';
 
-		if ( isset( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && isset( $option[ LC_OPTION_SITE_LIKECOIN_USER ] ) ) {
-			$should_use_site_id = (bool) $option[ LC_OPTION_SITE_BUTTON_ENABLED ];
-			$likecoin_id        = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
+		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
+			$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
 		} else {
 			$likecoin_id = get_author_likecoin_id( $post );
 		}
