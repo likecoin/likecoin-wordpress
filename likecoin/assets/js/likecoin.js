@@ -1,29 +1,29 @@
-/* global jQuery, Web3, WP_CONFIG */
+/* global jQuery, Web3 */
 
 const CHALLENGE_URL = 'https://api.like.co/api/users/challenge';
 let address = null;
 let webThreeError = null;
 let webThreeInstance = null;
+let isInited = false;
 
-const loginBtn = document.querySelector('.loginBtn');
-const changeBtn = document.querySelector('.changeBtn');
-const likecoinId = document.querySelector('#likecoinId');
-const likecoinWallet = document.querySelector('#likecoinWallet');
-const likecoinPreview = document.querySelector('#likecoinPreview');
-const updateStatus = document.querySelector('#updateLikeCoinIdStatus');
+function formatWallet(wallet) {
+  if (!wallet) return wallet;
+  return `${wallet.substr(0, 6)}...${wallet.substr(38, 4)}`;
+}
 
 function show(selector) {
-  const elem = document.querySelector(`.likecoin${selector}`);
-  elem.style.display = '';
+  const elems = document.querySelectorAll(`.likecoin${selector}`);
+  elems.forEach((elem) => { elem.style.display = ''; }); // eslint-disable-line no-param-reassign
 }
 
 function hide(selector) {
-  const elem = document.querySelector(`.likecoin${selector}`);
-  elem.style.display = 'none';
+  const elems = document.querySelectorAll(`.likecoin${selector}`);
+  elems.forEach((elem) => { elem.style.display = 'none'; }); // eslint-disable-line no-param-reassign
 }
 
 
 function showError(selector) {
+  if (!isInited) return;
   webThreeError = selector;
   const elems = document.querySelectorAll('.likecoin.webThreeError');
   elems.forEach((elem) => { elem.style.display = 'none'; }); // eslint-disable-line no-param-reassign
@@ -31,7 +31,7 @@ function showError(selector) {
 }
 
 
-async function pollForWebThree() {
+async function checkForWebThree() {
   if (!window.web3) {
     showError('.needMetaMask');
     console.error('no web3'); // eslint-disable-line no-console
@@ -55,21 +55,32 @@ async function pollForWebThree() {
   return webThreeInstance.utils.toChecksumAddress(selectedAddress);
 }
 
-async function handleUpdateId(newId, newWallet) {
-  const res = await jQuery.ajax({
-    url: WP_CONFIG.adminAjaxUrl,
-    method: 'POST',
-    data: {
-      action: 'likecoin_update_id',
-      likecoin_id: newId,
-      likecoin_wallet: newWallet,
-      nonce: WP_CONFIG.nonce,
-    },
-    xhrFields: {
-      withCredentials: true,
-    },
-  });
-  updateStatus.textContent = res;
+async function handleUpdateId({
+  user,
+  wallet,
+  displayName,
+  avatar,
+}) {
+  const likecoinId = document.querySelector('#likecoinId');
+  const likecoinWallet = document.querySelector('#likecoinWallet');
+  const likecoinDisplayName = document.querySelector('#likecoinDisplayName');
+  const likecoinAvatar = document.querySelector('#likecoinAvatar');
+  const likecoinPreview = document.querySelector('#likecoinPreview');
+  const likecoinIdInput = document.querySelector('input.likecoinId');
+  const likecoinDisplayNameInput = document.querySelector('input.likecoinDisplayName');
+  const likecoinWalletInput = document.querySelector('input.likecoinWallet');
+  const likecoinAvatarInput = document.querySelector('input.likecoinAvatar');
+  if (likecoinId) likecoinId.innerHTML = user || '-';
+  if (likecoinWallet) likecoinWallet.innerHTML = formatWallet(wallet) || '-';
+  if (likecoinDisplayName) likecoinDisplayName.innerHTML = displayName || '-';
+  if (likecoinAvatar) likecoinAvatar.src = avatar || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+  if (likecoinPreview) likecoinPreview.src = user ? `https://button.like.co/in/embed/${user}/button` : 'about:blank';
+  if (likecoinIdInput) likecoinIdInput.value = user;
+  if (likecoinWalletInput) likecoinWalletInput.value = wallet;
+  if (likecoinDisplayNameInput) likecoinDisplayNameInput.value = displayName;
+  if (likecoinAvatarInput) likecoinAvatarInput.value = avatar;
+  hide('.loginSection');
+  show('.optionsSection');
 }
 
 async function fetchLikeCoinID(currentAddress) {
@@ -108,14 +119,19 @@ async function login() {
     method: 'POST',
   });
   const payload = await res.json();
-  const { user, wallet } = payload;
+  const {
+    user = '',
+    wallet = '',
+    displayName = '',
+    avatar = '',
+  } = payload;
   if (user) {
-    handleUpdateId(user, wallet);
-    likecoinId.innerHTML = user;
-    likecoinWallet.innerHTML = wallet;
-    likecoinPreview.src = `https://button.like.co/in/embed/${user}/button`;
-    hide('.loginSection');
-    show('.optionsSection');
+    handleUpdateId({
+      user,
+      wallet,
+      displayName,
+      avatar,
+    });
   } else {
     // TODO: Add error msg display to UI
     console.error('Error: user is undefined'); // eslint-disable-line no-console
@@ -123,32 +139,8 @@ async function login() {
   }
 }
 
-async function onLoginClick() {
-  try {
-    await login();
-  } catch (e) {
-    console.error(e); // eslint-disable-line no-console
-  }
-}
-
-async function onChangeClick() {
-  show('.loginSection');
-  hide('.optionsSection');
-  try {
-    await login();
-  } catch (e) {
-    console.error(e); // eslint-disable-line no-console
-    /* Disabled due to poor ux */
-    // hide('.loginSection');
-    // show('.optionsSection');
-  }
-}
-
-loginBtn.addEventListener('click', onLoginClick);
-changeBtn.addEventListener('click', onChangeClick);
-
-async function likecoinInit() {
-  const newAddress = await pollForWebThree();
+async function likecoinPoll() {
+  const newAddress = await checkForWebThree();
   if (address !== newAddress && newAddress) {
     await fetchLikeCoinID(newAddress);
   }
@@ -160,14 +152,47 @@ function sleep(ms) {
 
 /* loop for web3 changes */
 /* eslint-disable no-await-in-loop */
-(async () => {
+const likecoinInit = async () => {
+  isInited = true;
   while (true) { // eslint-disable-line no-constant-condition
     try {
-      await likecoinInit();
+      await likecoinPoll();
     } catch (err) {
       console.error(err); // eslint-disable-line no-console
     }
     await sleep(3000);
   }
-})();
+};
 /* eslint-enable no-await-in-loop */
+
+async function onLoginClick() {
+  try {
+    if (!isInited) {
+      /* try to fetch address before starting async */
+      if (!address) await likecoinPoll();
+      likecoinInit();
+    }
+    await login();
+  } catch (e) {
+    console.error(e); // eslint-disable-line no-console
+  }
+}
+
+function onLogoutClick() {
+  handleUpdateId({
+    user: '',
+    wallet: '',
+    displayName: '',
+    avatar: '',
+  });
+}
+
+(() => {
+  const loginBtn = document.querySelector('#likecoinLoginBtn');
+  const changeBtn = document.querySelector('#likecoinChangeBtn');
+  const logoutBtn = document.querySelector('#likecoinLogoutBtn');
+  if (loginBtn) loginBtn.addEventListener('click', onLoginClick);
+  if (changeBtn) changeBtn.addEventListener('click', onLoginClick);
+  if (logoutBtn) logoutBtn.addEventListener('click', onLogoutClick);
+  checkForWebThree({ slient: true });
+})();
