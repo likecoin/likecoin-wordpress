@@ -176,8 +176,12 @@ function likecoin_add_likebutton( $content ) {
 		if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
 			$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
 			$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-			if ( strlen( $widget_position ) > 0 && 'none' !== $widget_position ) {
-				// if set post_meta, cont to render.
+			if ( strlen( $widget_position ) > 0 ) {
+				if ('none' === $widget_position ) {
+					// set to none, exit early
+					return $content;
+				}
+				// else if set post_meta, cont to render.
 				break;
 			}
 			// otherwise judge by switch case below.
