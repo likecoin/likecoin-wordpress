@@ -7,7 +7,7 @@ import { uglify } from 'rollup-plugin-uglify';
 export default {
   input: 'likecoin/assets/js/likecoin.js',
   output: {
-    file: 'likecoin/assets/js/likecoin.es5.js',
+    file: 'likecoin/assets/js/dist/likecoin.js',
     format: 'iife',
     sourcemap: true,
   },

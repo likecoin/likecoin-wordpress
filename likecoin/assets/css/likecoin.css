@@ -1,0 +1,188 @@
+.likecoin {
+  font-family: 'Open Sans', 'Source Sans Pro', 'Noto Sans', 'Microsoft JhengHei', Arial, sans-serif;
+}
+
+.likecoin h3 {
+  color: #462405;
+}
+
+.likecoin a {
+  color: #28646e;
+}
+
+.likecoin section {
+  padding: 0 10px;
+}
+
+.likecoin .links {
+  float: right;
+}
+
+.likecoin .icon svg {
+  float: right;
+
+  width: 22px;
+  height: 22px;
+
+  color: #737373;
+  fill: currentColor;
+}
+
+.likecoin .likecoinButton {
+
+  min-width: 256px;
+
+  padding: 8px 16px;
+
+  cursor: pointer;
+
+  text-align: center;
+
+  text-decoration: none;
+
+  color: white;
+  border: 0;
+
+  background-color: #28646e;
+
+  font-size: 24px;
+}
+
+.likecoin .centerContainer {
+
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: center;
+
+  width: 100%;
+  height: 100%;
+}
+
+.likecoin.optionsSection .changeBtn {
+  cursor: pointer;
+  text-decoration: underline;
+
+  font-size: 12px;
+}
+
+.likecoin .previewSection{
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1;
+
+  padding: 20px 40px;
+
+  color: #d8d8d8;
+
+  background: white;
+}
+
+.likecoin .previewSection span{
+  margin: 20px 0;
+}
+
+.likecoin .likecoinId {
+
+  text-decoration: none;
+
+  color: #4a90e2;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+/* LikeCoin ID table*/
+
+.likecoin .likecoinTable {
+  border: solid 1px #e6e6e6;
+  background: #f9f9f9;
+}
+
+.likecoin .likecoinTable .likecoinAvatar {
+  max-width: 64px;
+  max-height: 64px;
+
+  margin-right: 16px;
+
+  border-radius: 50%;
+}
+
+.likecoin .likecoinTable .avatarWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.likecoin .likecoinTable tr {
+
+  white-space: nowrap;
+
+  border: solid 1px #e6e6e6;
+}
+
+.likecoin .likecoinTable th {
+
+  height: 40px;
+
+  padding: 0 14px;
+
+  vertical-align: middle;
+
+  background: white;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.likecoin .likecoinTable td {
+
+  height: 64px;
+  padding: 8px 14px;
+
+  font-size: 14px;
+}
+
+.likecoin .likecoinTable td.actions {
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 0;
+  padding: 16px;
+
+  white-space: nowrap;
+}
+
+.likecoin .likecoinTable td.actions .actionWrapper {
+  display: flex;
+  align-items: center;
+  flex: 1;
+  justify-content: center;
+
+  height: 48px;
+
+  border-right: solid 1px #d8d8d8;
+
+  border-left: solid 1px #d8d8d8;
+}
+
+.likecoin .likecoinTable td.actions a {
+  cursor: pointer;
+
+  text-align: center;
+
+  text-decoration: none;
+
+  font-weight: 600;
+}
+
+.likecoin #likecoinChangeBtn{
+  color: #4a90e2;
+}
+
+.likecoin #likecoinLogoutBtn{
+  color: #d0021b;
+}
+
