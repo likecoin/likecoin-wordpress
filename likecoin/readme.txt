@@ -6,7 +6,7 @@ Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 4.9.8
 Requires PHP: 5.4
-Stable tag: 1.1.1
+Stable tag: 1.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -42,6 +42,10 @@ A: Post author's account must be linked to a LikeCoin ID for the LikeButon to sh
 
 == Changelog ==
 
+= 1.1.2 =
+
+* Fix localization not working
+
 = 1.1.1 =
 
 * Fix typos
@@ -67,4 +71,4 @@ A: Post author's account must be linked to a LikeCoin ID for the LikeButon to sh
 
 == Upgrade Notice ==
 
-Upgrade to use the newly designed LikeCoin Plugin Settings page, allowing simpler management of LikeButton across your site.
+Upgrade to use the newly designed LikeCoin Plugin Settings page, allowing simpler management of LikeButton across your site. Latest version fixes localization.
