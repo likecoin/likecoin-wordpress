@@ -45,7 +45,7 @@ function likecoin_add_web3_section( $has_login_button ) {
 		<div class="likecoin centerContainer webThreeError needMetaMask" style="display: none">
 			<h3>
 				<?php
-				echo esc_html__( 'Please install' ) . '&nbsp<a href="https://metamask.io/" target="_blank">' . esc_html__( 'MetaMask Plugin' ) . '</a>';
+				echo esc_html__( 'Please install', LC_PLUGIN_SLUG ) . '&nbsp<a href="https://metamask.io/" target="_blank">' . esc_html__( 'MetaMask Plugin', LC_PLUGIN_SLUG ) . '</a>';
 				?>
 			</h3>
 		</div>

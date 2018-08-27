@@ -42,7 +42,7 @@ function likecoin_add_site_options_page() {
 	?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="likecoinButton"
-				value="<?php esc_attr_e( 'Confirm' ); ?>">
+				value="<?php esc_attr_e( 'Confirm', LC_PLUGIN_SLUG ); ?>">
 		</p>
 	</form>
 	</div>
@@ -159,7 +159,7 @@ function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Allow editors to customize display setting per post' ); ?>
+		<?php esc_html_e( 'Allow editors to customize display setting per post', LC_PLUGIN_SLUG ); ?>
 	</label>
 	<?php
 }
