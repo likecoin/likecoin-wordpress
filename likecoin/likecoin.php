@@ -39,7 +39,7 @@
 
 define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
-define( 'LC_PLUGIN_SLUG', plugin_basename( __FILE__ ) );
+define( 'LC_PLUGIN_SLUG', 'likecoin' );
 define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '1.1.1' );
 define( 'LC_WEB3_VERSION', '1.0.0-beta35' );

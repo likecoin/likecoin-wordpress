@@ -78,16 +78,16 @@ function likecoin_add_user_options_page() {
 		$params['likecoin_wallet_name']       = LC_LIKECOIN_USER_WALLET_FIELD;
 		$params['likecoin_avatar_name']       = LC_LIKECOIN_USER_AVATAR_FIELD;
 	}
-		echo '<h2>' . esc_html__( 'Your LikeCoin ID' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Your LikeCoin ID', LC_PLUGIN_SLUG ) . '</h2>';
 		likecoin_add_likecoin_info_table( $params, ! $is_site_button_enabled );
 		likecoin_add_web3_section( false );
-		echo '<h2>' . esc_html__( 'Your LikeButton' ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Your LikeButton', LC_PLUGIN_SLUG ) . '</h2>';
 		likecoin_add_button_preview( $likecoin_id );
 	if ( ! $is_site_button_enabled ) {
 		?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="likecoinButton"
-				value="<?php esc_attr_e( 'Confirm' ); ?>">
+				value="<?php esc_attr_e( 'Confirm', LC_PLUGIN_SLUG ); ?>">
 		</p>
 	<?php } ?>
 	</form>
