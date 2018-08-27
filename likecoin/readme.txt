@@ -22,7 +22,7 @@ This plugin integrates LikeCoin ID with WordPress, allow you to add LikeButton i
 2. Make sure you have already installed MetaMask browser extension, the plugin is unlocked, and you have a valid LikeCoin ID associated with the address.
 Please refer to FAQ if you don't have a LikeCoin ID yet.
 3. Go to the LikeCoin plugin settings page. Enable displaying of LikeButton in "Site LikeButton Display Setting".
-4. Go to "Your LikeButton" in the plugin settings. Click Connect to LikeCoin ID, a Metamask popup should appear, asking you to sign the Login message. Sign the message to fetch your LikeCoin ID.
+4. Go to "Your LikeButton" in the plugin settings. Click Connect to LikeCoin ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your LikeCoin ID.
 5. You should see a LikeButton in every post that is authored by you.
 
 
@@ -63,4 +63,4 @@ A: Post author's account must be linked to a LikeCoin ID for the LikeButon to sh
 
 == Upgrade Notice ==
 
-Upgrade to use the newly designed LikeCoin Plugin Settings page, allowing simpler mangement of LikeButton across your site.
+Upgrade to use the newly designed LikeCoin Plugin Settings page, allowing simpler management of LikeButton across your site.
