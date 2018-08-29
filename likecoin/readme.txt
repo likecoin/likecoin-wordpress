@@ -1,6 +1,6 @@
 === LikeCoin ===
 
-Contributors: likecoin,williamchong007
+Contributors: likecoin,williamchong007,ckxpress
 Tags: LikeCoin,LikeButton,LikeChain,blockchain,Ethereum
 Donate link: https://like.co/foundation
 Requires at least: 4.0
@@ -10,35 +10,37 @@ Stable tag: 1.1.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Integrate LikeCoin ID with WordPress, allow you to add LikeButton into your post.
+Generate passive income with your contents by adding LikeButton of LikeCoin Foundation. 
 
 == Description ==
 
-This plugin integrates [LikeCoin ID](https://like.co/in) with WordPress, allow you to add LikeButton into your post.
+This plugin integrates [LikeCoin](https://like.co/in) cryptocurrency with WordPress. It allows you to add LikeButton to your posts. When readers like or directly tip your posts, income is generated in LikeCoin.
+
+LikeCoin is a protocol on blockchain. With a reinvented LikeButton and our unique LikeRank algorithm, we trace content footprint and reward content creators by Proof of Creativity mechanism. Information of the LikeCoin token (LIKE) can be found in [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/).
 
 Contribute to the plugin development on [Github](https://github.com/likecoin/likecoin-wordpress).
 
 == Installation ==
 
 1. Activate the plugin.
-2. Make sure you have already installed MetaMask browser extension, the plugin is unlocked, and you have a valid LikeCoin ID associated with the address.
-Please refer to FAQ if you don't have a LikeCoin ID yet.
+2. Make sure you have installed MetaMask browser extension, unlocked it, and have a valid LikeCoin ID associated with the address.
+Please refer to "How to register a LikeCoin ID?" if you don't have a LikeCoin ID yet.
 3. Go to the LikeCoin plugin settings page. Enable displaying of LikeButton in "Site LikeButton Display Setting".
 4. Go to "Your LikeButton" in the plugin settings. Click Connect to LikeCoin ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your LikeCoin ID.
-5. You should see a LikeButton in every post that is authored by you.
+5. You should see a LikeButton in every post authored by you.
 
 
 == Frequently Asked Questions ==
 
 = How to register a LikeCoin ID? =
-Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer
+Please refer to [this step-by-step instruction](https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer).
 
-= Why there is no LikeButton after I have edited other's post? =
-Post author's account must be linked to a LikeCoin ID for the LikeButon to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site LikeCoin ID" option to make every posts use a same LikeCoin ID.
+= Why is there no LikeButton after I edited other's post? =
+Post author's account must be linked to a LikeCoin ID for the LikeButton to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site LikeCoin ID" option to force all posts to use a site-wise LikeCoin ID.
 
 == Screenshots ==
 
-1. LikeButton in Posts
+1. LikeButton in a Post
 2. LikeCoin Plugin Options
 3. LikeCoin Plugin Metabox
 
