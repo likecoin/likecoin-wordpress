@@ -14,7 +14,9 @@ Integrate LikeCoin ID with WordPress, allow you to add LikeButton into your post
 
 == Description ==
 
-This plugin integrates LikeCoin ID with WordPress, allow you to add LikeButton into your post.
+This plugin integrates [LikeCoin ID](https://like.co/in) with WordPress, allow you to add LikeButton into your post.
+
+Contribute to the plugin development on [Github](https://github.com/likecoin/likecoin-wordpress).
 
 == Installation ==
 
@@ -28,11 +30,11 @@ Please refer to FAQ if you don't have a LikeCoin ID yet.
 
 == Frequently Asked Questions ==
 
-Q: How to register a LikeCoin ID?
-A: Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer
+= How to register a LikeCoin ID? =
+Please refer to https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer
 
-Q: Why the LikeButton does not show up after I edited posts written by other authors?
-A: Post author's account must be linked to a LikeCoin ID for the LikeButon to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site LikeCoin ID" option to make every posts use a same LikeCoin ID.
+= Why there is no LikeButton after I have edited other's post? =
+Post author's account must be linked to a LikeCoin ID for the LikeButon to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site LikeCoin ID" option to make every posts use a same LikeCoin ID.
 
 == Screenshots ==
 
