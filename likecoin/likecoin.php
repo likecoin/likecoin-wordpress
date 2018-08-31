@@ -238,7 +238,7 @@ function likecoin_add_likebutton( $content ) {
 	return $content;
 }
 
-add_filter( 'the_content', 'likecoin_add_likebutton', 9 );
+add_filter( 'the_content', 'likecoin_add_likebutton' );
 
 /**
  * Admin post handler of user LikeCoinId/data update
