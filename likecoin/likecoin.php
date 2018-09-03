@@ -211,10 +211,8 @@ function likecoin_add_likebutton( $content ) {
 					// no op.
 					break;
 			}
-		} else {
-			// default not show, exit early.
-			return $content;
 		}
+		// default show LikeButton if id exist.
 	} while ( false );
 
 	if ( is_singular( $post_type_query ) && in_the_loop() && is_main_query() ) {
