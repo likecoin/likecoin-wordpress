@@ -136,7 +136,7 @@ function likecoin_add_button_preview( $likecoin_id ) {
 		src="
 		<?php
 		if ( $has_likecoin_id ) {
-			echo esc_url( 'https://button.like.co/in/embed/' . $likecoin_id . '/button' );
+			echo esc_url( 'https://button.like.co/in/embed/' . $likecoin_id . '/button?type=wp' );
 		}
 		?>
 		"

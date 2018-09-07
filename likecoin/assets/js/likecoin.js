@@ -74,7 +74,7 @@ async function handleUpdateId({
   if (likecoinWallet) likecoinWallet.innerHTML = formatWallet(wallet) || '-';
   if (likecoinDisplayName) likecoinDisplayName.innerHTML = displayName || '-';
   if (likecoinAvatar) likecoinAvatar.src = avatar || 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-  if (likecoinPreview) likecoinPreview.src = user ? `https://button.like.co/in/embed/${user}/button` : 'about:blank';
+  if (likecoinPreview) likecoinPreview.src = user ? `https://button.like.co/in/embed/${user}/button?type=wp` : 'about:blank';
   if (likecoinIdInput) likecoinIdInput.value = user;
   if (likecoinWalletInput) likecoinWalletInput.value = wallet;
   if (likecoinDisplayNameInput) likecoinDisplayNameInput.value = displayName;

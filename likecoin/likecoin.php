@@ -229,7 +229,7 @@ function likecoin_add_likebutton( $content ) {
 			$widget_code = '<iframe scrolling="no" frameborder="0" ' .
 			'style="height: 212px; width: 100%;"' .
 			'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
-			'?referrer=' . $permalink . '"></iframe>';
+			'?referrer=' . $permalink . '&type=wp"></iframe>';
 			return $content . $widget_code;
 		}
 	}
