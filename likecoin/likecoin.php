@@ -377,9 +377,9 @@ function likecoin_init_settings() {
 		'likecoin_add_site_likecoin_id_toggle',
 		LC_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
-		[
+		array(
 			'label_for' => LC_OPTION_SITE_BUTTON_ENABLED,
-		]
+		)
 	);
 
 	add_settings_field(
@@ -388,10 +388,10 @@ function likecoin_init_settings() {
 		'likecoin_add_site_likecoin_id_table',
 		LC_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
-		[
+		array(
 			'label_for' => LC_OPTION_SITE_LIKECOIN_USER,
 			'class'     => 'site_liekcoin_id_table',
-		]
+		)
 	);
 
 	add_settings_field(
@@ -400,9 +400,9 @@ function likecoin_init_settings() {
 		'likecoin_add_site_likebutton_display_option',
 		LC_SITE_OPTIONS_PAGE,
 		$site_likebutton_options_section,
-		[
+		array(
 			'label_for' => LC_OPTION_BUTTON_DISPLAY_OPTION,
-		]
+		)
 	);
 
 	add_settings_field(
@@ -411,9 +411,9 @@ function likecoin_init_settings() {
 		'likecoin_add_site_likebutton_allow_author_override',
 		LC_SITE_OPTIONS_PAGE,
 		$site_likebutton_options_section,
-		[
+		array(
 			'label_for' => LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
-		]
+		)
 	);
 }
 
