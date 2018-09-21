@@ -239,6 +239,25 @@ function likecoin_add_likebutton( $content ) {
 add_filter( 'the_content', 'likecoin_add_likebutton' );
 
 /**
+ * Modify plugin action links
+ * Ref: https://codex.wordpress.org/Plugin_API/Filter_Reference/plugin_action_links_(plugin_file_name)
+ *
+ * @param array| $links List of action links.
+ */
+function modify_plugin_action_links( $links ) {
+	$links_before = array(
+		'<a href="' . admin_url( 'options-general.php?page=' . LC_SITE_OPTIONS_PAGE ) . '">' . esc_html__( 'Settings', LC_PLUGIN_SLUG ) . '</a>',
+	);
+	$links_after  = array(
+		'<a href="' . esc_url( __( 'https://help.like.co/likecoin-faq/product/how-to-enable-likebutton-on-wordpress-website', LC_PLUGIN_SLUG ) ) . '" target="_blank">' . esc_html__( 'Help', LC_PLUGIN_SLUG ) . '</a>',
+		'<a href="https://like.co" target="_blank">' . esc_html__( 'About', LC_PLUGIN_SLUG ) . '</a>',
+	);
+	return array_merge( $links_before, $links, $links_after );
+}
+
+add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );
+
+/**
  * Admin post handler of user LikeCoinId/data update
  */
 function likecoin_update_user_id() {
