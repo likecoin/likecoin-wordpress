@@ -245,12 +245,14 @@ add_filter( 'the_content', 'likecoin_add_likebutton' );
  * @param array| $links List of action links.
  */
 function modify_plugin_action_links( $links ) {
-	$new_links = array(
-		'<a href="' . admin_url( 'options-general.php?page=lc_site_options' ) . '">' . __( 'Settings', LC_PLUGIN_SLUG ) . '</a>',
-		'<a href="https://like.co" target="_blank">' . __( 'Homepage', LC_PLUGIN_SLUG ) . '</a>',
-		'<a href="' . __( 'https://help.like.co/likecoin-faq/product/how-to-enable-likebutton-on-wordpress-website', LC_PLUGIN_SLUG ) . '" target="_blank">' . __( 'Tutorial', LC_PLUGIN_SLUG ) . '</a>',
+	$links_before = array(
+		'<a href="' . admin_url( 'options-general.php?page=' . LC_SITE_OPTIONS_PAGE ) . '">' . esc_html__( 'Settings', LC_PLUGIN_SLUG ) . '</a>',
 	);
-	return array_merge( $new_links, $links );
+	$links_after  = array(
+		'<a href="' . esc_url( __( 'https://help.like.co/likecoin-faq/product/how-to-enable-likebutton-on-wordpress-website', LC_PLUGIN_SLUG ) ) . '" target="_blank">' . esc_html__( 'Help', LC_PLUGIN_SLUG ) . '</a>',
+		'<a href="https://like.co" target="_blank">' . esc_html__( 'About', LC_PLUGIN_SLUG ) . '</a>',
+	);
+	return array_merge( $links_before, $links, $links_after );
 }
 
 add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );
