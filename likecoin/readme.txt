@@ -1,7 +1,7 @@
 === LikeCoin ===
 
 Contributors: likecoin,williamchong007,ckxpress
-Tags: LikeCoin,LikeButton,LikeChain,blockchain,Ethereum
+Tags: LikeCoin, LikeButton, like button, likebtn, LikeChain, blockchain, Ethereum, income
 Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 4.9.8
