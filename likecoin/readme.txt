@@ -4,7 +4,7 @@ Contributors: likecoin,williamchong007,ckxpress
 Tags: LikeCoin, LikeButton, like button, likebtn, LikeChain, blockchain, Ethereum, income
 Donate link: https://like.co/foundation
 Requires at least: 4.0
-Tested up to: 4.9.8
+Tested up to: 5.0
 Requires PHP: 5.4
 Stable tag: 1.1.4
 License: GPLv3
