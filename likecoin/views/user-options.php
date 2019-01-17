@@ -132,6 +132,7 @@ function likecoin_add_button_preview( $likecoin_id ) {
 		</a>
 		<div class="centerContainer">
 		<iframe id="likecoinPreview" scrolling="no" frameborder="0"
+		sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
 		style="pointer-events: none; height: 212px; width: 500px;"
 		src="
 		<?php

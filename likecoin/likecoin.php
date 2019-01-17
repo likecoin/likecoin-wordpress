@@ -227,6 +227,7 @@ function likecoin_add_likebutton( $content ) {
 		if ( strlen( $likecoin_id ) > 0 ) {
 			$permalink   = rawurlencode( get_permalink( $post ) );
 			$widget_code = '<iframe scrolling="no" frameborder="0" ' .
+			'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"' .
 			'style="height: 212px; width: 100%;"' .
 			'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
 			'?referrer=' . $permalink . '&type=wp"></iframe>';
