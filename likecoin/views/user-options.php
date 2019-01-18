@@ -35,9 +35,9 @@ function likecoin_add_user_options_page() {
 		return exit();
 	}
 	// For display only, probably no security concern.
-	// phpcs:disable WordPress.Security.NonceVerification.NoNonceVerification
+	// phpcs:disable WordPress.Security.NonceVerification.Recommended
 	if ( isset( $_GET['settings-updated'] ) ) {
-	// phpcs:enable WordPress.Security.NonceVerification.NoNonceVerification
+	// phpcs:enable WordPress.Security.NonceVerification.Recommended
 		add_settings_error(
 			'lc_settings_messages',
 			'updated',
@@ -132,6 +132,7 @@ function likecoin_add_button_preview( $likecoin_id ) {
 		</a>
 		<div class="centerContainer">
 		<iframe id="likecoinPreview" scrolling="no" frameborder="0"
+		sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"
 		style="pointer-events: none; height: 212px; width: 500px;"
 		src="
 		<?php
