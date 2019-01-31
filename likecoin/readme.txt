@@ -6,7 +6,7 @@ Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 5.0
 Requires PHP: 5.4
-Stable tag: 1.1.5
+Stable tag: 1.1.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -45,6 +45,10 @@ Post author's account must be linked to a LikeCoin ID for the LikeButton to show
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 1.1.6 =
+
+* Remove button referrer when in preview mode
 
 = 1.1.5 =
 
