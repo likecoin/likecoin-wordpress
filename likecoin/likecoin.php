@@ -227,7 +227,7 @@ function likecoin_add_likebutton( $content ) {
 		if ( strlen( $likecoin_id ) > 0 ) {
 			$referrer    = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
 			$widget_code = '<iframe scrolling="no" frameborder="0" ' .
-			'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox"' .
+			'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-storage-access-by-user-activation"' .
 			'style="height: 212px; width: 100%;"' .
 			'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
 			'?type=wp' . $referrer . '"></iframe>';
