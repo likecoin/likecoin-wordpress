@@ -53,7 +53,7 @@ function likecoin_add_site_options_page() {
 }
 
 /**
- * Add the site LikeCoin ID on/off
+ * Add the site Liker ID on/off
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
@@ -70,7 +70,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Override all LikeButton with site LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+		<?php esc_html_e( 'Override all LikeButton with site Liker ID', LC_PLUGIN_SLUG ); ?>
 	</label>
 	<?php
 	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_options.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
@@ -84,7 +84,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 }
 
 /**
- * Add the site LikeCoin ID info table
+ * Add the site Liker ID info table
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */

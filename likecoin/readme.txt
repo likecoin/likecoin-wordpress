@@ -23,20 +23,20 @@ Contribute to the plugin development on [Github](https://github.com/likecoin/lik
 == Installation ==
 
 1. Activate the plugin.
-2. Make sure you have installed MetaMask browser extension, unlocked it, and have a valid LikeCoin ID associated with the address.
-Please refer to "How to register a LikeCoin ID?" if you don't have a LikeCoin ID yet.
+2. Make sure you have installed MetaMask browser extension, unlocked it, and have a valid Liker ID associated with the address.
+Please refer to "How to register a Liker ID?" if you don't have a Liker ID yet.
 3. Go to the LikeCoin plugin settings page. Enable displaying of LikeButton in "Site LikeButton Display Setting".
-4. Go to "Your LikeButton" in the plugin settings. Click Connect to LikeCoin ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your LikeCoin ID.
+4. Go to "Your LikeButton" in the plugin settings. Click Connect to Liker ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your Liker ID.
 5. You should see a LikeButton in every post authored by you.
 
 
 == Frequently Asked Questions ==
 
-= How to register a LikeCoin ID? =
+= How to register a Liker ID? =
 Please refer to [this step-by-step instruction](https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer).
 
 = Why is there no LikeButton after I edited other's post? =
-Post author's account must be linked to a LikeCoin ID for the LikeButton to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site LikeCoin ID" option to force all posts to use a site-wise LikeCoin ID.
+Post author's account must be linked to a Liker ID for the LikeButton to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
 
 == Screenshots ==
 

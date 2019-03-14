@@ -78,7 +78,7 @@ function likecoin_add_user_options_page() {
 		$params['likecoin_wallet_name']       = LC_LIKECOIN_USER_WALLET_FIELD;
 		$params['likecoin_avatar_name']       = LC_LIKECOIN_USER_AVATAR_FIELD;
 	}
-		echo '<h2>' . esc_html__( 'Your LikeCoin ID', LC_PLUGIN_SLUG ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Your Liker ID', LC_PLUGIN_SLUG ) . '</h2>';
 		likecoin_add_likecoin_info_table( $params, ! $is_site_button_enabled );
 		likecoin_add_web3_section( false );
 		echo '<h2>' . esc_html__( 'Your LikeButton', LC_PLUGIN_SLUG ) . '</h2>';
@@ -101,7 +101,7 @@ function likecoin_add_user_options_page() {
 /**
  * Add the likebutton preview
  *
- * @param string| $likecoin_id user's LikeCoin ID, empty if not logged in.
+ * @param string| $likecoin_id user's Liker ID, empty if not logged in.
  */
 function likecoin_add_button_preview( $likecoin_id ) {
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
@@ -109,11 +109,11 @@ function likecoin_add_button_preview( $likecoin_id ) {
 <section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
 	<section class="previewSection">
 		<a class="links" href="https://like.co/in" target="_blank">
-			<?php esc_html_e( 'Create your LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+			<?php esc_html_e( 'Create your Liker ID', LC_PLUGIN_SLUG ); ?>
 		</a>
 		<div class="centerContainer" style="min-height: 220px;">
 			<a id="likecoinLoginBtn" class="likecoinButton loginBtn">
-				<?php esc_html_e( 'Connect to LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+				<?php esc_html_e( 'Connect to Liker ID', LC_PLUGIN_SLUG ); ?>
 			</a>
 		</div>
 	</section>

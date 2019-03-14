@@ -7,7 +7,7 @@
 [![CircleCI](https://circleci.com/gh/likecoin/likecoin-wordpress.svg?style=svg)](https://circleci.com/gh/likecoin/likecoin-wordpress)
 [![Greenkeeper badge](https://badges.greenkeeper.io/likecoin/likecoin-wordpress.svg)](https://greenkeeper.io/)
 
-Integrates LikeCoin ID functionality into your own WordPress site.
+Integrates Liker ID functionality into your own WordPress site.
 
 ## Development Setup
 
