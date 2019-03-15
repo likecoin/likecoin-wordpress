@@ -29,7 +29,7 @@
  * @param object|  $post WordPress post object.
  * @param boolean| $default_checked Default status for checkbox.
  * @param boolean| $is_disabled Show metabox disabled message.
- * @param boolean| $skip_id_check Skip author LikeCoin ID check.
+ * @param boolean| $skip_id_check Skip author Liker ID check.
  */
 function likecoin_add_meta_box( $post, $default_checked = false, $is_disabled = false, $skip_id_check = false ) {
 	$author            = $post->post_author;
@@ -51,7 +51,7 @@ function likecoin_add_meta_box( $post, $default_checked = false, $is_disabled = 
 		} elseif ( ! $skip_id_check && ! $has_likecoin_id ) {
 			?>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_USER_OPTIONS_PAGE ) ); ?>">
-				<?php esc_html_e( 'Author has no LikeCoin ID yet.', LC_PLUGIN_SLUG ); ?>
+				<?php esc_html_e( 'Author has no Liker ID yet.', LC_PLUGIN_SLUG ); ?>
 			</a>
 		<?php } else { ?>
 			<input type='hidden' name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>" value="none">

@@ -63,13 +63,13 @@ function likecoin_add_web3_section( $has_login_button ) {
 		</div>
 		<div class="likecoin centerContainer webThreeError needLikeCoinId" style="display: none">
 			<a class="likecoinButton" href="https://like.co/in/register" target="_blank">
-				<?php esc_html_e( 'Please register a LikeCoin ID first', LC_PLUGIN_SLUG ); ?>
+				<?php esc_html_e( 'Please register a Liker ID first', LC_PLUGIN_SLUG ); ?>
 			</a>
 		</div>
 		<?php if ( $has_login_button ) { ?>
 			<div class="likecoin centerContainer webThreeError needLogin" style="display: none">
 				<a class="likecoinButton loginBtn">
-					<?php esc_html_e( 'Login to get LikeCoin ID', LC_PLUGIN_SLUG ); ?>
+					<?php esc_html_e( 'Login to get Liker ID', LC_PLUGIN_SLUG ); ?>
 				</a>
 			</div>
 		<?php } ?>
@@ -78,9 +78,9 @@ function likecoin_add_web3_section( $has_login_button ) {
 }
 
 /**
- * Add the LikeCoin ID table UI
+ * Add the Liker ID table UI
  *
- * @param array|   $info display option for LikeCoin ID table.
+ * @param array|   $info display option for Liker ID table.
  * @param boolean| $editable Show action buttons or not.
  */
 function likecoin_add_likecoin_info_table( $info, $editable = true ) {
@@ -97,7 +97,7 @@ function likecoin_add_likecoin_info_table( $info, $editable = true ) {
 	?>
 	<table class="form-table likecoinTable">
 		<tr>
-			<th><span><?php esc_html_e( 'LikeCoin ID', LC_PLUGIN_SLUG ); ?></span></th>
+			<th><span><?php esc_html_e( 'Liker ID', LC_PLUGIN_SLUG ); ?></span></th>
 			<th><?php esc_html_e( 'Display Name', LC_PLUGIN_SLUG ); ?></th>
 			<th><?php esc_html_e( 'Wallet', LC_PLUGIN_SLUG ); ?></th>
 			<?php

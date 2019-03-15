@@ -12,7 +12,7 @@
 
  * Plugin Name:  LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
- * Description:  Integrate LikeCoin ID with WordPress, allow users to add LikeButton into posts.
+ * Description:  Integrate Liker ID with WordPress, allow users to add LikeButton into posts.
  * Version:      1.1.6
  * Author:       LikeCoin Foundation
  * Author URI:   https://like.co/
@@ -47,7 +47,7 @@ define( 'LC_WEB3_VERSION', '1.0.0-beta35' );
 require_once 'includes/constant/options.php';
 
 /**
- * Get post author's LikeCoin ID from post
+ * Get post author's Liker ID from post
  *
  * @param object| $post WordPress post object.
  */
@@ -110,7 +110,7 @@ function likecoin_display_top_options_page() {
 		'likecoin_add_site_options_page'
 	);
 
-	// hide if site LikeCoin ID enabled and user is not admin.
+	// hide if site Liker ID enabled and user is not admin.
 	$option = get_option( LC_OPTION_NAME );
 	if ( empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) || current_user_can( 'manage_options' ) ) {
 		add_submenu_page(
@@ -352,7 +352,7 @@ function likecoin_settings_validation( $option ) {
 		add_settings_error(
 			'lc_settings_messages',
 			'missing_site_id',
-			__( 'Site LikeCoin ID is missing', LC_PLUGIN_SLUG ),
+			__( 'Site Liker ID is missing', LC_PLUGIN_SLUG ),
 			'error'
 		);
 		return get_option( LC_OPTION_NAME );
@@ -379,7 +379,7 @@ function likecoin_init_settings() {
 
 	add_settings_section(
 		$site_likecoin_id_options_section,
-		__( 'Site LikeCoin ID', LC_PLUGIN_SLUG ),
+		__( 'Site Liker ID', LC_PLUGIN_SLUG ),
 		null,
 		LC_SITE_OPTIONS_PAGE
 	);
@@ -393,7 +393,7 @@ function likecoin_init_settings() {
 
 	add_settings_field(
 		LC_OPTION_SITE_BUTTON_ENABLED,
-		__( 'Enable site LikeCoin ID', LC_PLUGIN_SLUG ),
+		__( 'Enable site Liker ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_toggle',
 		LC_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
@@ -404,7 +404,7 @@ function likecoin_init_settings() {
 
 	add_settings_field(
 		'lc_site_likecoin_id_table',
-		__( 'Site LikeCoin ID', LC_PLUGIN_SLUG ),
+		__( 'Site Liker ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_table',
 		LC_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
@@ -451,7 +451,7 @@ function likecoin_add_privacy_policy_content() {
 			'When you use the LikeCoin embed, we automatically collect basic visitor informations,
 		e.g. IP address, user agent, etc. These kind of information might be used as analytics purpose.
 		For the purpose of applying personal site preferences, We might also identify a registered 
-		LikeCoin ID owner by the use of cookie.
+		Liker ID owner by the use of cookie.
 		More details can be found in like.co privacy policy <a href="%s" target="_blank">here</a>.',
 			LC_PLUGIN_SLUG
 		),
