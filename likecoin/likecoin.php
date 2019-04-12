@@ -216,6 +216,10 @@ function likecoin_add_likebutton( $content ) {
 	} while ( false );
 
 	if ( is_singular( $post_type_query ) && in_the_loop() && is_main_query() ) {
+		if ( ! empty( $post->post_password ) ) {
+			return $content;
+		}
+
 		$likecoin_id = '';
 
 		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
