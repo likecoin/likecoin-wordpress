@@ -1,7 +1,7 @@
 === LikeCoin ===
 
 Contributors: likecoin,williamchong007,ckxpress
-Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Ethereum, blogger
+Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Ethereum, blogger, Like Rewards
 Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 5.1
@@ -10,13 +10,13 @@ Stable tag: 1.1.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Generate passive income with your contents by adding LikeButton of LikeCoin Foundation.
+With this plug-in installed in your site, every Like is a Reward.
 
 == Description ==
 
-[LikeCoin](https://like.co) is a social movement to help bloggers and independent journalists make passive income by simply attaching a LikeButton to their websites. It can be done with zero coding by installing this plugin.
+[Civic Liker](https://like.co) is a social movement to help bloggers and independent journalists make passive income by enabling Like Rewards on their websites. It can be done simply by installing this plugin.
 
-On the Internet, rewards and creativity are decoupled. Creators producing high quality contents receive “Likes” but not income. LikeCoin Foundation aims to reinvent the Like by re-aligning creativity and reward. "Likes" are turned into rewards from the Creators Fund and Civic Liker monthly subscriptions and shared between involved parties.
+On the Internet, rewards and creativity are decoupled. Creators producing high quality contents receive “Likes” but not income. LikeCoin Foundation aims to reinvent the Like by re-aligning creativity and reward. "Likes" are turned into rewards from the Civic Liker monthly subscriptions as well as Creators Matching Fund, and shared to all creators.
 
 LikeCoin thus rewarded can be exchanged into USD on exchanges such as [BitAsset](https://www.bitasset.com/) and [Liquid](https://www.liquid.com/). Information of the LikeCoin token (LIKE) can be found in [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/) and Etherscan(https://etherscan.io/token/0x02f61fd266da6e8b102d4121f5ce7b992640cf98).
 
@@ -27,9 +27,9 @@ Contribute to the plugin development on [Github](https://github.com/likecoin/lik
 1. Activate the plugin.
 2. Make sure you have installed MetaMask browser extension, unlocked it, and have a valid Liker ID associated with the address.
 Please refer to "How to register a Liker ID?" if you don't have one yet.
-3. Go to the LikeCoin plugin settings page. Enable displaying of LikeButton in "Site LikeButton Display Setting".
-4. Go to "Your LikeButton" in the plugin settings. Click Connect to Liker ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your Liker ID.
-5. You should see a LikeButton in every post authored by you.
+3. Go to the LikeCoin plugin settings page. Enable displaying of Like Rewards banner in "Like Rewards banner Display Setting".
+4. Go to "Your Like Rewards" in the plugin settings. Click Connect to Liker ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your Liker ID.
+5. You should see a Like Rewards in every post authored by you.
 
 
 == Frequently Asked Questions ==
@@ -37,12 +37,12 @@ Please refer to "How to register a Liker ID?" if you don't have one yet.
 = How to register a Liker ID? =
 Please refer to [this step-by-step instruction](https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer).
 
-= Why is there no LikeButton after I edited other's post? =
-Post author's account must be linked to a Liker ID for the LikeButton to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
+= Like Rewards banner is not shown after I edited other's post? =
+Post author's account must be linked to a Liker ID for the Like Rewards banner to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
 
 == Screenshots ==
 
-1. LikeButton in a Post
+1. Like Rewards banner in a Post
 2. LikeCoin Plugin Options
 3. LikeCoin Plugin Metabox
 
