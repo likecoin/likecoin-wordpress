@@ -55,6 +55,11 @@ function likecoin_add_web3_section( $has_login_button ) {
 			</h3>
 			<img src="<?php echo esc_attr( LC_URI . 'assets/img/mainnet.png' ); ?>">
 		</div>
+		<div class="likecoin centerContainer webThreeError needPermission" style="display: none">
+			<h3>
+				<?php esc_html_e( 'Please accept the connect request in Metamask', LC_PLUGIN_SLUG ); ?>
+			</h3>
+		</div>
 		<div class="likecoin centerContainer webThreeError needUnlock" style="display: none">
 			<h3>
 				<?php esc_html_e( 'Please unlock your wallet', LC_PLUGIN_SLUG ); ?>
