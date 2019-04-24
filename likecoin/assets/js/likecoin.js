@@ -1,10 +1,8 @@
 /* global jQuery, Web3 */
 
 const CHALLENGE_URL = 'https://api.like.co/api/users/challenge';
-let address = null;
 let webThreeError = null;
 let webThreeInstance = null;
-let isInited = false;
 
 function formatWallet(wallet) {
   if (!wallet) return wallet;
@@ -23,7 +21,6 @@ function hide(selector) {
 
 
 function showError(selector) {
-  if (!isInited) return;
   webThreeError = selector;
   const elems = document.querySelectorAll('.likecoin.webThreeError');
   elems.forEach((elem) => { elem.style.display = 'none'; }); // eslint-disable-line no-param-reassign
@@ -32,23 +29,45 @@ function showError(selector) {
 
 
 async function checkForWebThree() {
-  if (!window.web3) {
+  if (!window.web3 && !window.ethereum) {
     showError('.needMetaMask');
     console.error('no web3'); // eslint-disable-line no-console
-    return '';
+    return false;
   }
   webThreeInstance = new Web3(window.web3.currentProvider);
+  return true;
+}
+
+async function checkForNetwork() {
   const network = await webThreeInstance.eth.net.getNetworkType();
   if (network !== 'main') {
     showError('.needMainNet');
     console.error('not mainnet'); // eslint-disable-line no-console
-    return '';
+    return false;
   }
+  return true;
+}
+
+async function checkForPermission() {
+  if (window.ethereum && window.ethereum.enable) {
+    try {
+      await window.ethereum.enable();
+    } catch (err) {
+      showError('.needPermission');
+      console.error('no permission'); // eslint-disable-line no-console
+      console.error(err); // eslint-disable-line no-console
+      return false;
+    }
+  }
+  return true;
+}
+
+async function checkForAccount() {
   const accounts = await webThreeInstance.eth.getAccounts();
   if (!accounts || !accounts[0]) {
     showError('.needUnlock');
     console.error('not unlocked'); // eslint-disable-line no-console
-    return '';
+    return false;
   }
   const selectedAddress = accounts[0];
   webThreeError = null;
@@ -86,7 +105,6 @@ async function handleUpdateId({
 async function fetchLikeCoinID(currentAddress) {
   try {
     show('.loading');
-    address = currentAddress; // mark we tried fetching this address
     const { challenge } = await jQuery.ajax({ url: `${CHALLENGE_URL}?wallet=${currentAddress}` });
     hide('.loading');
     showError('.needLogin');
@@ -98,7 +116,7 @@ async function fetchLikeCoinID(currentAddress) {
   }
 }
 
-async function login() {
+async function login(address) {
   if (!address) {
     throw new Error('cannot get web3 address');
   }
@@ -139,40 +157,15 @@ async function login() {
   }
 }
 
-async function likecoinPoll() {
-  const newAddress = await checkForWebThree();
-  if (address !== newAddress && newAddress) {
-    await fetchLikeCoinID(newAddress);
-  }
-}
-
-function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
-}
-
-/* loop for web3 changes */
-/* eslint-disable no-await-in-loop */
-const likecoinInit = async () => {
-  isInited = true;
-  while (true) { // eslint-disable-line no-constant-condition
-    try {
-      await likecoinPoll();
-    } catch (err) {
-      console.error(err); // eslint-disable-line no-console
-    }
-    await sleep(3000);
-  }
-};
-/* eslint-enable no-await-in-loop */
-
 async function onLoginClick() {
   try {
-    if (!isInited) {
-      /* try to fetch address before starting async */
-      if (!address) await likecoinPoll();
-      likecoinInit();
+    if (!await checkForWebThree()) return;
+    if (!await checkForNetwork()) return;
+    if (!await checkForPermission()) return;
+    const newAddress = await checkForAccount();
+    if (newAddress) {
+      await login(newAddress);
     }
-    await login();
   } catch (e) {
     console.error(e); // eslint-disable-line no-console
   }
