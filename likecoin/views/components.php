@@ -87,8 +87,9 @@ function likecoin_add_web3_section( $has_login_button ) {
  *
  * @param array|   $info display option for Liker ID table.
  * @param boolean| $editable Show action buttons or not.
+ * @param boolean| $disconnectable Show disconnect button or not.
  */
-function likecoin_add_likecoin_info_table( $info, $editable = true ) {
+function likecoin_add_likecoin_info_table( $info, $editable = true, $disconnectable = true ) {
 	$likecoin_id                = $info['likecoin_id'];
 	$likecoin_display_name      = $info['likecoin_display_name'];
 	$likecoin_wallet            = $info['likecoin_wallet'];
@@ -159,6 +160,7 @@ function likecoin_add_likecoin_info_table( $info, $editable = true ) {
 						<?php esc_attr_e( 'Change', LC_PLUGIN_SLUG ); ?>
 					</a>
 				</span>
+					<?php if ( $disconnectable ) { ?>
 				<span class="actionWrapper">
 					<a target="_blank"
 						id="likecoinLogoutBtn"
@@ -166,6 +168,7 @@ function likecoin_add_likecoin_info_table( $info, $editable = true ) {
 						<?php esc_attr_e( 'Disconnect', LC_PLUGIN_SLUG ); ?>
 					</a>
 				</span>
+					<?php } ?>
 			<?php } else { ?>
 				<span class="actionWrapper">
 					<a target="_blank"

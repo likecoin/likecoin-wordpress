@@ -109,7 +109,7 @@ function likecoin_add_site_likecoin_id_table( $args ) {
 		'likecoin_wallet_name'       => $likecoin_wallet_name,
 		'likecoin_avatar_name'       => $likecoin_avatar_name,
 	);
-	likecoin_add_likecoin_info_table( $params );
+	likecoin_add_likecoin_info_table( $params, true, false );
 	likecoin_add_web3_section( false );
 }
 
