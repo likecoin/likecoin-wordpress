@@ -4,9 +4,9 @@ Contributors: likecoin,williamchong007,ckxpress
 Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Ethereum, blogger, Like Rewards
 Donate link: https://like.co/foundation
 Requires at least: 4.0
-Tested up to: 5.1
+Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.2.0
+Stable tag: 1.2.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -47,6 +47,11 @@ Post author's account must be linked to a Liker ID for the Like Rewards banner t
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 1.2.1 =
+
+* Fixes Android Facebook Browser stuck in redirect issue
+* Inject sandbox attributes in iframe only in AMP mode
 
 = 1.2.0 =
 
