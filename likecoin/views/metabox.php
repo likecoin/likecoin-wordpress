@@ -36,7 +36,7 @@ function likecoin_add_meta_box( $post, $default_checked = false, $is_disabled = 
 	$likecoin_id       = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
 	$widget_option     = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
 	$widget_position   = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-	$is_widget_enabled = ( strlen( $widget_position ) > 0 && 'none' !== $widget_position ) || $default_checked;
+	$is_widget_enabled = strlen( $widget_position ) > 0 ? 'none' !== $widget_position : $default_checked;
 	$has_likecoin_id   = strlen( $likecoin_id ) > 0;
 	?>
 	<div class="wrapper">
