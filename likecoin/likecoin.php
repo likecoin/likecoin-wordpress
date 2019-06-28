@@ -242,6 +242,7 @@ function likecoin_add_likebutton( $content ) {
 }
 
 add_filter( 'the_content', 'likecoin_add_likebutton' );
+add_shortcode( 'likecoin', 'likecoin_add_likebutton' );
 
 /**
  * Modify plugin action links
