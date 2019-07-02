@@ -6,7 +6,7 @@ Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.2.3
+Stable tag: 1.2.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -48,6 +48,10 @@ Post author's account must be linked to a Liker ID for the Like Rewards banner t
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 1.2.4 =
+
+* Fix Like Rewards banner not showing when using site Liker ID
 
 = 1.2.3 =
 
