@@ -174,11 +174,36 @@ function likecoin_save_postdata( $post_id ) {
 add_action( 'save_post', 'likecoin_save_postdata' );
 
 /**
+ * Add LikeButton if LikerId exist
+ */
+function likecoin_add_likebutton() {
+	global $post;
+	$likecoin_id = '';
+
+	if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
+		$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
+	} elseif ( $post ) {
+		$likecoin_id = get_author_likecoin_id( $post );
+	}
+
+	if ( strlen( $likecoin_id ) > 0 ) {
+		$referrer     = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
+		$sandbox_attr = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
+		$widget_code  = '<iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
+		'style="height: 212px; width: 100%;" ' .
+		'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
+		'?type=wp' . $referrer . '"></iframe>';
+		return $widget_code;
+	}
+	return '';
+}
+
+/**
  * Add LikeButton to post content if suitable
  *
  * @param string| $content The original post content.
  */
-function likecoin_add_likebutton( $content ) {
+function likecoin_content_filter( $content ) {
 	global $post;
 	$option          = get_option( LC_OPTION_NAME );
 	$post_type_query = '';
@@ -219,29 +244,26 @@ function likecoin_add_likebutton( $content ) {
 		if ( ! empty( $post->post_password ) ) {
 			return $content;
 		}
-
-		$likecoin_id = '';
-
-		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
-			$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
-		} else {
-			$likecoin_id = get_author_likecoin_id( $post );
-		}
-
-		if ( strlen( $likecoin_id ) > 0 ) {
-			$referrer     = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
-			$sandbox_attr = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
-			$widget_code  = '<iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
-			'style="height: 212px; width: 100%;" ' .
-			'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
-			'?type=wp' . $referrer . '"></iframe>';
-			return $content . $widget_code;
-		}
+		return $content . likecoin_add_likebutton();
 	}
 	return $content;
 }
 
-add_filter( 'the_content', 'likecoin_add_likebutton' );
+
+/**
+ * Handle [likecoin] shortcode
+ *
+ * @param array|  $atts [$tag] attributes.
+ * @param string| $content Post content.
+ * @param string| $tag The name of the [$tag] (i.e. the name of the shortcode).
+ */
+function likecoin_likecoin_shortcode( $atts = [], $content = null, $tag = '' ) {
+	// TODO: add some more function according to atts/content.
+	return likecoin_add_likebutton();
+}
+
+add_filter( 'the_content', 'likecoin_content_filter' );
+add_shortcode( 'likecoin', 'likecoin_likecoin_shortcode' );
 
 /**
  * Modify plugin action links
