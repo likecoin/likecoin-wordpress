@@ -178,6 +178,7 @@ add_action( 'save_post', 'likecoin_save_postdata' );
  */
 function likecoin_add_likebutton() {
 	global $post;
+	$option      = get_option( LC_OPTION_NAME );
 	$likecoin_id = '';
 
 	if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
