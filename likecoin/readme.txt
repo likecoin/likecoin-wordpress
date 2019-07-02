@@ -6,7 +6,7 @@ Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.2.2
+Stable tag: 1.2.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -31,6 +31,7 @@ Please refer to "How to register a Liker ID?" if you don't have one yet.
 4. Go to "Your Like Rewards" in the plugin settings. Click Connect to Liker ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your Liker ID.
 5. You should see a Like Rewards in every post authored by you.
 
+After connecting your Liker ID, you can also use the shortcode [likecoin] to display Like Rewards Banner in your post.
 
 == Frequently Asked Questions ==
 
@@ -47,6 +48,10 @@ Post author's account must be linked to a Liker ID for the Like Rewards banner t
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 1.2.3 =
+
+* Add shortcode [likecoin] for displaying Like Rewards banner
 
 = 1.2.2 =
 
