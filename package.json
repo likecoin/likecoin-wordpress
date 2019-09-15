@@ -24,7 +24,7 @@
     "rollup-plugin-node-resolve": "^4.0.1",
     "rollup-plugin-uglify": "^6.0.2",
     "stylelint": "^9.10.1",
-    "stylelint-config-recommended": "^2.1.0",
+    "stylelint-config-recommended": "^3.0.0",
     "stylelint-order": "^2.1.0"
   }
 }
