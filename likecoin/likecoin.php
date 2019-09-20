@@ -135,7 +135,6 @@ function likecoin_load_scripts( $hook ) {
 	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_' . LC_USER_OPTIONS_PAGE !== $hook ) {
 		return;
 	}
-	wp_enqueue_script( 'web3', LC_URI . 'assets/js/vendor/web3.min.js', false, LC_WEB3_VERSION, true );
 }
 
 /**
