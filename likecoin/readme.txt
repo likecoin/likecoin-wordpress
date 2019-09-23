@@ -14,11 +14,13 @@ With this plug-in installed in your site, every Like is a Reward.
 
 == Description ==
 
-[Civic Liker](https://like.co) is a social movement to help bloggers and independent journalists make passive income by enabling Like Rewards on their websites. It can be done simply by installing this plugin.
+[Civic Liker](https://liker.land/civic) is a movement to realign creativity and reward, by the technology of nano-payment to decouple media's income from advertising needs. Any website can enable the Like Rewards banner by installing the LikeCoin plugin. Each "Like" from the readers let creators to be rewarded.
 
-On the Internet, rewards and creativity are decoupled. Creators producing high quality contents receive “Likes” but not income. LikeCoin Foundation aims to reinvent the Like by re-aligning creativity and reward. "Likes" are turned into rewards from the Civic Liker monthly subscriptions as well as Creators Matching Fund, and shared to all creators.
+The source of the daily reward consists of two parts:
+1) The monthly subscription fee paid by the Civic Likers who distribute their donation by their "Likes";
+2) Creators matching fund: managed by the foundation. The daily amount is adjusted according to the total amount donated by Civic Likers. Both of the likes given by Civic Liker and free likers's will be consider as votes for fund distribution.
 
-LikeCoin thus rewarded can be exchanged into USD on exchanges such as [BitAsset](https://www.bitasset.com/) and [Liquid](https://www.liquid.com/). Information of the LikeCoin token (LIKE) can be found in [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/) and Etherscan(https://etherscan.io/token/0x02f61fd266da6e8b102d4121f5ce7b992640cf98).
+LikeCoin thus rewarded can be exchanged into USD on exchanges such as [BitAsset](https://www.bitasset.com/ktrade/LIKE-BTC) and [Liquid](https://app.liquid.com/exchange/LIKEETH). Information of the LikeCoin token (LIKE) can be found in [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/) and [Etherscan](https://etherscan.io/token/0x02f61fd266da6e8b102d4121f5ce7b992640cf98).
 
 Contribute to the plugin development on [Github](https://github.com/likecoin/likecoin-wordpress).
 
