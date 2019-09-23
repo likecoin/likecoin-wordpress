@@ -80,7 +80,7 @@ function likecoin_add_user_options_page() {
 	}
 		echo '<h2>' . esc_html__( 'Your Liker ID', LC_PLUGIN_SLUG ) . '</h2>';
 		likecoin_add_likecoin_info_table( $params, ! $is_site_button_enabled );
-		likecoin_add_web3_section( false );
+		likecoin_add_error_section( false );
 		echo '<h2>' . esc_html__( 'Your Like Rewards banner', LC_PLUGIN_SLUG ) . '</h2>';
 		likecoin_add_button_preview( $likecoin_id );
 	if ( ! $is_site_button_enabled ) {
@@ -95,7 +95,7 @@ function likecoin_add_user_options_page() {
 	<?php
 	wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 	wp_enqueue_style( 'lc_css_common' );
-	wp_enqueue_script( 'lc_js_common', LC_URI . 'assets/js/dist/likecoin.js', array( 'jquery' ), LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_js_common', LC_URI . 'assets/js/dist/likecoin.js', array( 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
 }
 
 /**
@@ -106,18 +106,6 @@ function likecoin_add_user_options_page() {
 function likecoin_add_button_preview( $likecoin_id ) {
 	$has_likecoin_id = strlen( $likecoin_id ) > 0;
 	?>
-<section class="likecoin loginSection" style="<?php echo $has_likecoin_id ? 'display: none' : ''; ?>">
-	<section class="previewSection">
-		<a class="links" href="https://like.co/in" target="_blank">
-			<?php esc_html_e( 'Create your Liker ID', LC_PLUGIN_SLUG ); ?>
-		</a>
-		<div class="centerContainer" style="min-height: 220px;">
-			<a id="likecoinLoginBtn" class="likecoinButton loginBtn">
-				<?php esc_html_e( 'Connect to Liker ID', LC_PLUGIN_SLUG ); ?>
-			</a>
-		</div>
-	</section>
-</section>
 <section class="likecoin optionsSection" style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>">
 	<section class="previewSection">
 		<span><?php esc_html_e( 'Preview', LC_PLUGIN_SLUG ); ?></span>

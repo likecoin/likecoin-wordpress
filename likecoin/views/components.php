@@ -38,46 +38,21 @@ function likecoin_add_loading_section() {
  *
  * @param boolean| $has_login_button Render the login button or not.
  */
-function likecoin_add_web3_section( $has_login_button ) {
+function likecoin_add_error_section( $has_login_button ) {
 	likecoin_add_loading_section();
 	?>
 	<section class="likecoin loginSection">
-		<div class="likecoin centerContainer webThreeError needMetaMask" style="display: none">
-			<h3>
-				<?php
-				echo esc_html__( 'Please install', LC_PLUGIN_SLUG ) . '&nbsp<a href="https://metamask.io/" target="_blank">' . esc_html__( 'MetaMask Plugin', LC_PLUGIN_SLUG ) . '</a>';
-				?>
-			</h3>
+		<div class="likecoin likecoinError userNotFound" style="display: none">
+			<h4>
+				<?php esc_html_e( 'Liker ID not found', LC_PLUGIN_SLUG ); ?>
+			</h4>
 		</div>
-		<div class="likecoin centerContainer webThreeError needMainNet" style="display: none">
-			<h3>
-				<?php esc_html_e( 'Please switch to Main Network', LC_PLUGIN_SLUG ); ?>
-			</h3>
-			<img src="<?php echo esc_attr( LC_URI . 'assets/img/mainnet.png' ); ?>">
+		<div class="likecoin likecoinError findMyLikerId" style="display: none">
+			<h4>
+				<?php esc_html_e( 'Please find your Liker ID as shown below after signing in or login in like.co', LC_PLUGIN_SLUG ); ?>
+			</h4>
+			<img src="<?php echo esc_attr( LC_URI . 'assets/img/likecoin.png' ); ?>">
 		</div>
-		<div class="likecoin centerContainer webThreeError needPermission" style="display: none">
-			<h3>
-				<?php esc_html_e( 'Please accept the connect request in Metamask', LC_PLUGIN_SLUG ); ?>
-			</h3>
-		</div>
-		<div class="likecoin centerContainer webThreeError needUnlock" style="display: none">
-			<h3>
-				<?php esc_html_e( 'Please unlock your wallet', LC_PLUGIN_SLUG ); ?>
-			</h3>
-			<img src="<?php echo esc_attr( LC_URI . 'assets/img/unlock.png' ); ?>">
-		</div>
-		<div class="likecoin centerContainer webThreeError needLikeCoinId" style="display: none">
-			<a class="likecoinButton" href="https://like.co/in/register" target="_blank">
-				<?php esc_html_e( 'Please register a Liker ID first', LC_PLUGIN_SLUG ); ?>
-			</a>
-		</div>
-		<?php if ( $has_login_button ) { ?>
-			<div class="likecoin centerContainer webThreeError needLogin" style="display: none">
-				<a class="likecoinButton loginBtn">
-					<?php esc_html_e( 'Login to get Liker ID', LC_PLUGIN_SLUG ); ?>
-				</a>
-			</div>
-		<?php } ?>
 	</section>
 	<?php
 }
@@ -124,14 +99,31 @@ function likecoin_add_likecoin_info_table( $info, $editable = true, $disconnecta
 					>
 					<a id="likecoinId"
 						href="<?php echo esc_url( 'https://like.co/' . $likecoin_id ); ?>"
-						class="likecoinId"
+						class="likecoin likecoinId"
+						style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>"
 					>
-						<?php echo esc_html( $likecoin_id ? $likecoin_id : '-' ); ?></a>
+						<?php echo esc_html( $likecoin_id ? $likecoin_id : '' ); ?></a>
 					<input type="hidden"
-						class="likecoinId"
 						name="<?php echo esc_attr( $likecoin_id_name ); ?>"
 						value="<?php echo esc_attr( $likecoin_id ); ?>"
+						class="likecoin likecoinId"
 					>
+					<div class="likecoin likecoinIdInputArea" style="<?php echo esc_attr( $likecoin_id ? 'display: none;' : '' ); ?>">
+						<input
+							type="text"
+							id="likecoinIdInputBox"
+							class="likecoin likecoinIdInputBox"
+						>
+						<p><a
+								id="likecoinInputLabel"
+								class="likecoin likecoinInputLabel"
+								target="blank"
+								rel="noopenner"
+								href="https://like.co/in"
+							>
+								<?php esc_html_e( 'Sign Up / Find my Liker ID', LC_PLUGIN_SLUG ); ?>
+							</a></p>
+					</div>
 				</div>
 			</td>
 			<td>
@@ -169,14 +161,6 @@ function likecoin_add_likecoin_info_table( $info, $editable = true, $disconnecta
 					</a>
 				</span>
 					<?php } ?>
-			<?php } else { ?>
-				<span class="actionWrapper">
-					<a target="_blank"
-						id="likecoinChangeBtn"
-						type="button">
-						<?php esc_attr_e( 'Connect', LC_PLUGIN_SLUG ); ?>
-					</a>
-				</span>
 			<?php } ?>
 			</td>
 			<?php } ?>

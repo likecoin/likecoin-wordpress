@@ -1,8 +1,6 @@
-/* global jQuery, Web3 */
+/* global jQuery, _ */
 
-const CHALLENGE_URL = 'https://api.like.co/api/users/challenge';
-let webThreeError = null;
-let webThreeInstance = null;
+function getUserMinAPI(userId) { return `https://api.like.co/users/id/${userId}/min`; }
 
 function formatWallet(wallet) {
   if (!wallet) return wallet;
@@ -19,59 +17,10 @@ function hide(selector) {
   elems.forEach((elem) => { elem.style.display = 'none'; }); // eslint-disable-line no-param-reassign
 }
 
-
 function showError(selector) {
-  webThreeError = selector;
-  const elems = document.querySelectorAll('.likecoin.webThreeError');
+  const elems = document.querySelectorAll('.likecoin.likecoinError');
   elems.forEach((elem) => { elem.style.display = 'none'; }); // eslint-disable-line no-param-reassign
   show(selector);
-}
-
-
-async function checkForWebThree() {
-  if (!window.web3 && !window.ethereum) {
-    showError('.needMetaMask');
-    console.error('no web3'); // eslint-disable-line no-console
-    return false;
-  }
-  webThreeInstance = new Web3(window.web3.currentProvider);
-  return true;
-}
-
-async function checkForNetwork() {
-  const network = await webThreeInstance.eth.net.getNetworkType();
-  if (network !== 'main') {
-    showError('.needMainNet');
-    console.error('not mainnet'); // eslint-disable-line no-console
-    return false;
-  }
-  return true;
-}
-
-async function checkForPermission() {
-  if (window.ethereum && window.ethereum.enable) {
-    try {
-      await window.ethereum.enable();
-    } catch (err) {
-      showError('.needPermission');
-      console.error('no permission'); // eslint-disable-line no-console
-      console.error(err); // eslint-disable-line no-console
-      return false;
-    }
-  }
-  return true;
-}
-
-async function checkForAccount() {
-  const accounts = await webThreeInstance.eth.getAccounts();
-  if (!accounts || !accounts[0]) {
-    showError('.needUnlock');
-    console.error('not unlocked'); // eslint-disable-line no-console
-    return false;
-  }
-  const selectedAddress = accounts[0];
-  webThreeError = null;
-  return webThreeInstance.utils.toChecksumAddress(selectedAddress);
 }
 
 async function handleUpdateId({
@@ -98,77 +47,57 @@ async function handleUpdateId({
   if (likecoinWalletInput) likecoinWalletInput.value = wallet;
   if (likecoinDisplayNameInput) likecoinDisplayNameInput.value = displayName;
   if (likecoinAvatarInput) likecoinAvatarInput.value = avatar;
-  hide('.loginSection');
-  show('.optionsSection');
+  if (user) {
+    hide('.loginSection');
+    show('.optionsSection');
+  } else {
+    show('.loginSection');
+    hide('.optionsSection');
+  }
 }
 
-async function fetchLikeCoinID(currentAddress) {
+async function fetchLikeCoinID(likercoinId) {
   try {
     show('.loading');
-    const { challenge } = await jQuery.ajax({ url: `${CHALLENGE_URL}?wallet=${currentAddress}` });
+    const payload = await jQuery.ajax({ url: getUserMinAPI(likercoinId) });
     hide('.loading');
-    showError('.needLogin');
-    return challenge;
+    const {
+      user = '',
+      wallet = '',
+      displayName = '',
+      avatar = '',
+    } = payload;
+    if (user) {
+      handleUpdateId({
+        user,
+        wallet,
+        displayName,
+        avatar,
+      });
+    }
   } catch (err) {
     hide('.loading');
-    if ((err || {}).status === 404) showError('.needLikeCoinId');
+    if ((err || {}).status === 404) {
+      handleUpdateId({
+        user: '',
+        wallet: '',
+        displayName: '',
+        avatar: '',
+      });
+      showError('.userNotFound');
+    }
     throw err;
   }
 }
 
-async function login(address) {
-  if (!address) {
-    throw new Error('cannot get web3 address');
-  }
-  if (webThreeError && webThreeError !== '.needLogin') {
-    throw new Error(webThreeError);
-  }
-  const challenge = await fetchLikeCoinID(address);
-  const signature = await webThreeInstance.eth.personal.sign(challenge, address);
-  if (!signature) {
-    throw new Error('No signature');
-  }
-  const body = JSON.stringify({ challenge, signature, wallet: address });
-  const res = await fetch(CHALLENGE_URL, {
-    body,
-    headers: {
-      'content-type': 'application/json',
-    },
-    method: 'POST',
-  });
-  const payload = await res.json();
-  const {
-    user = '',
-    wallet = '',
-    displayName = '',
-    avatar = '',
-  } = payload;
-  if (user) {
-    handleUpdateId({
-      user,
-      wallet,
-      displayName,
-      avatar,
-    });
-  } else {
-    // TODO: Add error msg display to UI
-    console.error('Error: user is undefined'); // eslint-disable-line no-console
-    console.error(payload); // eslint-disable-line no-console
-  }
+function onLoginClick() {
+  hide('#likecoinId');
+  show('.likecoinIdInputArea');
+  document.getElementById('likecoinIdInputBox').focus();
 }
 
-async function onLoginClick() {
-  try {
-    if (!await checkForWebThree()) return;
-    if (!await checkForNetwork()) return;
-    if (!await checkForPermission()) return;
-    const newAddress = await checkForAccount();
-    if (newAddress) {
-      await login(newAddress);
-    }
-  } catch (e) {
-    console.error(e); // eslint-disable-line no-console
-  }
+function onFindMyIdClick() {
+  showError('.findMyLikerId');
 }
 
 function onLogoutClick() {
@@ -184,8 +113,17 @@ function onLogoutClick() {
   const loginBtn = document.querySelector('#likecoinLoginBtn');
   const changeBtn = document.querySelector('#likecoinChangeBtn');
   const logoutBtn = document.querySelector('#likecoinLogoutBtn');
+  const likercoinIdInputBox = document.querySelector('#likecoinIdInputBox');
+  const likercoinIdInputLabel = document.querySelector('#likecoinInputLabel');
   if (loginBtn) loginBtn.addEventListener('click', onLoginClick);
   if (changeBtn) changeBtn.addEventListener('click', onLoginClick);
   if (logoutBtn) logoutBtn.addEventListener('click', onLogoutClick);
-  checkForWebThree({ slient: true });
+  if (likercoinIdInputBox) {
+    likercoinIdInputBox.addEventListener('keyup',
+      _.debounce((e) => {
+        hide('.likecoinError');
+        fetchLikeCoinID(e.target.value);
+      }, 500));
+  }
+  if (likercoinIdInputLabel) likercoinIdInputLabel.addEventListener('click', onFindMyIdClick);
 })();

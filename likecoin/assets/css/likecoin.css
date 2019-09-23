@@ -114,6 +114,14 @@
   flex: 1;
 }
 
+.likecoin .likecoinInputLabel {
+  float: right;
+
+  color: gray;
+
+  font-style: italic;
+}
+
 .likecoin .likecoinTable tr {
 
   white-space: nowrap;
