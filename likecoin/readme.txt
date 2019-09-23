@@ -6,7 +6,7 @@ Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.2.4
+Stable tag: 1.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -25,10 +25,9 @@ Contribute to the plugin development on [Github](https://github.com/likecoin/lik
 == Installation ==
 
 1. Activate the plugin.
-2. Make sure you have installed MetaMask browser extension, unlocked it, and have a valid Liker ID associated with the address.
-Please refer to "How to register a Liker ID?" if you don't have one yet.
+2. Make sure you have a valid Liker ID. Please refer to "How to register a Liker ID?" if you don't have one yet.
 3. Go to the LikeCoin plugin settings page. Enable displaying of Like Rewards banner in "Like Rewards banner Display Setting".
-4. Go to "Your Like Rewards" in the plugin settings. Click Connect to Liker ID, a MetaMask popup should appear, asking you to sign the Login message. Sign the message to fetch your Liker ID.
+4. Go to "Your Like Rewards" in the plugin settings. Enter your Liker ID in the input box, your other account information should be fetched and filled in automatically.
 5. You should see a Like Rewards in every post authored by you.
 
 After connecting your Liker ID, you can also use the shortcode [likecoin] to display Like Rewards Banner in your post.
@@ -48,6 +47,11 @@ Post author's account must be linked to a Liker ID for the Like Rewards banner t
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 1.3.0 =
+
+* Allow user to input Liker ID directly
+* Remove Metamask related code
 
 = 1.2.4 =
 
