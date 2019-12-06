@@ -4,7 +4,7 @@ function getUserMinAPI(userId) { return `https://api.like.co/users/id/${userId}/
 
 function formatWallet(wallet) {
   if (!wallet) return wallet;
-  return `${wallet.substr(0, 6)}...${wallet.substr(38, 4)}`;
+  return wallet.replace(/((?:cosmos1|0x).{4}).*(.{10})/, '$1...$2');
 }
 
 function show(selector) {
@@ -63,14 +63,14 @@ async function fetchLikeCoinID(likercoinId) {
     hide('.loading');
     const {
       user = '',
-      wallet = '',
+      cosmosWallet = '',
       displayName = '',
       avatar = '',
     } = payload;
     if (user) {
       handleUpdateId({
         user,
-        wallet,
+        wallet: cosmosWallet,
         displayName,
         avatar,
       });
