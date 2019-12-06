@@ -6,7 +6,7 @@ Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.3.0
+Stable tag: 1.3.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -49,6 +49,10 @@ Post author's account must be linked to a Liker ID for the Like Rewards banner t
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 1.3.1 =
+
+* Use LikeCoin wallet when updating user info.
 
 = 1.3.0 =
 
