@@ -256,7 +256,7 @@ function likecoin_content_filter( $content ) {
  * @param string| $content Post content.
  * @param string| $tag The name of the [$tag] (i.e. the name of the shortcode).
  */
-function likecoin_likecoin_shortcode( $atts = [], $content = null, $tag = '' ) {
+function likecoin_likecoin_shortcode( $atts = array(), $content = null, $tag = '' ) {
 	// TODO: add some more function according to atts/content.
 	return likecoin_add_likebutton();
 }
