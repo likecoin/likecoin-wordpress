@@ -6,7 +6,7 @@ Donate link: https://like.co/foundation
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -32,7 +32,7 @@ Contribute to the plugin development on [Github](https://github.com/likecoin/lik
 4. Go to "Your LikeCoin Button" in the plugin settings. Enter your Liker ID in the input box, your other account information should be fetched and filled in automatically.
 5. You should see a LikeCoin Button in every post authored by you.
 
-After connecting your Liker ID, you can also use the shortcode [likecoin] to display LikeCoin button in your post.
+After connecting your Liker ID, you can also use the shortcode [likecoin] to display LikeCoin button in your post. You can also define Liker ID using param liker-id i.e. [likecoin liker-id=ckxpress].
 
 == Frequently Asked Questions ==
 
@@ -49,6 +49,11 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 1.3.2 =
+
+* Add liker-id param in [likecoin] shortcode
+* Rename Like Rewards banner to LikeCoin button
 
 = 1.3.1 =
 
