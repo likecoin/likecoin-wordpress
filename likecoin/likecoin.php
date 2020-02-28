@@ -172,17 +172,20 @@ function likecoin_save_postdata( $post_id ) {
 add_action( 'save_post', 'likecoin_save_postdata' );
 
 /**
- * Add LikeButton if LikerId exist
+ * Add LikeCoin Button if LikerId exist
+ *
+ * @param string| $likecoin_id The Liker ID of owner of LikeCoin Button.
  */
-function likecoin_add_likebutton() {
+function likecoin_add_likebutton( $likecoin_id = '' ) {
 	global $post;
-	$option      = get_option( LC_OPTION_NAME );
-	$likecoin_id = '';
+	$option = get_option( LC_OPTION_NAME );
 
-	if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
-		$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
-	} elseif ( $post ) {
-		$likecoin_id = get_author_likecoin_id( $post );
+	if ( strlen( $likecoin_id ) <= 0 ) {
+		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
+			$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
+		} elseif ( $post ) {
+			$likecoin_id = get_author_likecoin_id( $post );
+		}
 	}
 
 	if ( strlen( $likecoin_id ) > 0 ) {
@@ -257,8 +260,13 @@ function likecoin_content_filter( $content ) {
  * @param string| $tag The name of the [$tag] (i.e. the name of the shortcode).
  */
 function likecoin_likecoin_shortcode( $atts = array(), $content = null, $tag = '' ) {
-	// TODO: add some more function according to atts/content.
-	return likecoin_add_likebutton();
+	$filtered = shortcode_atts(
+		array(
+			'liker-id' => '',
+		),
+		$atts
+	);
+	return likecoin_add_likebutton( $filtered['liker-id'] );
 }
 
 add_filter( 'the_content', 'likecoin_content_filter' );
