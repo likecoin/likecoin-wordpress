@@ -14,7 +14,7 @@ With this plug-in installed in your site, every Like is a Reward.
 
 == Description ==
 
-[Civic Liker](https://liker.land/civic) is a movement to realign creativity and reward, by the technology of nano-payment to decouple media's income from advertising needs. Any website can enable the Like Rewards banner by installing the LikeCoin plugin. Each "Like" from the readers let creators to be rewarded.
+[Civic Liker](https://liker.land/civic) is a movement to realign creativity and reward, by the technology of nano-payment to decouple media's income from advertising needs. Any website can enable the LikeCoin button by installing the LikeCoin plugin. Each "Like" from the readers let creators to be rewarded.
 
 The source of the daily reward consists of two parts:
 1) The monthly subscription fee paid by the Civic Likers who distribute their donation by their "Likes";
@@ -28,23 +28,23 @@ Contribute to the plugin development on [Github](https://github.com/likecoin/lik
 
 1. Activate the plugin.
 2. Make sure you have a valid Liker ID. Please refer to "How to register a Liker ID?" if you don't have one yet.
-3. Go to the LikeCoin plugin settings page. Enable displaying of Like Rewards banner in "Like Rewards banner Display Setting".
-4. Go to "Your Like Rewards" in the plugin settings. Enter your Liker ID in the input box, your other account information should be fetched and filled in automatically.
-5. You should see a Like Rewards in every post authored by you.
+3. Go to the LikeCoin plugin settings page. Enable displaying of LikeCoin button in "LikeCoin Button Display Setting".
+4. Go to "Your LikeCoin Button" in the plugin settings. Enter your Liker ID in the input box, your other account information should be fetched and filled in automatically.
+5. You should see a LikeCoin Button in every post authored by you.
 
-After connecting your Liker ID, you can also use the shortcode [likecoin] to display Like Rewards Banner in your post.
+After connecting your Liker ID, you can also use the shortcode [likecoin] to display LikeCoin button in your post.
 
 == Frequently Asked Questions ==
 
 = How to register a Liker ID? =
 Please refer to [this step-by-step instruction](https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer).
 
-= Like Rewards banner is not shown after I edited other's post? =
-Post author's account must be linked to a Liker ID for the Like Rewards banner to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
+= LikeCoin button is not shown after I edited other's post? =
+Post author's account must be linked to a Liker ID for the LikeCoin button to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
 
 == Screenshots ==
 
-1. Like Rewards banner in a Post
+1. LikeCoin button in a Post
 2. LikeCoin Plugin Options
 3. LikeCoin Plugin Metabox
 

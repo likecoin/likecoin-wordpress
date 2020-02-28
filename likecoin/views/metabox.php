@@ -45,7 +45,7 @@ function likecoin_add_meta_box( $post, $default_checked = false, $is_disabled = 
 		if ( $is_disabled ) {
 			?>
 			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_SITE_OPTIONS_PAGE ) ); ?>">
-				<?php esc_html_e( 'Like Rewards banner per post setting is disabled by admin.', LC_PLUGIN_SLUG ); ?>
+				<?php esc_html_e( 'LikeCoin button per post setting is disabled by admin.', LC_PLUGIN_SLUG ); ?>
 			</a>
 			<?php
 		} elseif ( ! $skip_id_check && ! $has_likecoin_id ) {
@@ -65,7 +65,7 @@ function likecoin_add_meta_box( $post, $default_checked = false, $is_disabled = 
 				?>
 			>
 			<label for="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>">
-				<?php esc_html_e( 'Enabled Like Rewards banner in this post', LC_PLUGIN_SLUG ); ?>
+				<?php esc_html_e( 'Enabled LikeCoin button in this post', LC_PLUGIN_SLUG ); ?>
 			</label>
 		</section>
 	</div>
