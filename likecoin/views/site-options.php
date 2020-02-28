@@ -70,7 +70,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Override all Like Rewards banner with site Liker ID', LC_PLUGIN_SLUG ); ?>
+		<?php esc_html_e( 'Override all LikeCoin button with site Liker ID', LC_PLUGIN_SLUG ); ?>
 	</label>
 	<?php
 	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_options.js', array( 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );

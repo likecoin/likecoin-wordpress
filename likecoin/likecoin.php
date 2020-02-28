@@ -115,7 +115,7 @@ function likecoin_display_top_options_page() {
 		add_submenu_page(
 			LC_SITE_OPTIONS_PAGE,
 			__( 'LikeCoin', LC_PLUGIN_SLUG ),
-			__( 'Your Like Rewards', LC_PLUGIN_SLUG ),
+			__( 'Your LikeCoin Button', LC_PLUGIN_SLUG ),
 			'publish_posts',
 			LC_USER_OPTIONS_PAGE,
 			'likecoin_add_user_options_page'
@@ -411,7 +411,7 @@ function likecoin_init_settings() {
 
 	add_settings_section(
 		$site_likebutton_options_section,
-		__( 'Site Like Rewards banner display setting', LC_PLUGIN_SLUG ),
+		__( 'Site LikeCoin button display setting', LC_PLUGIN_SLUG ),
 		null,
 		LC_SITE_OPTIONS_PAGE
 	);

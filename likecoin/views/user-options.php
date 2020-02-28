@@ -81,7 +81,7 @@ function likecoin_add_user_options_page() {
 		echo '<h2>' . esc_html__( 'Your Liker ID', LC_PLUGIN_SLUG ) . '</h2>';
 		likecoin_add_likecoin_info_table( $params, ! $is_site_button_enabled );
 		likecoin_add_error_section( false );
-		echo '<h2>' . esc_html__( 'Your Like Rewards banner', LC_PLUGIN_SLUG ) . '</h2>';
+		echo '<h2>' . esc_html__( 'Your LikeCoin button', LC_PLUGIN_SLUG ) . '</h2>';
 		likecoin_add_button_preview( $likecoin_id );
 	if ( ! $is_site_button_enabled ) {
 		?>
