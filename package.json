@@ -13,7 +13,7 @@
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
-    "@babel/runtime-corejs2": "^7.3.4",
+    "@babel/runtime-corejs2": "^7.9.6",
     "@wordpress/babel-preset-default": "^2.0.4",
     "eslint": "^5.15.0",
     "eslint-config-airbnb-base": "^13.1.0",
