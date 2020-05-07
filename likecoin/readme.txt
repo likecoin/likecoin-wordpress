@@ -2,7 +2,7 @@
 
 Contributors: likecoin,williamchong007,ckxpress
 Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Ethereum, blogger, Like Rewards
-Donate link: https://like.co/foundation
+Donate link: https://github.com/sponsors/likecoin
 Requires at least: 4.0
 Tested up to: 5.2
 Requires PHP: 5.4
