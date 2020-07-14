@@ -37,7 +37,7 @@ After connecting your Liker ID, you can also use the shortcode [likecoin] to dis
 == Frequently Asked Questions ==
 
 = How to register a Liker ID? =
-Please refer to [this step-by-step instruction](https://help.like.co/likecoin-faq/newbies/registering-likecoin-id-on-computer).
+Please refer to [this step-by-step instruction](https://docs.like.co/user-guide/liker-id/how-to-register-a-liker-id).
 
 = LikeCoin button is not shown after I edited other's post? =
 Post author's account must be linked to a Liker ID for the LikeCoin button to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
