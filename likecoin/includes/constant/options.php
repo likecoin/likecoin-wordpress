@@ -36,6 +36,8 @@ define( 'LC_OPTION_WIDGET_OPTION', 'lc_widget_option' );
 define( 'LC_OPTION_WIDGET_POSITION', 'lc_widget_position' );
 
 define( 'LC_MATTERS_DRAFT_ID', 'lc_matters_draft_id' );
+define( 'LC_MATTERS_PUBLISH_URL', 'lc_matters_publish_url' );
+define( 'LC_MATTERS_INFO', 'lc_matters_info' );
 
 define( 'LC_OPTION_SITE_BUTTON_ENABLED', 'site_likecoin_id_enbled' );
 define( 'LC_OPTION_SITE_LIKECOIN_USER', 'site_likecoin_user' );
