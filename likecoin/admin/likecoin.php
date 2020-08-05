@@ -31,6 +31,7 @@ require_once dirname( __FILE__ ) . '/options.php';
 require_once dirname( __FILE__ ) . '/plugin-action.php';
 require_once dirname( __FILE__ ) . '/post.php';
 require_once dirname( __FILE__ ) . '/settings.php';
+require_once dirname( __FILE__ ) . '/matters.php';
 
 /**
  * Inject web3.js on related admin pages
@@ -82,9 +83,12 @@ function likecoin_admin_init() {
 function likecoin_add_admin_hooks() {
 	add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
 	add_action( 'admin_menu', 'likecoin_display_top_options_page' );
-	add_action( 'admin_post_likecoin_update_user_id', 'likecoin_update_user_id' );
 	add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 	add_action( 'admin_init', 'likecoin_admin_init' );
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );
-	add_action( 'save_post', 'likecoin_save_postdata' );
+	add_action( 'save_post_post', 'likecoin_save_postdata' );
+	add_action( 'save_post_post', 'likecoin_save_to_matters', 10, 3 );
+	add_action( 'save_post_page', 'likecoin_save_postdata' );
+	add_action( 'save_post_page', 'likecoin_save_to_matters', 10, 3 );
+	add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
 }
