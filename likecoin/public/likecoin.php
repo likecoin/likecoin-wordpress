@@ -23,7 +23,7 @@
 /**
  * Require public files
  */
-require_once 'likecoin-button.php';
+require_once dirname( __FILE__ ) . '/likecoin-button.php';
 
 /**
  * Run all public related WordPress hook

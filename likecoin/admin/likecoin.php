@@ -25,12 +25,12 @@
 /**
  * Require admin files
  */
-require_once 'ajax.php';
-require_once 'metabox.php';
-require_once 'options.php';
-require_once 'plugin-action.php';
-require_once 'post.php';
-require_once 'settings.php';
+require_once dirname( __FILE__ ) . '/ajax.php';
+require_once dirname( __FILE__ ) . '/metabox.php';
+require_once dirname( __FILE__ ) . '/options.php';
+require_once dirname( __FILE__ ) . '/plugin-action.php';
+require_once dirname( __FILE__ ) . '/post.php';
+require_once dirname( __FILE__ ) . '/settings.php';
 
 /**
  * Inject web3.js on related admin pages

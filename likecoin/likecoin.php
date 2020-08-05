@@ -43,8 +43,8 @@ define( 'LC_PLUGIN_SLUG', 'likecoin' );
 define( 'LC_PLUGIN_NAME', 'LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '1.3.3' );
 
-require_once 'includes/constant/options.php';
-require_once 'public/likecoin.php';
+require_once dirname( __FILE__ ) . '/includes/constant/options.php';
+require_once dirname( __FILE__ ) . '/public/likecoin.php';
 
 /**
  * Handle plugin init and upgrade
@@ -96,7 +96,7 @@ function likecoin_load_plugin_textdomain() {
  */
 function likecoin_add_all_hooks() {
 	if ( is_admin() ) {
-		require_once 'admin/likecoin.php';
+		require_once dirname( __FILE__ ) . '/admin/likecoin.php';
 		likecoin_add_admin_hooks();
 	}
 	likecoin_add_public_hooks();

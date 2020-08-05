@@ -21,6 +21,11 @@
  */
 
 /**
+ * Require shared functions
+ */
+require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
+
+/**
  * Add LikeCoin Button if LikerId exist
  *
  * @param string| $likecoin_id The Liker ID of owner of LikeCoin Button.

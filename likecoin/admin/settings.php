@@ -50,7 +50,7 @@ function likecoin_settings_validation( $option ) {
  * Init settings api for plugin
  */
 function likecoin_init_settings() {
-	include_once 'views/site-options.php';
+	include_once dirname( __FILE__ ) . '/views/site-options.php';
 
 	register_setting( LC_SITE_OPTIONS_PAGE, LC_OPTION_NAME, 'likecoin_settings_validation' );
 

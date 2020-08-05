@@ -26,8 +26,8 @@
  * Displays option menu
  */
 function likecoin_display_top_options_page() {
-	include_once 'views/site-options.php';
-	include_once 'views/user-options.php';
+	include_once dirname( __FILE__ ) . '/views/site-options.php';
+	include_once dirname( __FILE__ ) . '/views/user-options.php';
 
 	add_menu_page(
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
