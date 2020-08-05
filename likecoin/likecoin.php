@@ -49,7 +49,7 @@ require_once 'public/likecoin.php';
 /**
  * Handle plugin init and upgrade
  */
-function handle_init_and_upgrade() {
+function likecoin_handle_init_and_upgrade() {
 	global $wpdb;
 	global $charset_collate;
 	$version = get_option( 'likecoin_plugin_version', LC_PLUGIN_VERSION );
@@ -68,7 +68,7 @@ function handle_init_and_upgrade() {
 /**
  * Handle plugin uninstall
  */
-function handle_uninstall() {
+function likecoin_handle_uninstall() {
 
 	/* clean up all user metadata */
 	delete_metadata( 'user', 0, 'lc_likecoin_id', '', true );
@@ -100,11 +100,11 @@ function likecoin_add_all_hooks() {
 		likecoin_add_admin_hooks();
 	}
 	likecoin_add_public_hooks();
-	register_activation_hook( __FILE__, 'handle_init_and_upgrade' );
-	add_action( 'upgrader_process_complete', 'handle_init_and_upgrade' );
-	add_action( 'init', 'handle_init_and_upgrade' );
+	register_activation_hook( __FILE__, 'likecoin_handle_init_and_upgrade' );
+	add_action( 'upgrader_process_complete', 'likecoin_handle_init_and_upgrade' );
+	add_action( 'init', 'likecoin_handle_init_and_upgrade' );
 	add_action( 'plugins_loaded', 'likecoin_load_plugin_textdomain' );
-	register_uninstall_hook( __FILE__, 'handle_uninstall' );
+	register_uninstall_hook( __FILE__, 'likecoin_handle_uninstall' );
 }
 
 likecoin_add_all_hooks();
