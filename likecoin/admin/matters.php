@@ -80,42 +80,58 @@ function likecoin_save_to_matters( $post_id, $post, $update ) {
 		return;
 	}
 
-	$content          = apply_filters( 'the_content', $post->post_content );
-	$content          = likecoin_replace_matters_attachment_url( $content );
-	$title            = apply_filters( 'the_title', $post->post_title );
-	$api              = LikeCoin_Matters_API::get_instance();
-	$matters_draft_id = get_post_meta( $post_id, LC_MATTERS_DRAFT_ID, true );
+	$content      = apply_filters( 'the_content', $post->post_content );
+	$content      = likecoin_replace_matters_attachment_url( $content );
+	$title        = apply_filters( 'the_title', $post->post_title );
+	$api          = LikeCoin_Matters_API::get_instance();
+	$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+	if ( ! $matters_info ) {
+		$matters_info = array(
+			'type' => 'post',
+		);
+	}
+	$matters_draft_id = $matters_info['draft_id'];
 
 	if ( $update && $matters_draft_id ) {
 		$draft = $api->update_draft( $matters_draft_id, $title, $content );
 		if ( ! isset( $draft['id'] ) ) {
-			delete_post_meta( $post_id, LC_MATTERS_DRAFT_ID );
+			unset( $matters_info['draft_id'] );
+			update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 		} elseif ( $draft['id'] !== $matters_draft_id ) {
-			$matters_draft_id = $draft['id'];
-			update_post_meta( $post_id, LC_MATTERS_DRAFT_ID, $matters_draft_id );
+			$matters_info['draft_id'] = $draft['id'];
+			update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 		}
 	} else {
 		$draft = $api->new_draft( $title, $content );
 		// TODO: handle create fail
-		$matters_draft_id = $draft['id'];
-		update_post_meta( $post_id, LC_MATTERS_DRAFT_ID, $matters_draft_id );
+		$matters_info['draft_id'] = $draft['id'];
+		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 	}
 }
 
 function likecoin_publish_to_matters( $post_id, $post ) {
-	$content          = apply_filters( 'the_content', $post->post_content );
-	$title            = apply_filters( 'the_title', $post->post_title );
-	$api              = LikeCoin_Matters_API::get_instance();
-	$matters_draft_id = get_post_meta( $post_id, LC_MATTERS_DRAFT_ID, true );
+	$content      = apply_filters( 'the_content', $post->post_content );
+	$title        = apply_filters( 'the_title', $post->post_title );
+	$api          = LikeCoin_Matters_API::get_instance();
+	$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+	if ( ! $matters_info ) {
+		$matters_info = array(
+			'type' => 'post',
+		);
+	}
+	$matters_draft_id = $matters_info['draft_id'];
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content );
 		// TODO: handle create fail
-		$matters_draft_id = $draft['id'];
+		$matters_draft_id         = $draft['id'];
+		$matters_info['draft_id'] = $matters_draft_id;
 	} else {
 		$api->update_draft( $matters_draft_id, $title, $content );
 		// TODO: handle update fail
 	}
-	$res = $api->publish_draft( $matters_draft_id );
+	$res                       = $api->publish_draft( $matters_draft_id );
+	$matters_info['published'] = true;
+	update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 	// TODO: handle publish fail
 }
 
@@ -128,9 +144,17 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	if ( ! $parent_post ) {
 		return;
 	}
-	$matters_draft_id = get_post_meta( $parent_post, LC_MATTERS_DRAFT_ID, true );
+	$matters_info = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
+	if ( ! $matters_info ) {
+		$matters_info = array(
+			'type' => 'post',
+		);
+	}
+	$matters_draft_id = $matters_info['draft_id'];
 	if ( ! $matters_draft_id ) {
-		$matters_draft_id = likecoin_publish_to_matters( $parent_post, get_post( $parent_post ) );
+		$matters_draft_id         = likecoin_publish_to_matters( $parent_post, get_post( $parent_post ) );
+		$matters_info['draft_id'] = $matters_draft_id;
+		update_post_meta( $parent_post, LC_MATTERS_INFO, $matters_info );
 	}
 	$attachment_type = null;
 	if ( wp_attachment_is( 'image', $attachment_id ) ) {
