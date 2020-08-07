@@ -1,25 +1,38 @@
 <?php
+
 require_once dirname( __FILE__ ) . '/../includes/class-likecoin-matters-api.php';
 
+
 function likecoin_replace_matters_attachment_url( $content ) {
-	if ( ! preg_match_all( '/<img[^>]+src=([\'"])(?<src>.+?)\1[^>]*>/i', $content, $matches ) ) {
+	$dom_document          = new DOMDocument();
+	$libxml_previous_state = libxml_use_internal_errors( true );
+	$dom_content           = $dom_document->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES' ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
+	if ( false === $dom_content ) {
 		return $content;
 	}
-	foreach ( $matches[0] as $match ) {
-		if ( preg_match( '@src="([0-9a-z:/._-]+)@i', $match, $src_list ) ) {
-			$url = $src_list[1];
-			if ( $url ) {
-				$attachment_id = attachment_url_to_postid( $url );
-				if ( $attachment_id ) {
-					$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
-					if ( isset( $matters_info['url'] ) ) {
-						$content = str_replace( $url, $matters_info['url'], $content );
-					}
+	$images = $dom_document->getElementsByTagName( 'img' );
+	foreach ( $images as $image ) {
+		$parent = $image->parentNode;
+		if ( 'figure' === $parent->nodeName ) {
+			$classes = $parent->getAttribute( 'class' );
+			$parent->setAttribute( 'class', $classes . ' image' );
+		}
+		$url = $image->getAttribute( 'src' );
+
+		if ( $url ) {
+			$attachment_id = attachment_url_to_postid( $url );
+			if ( $attachment_id ) {
+				$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
+				if ( isset( $matters_info['url'] ) ) {
+					$image->setAttribute( 'src', $matters_info['url'] );
+					$image->setAttribute( 'data-asset-id', $matters_info['attachment_id'] );
 				}
 			}
 		}
 	}
-	return $content;
+	return wp_kses_post( $dom_document->saveHTML() );
 }
 
 function likecoin_save_to_matters( $post_id, $post, $update ) {
