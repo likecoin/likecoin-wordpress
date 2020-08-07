@@ -134,6 +134,7 @@ Content-Type: " . $file_mime_type . "\r
 	}
 
 	public function post_attachment( $file, $draft_id ) {
+		$type      = 'audio' === $file['type'] ? 'embedaudio' : 'embed';
 		$payload   = 'mutation ($input: SingleFileUploadInput!) {
       singleFileUpload(input: $input) {
 				... on Asset {
@@ -144,7 +145,7 @@ Content-Type: " . $file_mime_type . "\r
 		}';
 		$variables = array(
 			'input' => array(
-				'type'       => 'embed',
+				'type'       => $type,
 				'entityType' => 'draft',
 				'entityId'   => wp_json_encode( $draft_id ),
 				'file'       => null,
