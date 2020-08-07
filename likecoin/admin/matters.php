@@ -4,6 +4,9 @@ require_once dirname( __FILE__ ) . '/../includes/class-likecoin-matters-api.php'
 
 
 function likecoin_replace_matters_attachment_url( $content ) {
+	if ( ! $content ) {
+		return $content;
+	}
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
 	$dom_content           = $dom_document->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES' ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
@@ -85,10 +88,10 @@ function likecoin_save_to_matters( $post_id, $post, $update ) {
 			'type' => 'post',
 		);
 	}
-	if ( $matters_info['published'] ) {
+	if ( isset( $matters_info['published'] ) && $matters_info['published'] ) {
 		return;
 	}
-	$matters_draft_id = $matters_info['draft_id'];
+	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	$content          = apply_filters( 'the_content', $post->post_content );
 	$content          = likecoin_replace_matters_attachment_url( $content );
 	$title            = apply_filters( 'the_title', $post->post_title );
@@ -120,14 +123,14 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 			'type' => 'post',
 		);
 	}
-	if ( $matters_info['published'] ) {
+	if ( isset( $matters_info['published'] ) && $matters_info['published'] ) {
 		return;
 	}
+	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	$content          = apply_filters( 'the_content', $post->post_content );
 	$content          = likecoin_replace_matters_attachment_url( $content );
 	$title            = apply_filters( 'the_title', $post->post_title );
 	$api              = LikeCoin_Matters_API::get_instance();
-	$matters_draft_id = $matters_info['draft_id'];
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content );
 		// TODO: handle create fail
@@ -158,10 +161,10 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 			'type' => 'post',
 		);
 	}
-	if ( $matters_info['published'] ) {
+	if ( isset( $matters_info['published'] ) && $matters_info['published'] ) {
 		return;
 	}
-	$matters_draft_id = $matters_info['draft_id'];
+	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	if ( ! $matters_draft_id ) {
 		$matters_draft_id         = likecoin_publish_to_matters( $parent_post, get_post( $parent_post ) );
 		$matters_info['draft_id'] = $matters_draft_id;
