@@ -9,7 +9,7 @@ function likecoin_replace_matters_attachment_url( $content ) {
 	}
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
-	$dom_content           = $dom_document->loadHTML( mb_convert_encoding( $content, 'HTML-ENTITIES' ), LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 	libxml_clear_errors();
 	libxml_use_internal_errors( $libxml_previous_state );
 	if ( false === $dom_content ) {
@@ -74,8 +74,27 @@ function likecoin_replace_matters_attachment_url( $content ) {
 		if ( strpos( $classes, 'gallery' ) !== false ) {
 			$figure->setAttribute( 'class', $classes . ' image' );
 		}
+		$has_caption = false;
+		$captions    = $figure->getElementsByTagName( 'figcaption' );
+		foreach ( $captions as $caption ) {
+			if ( $caption->parentNode === $figure ) {
+				$has_caption = true;
+			}
+		}
+		if ( ! $has_caption ) {
+			$new_caption = $dom_document->createElement( 'figcaption' );
+			$span        = $dom_document->createElement( 'span' );
+			$new_caption->appendChild( $span );
+			$figure->appendChild( $new_caption );
+		}
 	}
-	return $dom_document->saveHTML();
+
+	$root   = $dom_document->documentElement;
+	$result = '';
+	foreach ( $root->childNodes as $childNode ) {
+			$result .= $dom_document->saveHTML( $childNode );
+	}
+	return $result;
 }
 
 function likecoin_save_to_matters( $post_id, $post, $update ) {
@@ -94,8 +113,9 @@ function likecoin_save_to_matters( $post_id, $post, $update ) {
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	$content          = apply_filters( 'the_content', $post->post_content );
 	$content          = likecoin_replace_matters_attachment_url( $content );
-	$title            = apply_filters( 'the_title', $post->post_title );
-	$api              = LikeCoin_Matters_API::get_instance();
+	error_log( $content );
+	$title = apply_filters( 'the_title', $post->post_title );
+	$api   = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
 		$draft = $api->update_draft( $matters_draft_id, $title, $content );
 		if ( ! isset( $draft['id'] ) ) {
