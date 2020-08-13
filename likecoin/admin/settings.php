@@ -118,15 +118,6 @@ function likecoin_add_button_settings() {
  * @param array| $option The form input data for options api.
  */
 function likecoin_publish_settings_validation( $option ) {
-	if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
-		add_settings_error(
-			'lc_settings_messages',
-			'missing_site_id',
-			__( 'Site Liker ID is missing', LC_PLUGIN_SLUG ),
-			'error'
-		);
-		return get_option( LC_BUTTON_OPTION_NAME );
-	}
 	add_settings_error(
 		'lc_settings_messages',
 		'updated',
@@ -138,7 +129,7 @@ function likecoin_publish_settings_validation( $option ) {
 
 function likecoin_add_publish_settings() {
 
-	register_setting( LC_PUBLISH_SITE_OPTIONS_PAGE, LC_BUTTON_OPTION_NAME, 'likecoin_publish_settings_validation' );
+	register_setting( LC_PUBLISH_SITE_OPTIONS_PAGE, LC_PUBLISH_OPTION_NAME, 'likecoin_publish_settings_validation' );
 
 	$site_matters_id_options_section      = 'lc_site_matters_id_options';
 	$site_matters_publish_options_section = 'lc_site_matters_publish_options';

@@ -1,4 +1,5 @@
 <?php
+require_once dirname( __FILE__ ) . '/constant/options.php';
 
 class LikeCoin_Matters_API {
 
@@ -7,7 +8,7 @@ class LikeCoin_Matters_API {
 	private $access_token;
 
 	private function __construct() {
-		$this->base_url     = 'https://server.matters.news/graphql';
+		$this->base_url     = LC_MATTERS_API_ENDPOINT;
 		$this->access_token = '';
 	}
 

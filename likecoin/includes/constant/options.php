@@ -48,3 +48,5 @@ define( 'LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE', 'button_display_author_overr
 define( 'LC_OPTION_SITE_MATTERS_ACCESS_TOKEN', 'site_matters_access_token' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_DRAFT', 'site_matters_auto_save_draft' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_PUBLISH', 'site_matters_auto_publish' );
+
+define( 'LC_MATTERS_API_ENDPOINT', 'https://server.matters.news/graphql' );
