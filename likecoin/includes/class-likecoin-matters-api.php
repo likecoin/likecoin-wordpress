@@ -7,6 +7,8 @@ class LikeCoin_Matters_API {
 	private $access_token;
 
 	private function __construct() {
+		$this->base_url     = 'https://server.matters.news/graphql';
+		$this->access_token = '';
 	}
 
 	public function set_base_url( $base_url ) {
@@ -182,6 +184,10 @@ Content-Type: " . $file_mime_type . "\r
 	public static function get_instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new LikeCoin_Matters_API();
+		}
+		$option = get_option( LC_PUBLISH_OPTION_NAME );
+		if ( isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) ) {
+			self::$instance->set_access_token( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] );
 		}
 		return self::$instance;
 	}

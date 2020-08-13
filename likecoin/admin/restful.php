@@ -26,5 +26,5 @@
 require_once dirname( __FILE__ ) . '/matters.php';
 
 function likecoin_hook_restful_hook() {
-	add_action( 'add_attachment', 'likecoin_post_attachment_to_matters', 10, 2 );
+	likecoin_add_matters_restful_hook();
 }

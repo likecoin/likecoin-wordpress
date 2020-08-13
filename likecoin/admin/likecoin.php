@@ -87,8 +87,6 @@ function likecoin_add_admin_hooks() {
 	add_action( 'admin_init', 'likecoin_admin_init' );
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );
 	add_action( 'save_post_post', 'likecoin_save_postdata' );
-	add_action( 'save_post_post', 'likecoin_save_to_matters', 10, 3 );
 	add_action( 'save_post_page', 'likecoin_save_postdata' );
-	add_action( 'save_post_page', 'likecoin_save_to_matters', 10, 3 );
-	add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
+	likecoin_add_matters_admin_hook();
 }

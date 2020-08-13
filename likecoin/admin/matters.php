@@ -121,3 +121,35 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	);
 	update_post_meta( $attachment_id, LC_MATTERS_INFO, $params );
 }
+
+function likecoin_check_should_hook_matters_draft() {
+	$option = get_option( LC_PUBLISH_OPTION_NAME );
+	return isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) &&
+	$option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] &&
+	isset( $option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ] ) &&
+	$option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ];
+}
+
+function likecoin_check_should_hook_matters_publish() {
+	$option = get_option( LC_PUBLISH_OPTION_NAME );
+	return isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) &&
+	$option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] &&
+	isset( $option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ] ) &&
+	$option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ];
+}
+
+function likecoin_add_matters_admin_hook() {
+	if ( likecoin_check_should_hook_matters_draft() ) {
+		add_action( 'save_post_post', 'likecoin_save_to_matters', 10, 3 );
+		add_action( 'save_post_page', 'likecoin_save_to_matters', 10, 3 );
+	}
+	if ( likecoin_check_should_hook_matters_publish() ) {
+		add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
+	}
+}
+
+function likecoin_add_matters_restful_hook() {
+	if ( likecoin_check_should_hook_matters_draft() || likecoin_check_should_hook_matters_publish() ) {
+		add_action( 'add_attachment', 'likecoin_post_attachment_to_matters', 10, 2 );
+	}
+}
