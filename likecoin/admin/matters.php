@@ -186,7 +186,7 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	if ( ! $matters_draft_id ) {
-		$matters_draft_id         = likecoin_publish_to_matters( $parent_post, get_post( $parent_post ) );
+		$matters_draft_id         = likecoin_save_to_matters( $parent_post, get_post( $parent_post ) );
 		$matters_info['draft_id'] = $matters_draft_id;
 		update_post_meta( $parent_post, LC_MATTERS_INFO, $matters_info );
 	}
