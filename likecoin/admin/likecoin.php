@@ -39,7 +39,7 @@ require_once dirname( __FILE__ ) . '/matters.php';
  * @param string| $hook The current admin page filename.
  */
 function likecoin_load_scripts( $hook ) {
-	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_' . LC_USER_OPTIONS_PAGE !== $hook ) {
+	if ( 'toplevel_page_' . LC_BUTTON_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_' . LC_BUTTON_USER_OPTIONS_PAGE !== $hook ) {
 		return;
 	}
 }

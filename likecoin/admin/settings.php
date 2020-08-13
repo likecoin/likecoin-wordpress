@@ -35,7 +35,7 @@ function likecoin_settings_validation( $option ) {
 			__( 'Site Liker ID is missing', LC_PLUGIN_SLUG ),
 			'error'
 		);
-		return get_option( LC_OPTION_NAME );
+		return get_option( LC_BUTTON_OPTION_NAME );
 	}
 	add_settings_error(
 		'lc_settings_messages',
@@ -52,7 +52,7 @@ function likecoin_settings_validation( $option ) {
 function likecoin_init_settings() {
 	include_once dirname( __FILE__ ) . '/views/site-options.php';
 
-	register_setting( LC_SITE_OPTIONS_PAGE, LC_OPTION_NAME, 'likecoin_settings_validation' );
+	register_setting( LC_BUTTON_SITE_OPTIONS_PAGE, LC_BUTTON_OPTION_NAME, 'likecoin_settings_validation' );
 
 	$site_likecoin_id_options_section = 'lc_site_likecoin_id_options';
 	$site_likebutton_options_section  = 'lc_site_likebutton_options';
@@ -61,21 +61,21 @@ function likecoin_init_settings() {
 		$site_likecoin_id_options_section,
 		__( 'Site Liker ID', LC_PLUGIN_SLUG ),
 		null,
-		LC_SITE_OPTIONS_PAGE
+		LC_BUTTON_SITE_OPTIONS_PAGE
 	);
 
 	add_settings_section(
 		$site_likebutton_options_section,
 		__( 'Site LikeCoin button display setting', LC_PLUGIN_SLUG ),
 		null,
-		LC_SITE_OPTIONS_PAGE
+		LC_BUTTON_SITE_OPTIONS_PAGE
 	);
 
 	add_settings_field(
 		LC_OPTION_SITE_BUTTON_ENABLED,
 		__( 'Enable site Liker ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_toggle',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
 		array(
 			'label_for' => LC_OPTION_SITE_BUTTON_ENABLED,
@@ -86,7 +86,7 @@ function likecoin_init_settings() {
 		'lc_site_likecoin_id_table',
 		__( 'Site Liker ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_table',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
 		array(
 			'label_for' => LC_OPTION_SITE_LIKECOIN_USER,
@@ -98,7 +98,7 @@ function likecoin_init_settings() {
 		LC_OPTION_BUTTON_DISPLAY_OPTION,
 		__( 'Display option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_display_option',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likebutton_options_section,
 		array(
 			'label_for' => LC_OPTION_BUTTON_DISPLAY_OPTION,
@@ -109,7 +109,7 @@ function likecoin_init_settings() {
 		LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
 		__( 'Allow per Post option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_allow_author_override',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likebutton_options_section,
 		array(
 			'label_for' => LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,

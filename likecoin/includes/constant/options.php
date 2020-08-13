@@ -20,9 +20,9 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-define( 'LC_SITE_OPTIONS_PAGE', 'lc_site_options' );
-define( 'LC_USER_OPTIONS_PAGE', 'lc_user_options' );
-define( 'LC_OPTION_NAME', 'lc_plugin_options' );
+define( 'LC_BUTTON_SITE_OPTIONS_PAGE', 'lc_button_site_options' );
+define( 'LC_BUTTON_USER_OPTIONS_PAGE', 'lc_button_user_options' );
+define( 'LC_BUTTON_OPTION_NAME', 'lc_plugin_options' );;
 
 define( 'LC_USER_LIKECOIN_ID', 'lc_likecoin_id' );
 define( 'LC_USER_LIKECOIN_USER', 'lc_likecoin_user' );

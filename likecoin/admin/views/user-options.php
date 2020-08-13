@@ -28,7 +28,7 @@
 function likecoin_add_user_options_page() {
 	include_once 'components.php';
 
-	$option  = get_option( LC_OPTION_NAME );
+	$option  = get_option( LC_BUTTON_OPTION_NAME );
 	$user    = wp_get_current_user();
 	$user_id = $user->ID;
 	if ( ! current_user_can( 'edit_user', $user_id ) ) {

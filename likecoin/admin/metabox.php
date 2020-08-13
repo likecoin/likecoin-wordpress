@@ -29,7 +29,7 @@
  */
 function likecoin_display_meta_box( $post ) {
 	include_once dirname( __FILE__ ) . '/views/metabox.php';
-	$option          = get_option( LC_OPTION_NAME );
+	$option          = get_option( LC_BUTTON_OPTION_NAME );
 	$is_disabled     = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
 	$skip_id_check   = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
 	$is_page         = 'page' === $post->post_type;

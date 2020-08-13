@@ -81,7 +81,7 @@ function likecoin_handle_uninstall() {
 	delete_metadata( 'post', 0, 'lc_widget_option', '', true );
 	delete_metadata( 'post', 0, 'lc_widget_position', '', true );
 	/* clean up all option */
-	delete_option( LC_OPTION_NAME );
+	delete_option( LC_BUTTON_OPTION_NAME );
 	delete_option( 'likecoin_plugin_version' );
 }
 

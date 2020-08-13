@@ -37,8 +37,8 @@ function likecoin_add_site_options_page() {
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
 	<form action="options.php" method="post">
 	<?php
-		settings_fields( LC_SITE_OPTIONS_PAGE );
-		do_settings_sections( LC_SITE_OPTIONS_PAGE );
+		settings_fields( LC_BUTTON_SITE_OPTIONS_PAGE );
+		do_settings_sections( LC_BUTTON_SITE_OPTIONS_PAGE );
 	?>
 		<p class="submit">
 			<input type="submit" name="submit" id="submit" class="likecoinButton"
@@ -58,14 +58,14 @@ function likecoin_add_site_options_page() {
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
 function likecoin_add_site_likecoin_id_toggle( $args ) {
-	$option = get_option( LC_OPTION_NAME );
+	$option = get_option( LC_BUTTON_OPTION_NAME );
 	?>
 	<input type='hidden'
-		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 		value="0">
 	<input type="checkbox"
 	id="<?php echo esc_attr( $args['label_for'] ); ?>"
-	name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+	name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 	value="1"
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
@@ -90,15 +90,15 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
  */
 function likecoin_add_site_likecoin_id_table( $args ) {
 	include_once 'components.php';
-	$option                     = get_option( LC_OPTION_NAME );
+	$option                     = get_option( LC_BUTTON_OPTION_NAME );
 	$likecoin_id                = isset( $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_ID_FIELD ] ) ? $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_ID_FIELD ] : '';
 	$likecoin_display_name      = isset( $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] ) ? $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_DISPLAY_NAME_FIELD ] : '';
 	$likecoin_wallet            = isset( $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_WALLET_FIELD ] ) ? $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_WALLET_FIELD ] : '';
 	$likecoin_avatar            = isset( $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_AVATAR_FIELD ] ) ? $option[ $args['label_for'] ] [ LC_LIKECOIN_USER_AVATAR_FIELD ] : '';
-	$likecoin_id_name           = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_ID_FIELD . ']';
-	$likecoin_display_name_name = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_DISPLAY_NAME_FIELD . ']';
-	$likecoin_wallet_name       = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_WALLET_FIELD . ']';
-	$likecoin_avatar_name       = LC_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_AVATAR_FIELD . ']';
+	$likecoin_id_name           = LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_ID_FIELD . ']';
+	$likecoin_display_name_name = LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_DISPLAY_NAME_FIELD . ']';
+	$likecoin_wallet_name       = LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_WALLET_FIELD . ']';
+	$likecoin_avatar_name       = LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_LIKECOIN_USER_AVATAR_FIELD . ']';
 	$params                     = array(
 		'likecoin_id'                => $likecoin_id,
 		'likecoin_display_name'      => $likecoin_display_name,
@@ -119,10 +119,10 @@ function likecoin_add_site_likecoin_id_table( $args ) {
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
 function likecoin_add_site_likebutton_display_option( $args ) {
-	$option = get_option( LC_OPTION_NAME );
+	$option = get_option( LC_BUTTON_OPTION_NAME );
 	?>
 	<select id="<?php echo esc_attr( $args['label_for'] ); ?>"
-		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 	>
 	<option value="always"
 		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'always', false ) ) : ( '' ); ?>>
@@ -147,14 +147,14 @@ function likecoin_add_site_likebutton_display_option( $args ) {
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
 function likecoin_add_site_likebutton_allow_author_override( $args ) {
-	$option = get_option( LC_OPTION_NAME );
+	$option = get_option( LC_BUTTON_OPTION_NAME );
 	?>
 	<input type='hidden'
-		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 		value="0">
 	<input type="checkbox"
 		id="<?php echo esc_attr( $args['label_for'] ); ?>"
-		name="<?php echo esc_attr( LC_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 		value="1"
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
