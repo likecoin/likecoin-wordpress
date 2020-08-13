@@ -168,3 +168,58 @@ function likecoin_add_likecoin_info_table( $info, $editable = true, $disconnecta
 	</table>
 	<?php
 }
+
+function likecoin_add_matters_login_table( $info ) {
+	$matters_access_token      = $info['matters_access_token'];
+	$matters_access_token_name = $info['matters_access_token_name'];
+	$has_matters_access_token  = strlen( $matters_access_token ) > 0;
+	?>
+	<table class="form-table">
+		<tr>
+			<td>
+				<label for="matters_id"><?php esc_attr_e( 'Matters user ID', LC_PLUGIN_SLUG ); ?></label>
+			</td>
+			<td>
+				<label for="matters_password"><?php esc_attr_e( 'Password', LC_PLUGIN_SLUG ); ?></label>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<input type="text" name="matters_id" id="matters_id" value=""><br>
+			</td>
+			<td>
+				<input type="password" name="matters_password" id="matters_password" value=""><br>
+			</td>
+		</tr>
+		<tr>
+			<td class="actions">
+				<span class="actionWrapper">
+					<a target="_blank"
+						id="mattersIdLoginBtn"
+						type="button">
+						<?php esc_attr_e( 'Login', LC_PLUGIN_SLUG ); ?>
+					</a>
+				</span>
+			</td>
+		</tr>
+	</table>
+		<input type="hidden"
+			name="<?php echo esc_attr( $matters_access_token_name ); ?>"
+			value="<?php echo esc_attr( $matters_access_token ); ?>"
+		>
+	<hr>
+	<div>
+		<span><?php esc_html_e( 'Matters Login Status: ', LC_PLUGIN_SLUG ); ?></span>
+		<span><b><?php $has_matters_access_token ? esc_html_e( 'Logged in', LC_PLUGIN_SLUG ) : esc_html_e( 'Not connected', LC_PLUGIN_SLUG ); ?></b></span>
+		<?php if ( $has_matters_access_token ) { ?>
+			<span class="actionWrapper">
+						<a target="_blank"
+							id="mattersIdClearButton"
+							type="button">
+							<?php esc_attr_e( 'Logout', LC_PLUGIN_SLUG ); ?>
+						</a>
+		</span>
+		<?php } ?>
+	</div>
+	<?php
+}

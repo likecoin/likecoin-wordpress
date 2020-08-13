@@ -22,7 +22,9 @@
 
 define( 'LC_BUTTON_SITE_OPTIONS_PAGE', 'lc_button_site_options' );
 define( 'LC_BUTTON_USER_OPTIONS_PAGE', 'lc_button_user_options' );
-define( 'LC_BUTTON_OPTION_NAME', 'lc_plugin_options' );;
+define( 'LC_PUBLISH_SITE_OPTIONS_PAGE', 'lc_publish_site_options' );
+define( 'LC_BUTTON_OPTION_NAME', 'lc_plugin_options' );
+define( 'LC_PUBLISH_OPTION_NAME', 'lc_publish_options' );
 
 define( 'LC_USER_LIKECOIN_ID', 'lc_likecoin_id' );
 define( 'LC_USER_LIKECOIN_USER', 'lc_likecoin_user' );
@@ -43,5 +45,6 @@ define( 'LC_OPTION_SITE_LIKECOIN_USER', 'site_likecoin_user' );
 define( 'LC_OPTION_BUTTON_DISPLAY_OPTION', 'button_display_option' );
 define( 'LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE', 'button_display_author_override' );
 
-
-
+define( 'LC_OPTION_SITE_MATTERS_ACCESS_TOKEN', 'site_matters_access_token' );
+define( 'LC_OPTION_SITE_MATTERS_AUTO_DRAFT', 'site_matters_auto_save_draft' );
+define( 'LC_OPTION_SITE_MATTERS_AUTO_PUBLISH', 'site_matters_auto_publish' );

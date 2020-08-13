@@ -53,6 +53,35 @@ function likecoin_add_site_options_page() {
 }
 
 /**
+ * Add option menu
+ */
+function likecoin_add_publish_options_page() {
+	include_once 'components.php';
+
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	settings_errors( 'lc_settings_messages' );
+	?>
+	<div class="wrap likecoin">
+	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+	<form action="options.php" method="post">
+	<?php
+		settings_fields( LC_PUBLISH_SITE_OPTIONS_PAGE );
+		do_settings_sections( LC_PUBLISH_SITE_OPTIONS_PAGE );
+	?>
+		<p class="submit">
+			<input type="submit" name="submit" id="submit" class="likecoinButton"
+				value="<?php esc_attr_e( 'Confirm', LC_PLUGIN_SLUG ); ?>">
+		</p>
+	</form>
+	</div>
+	<?php
+	wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
+	wp_enqueue_style( 'lc_css_common' );
+}
+
+/**
  * Add the site Liker ID on/off
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
@@ -164,3 +193,52 @@ function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	<?php
 }
 
+function likecoin_add_site_matters_login_table( $args ) {
+	include_once 'components.php';
+	$option                    = get_option( LC_PUBLISH_OPTION_NAME );
+	$matters_access_token_name = LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']';
+	$params                    = array(
+		'matters_access_token'      => $matters_access_token,
+		'matters_access_token_name' => $matters_access_token_name,
+	);
+	likecoin_add_matters_login_table( $params, true, false );
+	likecoin_add_error_section( false );
+	?>
+	<?php
+}
+
+function likecoin_add_site_matters_auto_draft( $args ) {
+	$option = get_option( LC_PUBLISH_OPTION_NAME );
+	?>
+	<input type='hidden'
+		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		value="0">
+	<input type="checkbox"
+		id="<?php echo esc_attr( $args['label_for'] ); ?>"
+		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		value="1"
+	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
+	>
+	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
+		<?php esc_html_e( 'Auto save draft to matters', LC_PLUGIN_SLUG ); ?>
+	</label>
+	<?php
+}
+
+function likecoin_add_site_matters_auto_publish( $args ) {
+	$option = get_option( LC_BUTTON_OPTION_NAME );
+	?>
+	<input type='hidden'
+		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		value="0">
+	<input type="checkbox"
+		id="<?php echo esc_attr( $args['label_for'] ); ?>"
+		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		value="1"
+	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
+	>
+	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
+		<?php esc_html_e( 'Auto publish to matters', LC_PLUGIN_SLUG ); ?>
+	</label>
+	<?php
+}

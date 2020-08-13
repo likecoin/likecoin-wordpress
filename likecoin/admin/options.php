@@ -63,6 +63,15 @@ function likecoin_display_top_options_page() {
 		);
 	}
 
+	add_submenu_page(
+		LC_BUTTON_SITE_OPTIONS_PAGE,
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		__( 'Publish Setting', LC_PLUGIN_SLUG ),
+		'manage_options',
+		LC_PUBLISH_SITE_OPTIONS_PAGE,
+		'likecoin_add_publish_options_page'
+	);
+
 	global $submenu;
 	array_push(
 		$submenu[ LC_BUTTON_SITE_OPTIONS_PAGE ],
