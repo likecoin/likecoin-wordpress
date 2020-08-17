@@ -245,11 +245,11 @@ function likecoin_add_site_matters_auto_publish( $args ) {
 	$option = get_option( LC_BUTTON_OPTION_NAME );
 	?>
 	<input type='hidden'
-		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 		value="0">
 	<input type="checkbox"
 		id="<?php echo esc_attr( $args['label_for'] ); ?>"
-		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
 		value="1"
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
