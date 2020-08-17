@@ -29,7 +29,11 @@ function likecoin_replace_matters_attachment_url( $content ) {
 			$parent->setAttribute( 'class', $classes . ' image' );
 		}
 		$url           = $image->getAttribute( 'src' );
+		$classes       = $image->getAttribute( 'class' );
 		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
+		if ( ! $attachment_id && $classes && preg_match( '/wp-image-([0-9]+)/i', $classes, $class_id ) && absint( $class_id[1] ) ) {
+			$attachment_id = $class_id[1];
+		}
 		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
 		}
