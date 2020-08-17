@@ -28,16 +28,16 @@ function likecoin_replace_matters_attachment_url( $content ) {
 			$classes = $parent->getAttribute( 'class' );
 			$parent->setAttribute( 'class', $classes . ' image' );
 		}
-		$url = $image->getAttribute( 'src' );
-
-		if ( $url ) {
+		$url           = $image->getAttribute( 'src' );
+		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
+		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
-			if ( $attachment_id ) {
-				$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
-				if ( isset( $matters_info['url'] ) ) {
-					$image->setAttribute( 'src', $matters_info['url'] );
-					$image->setAttribute( 'data-asset-id', $matters_info['attachment_id'] );
-				}
+		}
+		if ( $attachment_id ) {
+			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
+			if ( isset( $matters_info['url'] ) ) {
+				$image->setAttribute( 'src', $matters_info['url'] );
+				$image->setAttribute( 'data-asset-id', $matters_info['attachment_id'] );
 			}
 		}
 	}
@@ -50,21 +50,23 @@ function likecoin_replace_matters_attachment_url( $content ) {
 			$player = likecoin_generate_matters_player_widget( $filename || '' );
 			$parent->appendChild( $dom_document->importNode( $player, true ) );
 		}
-		$url      = $audio->getAttribute( 'src' );
-		$id       = null;
-		$filename = null;
-		if ( $url ) {
+		$url           = $audio->getAttribute( 'src' );
+		$attachment_id = intval( $audio->getAttribute( 'data-attachment-id' ) );
+		$id            = null;
+		$filename      = null;
+
+		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
-			if ( $attachment_id ) {
-				$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
-				if ( isset( $matters_info['url'] ) ) {
+		}
+		if ( $attachment_id ) {
+			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
+			if ( isset( $matters_info['url'] ) ) {
 					$url = $matters_info['url'];
 					$id  = $matters_info['attachment_id'];
-				}
-				$file_path = get_attached_file( $attachment_id );
-				$filename  = basename( $file_path );
 			}
-			$source = $dom_document->createElement( 'source' );
+			$file_path = get_attached_file( $attachment_id );
+			$filename  = basename( $file_path );
+			$source    = $dom_document->createElement( 'source' );
 			$source->setAttribute( 'src', $url );
 			if ( $id ) {
 				$source->setAttribute( 'data-asset-id', $id );
