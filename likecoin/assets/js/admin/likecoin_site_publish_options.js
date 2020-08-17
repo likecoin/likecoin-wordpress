@@ -1,17 +1,14 @@
-/* global jQuery, WP_CONFIG */
+/* global ajaxurl, jQuery, WP_CONFIG */
 
 const accessTokenField = document.getElementById(WP_CONFIG.accessTokenFieldId);
-const MATTERS_API_ENDPOINT = WP_CONFIG.mattersApiEndpoint;
 const settingsForm = document.querySelector("form[action='options.php']");
+const ajaxForm = document.querySelector("form[action='admin-ajax.php']");
 
-async function loginMatters(email, password) {
-  const payload = { query: `mutation {\n  userLogin(input: {email: "${email}", password: "${password}"}) {\n    auth\n    token\n  }\n}` };
+async function loginMatters(data) {
   const res = await jQuery.ajax({
     type: 'POST',
-    url: MATTERS_API_ENDPOINT,
-    dataType: 'json',
-    contentType: 'application/json; charset=utf-8',
-    data: JSON.stringify(payload),
+    url: ajaxurl,
+    data,
   });
   // if (!res.data || !res.data.userLogin) showError('INVALID_RESPONSE');
   // if (!res.data.userLogin.auth) showError('INVALID_RESPONSE');
@@ -25,10 +22,9 @@ async function loginMatters(email, password) {
 
 function onMattersLoginClick(e) {
   e.preventDefault();
-  const mattersIdField = document.getElementById('matters_id');
-  const mattersPasswordField = document.getElementById('matters_password');
-  if (mattersIdField && mattersPasswordField) {
-    loginMatters(mattersIdField.value, mattersPasswordField.value);
+  if (ajaxForm) {
+    const data = jQuery(ajaxForm).serialize();
+    loginMatters(data);
   }
 }
 
