@@ -90,35 +90,40 @@ class LikeCoin_Matters_API {
 		$file_path      = $file['path'];
 		$filename       = $file['filename'];
 		$file_mime_type = $file['mime_type'];
-		$boundary       = base64_encode( wp_generate_password( 24 ) );
-		$request        = wp_remote_post(
+		$file_content   = file_get_contents( $file_path );
+		if ( false === $file_content ) {
+			errro_log( 'Fail to get file content: ' . $file_path );
+		}
+		$boundary = base64_encode( wp_generate_password( 24 ) );
+		$body     = '--' . $boundary . "\r\n";
+		$body    .= "Content-Disposition: form-data; name=\"operations\"\r\n";
+		$body    .= "\r\n";
+		$body    .= wp_json_encode(
+			array(
+				'query'     => $query,
+				'variables' => $variables,
+			)
+		) . "\r\n";
+		$body    .= '--' . $boundary . "\r\n";
+		$body    .= "Content-Disposition: form-data; name=\"map\"\r\n";
+		$body    .= "\r\n";
+		$body    .= "{ \"0\": [\"variables.input.file\"] }\r\n";
+		$body    .= '--' . $boundary . "\r\n";
+		$body    .= 'Content-Disposition: form-data; name="0"; filename="' . $filename . "\"\r\n";
+		$body    .= 'Content-Type: ' . $file_mime_type . "\r\n";
+		$body    .= "Content-Transfer-Encoding: binary\r\n";
+		$body    .= "\r\n";
+		$body    .= $file_content . "\r\n";
+		$body    .= "\r\n";
+		$body    .= '--' . $boundary . '--';
+		$request  = wp_remote_post(
 			$this->base_url,
 			array(
 				'headers' => array(
 					'Content-Type'   => 'multipart/form-data; boundary=' . $boundary,
 					'x-access-token' => $this->access_token,
 				),
-				'body'    => '--' . $boundary . "\r
-Content-Disposition: form-data; name=\"operations\"\r
-\r
-" . wp_json_encode(
-					array(
-						'query'     => $query,
-						'variables' => $variables,
-					)
-				) . "\r
---" . $boundary . "\r
-Content-Disposition: form-data; name=\"map\"\r
-\r
-{ \"0\": [\"variables.input.file\"] }\r
---" . $boundary . "\r
-Content-Disposition: form-data; name=\"0\"; filename=\"" . $filename . "\"\r
-Content-Type: " . $file_mime_type . "\r
-Content-Transfer-Encoding: binary\r
-\r
-" . file_get_contents( $file_path ) . "\r
-\r
---" . $boundary . '--',
+				'body'    => $body,
 			)
 		);
 		if ( is_wp_error( $request ) ) {
