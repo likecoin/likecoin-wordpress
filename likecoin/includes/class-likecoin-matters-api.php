@@ -20,6 +20,43 @@ class LikeCoin_Matters_API {
 		$this->access_token = $access_token;
 	}
 
+	public function login( $email, $password ) {
+		$request = wp_remote_post(
+			$this->base_url,
+			array(
+				'headers' => array(
+					'Content-Type' => 'application/json',
+				),
+				'body'    => wp_json_encode(
+					array(
+						'query' => 'mutation {
+							userLogin(input: {
+								email: ' . wp_json_encode( $email ) . ',
+								password: ' . wp_json_encode( $password ) . ',
+							}) {
+								auth
+								token
+							}
+						}',
+					)
+				),
+			)
+		);
+
+		if ( is_wp_error( $request ) ) {
+			error_log( $request->get_error_message() );
+			// TODO: show error message
+			return;
+		}
+			$decoded_response = json_decode( $request['body'], true );
+		if ( ! $decoded_response ) {
+			error_log( $request['body'] );
+			// TODO: show error message
+			return;
+		}
+			return $decoded_response;
+	}
+
 	private function post_query( $payload ) {
 		$request = wp_remote_post(
 			$this->base_url,

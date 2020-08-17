@@ -61,5 +61,17 @@ function likecoin_update_user_id() {
 	if ( isset( $_POST['_wp_http_referer'] ) ) {
 		wp_safe_redirect( esc_url_raw( add_query_arg( 'settings-updated', '1', wp_get_referer() ) ) );
 	}
-	exit();
+	wp_die();
+}
+
+function likecoin_matters_login() {
+	check_admin_referer( 'likecoin_matters_login' );
+
+	if ( ! isset( $_POST[ LC_OPTION_MATTERS_ID_FIELD ] ) || ! isset( $_POST[ LC_OPTION_MATTERS_PASSWORD_FIELD ] ) ) {
+		wp_send_json_error( array( 'error' => 'MISSING_FIELDS' ) );
+	}
+	$matters_id       = $_POST[ LC_OPTION_MATTERS_ID_FIELD ];
+	$matters_password = $_POST[ LC_OPTION_MATTERS_PASSWORD_FIELD ];
+	$results          = LikeCoin_Matters_API::get_instance()->login( $matters_id, $matters_password );
+	wp_send_json( $results );
 }

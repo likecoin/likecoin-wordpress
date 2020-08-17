@@ -34,6 +34,9 @@ define( 'LC_LIKECOIN_USER_DISPLAY_NAME_FIELD', 'display_name' );
 define( 'LC_LIKECOIN_USER_WALLET_FIELD', 'wallet' );
 define( 'LC_LIKECOIN_USER_AVATAR_FIELD', 'avatar' );
 
+define( 'LC_OPTION_MATTERS_ID_FIELD', 'lc_matters_id' );
+define( 'LC_OPTION_MATTERS_PASSWORD_FIELD', 'lc_matters_password' );
+
 define( 'LC_OPTION_WIDGET_OPTION', 'lc_widget_option' );
 define( 'LC_OPTION_WIDGET_POSITION', 'lc_widget_position' );
 
