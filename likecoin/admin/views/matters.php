@@ -3,7 +3,7 @@
 function likecoin_generate_matters_player_widget( $filename ) {
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
-	$dom_content           = $dom_document->loadHTML( '<div class="player"><header><div class="meta"><h4 class="title"' . $filename . '</h4><div class="time"><span class="current"></span><span class="duration"></span></div></div><span class="play paused"></span></header><footer><div class="progress-bar"><span></span></div></footer></div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	$dom_content           = $dom_document->loadHTML( '<div class="player"><header><div class="meta"><h4 class="title">' . $filename . '</h4><div class="time"><span class="current"></span><span class="duration"></span></div></div><span class="play paused"></span></header><footer><div class="progress-bar"><span></span></div></footer></div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 	libxml_clear_errors();
 	libxml_use_internal_errors( $libxml_previous_state );
 	return $dom_document->documentElement;
@@ -47,13 +47,6 @@ function likecoin_replace_matters_attachment_url( $content ) {
 	}
 	$audios = $dom_document->getElementsByTagName( 'audio' );
 	foreach ( $audios as $audio ) {
-		$parent = $audio->parentNode;
-		if ( 'figure' === $parent->nodeName ) {
-			$classes = $parent->getAttribute( 'class' );
-			$parent->setAttribute( 'class', $classes . ' audio' );
-			$player = likecoin_generate_matters_player_widget( $filename || '' );
-			$parent->appendChild( $dom_document->importNode( $player, true ) );
-		}
 		$url           = $audio->getAttribute( 'src' );
 		$attachment_id = intval( $audio->getAttribute( 'data-attachment-id' ) );
 		$id            = null;
@@ -80,6 +73,13 @@ function likecoin_replace_matters_attachment_url( $content ) {
 			}
 			$audio->removeAttribute( 'src' );
 			$audio->appendChild( $source );
+		}
+		$parent = $audio->parentNode;
+		if ( 'figure' === $parent->nodeName ) {
+			$classes = $parent->getAttribute( 'class' );
+			$parent->setAttribute( 'class', $classes . ' audio' );
+			$player = likecoin_generate_matters_player_widget( $filename );
+			$parent->appendChild( $dom_document->importNode( $player, true ) );
 		}
 	}
 	$figures = $dom_document->getElementsByTagName( 'figure' );
