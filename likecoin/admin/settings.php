@@ -136,7 +136,7 @@ function likecoin_add_publish_settings() {
 
 	add_settings_section(
 		$site_matters_id_options_section,
-		__( 'Connect with Matters ID', LC_PLUGIN_SLUG ),
+		__( 'Matters connection status', LC_PLUGIN_SLUG ),
 		null,
 		LC_PUBLISH_SITE_OPTIONS_PAGE
 	);
@@ -150,8 +150,8 @@ function likecoin_add_publish_settings() {
 
 	add_settings_field(
 		LC_OPTION_SITE_MATTERS_ACCESS_TOKEN,
-		__( 'Matters ID Login', LC_PLUGIN_SLUG ),
-		'likecoin_add_site_matters_login_table',
+		__( 'Connection status', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_matters_login_status',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		$site_matters_id_options_section,
 		array(

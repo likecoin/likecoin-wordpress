@@ -67,6 +67,7 @@ function likecoin_add_publish_options_page() {
 	?>
 	<div class="wrap likecoin">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+	<?php likecoin_add_site_matters_login_table(); ?>
 	<form action="options.php" method="post">
 	<?php
 		settings_fields( LC_PUBLISH_SITE_OPTIONS_PAGE );
@@ -195,7 +196,14 @@ function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	<?php
 }
 
-function likecoin_add_site_matters_login_table( $args ) {
+function likecoin_add_site_matters_login_table() {
+	?>
+	<h2><?php esc_html_e( 'Login with Matters ID', LC_PLUGIN_SLUG ); ?></h2>
+	<?php
+	likecoin_add_matters_login_table();
+}
+
+function likecoin_add_site_matters_login_status( $args ) {
 	include_once 'components.php';
 	$option                    = get_option( LC_PUBLISH_OPTION_NAME );
 	$matters_access_token      = $option[ $args['label_for'] ];
@@ -204,14 +212,13 @@ function likecoin_add_site_matters_login_table( $args ) {
 		'matters_access_token'      => $matters_access_token,
 		'matters_access_token_name' => $matters_access_token_name,
 	);
-	likecoin_add_matters_login_table( $params );
+	likecoin_add_matters_login_status( $params );
 	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_publish_options.js', array( 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_js_site_options',
 		'WP_CONFIG',
 		array(
 			'accessTokenFieldId' => esc_attr( $matters_access_token_name ),
-			'mattersApiEndpoint' => LC_MATTERS_API_ENDPOINT,
 		)
 	);
 }
