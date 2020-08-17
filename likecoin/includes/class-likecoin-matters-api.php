@@ -114,6 +114,7 @@ Content-Disposition: form-data; name=\"map\"\r
 --" . $boundary . "\r
 Content-Disposition: form-data; name=\"0\"; filename=\"" . $filename . "\"\r
 Content-Type: " . $file_mime_type . "\r
+Content-Transfer-Encoding: binary\r
 \r
 " . file_get_contents( $file_path ) . "\r
 \r
