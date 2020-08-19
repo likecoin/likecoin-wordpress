@@ -3,7 +3,7 @@
 require_once dirname( __FILE__ ) . '/../includes/class-likecoin-matters-api.php';
 require_once dirname( __FILE__ ) . '/views/matters.php';
 
-function likecoin_save_to_matters( $post_id, $post, $update ) {
+function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	if ( 'draft' !== get_post_status( $post_id ) ) {
 		return;
 	}
@@ -147,6 +147,8 @@ function likecoin_add_matters_admin_hook() {
 	}
 	if ( likecoin_check_should_hook_matters_publish() ) {
 		add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
+	} else if ( likecoin_check_should_hook_matters_draft()) {
+		add_action( 'publish_post', 'likecoin_save_to_matters', 10, 2 );
 	}
 }
 
