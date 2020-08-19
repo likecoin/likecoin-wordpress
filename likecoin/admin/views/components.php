@@ -178,17 +178,11 @@ function likecoin_add_matters_login_table() {
 			<tr>
 				<td>
 					<label for="matters_id"><?php esc_attr_e( 'Matters login email', LC_PLUGIN_SLUG ); ?></label>
+					<input type="text" name="<?php echo esc_attr( LC_OPTION_MATTERS_ID_FIELD ); ?>" id="matters_id" value="">
 				</td>
 				<td>
 					<label for="matters_password"><?php esc_attr_e( 'Password', LC_PLUGIN_SLUG ); ?></label>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="text" name="<?php echo esc_attr( LC_OPTION_MATTERS_ID_FIELD ); ?>" id="matters_id" value=""><br>
-				</td>
-				<td>
-					<input type="password" name="<?php echo esc_attr( LC_OPTION_MATTERS_PASSWORD_FIELD ); ?>" id="matters_password" value=""><br>
+					<input type="password" name="<?php echo esc_attr( LC_OPTION_MATTERS_PASSWORD_FIELD ); ?>" id="matters_password" value="">
 				</td>
 			</tr>
 			<tr>
@@ -201,6 +195,7 @@ function likecoin_add_matters_login_table() {
 						</a>
 					</span>
 				</td>
+				<td><span id="mattersErrorMessage"></span></td>
 			</tr>
 	</table>
 	</form>

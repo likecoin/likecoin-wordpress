@@ -3,6 +3,7 @@
 const accessTokenField = document.getElementById(WP_CONFIG.accessTokenFieldId);
 const settingsForm = document.querySelector("form[action='options.php']");
 const ajaxForm = document.querySelector("form[action='admin-ajax.php']");
+const errorMessage = document.getElementById('mattersErrorMessage');
 
 async function loginMatters(data) {
   const res = await jQuery.ajax({
@@ -10,15 +11,30 @@ async function loginMatters(data) {
     url: ajaxurl,
     data,
   });
-  // if (!res.data || !res.data.userLogin) showError('INVALID_RESPONSE');
-  // if (!res.data.userLogin.auth) showError('INVALID_RESPONSE');
+  if (res.errors) {
+    const mattersPasswordField = document.getElementById('matters_password');
+    const password = mattersPasswordField ? mattersPasswordField.value : null;
+    errorMessage.textContent = `ERROR: ${res.errors.map((e) => {
+      let msg = e.message || e;
+      if (password) msg = msg.split(password).join('***');
+      return msg;
+    }).join(', ')}`;
+    return;
+  }
+  if (!res.data || !res.data.userLogin) {
+    errorMessage.textContent = 'INVALID_RESPONSE';
+    return;
+  }
+  if (!res.data.userLogin.auth) {
+    errorMessage.textContent = 'INVALID_RESPONSE';
+    return;
+  }
   const { token } = res.data.userLogin;
   if (accessTokenField && token) {
     accessTokenField.value = token;
     settingsForm.submit.click();
   }
 }
-
 
 function onMattersLoginClick(e) {
   e.preventDefault();
@@ -27,7 +43,6 @@ function onMattersLoginClick(e) {
     loginMatters(data);
   }
 }
-
 
 function onMattersLogoutClick(e) {
   e.preventDefault();

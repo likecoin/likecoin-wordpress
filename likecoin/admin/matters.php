@@ -147,7 +147,7 @@ function likecoin_add_matters_admin_hook() {
 	}
 	if ( likecoin_check_should_hook_matters_publish() ) {
 		add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
-	} else if ( likecoin_check_should_hook_matters_draft()) {
+	} elseif ( likecoin_check_should_hook_matters_draft() ) {
 		add_action( 'publish_post', 'likecoin_save_to_matters', 10, 2 );
 	}
 }

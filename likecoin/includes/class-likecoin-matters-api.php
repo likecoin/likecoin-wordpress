@@ -46,13 +46,13 @@ class LikeCoin_Matters_API {
 		if ( is_wp_error( $request ) ) {
 			error_log( $request->get_error_message() );
 			// TODO: show error message
-			return;
+			return array( 'error' => $request->get_error_message() );
 		}
 			$decoded_response = json_decode( $request['body'], true );
 		if ( ! $decoded_response ) {
 			error_log( $request['body'] );
 			// TODO: show error message
-			return;
+			return array( 'error' => $request['body'] );
 		}
 			return $decoded_response;
 	}
