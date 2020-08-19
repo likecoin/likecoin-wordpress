@@ -41,6 +41,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		$matters_info['draft_id'] = $draft['id'];
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 	}
+	return $matters_draft_id;
 }
 
 function likecoin_publish_to_matters( $post_id, $post ) {
@@ -73,6 +74,7 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	$matters_info['published'] = true;
 	update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 	// TODO: handle publish fail
+	return $matters_draft_id;
 }
 
 function likecoin_post_attachment_to_matters( $attachment_id ) {
@@ -95,7 +97,7 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	if ( ! $matters_draft_id ) {
-		likecoin_save_to_matters( $parent_post, get_post( $parent_post ), false );
+		$matters_draft_id = likecoin_save_to_matters( $parent_post, get_post( $parent_post ), false );
 	}
 	$attachment_type = null;
 	if ( wp_attachment_is( 'image', $attachment_id ) ) {
@@ -117,11 +119,13 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 		$matters_draft_id
 	);
 	$params = array(
+	$attachment_id = $res['id'];
 		'type'          => 'attachment',
 		'url'           => $res['path'],
-		'attachment_id' => $res['id'],
+		'attachment_id' => $attachment_id,
 	);
 	update_post_meta( $attachment_id, LC_MATTERS_INFO, $params );
+	return $attachment_id;
 }
 
 function likecoin_check_should_hook_matters_draft() {
