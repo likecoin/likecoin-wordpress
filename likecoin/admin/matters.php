@@ -2,6 +2,7 @@
 
 require_once dirname( __FILE__ ) . '/../includes/class-likecoin-matters-api.php';
 require_once dirname( __FILE__ ) . '/views/matters.php';
+require_once dirname( __FILE__ ) . '/error.php';
 
 function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	if ( 'draft' !== get_post_status( $post_id ) ) {
@@ -37,7 +38,10 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	}
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content );
-		// TODO: handle create fail
+		if ( isset( $draft['error'] ) ) {
+			likecoin_set_admin_errors( $draft['error'], 'publish' );
+			return;
+		}
 		$matters_info['draft_id'] = $draft['id'];
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 	}
@@ -63,17 +67,26 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content );
-		// TODO: handle create fail
+		if ( isset( $draft['error'] ) ) {
+			likecoin_set_admin_errors( $draft['error'], 'publish' );
+			return;
+		}
 		$matters_draft_id         = $draft['id'];
 		$matters_info['draft_id'] = $matters_draft_id;
 	} else {
-		$api->update_draft( $matters_draft_id, $title, $content );
-		// TODO: handle update fail
+		$draft = $api->update_draft( $matters_draft_id, $title, $content );
+		if ( isset( $draft['error'] ) ) {
+			likecoin_set_admin_errors( $draft['error'], 'publish' );
+			return;
+		}
 	}
-	$res                       = $api->publish_draft( $matters_draft_id );
+	$res = $api->publish_draft( $matters_draft_id );
+	if ( isset( $res['error'] ) ) {
+		likecoin_set_admin_errors( $res['error'], 'publish' );
+		return;
+	}
 	$matters_info['published'] = true;
 	update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-	// TODO: handle publish fail
 	return $matters_draft_id;
 }
 
@@ -99,6 +112,12 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	if ( ! $matters_draft_id ) {
 		$matters_draft_id = likecoin_save_to_matters( $parent_post, get_post( $parent_post ), false );
 	}
+	if ( ! $matters_draft_id ) {
+		if ( ! likecoin_get_admin_errors() ) {
+			likecoin_set_admin_errors( 'Cannot save draft before publishing', 'publish' );
+		}
+		return;
+	}
 	$attachment_type = null;
 	if ( wp_attachment_is( 'image', $attachment_id ) ) {
 		$attachment_type = 'image';
@@ -108,8 +127,8 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	if ( ! $attachment_type ) {
 		return;
 	}
-	$api    = LikeCoin_Matters_API::get_instance();
-	$res    = $api->post_attachment(
+	$api = LikeCoin_Matters_API::get_instance();
+	$res = $api->post_attachment(
 		array(
 			'path'      => $file_path,
 			'filename'  => $filename,
@@ -118,8 +137,12 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 		),
 		$matters_draft_id
 	);
-	$params = array(
+	if ( isset( $draft['error'] ) ) {
+		likecoin_set_admin_errors( $draft['error'], 'publish' );
+		return;
+	}
 	$attachment_id = $res['id'];
+	$params        = array(
 		'type'          => 'attachment',
 		'url'           => $res['path'],
 		'attachment_id' => $attachment_id,

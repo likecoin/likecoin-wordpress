@@ -45,13 +45,11 @@ class LikeCoin_Matters_API {
 
 		if ( is_wp_error( $request ) ) {
 			error_log( $request->get_error_message() );
-			// TODO: show error message
 			return array( 'error' => $request->get_error_message() );
 		}
 			$decoded_response = json_decode( $request['body'], true );
 		if ( ! $decoded_response ) {
 			error_log( $request['body'] );
-			// TODO: show error message
 			return array( 'error' => $request['body'] );
 		}
 			return $decoded_response;
@@ -74,14 +72,12 @@ class LikeCoin_Matters_API {
 		);
 		if ( is_wp_error( $request ) ) {
 			error_log( $request->get_error_message() );
-			// TODO: show error message
-			return;
+			return array( 'error' => $request->get_error_message() );
 		}
 		$decoded_response = json_decode( $request['body'], true );
 		if ( ! $decoded_response || ! isset( $decoded_response['data'] ) ) {
 			error_log( $request['body'] );
-			// TODO: show error message
-			return;
+			return array( 'error' => $request['body'] );
 		}
 		return $decoded_response['data'];
 	}
@@ -128,14 +124,12 @@ class LikeCoin_Matters_API {
 		);
 		if ( is_wp_error( $request ) ) {
 			error_log( $request->get_error_message() );
-			// TODO: show error message
-			return;
+			return array( 'error' => $request->get_error_message() );
 		}
 		$decoded_response = json_decode( $request['body'], true );
 		if ( ! $decoded_response || ! isset( $decoded_response['data'] ) ) {
 			error_log( $request['body'] );
-			// TODO: show error message
-			return;
+			return array( 'error' => $request['body'] );
 		}
 		return $decoded_response['data'];
 	}
@@ -150,6 +144,9 @@ class LikeCoin_Matters_API {
       }
 		}';
 		$response = $this->post_query( $payload );
+		if ( isset( $response['error'] ) ) {
+			return $response;
+		}
 		return $response['putDraft'];
 	}
 
@@ -164,6 +161,9 @@ class LikeCoin_Matters_API {
       }
 		}';
 		$response = $this->post_query( $payload );
+		if ( isset( $response['error'] ) ) {
+			return $response;
+		}
 		return $response['putDraft'];
 	}
 
@@ -176,6 +176,9 @@ class LikeCoin_Matters_API {
       }
     }';
 		$response = $this->post_query( $payload );
+		if ( isset( $response['error'] ) ) {
+			return $response;
+		}
 		return $response['publishArticle'];
 	}
 
@@ -198,6 +201,9 @@ class LikeCoin_Matters_API {
 			),
 		);
 		$response  = $this->post_multipart_query( $payload, $variables, $file );
+		if ( isset( $response['error'] ) ) {
+			return $response;
+		}
 		return $response['singleFileUpload'];
 	}
 
@@ -222,6 +228,9 @@ class LikeCoin_Matters_API {
       }
     }';
 		$response = $this->post_query( $payload );
+		if ( isset( $response['error'] ) ) {
+			return $response;
+		}
 		return $response['putDraft'];
 	}
 

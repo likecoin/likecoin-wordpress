@@ -75,3 +75,17 @@ function likecoin_matters_login() {
 	$results          = LikeCoin_Matters_API::get_instance()->login( $matters_id, $matters_password );
 	wp_send_json( $results );
 }
+
+function likecoin_get_admin_errors_restful() {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+	$error = likecoin_get_admin_errors();
+	likecoin_clear_admin_errors();
+	$decode_message = json_decode( $error['message'] );
+	if ( ! $decode_message ) {
+		wp_send_json( $error['message'] );
+		return;
+	}
+	wp_send_json( $decode_message );
+}
