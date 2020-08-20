@@ -38,7 +38,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
 			$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
 		} elseif ( $post ) {
-			$likecoin_id = get_author_likecoin_id( $post );
+			$likecoin_id = likecoin_get_author_likecoin_id( $post );
 		}
 	}
 

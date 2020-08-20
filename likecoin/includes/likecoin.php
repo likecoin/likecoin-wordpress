@@ -25,7 +25,7 @@
  *
  * @param object| $post WordPress post object.
  */
-function get_author_likecoin_id( $post ) {
+function likecoin_get_author_likecoin_id( $post ) {
 	$author      = $post->post_author;
 	$likecoin_id = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
 	return $likecoin_id;
