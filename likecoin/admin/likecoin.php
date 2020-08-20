@@ -26,6 +26,7 @@
  * Require admin files
  */
 require_once dirname( __FILE__ ) . '/ajax.php';
+require_once dirname( __FILE__ ) . '/editor.php';
 require_once dirname( __FILE__ ) . '/metabox.php';
 require_once dirname( __FILE__ ) . '/options.php';
 require_once dirname( __FILE__ ) . '/plugin-action.php';
@@ -90,10 +91,8 @@ function likecoin_add_admin_hooks() {
 	add_action( 'save_post_post', 'likecoin_save_postdata' );
 	add_action( 'save_post_page', 'likecoin_save_postdata' );
 	add_action( 'wp_ajax_likecoin_matters_login', 'likecoin_matters_login' );
-	if ( ! defined( 'REST_REQUEST' ) ) {
-		add_action( 'admin_notices', 'likecoin_show_admin_errors' );
-	}
 	add_action( 'wp_ajax_likecoin_get_error_notice', 'likecoin_get_admin_errors_restful' );
+	add_action( 'enqueue_block_editor_assets', 'likecoin_load_editor_scripts' );
 	add_action( 'admin_notices', 'likecoin_show_admin_errors' );
 	likecoin_add_matters_admin_hook();
 }
