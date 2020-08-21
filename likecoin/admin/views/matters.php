@@ -1,5 +1,7 @@
 <?php
 
+// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+
 function likecoin_generate_matters_player_widget( $filename ) {
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
@@ -110,3 +112,4 @@ function likecoin_replace_matters_attachment_url( $content ) {
 	}
 	return $result;
 }
+// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase

@@ -44,16 +44,16 @@ class LikeCoin_Matters_API {
 		);
 
 		if ( is_wp_error( $request ) ) {
-			error_log( $request->get_error_message() );
 			return array( 'error' => $request->get_error_message() );
 		}
 			$decoded_response = json_decode( $request['body'], true );
 		if ( ! $decoded_response ) {
-			error_log( $request['body'] );
 			return array( 'error' => $request['body'] );
 		}
 			return $decoded_response;
 	}
+
+	// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 
 	private function post_query( $payload ) {
 		$request = wp_remote_post(
@@ -71,12 +71,16 @@ class LikeCoin_Matters_API {
 			)
 		);
 		if ( is_wp_error( $request ) ) {
-			error_log( $request->get_error_message() );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
+				error_log( $request->get_error_message() );
+			}
 			return array( 'error' => $request->get_error_message() );
 		}
 		$decoded_response = json_decode( $request['body'], true );
 		if ( ! $decoded_response || ! isset( $decoded_response['data'] ) ) {
-			error_log( $request['body'] );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
+				error_log( $request['body'] );
+			}
 			return array( 'error' => $request['body'] );
 		}
 		return $decoded_response['data'];
@@ -90,31 +94,36 @@ class LikeCoin_Matters_API {
 		$file_mime_type = $file['mime_type'];
 		$file_content   = $wp_filesystem->get_contents( $file_path );
 		if ( false === $file_content ) {
-			errro_log( 'Fail to get file content: ' . $file_path );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
+				error_log( 'Fail to get file content: ' . $file_path );
+			}
+			return array( 'error' => 'Fail to get file content: ' . $file_path );
 		}
+		// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 		$boundary = base64_encode( wp_generate_password( 24 ) );
-		$body     = '--' . $boundary . "\r\n";
-		$body    .= "Content-Disposition: form-data; name=\"operations\"\r\n";
-		$body    .= "\r\n";
-		$body    .= wp_json_encode(
+		// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+		$body    = '--' . $boundary . "\r\n";
+		$body   .= "Content-Disposition: form-data; name=\"operations\"\r\n";
+		$body   .= "\r\n";
+		$body   .= wp_json_encode(
 			array(
 				'query'     => $query,
 				'variables' => $variables,
 			)
 		) . "\r\n";
-		$body    .= '--' . $boundary . "\r\n";
-		$body    .= "Content-Disposition: form-data; name=\"map\"\r\n";
-		$body    .= "\r\n";
-		$body    .= "{ \"0\": [\"variables.input.file\"] }\r\n";
-		$body    .= '--' . $boundary . "\r\n";
-		$body    .= 'Content-Disposition: form-data; name="0"; filename="' . $filename . "\"\r\n";
-		$body    .= 'Content-Type: ' . $file_mime_type . "\r\n";
-		$body    .= "Content-Transfer-Encoding: binary\r\n";
-		$body    .= "\r\n";
-		$body    .= $file_content . "\r\n";
-		$body    .= "\r\n";
-		$body    .= '--' . $boundary . '--';
-		$request  = wp_remote_post(
+		$body   .= '--' . $boundary . "\r\n";
+		$body   .= "Content-Disposition: form-data; name=\"map\"\r\n";
+		$body   .= "\r\n";
+		$body   .= "{ \"0\": [\"variables.input.file\"] }\r\n";
+		$body   .= '--' . $boundary . "\r\n";
+		$body   .= 'Content-Disposition: form-data; name="0"; filename="' . $filename . "\"\r\n";
+		$body   .= 'Content-Type: ' . $file_mime_type . "\r\n";
+		$body   .= "Content-Transfer-Encoding: binary\r\n";
+		$body   .= "\r\n";
+		$body   .= $file_content . "\r\n";
+		$body   .= "\r\n";
+		$body   .= '--' . $boundary . '--';
+		$request = wp_remote_post(
 			$this->base_url,
 			array(
 				'headers' => array(
@@ -125,12 +134,16 @@ class LikeCoin_Matters_API {
 			)
 		);
 		if ( is_wp_error( $request ) ) {
-			error_log( $request->get_error_message() );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
+				error_log( $request->get_error_message() );
+			}
 			return array( 'error' => $request->get_error_message() );
 		}
 		$decoded_response = json_decode( $request['body'], true );
 		if ( ! $decoded_response || ! isset( $decoded_response['data'] ) ) {
-			error_log( $request['body'] );
+			if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
+				error_log( $request['body'] );
+			}
 			return array( 'error' => $request['body'] );
 		}
 		return $decoded_response['data'];
