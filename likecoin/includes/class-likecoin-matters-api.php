@@ -83,10 +83,12 @@ class LikeCoin_Matters_API {
 	}
 
 	private function post_multipart_query( $query, $variables, $file ) {
+		WP_Filesystem();
+		global $wp_filesystem;
 		$file_path      = $file['path'];
 		$filename       = $file['filename'];
 		$file_mime_type = $file['mime_type'];
-		$file_content   = file_get_contents( $file_path );
+		$file_content   = $wp_filesystem->get_contents( $file_path );
 		if ( false === $file_content ) {
 			errro_log( 'Fail to get file content: ' . $file_path );
 		}
