@@ -64,6 +64,11 @@ function likecoin_update_user_id() {
 	wp_die();
 }
 
+// we are passing these values to matters api, no need for filtering.
+// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+/**
+ *  POST handler of matters login proxy
+ */
 function likecoin_matters_login() {
 	check_admin_referer( 'likecoin_matters_login' );
 
@@ -75,7 +80,11 @@ function likecoin_matters_login() {
 	$results          = LikeCoin_Matters_API::get_instance()->login( $matters_id, $matters_password );
 	wp_send_json( $results );
 }
+// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 
+/**
+ *  POST handler of editor fetching admin notices/error message
+ */
 function likecoin_get_admin_errors_restful() {
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return;

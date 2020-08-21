@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin admin index
+ * LikeCoin restful hook
  *
- * Index of the admin panel facing side of LikeCoin plugin
+ * Index of restful hook triggered by admin pages
  *
  * @package   LikeCoin
  *
@@ -21,10 +21,13 @@
  */
 
 /**
- * Require admin files
+ * Require matters files
  */
 require_once dirname( __FILE__ ) . '/matters.php';
 
+/**
+ * Add public hooks triggered by restful
+ */
 function likecoin_hook_restful_hook() {
 	likecoin_add_matters_restful_hook();
 }

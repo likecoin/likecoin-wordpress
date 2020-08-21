@@ -1,7 +1,32 @@
 <?php
+/**
+ * LikeCoin matters html processer
+ *
+ * Function for modifying post html content to prepare for upload to matters
+ *
+ * @package   LikeCoin
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
+/**
+ * Generate a DOM element for matters to display audio widget
+ *
+ * @param string| $filename Title of audio file.
+ */
 function likecoin_generate_matters_player_widget( $filename ) {
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
@@ -11,6 +36,11 @@ function likecoin_generate_matters_player_widget( $filename ) {
 	return $dom_document->documentElement;
 }
 
+/**
+ * Parse and modify post html to replace matters asset url and div/class standard
+ *
+ * @param string| $content raw post HTML content.
+ */
 function likecoin_replace_matters_attachment_url( $content ) {
 	if ( ! $content ) {
 		return $content;

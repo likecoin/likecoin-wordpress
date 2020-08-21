@@ -1,9 +1,39 @@
 <?php
+/**
+ * LikeCoin matters publish functions
+ *
+ * Functions for saving draft/attachment and publishing on matters
+ *
+ * @package   LikeCoin
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
 
+/**
+ * Include useful functions
+ */
 require_once dirname( __FILE__ ) . '/../includes/class-likecoin-matters-api.php';
 require_once dirname( __FILE__ ) . '/views/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
 
+/**
+ * Save a post as a draft to matters
+ *
+ * @param int|     $post_id Post id to be saved to matters.
+ * @param WP_Post| $post Post object to be saved to matters.
+ * @param boolean| $update if this is triggered by an update.
+ */
 function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	if ( 'draft' !== get_post_status( $post_id ) ) {
 		return;
@@ -48,6 +78,12 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	return $matters_draft_id;
 }
 
+/**
+ * Publish a post as an article to matters
+ *
+ * @param int|     $post_id Post id to be published to matters.
+ * @param WP_Post| $post Post object to be published to matters.
+ */
 function likecoin_publish_to_matters( $post_id, $post ) {
 	$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
 	if ( ! $matters_info ) {
@@ -90,6 +126,11 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	return $matters_draft_id;
 }
 
+/**
+ * Upload a file as draft attachment to matters
+ *
+ * @param int| $attachment_id Attachment id to be uploaded to matters.
+ */
 function likecoin_post_attachment_to_matters( $attachment_id ) {
 	$attachment     = get_post( $attachment_id );
 	$file_path      = get_attached_file( $attachment_id );
@@ -151,6 +192,9 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	return $matters_attachment_id;
 }
 
+/**
+ * Returns a boolean whether draft options are enabled
+ */
 function likecoin_check_should_hook_matters_draft() {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
 	return isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) &&
@@ -159,6 +203,9 @@ function likecoin_check_should_hook_matters_draft() {
 	$option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ];
 }
 
+/**
+ * Returns a boolean whether publish options are enabled
+ */
 function likecoin_check_should_hook_matters_publish() {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
 	return isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) &&
@@ -167,6 +214,9 @@ function likecoin_check_should_hook_matters_publish() {
 	$option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ];
 }
 
+/**
+ * Setup matters related post hooks according to config
+ */
 function likecoin_add_matters_admin_hook() {
 	if ( likecoin_check_should_hook_matters_draft() ) {
 		add_action( 'save_post_post', 'likecoin_save_to_matters', 10, 3 );
@@ -179,6 +229,9 @@ function likecoin_add_matters_admin_hook() {
 	}
 }
 
+/**
+ * Setup matters related restful hook for gutenberg file upload
+ */
 function likecoin_add_matters_restful_hook() {
 	if ( likecoin_check_should_hook_matters_draft() || likecoin_check_should_hook_matters_publish() ) {
 		add_action( 'add_attachment', 'likecoin_post_attachment_to_matters', 10, 2 );

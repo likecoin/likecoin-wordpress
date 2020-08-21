@@ -1,25 +1,89 @@
 <?php
+/**
+ * LikeCoin matters api client
+ *
+ * HTTP client for firing graphQL request to matters
+ *
+ * @package   LikeCoin
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
+/**
+ * Inclue required files.
+ */
 require_once dirname( __FILE__ ) . '/constant/options.php';
 
+/**
+ * Matters API Client Class
+ */
 class LikeCoin_Matters_API {
 
+	/**
+	 * Singleton instance
+	 *
+	 * @var string
+	 */
 	private static $instance = null;
+	/**
+	 * GraphQL api endpoint url
+	 *
+	 * @var string
+	 */
 	private $base_url;
+	/**
+	 * Access token to be used in auth header
+	 *
+	 * @var string
+	 */
 	private $access_token;
 
+
+	/**
+	 * Construcut matters api client instance.
+	 */
 	private function __construct() {
 		$this->base_url     = LC_MATTERS_API_ENDPOINT;
 		$this->access_token = '';
 	}
 
+
+	/**
+	 * Set instance base URL.
+	 *
+	 * @param string| $base_url The graphQL endpoint.
+	 */
 	public function set_base_url( $base_url ) {
 		$this->base_url = $base_url;
 	}
 
+
+	/**
+	 * Set instance access token to be used in auth header.
+	 *
+	 * @param string| $access_token Matters access token to be userd.
+	 */
 	public function set_access_token( $access_token ) {
 		$this->access_token = $access_token;
 	}
 
+	/**
+	 * Login matters, ignore access token in this method.
+	 *
+	 * @param string| $email User email.
+	 * @param string| $password User password.
+	 */
 	public function login( $email, $password ) {
 		$request = wp_remote_post(
 			$this->base_url,
@@ -55,6 +119,11 @@ class LikeCoin_Matters_API {
 
 	// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 
+	/**
+	 * Post graphQL query/mutation to matters.
+	 *
+	 * @param array| $payload Query payload.
+	 */
 	private function post_query( $payload ) {
 		$request = wp_remote_post(
 			$this->base_url,
@@ -86,6 +155,13 @@ class LikeCoin_Matters_API {
 		return $decoded_response['data'];
 	}
 
+	/**
+	 * Post graphQL single file upload to matters.
+	 *
+	 * @param array| $query Query payload.
+	 * @param array| $variables Query variables.
+	 * @param array| $file File infomation.
+	 */
 	private function post_multipart_query( $query, $variables, $file ) {
 		WP_Filesystem();
 		global $wp_filesystem;
@@ -149,6 +225,12 @@ class LikeCoin_Matters_API {
 		return $decoded_response['data'];
 	}
 
+	/**
+	 * Post new draft mutation.
+	 *
+	 * @param string| $title Draft title.
+	 * @param string| $html_content Draft HTML content.
+	 */
 	public function new_draft( $title, $html_content ) {
 		$payload  = 'mutation {
       putDraft(input: {
@@ -165,6 +247,13 @@ class LikeCoin_Matters_API {
 		return $response['putDraft'];
 	}
 
+	/**
+	 * Update draft mutation.
+	 *
+	 * @param string| $id Draft ID to be updated.
+	 * @param string| $title Draft title.
+	 * @param string| $html_content Draft HTML content.
+	 */
 	public function update_draft( $id, $title, $html_content ) {
 		$payload  = 'mutation {
       putDraft(input: {
@@ -182,6 +271,11 @@ class LikeCoin_Matters_API {
 		return $response['putDraft'];
 	}
 
+	/**
+	 * Publish draft mutation.
+	 *
+	 * @param string| $id Draft ID to be published.
+	 */
 	public function publish_draft( $id ) {
 		$payload  = 'mutation {
       publishArticle(input: {
@@ -197,6 +291,12 @@ class LikeCoin_Matters_API {
 		return $response['publishArticle'];
 	}
 
+	/**
+	 * Upload attachment file mutation.
+	 *
+	 * @param array|  $file File information.
+	 * @param string| $draft_id Draft ID to be attached.
+	 */
 	public function post_attachment( $file, $draft_id ) {
 		$type      = 'audio' === $file['type'] ? 'embedaudio' : 'embed';
 		$payload   = 'mutation ($input: SingleFileUploadInput!) {
@@ -222,6 +322,11 @@ class LikeCoin_Matters_API {
 		return $response['singleFileUpload'];
 	}
 
+	/**
+	 * Query matters post status.
+	 *
+	 * @param string| $id Draft ID to be query.
+	 */
 	public function query_post_status( $id ) {
 		$payload  = 'query {
       node(
@@ -249,6 +354,9 @@ class LikeCoin_Matters_API {
 		return $response['putDraft'];
 	}
 
+	/**
+	 * Get singleton instance of this api client.
+	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
 			self::$instance = new LikeCoin_Matters_API();

@@ -23,7 +23,7 @@
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 /**
- * Settings api validation function
+ * Button settings api validation function
  *
  * @param array| $option The form input data for options api.
  */
@@ -46,6 +46,9 @@ function likecoin_plugin_settings_validation( $option ) {
 	return $option;
 }
 
+/**
+ * Add likecoin button related settings sections
+ */
 function likecoin_add_button_settings() {
 	register_setting( LC_BUTTON_SITE_OPTIONS_PAGE, LC_BUTTON_OPTION_NAME, 'likecoin_plugin_settings_validation' );
 
@@ -113,11 +116,12 @@ function likecoin_add_button_settings() {
 }
 
 /**
- * Settings api validation function
+ * Publish settings api validation function
  *
  * @param array| $option The form input data for options api.
  */
 function likecoin_publish_settings_validation( $option ) {
+	// TODO: check for user auth before enabling draft/publish.
 	add_settings_error(
 		'lc_settings_messages',
 		'updated',
@@ -127,6 +131,9 @@ function likecoin_publish_settings_validation( $option ) {
 	return $option;
 }
 
+/**
+ * Add publish related settings sections
+ */
 function likecoin_add_publish_settings() {
 
 	register_setting( LC_PUBLISH_SITE_OPTIONS_PAGE, LC_PUBLISH_OPTION_NAME, 'likecoin_publish_settings_validation' );
@@ -181,7 +188,6 @@ function likecoin_add_publish_settings() {
 		)
 	);
 }
-
 
 /**
  * Init settings api for plugin

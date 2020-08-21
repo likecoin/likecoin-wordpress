@@ -196,6 +196,9 @@ function likecoin_add_site_likebutton_allow_author_override( $args ) {
 	<?php
 }
 
+/**
+ * Add the Matters login table section
+ */
 function likecoin_add_site_matters_login_table() {
 	?>
 	<h2><?php esc_html_e( 'Login with Matters ID', LC_PLUGIN_SLUG ); ?></h2>
@@ -203,6 +206,11 @@ function likecoin_add_site_matters_login_table() {
 	likecoin_add_matters_login_table();
 }
 
+/**
+ * Add the matters login status page
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
 function likecoin_add_site_matters_login_status( $args ) {
 	include_once 'components.php';
 	$option                    = get_option( LC_PUBLISH_OPTION_NAME );
@@ -223,6 +231,11 @@ function likecoin_add_site_matters_login_status( $args ) {
 	);
 }
 
+/**
+ * Add the matters auto draft checkbox
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
 function likecoin_add_site_matters_auto_draft( $args ) {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
 	?>
@@ -241,6 +254,11 @@ function likecoin_add_site_matters_auto_draft( $args ) {
 	<?php
 }
 
+/**
+ * Add the matters auto publish checkbox
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
 function likecoin_add_site_matters_auto_publish( $args ) {
 	$option = get_option( LC_BUTTON_OPTION_NAME );
 	?>
