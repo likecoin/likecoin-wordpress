@@ -137,18 +137,18 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 		),
 		$matters_draft_id
 	);
-	if ( isset( $draft['error'] ) ) {
-		likecoin_set_admin_errors( $draft['error'], 'publish' );
+	if ( isset( $res['error'] ) ) {
+		likecoin_set_admin_errors( $res['error'], 'publish' );
 		return;
 	}
-	$attachment_id = $res['id'];
-	$params        = array(
+	$matters_attachment_id = $res['id'];
+	$params                = array(
 		'type'          => 'attachment',
 		'url'           => $res['path'],
-		'attachment_id' => $attachment_id,
+		'attachment_id' => $matters_attachment_id,
 	);
 	update_post_meta( $attachment_id, LC_MATTERS_INFO, $params );
-	return $attachment_id;
+	return $matters_attachment_id;
 }
 
 function likecoin_check_should_hook_matters_draft() {
