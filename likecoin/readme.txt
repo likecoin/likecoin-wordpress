@@ -1,7 +1,7 @@
-=== LikeCoin ===
+=== LikeCoin - Decentralized Publishing ===
 
 Contributors: likecoin,williamchong007,ckxpress
-Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Ethereum, blogger, Like Rewards
+Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Cosmos, blogger, Like Rewards
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 4.0
 Tested up to: 5.2
@@ -14,13 +14,18 @@ With this plug-in installed in your site, every Like is a Reward.
 
 == Description ==
 
-[Civic Liker](https://liker.land/civic) is a movement to realign creativity and reward, by the technology of nano-payment to decouple media's income from advertising needs. Any website can enable the LikeCoin button by installing the LikeCoin plugin. Each "Like" from the readers let creators to be rewarded.
+LikeCoin is an infrastructure to decentralize publishing.
 
-The source of the daily reward consists of two parts:
-1) The monthly subscription fee paid by the Civic Likers who distribute their donation by their "Likes";
-2) Creators matching fund: managed by the foundation. The daily amount is adjusted according to the total amount donated by Civic Likers. Both of the likes given by Civic Liker and free likers's will be consider as votes for fund distribution.
+= Decentralized Archive =
+LikeCoin plugin publishes your posts to [IPFS](https://ipfs.io/) through [Matters.news](https://matters.news) for peer-to-peer distribution. In the next stage, you will also be able to register your content an International Standard Content Number, [ISCN](https://iscn.io/), a specification we drafted in collaboration with the industry. Borrowed from the concept of ISBN for books, ISCN is a unique number assigned to content such as articles and images, and comes with metadata such as author, publisher, content address, license terms and creation footprint. Stored on [LikeCoin chain](https://likecoin.bigdipper.live), ISCN is immutable and censorship resilient.
 
-LikeCoin thus rewarded can be exchanged into USD on exchanges such as [BitAsset](https://www.bitasset.com/ktrade/LIKE-BTC) and [Liquid](https://app.liquid.com/exchange/LIKEETH). Information of the LikeCoin token (LIKE) can be found in [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/) and [Etherscan](https://etherscan.io/token/0x02f61fd266da6e8b102d4121f5ce7b992640cf98).
+= Decentralized rewards =
+LikeCoin plugin attaches a [LikeCoin button](https://docs.like.co/user-guide/likecoin-button) beneath your content. Without setting up a paywall, every Like by readers is turned into measurable rewards in [LikeCoin tokens](https://coinmarketcap.com/currencies/likecoin/). The [Civic Liker](https://liker.land/civic) movement encourages readers to contribute USD5/mo to reward creativity and journalism, while the matching fund, distributed according to the Likes of all users, doubles the rewarding pool. With the decentralized rewards mechanism, every Like counts.
+
+= Decentralized Curation =
+Apart from rewarding creators as a Liker, readers may go further to become a Content Jockey. Content Jockeys help distribute creative stories and insightful commentaries with Super Likes, which are purposely designed to be scarce to cut out noise from signals. When a story gets popular, LikeCoin’s unique distribution footprint rewards both creator and Content Jockey, creating an all win situation for the content ecosystem.
+
+[LikeCoin tokens](https://coinmarketcap.com/currencies/likecoin/) can be exchanged into USD, TWD or cryptocurrencies such as Bitcoin on exchanges such as [Liquid](https://app.liquid.com/exchange/LIKEUSDT), [DigiFinex](https://www.digifinex.com/en-ww/trade/USDT/LIKE) and [BitAsset](https://www.bitasset.com/ktrade/LIKE-TWD). Information of the LikeCoin token (LIKE) can be found in [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/) and [Big Dipper](https://likecoin.bigdipper.live/) blockchain explorer.
 
 Contribute to the plugin development on [Github](https://github.com/likecoin/likecoin-wordpress).
 
