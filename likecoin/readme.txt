@@ -55,6 +55,10 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 
 == Changelog ==
 
+= 2.0.0-b.1 =
+
+* Add publish to matters function beta
+
 = 1.3.3 =
 
 * Add become civic liker button and update help url
