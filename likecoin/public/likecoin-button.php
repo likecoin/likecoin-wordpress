@@ -32,7 +32,7 @@ require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
  */
 function likecoin_add_likebutton( $likecoin_id = '' ) {
 	global $post;
-	$option = get_option( LC_OPTION_NAME );
+	$option = get_option( LC_BUTTON_OPTION_NAME );
 
 	if ( strlen( $likecoin_id ) <= 0 ) {
 		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
@@ -61,7 +61,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
  */
 function likecoin_content_filter( $content ) {
 	global $post;
-	$option          = get_option( LC_OPTION_NAME );
+	$option          = get_option( LC_BUTTON_OPTION_NAME );
 	$post_type_query = '';
 
 	do {

@@ -33,7 +33,7 @@ function likecoin_display_top_options_page() {
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		'manage_options',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		'likecoin_add_site_options_page',
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/likecoin.svg' ) ),
@@ -42,30 +42,39 @@ function likecoin_display_top_options_page() {
 	);
 
 	add_submenu_page(
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'Plugin Setting', LC_PLUGIN_SLUG ),
 		'manage_options',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		'likecoin_add_site_options_page'
 	);
 
 	// hide if site Liker ID enabled and user is not admin.
-	$option = get_option( LC_OPTION_NAME );
+	$option = get_option( LC_BUTTON_OPTION_NAME );
 	if ( empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) || current_user_can( 'manage_options' ) ) {
 		add_submenu_page(
-			LC_SITE_OPTIONS_PAGE,
+			LC_BUTTON_SITE_OPTIONS_PAGE,
 			__( 'LikeCoin', LC_PLUGIN_SLUG ),
 			__( 'Your LikeCoin Button', LC_PLUGIN_SLUG ),
 			'publish_posts',
-			LC_USER_OPTIONS_PAGE,
+			LC_BUTTON_USER_OPTIONS_PAGE,
 			'likecoin_add_user_options_page'
 		);
 	}
 
+	add_submenu_page(
+		LC_BUTTON_SITE_OPTIONS_PAGE,
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		__( 'Publish Setting', LC_PLUGIN_SLUG ),
+		'manage_options',
+		LC_PUBLISH_SITE_OPTIONS_PAGE,
+		'likecoin_add_publish_options_page'
+	);
+
 	global $submenu;
 	array_push(
-		$submenu[ LC_SITE_OPTIONS_PAGE ],
+		$submenu[ LC_BUTTON_SITE_OPTIONS_PAGE ],
 		array(
 			__( 'Become Civic Liker', LC_PLUGIN_SLUG ),
 			'publish_posts',

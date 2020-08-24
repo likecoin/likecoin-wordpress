@@ -61,5 +61,40 @@ function likecoin_update_user_id() {
 	if ( isset( $_POST['_wp_http_referer'] ) ) {
 		wp_safe_redirect( esc_url_raw( add_query_arg( 'settings-updated', '1', wp_get_referer() ) ) );
 	}
-	exit();
+	wp_die();
+}
+
+// we are passing these values to Matters api, no need for filtering.
+// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+/**
+ *  POST handler of Matters login proxy
+ */
+function likecoin_matters_login() {
+	check_admin_referer( 'likecoin_matters_login' );
+
+	if ( ! isset( $_POST[ LC_OPTION_MATTERS_ID_FIELD ] ) || ! isset( $_POST[ LC_OPTION_MATTERS_PASSWORD_FIELD ] ) ) {
+		wp_send_json_error( array( 'error' => 'MISSING_FIELDS' ) );
+	}
+	$matters_id       = $_POST[ LC_OPTION_MATTERS_ID_FIELD ];
+	$matters_password = $_POST[ LC_OPTION_MATTERS_PASSWORD_FIELD ];
+	$results          = LikeCoin_Matters_API::get_instance()->login( $matters_id, $matters_password );
+	wp_send_json( $results );
+}
+// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+
+/**
+ *  POST handler of editor fetching admin notices/error message
+ */
+function likecoin_get_admin_errors_restful() {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return;
+	}
+	$error = likecoin_get_admin_errors();
+	likecoin_clear_admin_errors();
+	$decode_message = json_decode( $error['message'] );
+	if ( ! $decode_message ) {
+		wp_send_json( $error['message'] );
+		return;
+	}
+	wp_send_json( $decode_message );
 }

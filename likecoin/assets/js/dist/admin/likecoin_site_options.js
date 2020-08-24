@@ -1,21 +1,2 @@
-/* global WP_CONFIG */
-var siteCheckbox = document.querySelector("#".concat(WP_CONFIG.siteButtonCheckboxId));
-
-function onToggleSiteButton() {
-  var element = document.querySelector('.site_liekcoin_id_table');
-
-  if (this.checked) {
-    element.style.display = '';
-  } else {
-    element.style.display = 'none';
-  }
-}
-
-if (siteCheckbox) {
-  siteCheckbox.addEventListener('change', onToggleSiteButton);
-
-  if (!siteCheckbox.checked) {
-    var element = document.querySelector('.site_liekcoin_id_table');
-    element.style.display = 'none';
-  }
-}
+!function(){"use strict";var e=document.querySelector("#".concat(WP_CONFIG.siteButtonCheckboxId));e&&(e.addEventListener("change",function(){var e=document.querySelector(".site_liekcoin_id_table");this.checked?e.style.display="":e.style.display="none"}),e.checked||(document.querySelector(".site_liekcoin_id_table").style.display="none"))}();
+//# sourceMappingURL=likecoin_site_options.js.map

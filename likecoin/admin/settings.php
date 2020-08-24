@@ -23,11 +23,11 @@
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 /**
- * Settings api validation function
+ * Button settings API validation function
  *
  * @param array| $option The form input data for options api.
  */
-function likecoin_settings_validation( $option ) {
+function likecoin_plugin_settings_validation( $option ) {
 	if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
 		add_settings_error(
 			'lc_settings_messages',
@@ -35,7 +35,7 @@ function likecoin_settings_validation( $option ) {
 			__( 'Site Liker ID is missing', LC_PLUGIN_SLUG ),
 			'error'
 		);
-		return get_option( LC_OPTION_NAME );
+		return get_option( LC_BUTTON_OPTION_NAME );
 	}
 	add_settings_error(
 		'lc_settings_messages',
@@ -47,12 +47,10 @@ function likecoin_settings_validation( $option ) {
 }
 
 /**
- * Init settings api for plugin
+ * Add LikeCoin button related settings sections
  */
-function likecoin_init_settings() {
-	include_once dirname( __FILE__ ) . '/views/site-options.php';
-
-	register_setting( LC_SITE_OPTIONS_PAGE, LC_OPTION_NAME, 'likecoin_settings_validation' );
+function likecoin_add_button_settings() {
+	register_setting( LC_BUTTON_SITE_OPTIONS_PAGE, LC_BUTTON_OPTION_NAME, 'likecoin_plugin_settings_validation' );
 
 	$site_likecoin_id_options_section = 'lc_site_likecoin_id_options';
 	$site_likebutton_options_section  = 'lc_site_likebutton_options';
@@ -61,21 +59,21 @@ function likecoin_init_settings() {
 		$site_likecoin_id_options_section,
 		__( 'Site Liker ID', LC_PLUGIN_SLUG ),
 		null,
-		LC_SITE_OPTIONS_PAGE
+		LC_BUTTON_SITE_OPTIONS_PAGE
 	);
 
 	add_settings_section(
 		$site_likebutton_options_section,
 		__( 'Site LikeCoin button display setting', LC_PLUGIN_SLUG ),
 		null,
-		LC_SITE_OPTIONS_PAGE
+		LC_BUTTON_SITE_OPTIONS_PAGE
 	);
 
 	add_settings_field(
 		LC_OPTION_SITE_BUTTON_ENABLED,
 		__( 'Enable site Liker ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_toggle',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
 		array(
 			'label_for' => LC_OPTION_SITE_BUTTON_ENABLED,
@@ -86,7 +84,7 @@ function likecoin_init_settings() {
 		'lc_site_likecoin_id_table',
 		__( 'Site Liker ID', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likecoin_id_table',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likecoin_id_options_section,
 		array(
 			'label_for' => LC_OPTION_SITE_LIKECOIN_USER,
@@ -98,7 +96,7 @@ function likecoin_init_settings() {
 		LC_OPTION_BUTTON_DISPLAY_OPTION,
 		__( 'Display option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_display_option',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likebutton_options_section,
 		array(
 			'label_for' => LC_OPTION_BUTTON_DISPLAY_OPTION,
@@ -109,10 +107,94 @@ function likecoin_init_settings() {
 		LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
 		__( 'Allow per Post option', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_likebutton_allow_author_override',
-		LC_SITE_OPTIONS_PAGE,
+		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likebutton_options_section,
 		array(
 			'label_for' => LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
 		)
 	);
+}
+
+/**
+ * Publish settings API validation function
+ *
+ * @param array| $option The form input data for options api.
+ */
+function likecoin_publish_settings_validation( $option ) {
+	// TODO: check for user auth before enabling draft/publish.
+	add_settings_error(
+		'lc_settings_messages',
+		'updated',
+		__( 'Settings Saved', LC_PLUGIN_SLUG ),
+		'updated'
+	);
+	return $option;
+}
+
+/**
+ * Add publish related settings sections
+ */
+function likecoin_add_publish_settings() {
+
+	register_setting( LC_PUBLISH_SITE_OPTIONS_PAGE, LC_PUBLISH_OPTION_NAME, 'likecoin_publish_settings_validation' );
+
+	$site_matters_id_options_section      = 'lc_site_matters_id_options';
+	$site_matters_publish_options_section = 'lc_site_matters_publish_options';
+
+	add_settings_section(
+		$site_matters_id_options_section,
+		__( 'Matters connection status', LC_PLUGIN_SLUG ),
+		null,
+		LC_PUBLISH_SITE_OPTIONS_PAGE
+	);
+
+	add_settings_section(
+		$site_matters_publish_options_section,
+		__( 'Publish to Matters', LC_PLUGIN_SLUG ),
+		null,
+		LC_PUBLISH_SITE_OPTIONS_PAGE
+	);
+
+	add_settings_field(
+		LC_OPTION_SITE_MATTERS_ACCESS_TOKEN,
+		__( 'Connection status', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_matters_login_status',
+		LC_PUBLISH_SITE_OPTIONS_PAGE,
+		$site_matters_id_options_section,
+		array(
+			'label_for' => LC_OPTION_SITE_MATTERS_ACCESS_TOKEN,
+		)
+	);
+
+	add_settings_field(
+		LC_OPTION_SITE_MATTERS_AUTO_DRAFT,
+		__( 'Auto save draft to matters', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_matters_auto_draft',
+		LC_PUBLISH_SITE_OPTIONS_PAGE,
+		$site_matters_publish_options_section,
+		array(
+			'label_for' => LC_OPTION_SITE_MATTERS_AUTO_DRAFT,
+		)
+	);
+
+	add_settings_field(
+		LC_OPTION_SITE_MATTERS_AUTO_PUBLISH,
+		__( 'Auto publish post to matters', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_matters_auto_publish',
+		LC_PUBLISH_SITE_OPTIONS_PAGE,
+		$site_matters_publish_options_section,
+		array(
+			'label_for' => LC_OPTION_SITE_MATTERS_AUTO_PUBLISH,
+		)
+	);
+}
+
+/**
+ * Init settings API for plugin
+ */
+function likecoin_init_settings() {
+	include_once dirname( __FILE__ ) . '/views/site-options.php';
+	likecoin_add_button_settings();
+	likecoin_add_publish_settings();
+
 }

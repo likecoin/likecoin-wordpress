@@ -45,6 +45,7 @@ define( 'LC_PLUGIN_VERSION', '1.3.3' );
 
 require_once dirname( __FILE__ ) . '/includes/constant/options.php';
 require_once dirname( __FILE__ ) . '/public/likecoin.php';
+require_once dirname( __FILE__ ) . '/admin/restful.php';
 
 /**
  * Handle plugin init and upgrade
@@ -80,7 +81,7 @@ function likecoin_handle_uninstall() {
 	delete_metadata( 'post', 0, 'lc_widget_option', '', true );
 	delete_metadata( 'post', 0, 'lc_widget_position', '', true );
 	/* clean up all option */
-	delete_option( LC_OPTION_NAME );
+	delete_option( LC_BUTTON_OPTION_NAME );
 	delete_option( 'likecoin_plugin_version' );
 }
 
@@ -99,6 +100,7 @@ function likecoin_add_all_hooks() {
 		require_once dirname( __FILE__ ) . '/admin/likecoin.php';
 		likecoin_add_admin_hooks();
 	}
+	likecoin_hook_restful_hook();
 	likecoin_add_public_hooks();
 	register_activation_hook( __FILE__, 'likecoin_handle_init_and_upgrade' );
 	add_action( 'upgrader_process_complete', 'likecoin_handle_init_and_upgrade' );

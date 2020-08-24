@@ -26,11 +26,14 @@
  * Require admin files
  */
 require_once dirname( __FILE__ ) . '/ajax.php';
+require_once dirname( __FILE__ ) . '/editor.php';
 require_once dirname( __FILE__ ) . '/metabox.php';
 require_once dirname( __FILE__ ) . '/options.php';
 require_once dirname( __FILE__ ) . '/plugin-action.php';
 require_once dirname( __FILE__ ) . '/post.php';
 require_once dirname( __FILE__ ) . '/settings.php';
+require_once dirname( __FILE__ ) . '/matters.php';
+require_once dirname( __FILE__ ) . '/error.php';
 
 /**
  * Inject web3.js on related admin pages
@@ -38,7 +41,7 @@ require_once dirname( __FILE__ ) . '/settings.php';
  * @param string| $hook The current admin page filename.
  */
 function likecoin_load_scripts( $hook ) {
-	if ( 'toplevel_page_' . LC_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_' . LC_USER_OPTIONS_PAGE !== $hook ) {
+	if ( 'toplevel_page_' . LC_BUTTON_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_' . LC_BUTTON_USER_OPTIONS_PAGE !== $hook ) {
 		return;
 	}
 }
@@ -82,9 +85,14 @@ function likecoin_admin_init() {
 function likecoin_add_admin_hooks() {
 	add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
 	add_action( 'admin_menu', 'likecoin_display_top_options_page' );
-	add_action( 'admin_post_likecoin_update_user_id', 'likecoin_update_user_id' );
 	add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 	add_action( 'admin_init', 'likecoin_admin_init' );
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );
-	add_action( 'save_post', 'likecoin_save_postdata' );
+	add_action( 'save_post_post', 'likecoin_save_postdata' );
+	add_action( 'save_post_page', 'likecoin_save_postdata' );
+	add_action( 'wp_ajax_likecoin_matters_login', 'likecoin_matters_login' );
+	add_action( 'wp_ajax_likecoin_get_error_notice', 'likecoin_get_admin_errors_restful' );
+	add_action( 'enqueue_block_editor_assets', 'likecoin_load_editor_scripts' );
+	add_action( 'admin_notices', 'likecoin_show_admin_errors' );
+	likecoin_add_matters_admin_hook();
 }
