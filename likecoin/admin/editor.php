@@ -2,7 +2,7 @@
 /**
  * LikeCoin editor functions
  *
- * Define functions used in gutenberg editor
+ * Define functions used in Gutenberg editor
  *
  * @package   LikeCoin
  *
@@ -21,10 +21,10 @@
  */
 
 /**
- * Load custom frontend js for gutenberg editor
+ * Load custom frontend js for Gutenberg editor
  */
 function likecoin_load_editor_scripts() {
-	// check for gutenberg.
+	// check for Gutenberg.
 	if ( ! function_exists( 'has_blocks' ) ) {
 		return;
 	}

@@ -207,7 +207,7 @@ function likecoin_add_site_matters_login_table() {
 }
 
 /**
- * Add the matters login status page
+ * Add the Matters login status page
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
@@ -232,7 +232,7 @@ function likecoin_add_site_matters_login_status( $args ) {
 }
 
 /**
- * Add the matters auto draft checkbox
+ * Add the Matters auto draft checkbox
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
@@ -255,7 +255,7 @@ function likecoin_add_site_matters_auto_draft( $args ) {
 }
 
 /**
- * Add the matters auto publish checkbox
+ * Add the Matters auto publish checkbox
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */

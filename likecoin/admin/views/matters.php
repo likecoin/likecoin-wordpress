@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin matters html processer
+ * LikeCoin Matters HTML processer
  *
- * Function for modifying post html content to prepare for upload to matters
+ * Function for modifying post HTML content to prepare for upload to matters
  *
  * @package   LikeCoin
  *
@@ -23,7 +23,7 @@
 // phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 /**
- * Generate a DOM element for matters to display audio widget
+ * Generate a DOM element for Matters to display audio widget
  *
  * @param string| $filename Title of audio file.
  */
@@ -37,7 +37,7 @@ function likecoin_generate_matters_player_widget( $filename ) {
 }
 
 /**
- * Parse and modify post html to replace matters asset url and div/class standard
+ * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
  * @param string| $content raw post HTML content.
  */

@@ -76,6 +76,6 @@ function likecoin_show_admin_errors() {
 			<?php echo esc_url( admin_url( 'options-general.php?page=' . $option_page ) ); ?> "><?php esc_html__( 'Please confirm your settings are correct', LC_PLUGIN_SLUG ); ?></a>
 		</div>
 		<?php
-		// do not delete since gutenberg fetch edit post once before restful.
+		// do not delete since Gutenberg fetch edit post once before restful.
 	}
 }

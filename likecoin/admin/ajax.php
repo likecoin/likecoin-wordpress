@@ -64,10 +64,10 @@ function likecoin_update_user_id() {
 	wp_die();
 }
 
-// we are passing these values to matters api, no need for filtering.
+// we are passing these values to Matters api, no need for filtering.
 // phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
 /**
- *  POST handler of matters login proxy
+ *  POST handler of Matters login proxy
  */
 function likecoin_matters_login() {
 	check_admin_referer( 'likecoin_matters_login' );

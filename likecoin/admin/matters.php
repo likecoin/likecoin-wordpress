@@ -1,6 +1,6 @@
 <?php
 /**
- * LikeCoin matters publish functions
+ * LikeCoin Matters publish functions
  *
  * Functions for saving draft/attachment and publishing on matters
  *
@@ -215,7 +215,7 @@ function likecoin_check_should_hook_matters_publish() {
 }
 
 /**
- * Setup matters related post hooks according to config
+ * Setup Matters related post hooks according to config
  */
 function likecoin_add_matters_admin_hook() {
 	if ( likecoin_check_should_hook_matters_draft() ) {
@@ -230,7 +230,7 @@ function likecoin_add_matters_admin_hook() {
 }
 
 /**
- * Setup matters related restful hook for gutenberg file upload
+ * Setup Matters related restful hook for Gutenberg file upload
  */
 function likecoin_add_matters_restful_hook() {
 	if ( likecoin_check_should_hook_matters_draft() || likecoin_check_should_hook_matters_publish() ) {

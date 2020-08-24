@@ -23,7 +23,7 @@
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 /**
- * Button settings api validation function
+ * Button settings API validation function
  *
  * @param array| $option The form input data for options api.
  */
@@ -47,7 +47,7 @@ function likecoin_plugin_settings_validation( $option ) {
 }
 
 /**
- * Add likecoin button related settings sections
+ * Add LikeCoin button related settings sections
  */
 function likecoin_add_button_settings() {
 	register_setting( LC_BUTTON_SITE_OPTIONS_PAGE, LC_BUTTON_OPTION_NAME, 'likecoin_plugin_settings_validation' );
@@ -116,7 +116,7 @@ function likecoin_add_button_settings() {
 }
 
 /**
- * Publish settings api validation function
+ * Publish settings API validation function
  *
  * @param array| $option The form input data for options api.
  */
@@ -190,7 +190,7 @@ function likecoin_add_publish_settings() {
 }
 
 /**
- * Init settings api for plugin
+ * Init settings API for plugin
  */
 function likecoin_init_settings() {
 	include_once dirname( __FILE__ ) . '/views/site-options.php';

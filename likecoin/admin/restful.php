@@ -21,7 +21,7 @@
  */
 
 /**
- * Require matters files
+ * Require Matters files
  */
 require_once dirname( __FILE__ ) . '/matters.php';
 

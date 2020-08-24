@@ -170,7 +170,7 @@ function likecoin_add_likecoin_info_table( $info, $editable = true, $disconnecta
 }
 
 /**
- * Add matters login table
+ * Add Matters login table
  */
 function likecoin_add_matters_login_table() {
 	?>
@@ -206,9 +206,9 @@ function likecoin_add_matters_login_table() {
 }
 
 /**
- * Add matters login status section
+ * Add Matters login status section
  *
- * @param array| $info display option for matters table.
+ * @param array| $info display option for Matters table.
  */
 function likecoin_add_matters_login_status( $info ) {
 	$matters_access_token      = $info['matters_access_token'];

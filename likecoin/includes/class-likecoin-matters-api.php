@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin matters api client
+ * LikeCoin Matters API client
  *
- * HTTP client for firing graphQL request to matters
+ * HTTP client for firing GraphQL request to matters
  *
  * @package   LikeCoin
  *
@@ -37,7 +37,7 @@ class LikeCoin_Matters_API {
 	 */
 	private static $instance = null;
 	/**
-	 * GraphQL api endpoint url
+	 * GraphQL API endpoint URL
 	 *
 	 * @var string
 	 */
@@ -51,7 +51,7 @@ class LikeCoin_Matters_API {
 
 
 	/**
-	 * Construcut matters api client instance.
+	 * Construcut Matters API client instance.
 	 */
 	private function __construct() {
 		$this->base_url     = LC_MATTERS_API_ENDPOINT;
@@ -62,7 +62,7 @@ class LikeCoin_Matters_API {
 	/**
 	 * Set instance base URL.
 	 *
-	 * @param string| $base_url The graphQL endpoint.
+	 * @param string| $base_url The GraphQL endpoint.
 	 */
 	public function set_base_url( $base_url ) {
 		$this->base_url = $base_url;
@@ -120,7 +120,7 @@ class LikeCoin_Matters_API {
 	// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
 
 	/**
-	 * Post graphQL query/mutation to matters.
+	 * Post GraphQL query/mutation to matters.
 	 *
 	 * @param array| $payload Query payload.
 	 */
@@ -156,7 +156,7 @@ class LikeCoin_Matters_API {
 	}
 
 	/**
-	 * Post graphQL single file upload to matters.
+	 * Post GraphQL single file upload to matters.
 	 *
 	 * @param array| $query Query payload.
 	 * @param array| $variables Query variables.
@@ -323,7 +323,7 @@ class LikeCoin_Matters_API {
 	}
 
 	/**
-	 * Query matters post status.
+	 * Query Matters post status.
 	 *
 	 * @param string| $id Draft ID to be query.
 	 */
@@ -355,7 +355,7 @@ class LikeCoin_Matters_API {
 	}
 
 	/**
-	 * Get singleton instance of this api client.
+	 * Get singleton instance of this API client.
 	 */
 	public static function get_instance() {
 		if ( null === self::$instance ) {
