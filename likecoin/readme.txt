@@ -4,7 +4,7 @@ Contributors: likecoin,williamchong007,ckxpress
 Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Cosmos, blogger, Like Rewards
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 4.0
-Tested up to: 5.2
+Tested up to: 5.5
 Requires PHP: 5.4
 Stable tag: 1.3.3
 License: GPLv3
