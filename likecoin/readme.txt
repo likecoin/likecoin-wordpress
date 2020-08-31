@@ -55,6 +55,11 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 
 == Changelog ==
 
+= 2.0.0-b.2 =
+
+* Add display of current matters id in settings
+* Add sponsor information
+
 = 2.0.0-b.1 =
 
 * Add publish to matters function beta
