@@ -211,17 +211,36 @@ function likecoin_add_matters_login_table() {
  * @param array| $info display option for Matters table.
  */
 function likecoin_add_matters_login_status( $info ) {
-	$matters_access_token      = $info['matters_access_token'];
-	$matters_access_token_name = $info['matters_access_token_name'];
-	$has_matters_access_token  = strlen( $matters_access_token ) > 0;
+	$matters_access_token            = $info['matters_access_token'];
+	$matters_access_token_field_name = $info['matters_access_token_field_name'];
+	$matters_id                      = $info['matters_id'];
+	$matters_id_field_name           = $info['matters_id_field_name'];
+	$has_matters_access_token        = strlen( $matters_access_token ) > 0;
+	$has_matters_id                  = strlen( $matters_id ) > 0;
 	?>
 	<input type="hidden"
-		name="<?php echo esc_attr( $matters_access_token_name ); ?>"
-		id="<?php echo esc_attr( $matters_access_token_name ); ?>"
+		name="<?php echo esc_attr( $matters_id_field_name ); ?>"
+		id="<?php echo esc_attr( $matters_id_field_name ); ?>"
+		value="<?php echo esc_attr( $matters_id ); ?>"
+		>
+	<input type="hidden"
+		name="<?php echo esc_attr( $matters_access_token_field_name ); ?>"
+		id="<?php echo esc_attr( $matters_access_token_field_name ); ?>"
 		value="<?php echo esc_attr( $matters_access_token ); ?>"
 		>
 	<div>
-	<span><b><?php $has_matters_access_token ? esc_html_e( 'Logged in', LC_PLUGIN_SLUG ) : esc_html_e( 'Not connected', LC_PLUGIN_SLUG ); ?></b></span>
+	<span><b>
+	<?php
+	if ( $has_matters_access_token ) {
+		esc_html_e( 'Logged in', LC_PLUGIN_SLUG );
+		if ( $has_matters_id ) {
+			echo '<a href="' . esc_url( 'https://matters.news/@' . $matters_id ) . '">' . esc_html( ' as ' . $matters_id ) . '</a>';
+		}
+	} else {
+		esc_html_e( 'Not connected', LC_PLUGIN_SLUG );
+	}
+	?>
+	</b></span>
 	<span ></span>
 		<?php if ( $has_matters_access_token ) { ?>
 		<span class="actionWrapper">

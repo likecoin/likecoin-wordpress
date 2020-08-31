@@ -156,13 +156,13 @@ function likecoin_add_publish_settings() {
 	);
 
 	add_settings_field(
-		LC_OPTION_SITE_MATTERS_ACCESS_TOKEN,
+		LC_OPTION_SITE_MATTERS_USER,
 		__( 'Connection status', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_matters_login_status',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		$site_matters_id_options_section,
 		array(
-			'label_for' => LC_OPTION_SITE_MATTERS_ACCESS_TOKEN,
+			'label_for' => LC_OPTION_SITE_MATTERS_USER,
 		)
 	);
 
