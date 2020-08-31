@@ -114,7 +114,7 @@ class LikeCoin_Matters_API {
 		if ( ! $decoded_response ) {
 			return array( 'error' => $request['body'] );
 		}
-			return $decoded_response;
+		return $decoded_response;
 	}
 
 	// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_error_log
@@ -122,15 +122,16 @@ class LikeCoin_Matters_API {
 	/**
 	 * Post GraphQL query/mutation to matters.
 	 *
-	 * @param array| $payload Query payload.
+	 * @param array|  $payload Query payload.
+	 * @param string| $access_token Access token of user.
 	 */
-	private function post_query( $payload ) {
+	private function post_query( $payload, $access_token = null ) {
 		$request = wp_remote_post(
 			$this->base_url,
 			array(
 				'headers' => array(
 					'Content-Type'   => 'application/json',
-					'x-access-token' => $this->access_token,
+					'x-access-token' => isset( $access_token ) ? $access_token : $this->access_token,
 				),
 				'body'    => wp_json_encode(
 					array(
@@ -355,6 +356,26 @@ class LikeCoin_Matters_API {
 	}
 
 	/**
+	 * Query Matters current user info.
+	 *
+	 * @param string| $access_token Access token of current user.
+	 */
+	public function query_user_info( $access_token = null ) {
+		$payload  = 'query {
+			viewer {
+				id
+				userName
+				displayName
+			}
+    }';
+		$response = $this->post_query( $payload, $access_token );
+		if ( isset( $response['error'] ) ) {
+			return $response;
+		}
+		return $response['viewer'];
+	}
+
+	/**
 	 * Get singleton instance of this API client.
 	 */
 	public static function get_instance() {
@@ -362,8 +383,9 @@ class LikeCoin_Matters_API {
 			self::$instance = new LikeCoin_Matters_API();
 		}
 		$option = get_option( LC_PUBLISH_OPTION_NAME );
-		if ( isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) ) {
-			self::$instance->set_access_token( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] );
+		if ( isset( $option[ LC_OPTION_SITE_MATTERS_USER ] ) &&
+			isset( $option[ LC_OPTION_SITE_MATTERS_USER ][ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] ) ) {
+			self::$instance->set_access_token( $option[ LC_OPTION_SITE_MATTERS_USER ][ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] );
 		}
 		return self::$instance;
 	}
