@@ -28,6 +28,7 @@
 function likecoin_display_top_options_page() {
 	include_once dirname( __FILE__ ) . '/views/site-options.php';
 	include_once dirname( __FILE__ ) . '/views/user-options.php';
+	include_once dirname( __FILE__ ) . '/views/sponsor.php';
 
 	add_menu_page(
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
@@ -70,6 +71,15 @@ function likecoin_display_top_options_page() {
 		'manage_options',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		'likecoin_add_publish_options_page'
+	);
+
+	add_submenu_page(
+		LC_BUTTON_SITE_OPTIONS_PAGE,
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		__( 'Sponsor LikeCoin', LC_PLUGIN_SLUG ),
+		'publish_posts',
+		LC_SPONSOR_PAGE,
+		'likecoin_add_sponsor_page'
 	);
 
 	global $submenu;
