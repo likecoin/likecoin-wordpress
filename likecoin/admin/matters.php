@@ -35,9 +35,6 @@ require_once dirname( __FILE__ ) . '/error.php';
  * @param boolean| $update if this is triggered by an update.
  */
 function likecoin_save_to_matters( $post_id, $post, $update = true ) {
-	if ( 'draft' !== get_post_status( $post_id ) ) {
-		return;
-	}
 	$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
 	if ( ! $matters_info ) {
 		$matters_info = array(
@@ -51,7 +48,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$content = apply_filters( 'the_content', $post->post_content );
 	$content = likecoin_replace_matters_attachment_url( $content );
-	$title   = apply_filters( 'the_title', $post->post_title );
+	$title   = apply_filters( 'the_title_rss', $post->post_title );
 	remove_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
@@ -98,7 +95,7 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$content = apply_filters( 'the_content', $post->post_content );
 	$content = likecoin_replace_matters_attachment_url( $content );
-	$title   = apply_filters( 'the_title', $post->post_title );
+	$title   = apply_filters( 'the_title_rss', $post->post_title );
 	remove_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
