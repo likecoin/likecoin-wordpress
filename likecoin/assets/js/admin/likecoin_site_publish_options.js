@@ -1,6 +1,7 @@
 /* global ajaxurl, jQuery, WP_CONFIG */
 
-const accessTokenField = document.getElementById(WP_CONFIG.accessTokenFieldId);
+const mattersAccessTokenFieldId = document.getElementById(WP_CONFIG.mattersAccessTokenFieldId);
+const mattersIdFieldId = document.getElementById(WP_CONFIG.mattersIdFieldId);
 const settingsForm = document.querySelector("form[action='options.php']");
 const ajaxForm = document.querySelector("form[action='admin-ajax.php']");
 const errorMessage = document.getElementById('mattersErrorMessage');
@@ -11,29 +12,34 @@ async function loginMatters(data) {
     url: ajaxurl,
     data,
   });
-  if (res.errors) {
+  if (res.errors || res.error) {
+    const errors = res.errors || [res.error];
     const mattersPasswordField = document.getElementById('matters_password');
     const password = mattersPasswordField ? mattersPasswordField.value : null;
-    errorMessage.textContent = `ERROR: ${res.errors.map((e) => {
+    errorMessage.textContent = `ERROR: ${errors.map((e) => {
       let msg = e.message || e;
       if (password) msg = msg.split(password).join('***');
       return msg;
     }).join(', ')}`;
     return;
   }
-  if (!res.data || !res.data.userLogin) {
+  if (!res.userLogin) {
     errorMessage.textContent = 'INVALID_RESPONSE';
     return;
   }
-  if (!res.data.userLogin.auth) {
+  if (!res.userLogin.auth) {
     errorMessage.textContent = 'INVALID_RESPONSE';
     return;
   }
-  const { token } = res.data.userLogin;
-  if (accessTokenField && token) {
-    accessTokenField.value = token;
-    settingsForm.submit.click();
+  const { token } = res.userLogin;
+  if (mattersAccessTokenFieldId && token) {
+    mattersAccessTokenFieldId.value = token;
   }
+  const { userName } = res.viewer;
+  if (mattersIdFieldId && userName) {
+    mattersIdFieldId.value = userName;
+  }
+  settingsForm.submit.click();
 }
 
 function onMattersLoginClick(e) {
@@ -46,10 +52,13 @@ function onMattersLoginClick(e) {
 
 function onMattersLogoutClick(e) {
   e.preventDefault();
-  if (accessTokenField) {
-    accessTokenField.value = '';
-    settingsForm.submit.click();
+  if (mattersAccessTokenFieldId) {
+    mattersAccessTokenFieldId.value = '';
   }
+  if (mattersIdFieldId) {
+    mattersIdFieldId.value = '';
+  }
+  settingsForm.submit.click();
 }
 
 (() => {

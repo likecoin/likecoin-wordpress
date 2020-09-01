@@ -213,12 +213,18 @@ function likecoin_add_site_matters_login_table() {
  */
 function likecoin_add_site_matters_login_status( $args ) {
 	include_once 'components.php';
-	$option                    = get_option( LC_PUBLISH_OPTION_NAME );
-	$matters_access_token      = $option[ $args['label_for'] ];
-	$matters_access_token_name = LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']';
-	$params                    = array(
-		'matters_access_token'      => $matters_access_token,
-		'matters_access_token_name' => $matters_access_token_name,
+	$option = get_option( LC_PUBLISH_OPTION_NAME );
+
+	$matters_id                      = isset( $option[ $args['label_for'] ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ $args['label_for'] ] [ LC_MATTERS_ID_FIELD ] : '';
+	$matters_access_token            = isset( $option[ $args['label_for'] ] [ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] ) ? $option[ $args['label_for'] ] [ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] : '';
+	$matters_id_field_name           = LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_MATTERS_ID_FIELD . ']';
+	$matters_access_token_field_name = LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . '][' . LC_MATTERS_USER_ACCESS_TOKEN_FIELD . ']';
+
+	$params = array(
+		'matters_id'                      => $matters_id,
+		'matters_access_token'            => $matters_access_token,
+		'matters_id_field_name'           => $matters_id_field_name,
+		'matters_access_token_field_name' => $matters_access_token_field_name,
 	);
 	likecoin_add_matters_login_status( $params );
 	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_publish_options.js', array( 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
@@ -226,7 +232,8 @@ function likecoin_add_site_matters_login_status( $args ) {
 		'lc_js_site_options',
 		'WP_CONFIG',
 		array(
-			'accessTokenFieldId' => esc_attr( $matters_access_token_name ),
+			'mattersAccessTokenFieldId' => esc_attr( $matters_access_token_field_name ),
+			'mattersIdFieldId'          => esc_attr( $matters_id_field_name ),
 		)
 	);
 }

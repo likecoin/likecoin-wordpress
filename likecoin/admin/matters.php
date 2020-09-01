@@ -197,8 +197,10 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
  */
 function likecoin_check_should_hook_matters_draft() {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
-	return isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) &&
-	$option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] &&
+
+	return isset( $option[ LC_OPTION_SITE_MATTERS_USER ] ) &&
+	isset( $option[ LC_OPTION_SITE_MATTERS_USER ][ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] ) &&
+	$option[ LC_OPTION_SITE_MATTERS_USER ][ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] &&
 	isset( $option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ] ) &&
 	$option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ];
 }
@@ -208,8 +210,9 @@ function likecoin_check_should_hook_matters_draft() {
  */
 function likecoin_check_should_hook_matters_publish() {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
-	return isset( $option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] ) &&
-	$option[ LC_OPTION_SITE_MATTERS_ACCESS_TOKEN ] &&
+	return isset( $option[ LC_OPTION_SITE_MATTERS_USER ] ) &&
+	isset( $option[ LC_OPTION_SITE_MATTERS_USER ][ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] ) &&
+	$option[ LC_OPTION_SITE_MATTERS_USER ][ LC_MATTERS_USER_ACCESS_TOKEN_FIELD ] &&
 	isset( $option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ] ) &&
 	$option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ];
 }
