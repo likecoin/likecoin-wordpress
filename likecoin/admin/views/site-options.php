@@ -67,6 +67,7 @@ function likecoin_add_publish_options_page() {
 	?>
 	<div class="wrap likecoin">
 	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+	<?php likecoin_add_matters_introduction(); ?>
 	<?php likecoin_add_site_matters_login_table(); ?>
 	<form action="options.php" method="post">
 	<?php

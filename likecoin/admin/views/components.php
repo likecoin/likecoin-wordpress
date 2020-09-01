@@ -234,7 +234,7 @@ function likecoin_add_matters_login_status( $info ) {
 	if ( $has_matters_access_token ) {
 		esc_html_e( 'Logged in', LC_PLUGIN_SLUG );
 		if ( $has_matters_id ) {
-			echo '<a href="' . esc_url( 'https://matters.news/@' . $matters_id ) . '">' . esc_html( ' as ' . $matters_id ) . '</a>';
+			echo ' as <a href="' . esc_url( 'https://matters.news/@' . $matters_id ) . '">' . esc_html( $matters_id ) . '</a>';
 		}
 	} else {
 		esc_html_e( 'Not connected', LC_PLUGIN_SLUG );
