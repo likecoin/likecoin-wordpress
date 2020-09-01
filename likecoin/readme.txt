@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 4.0
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 1.3.3
+Stable tag: 2.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -55,9 +55,16 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 
 == Changelog ==
 
+= 2.0.0 =
+
+* Try to fix title encoding issue when saving draft to matters
+* Fix cannot save draft to matters when publishing article
+* Improve formatting of matters ID display
+* Add short introduction on matters.news
+
 = 2.0.0-b.2 =
 
-* Add display of current matters id in settings
+* Add display of current matters ID in settings
 * Add sponsor information
 
 = 2.0.0-b.1 =
