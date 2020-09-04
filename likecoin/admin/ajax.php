@@ -61,7 +61,8 @@ function likecoin_update_user_id() {
 	if ( isset( $_POST['_wp_http_referer'] ) ) {
 		wp_safe_redirect( esc_url_raw( add_query_arg( 'settings-updated', '1', wp_get_referer() ) ) );
 	}
-	wp_die();
+	// wp_die breaks safe_redirect, use exit.
+	exit();
 }
 
 // we are passing these values to Matters api, no need for filtering.
