@@ -90,6 +90,7 @@ function likecoin_add_admin_hooks() {
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );
 	add_action( 'save_post_post', 'likecoin_save_postdata' );
 	add_action( 'save_post_page', 'likecoin_save_postdata' );
+	add_action( 'admin_post_likecoin_update_user_id', 'likecoin_update_user_id' );
 	add_action( 'wp_ajax_likecoin_matters_login', 'likecoin_matters_login' );
 	add_action( 'wp_ajax_likecoin_get_error_notice', 'likecoin_get_admin_errors_restful' );
 	add_action( 'enqueue_block_editor_assets', 'likecoin_load_editor_scripts' );
