@@ -55,6 +55,10 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 
 == Changelog ==
 
+= 2.0.2 =
+
+* Fix publish to matters checkbox status does not display properly
+
 = 2.0.1 =
 
 * Fix typo in matters.news description
