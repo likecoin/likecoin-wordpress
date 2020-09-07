@@ -268,7 +268,7 @@ function likecoin_add_site_matters_auto_draft( $args ) {
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
 function likecoin_add_site_matters_auto_publish( $args ) {
-	$option = get_option( LC_BUTTON_OPTION_NAME );
+	$option = get_option( LC_PUBLISH_OPTION_NAME );
 	?>
 	<input type='hidden'
 		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
