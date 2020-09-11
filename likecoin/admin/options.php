@@ -86,7 +86,7 @@ function likecoin_display_top_options_page() {
 	array_push(
 		$submenu[ LC_BUTTON_SITE_OPTIONS_PAGE ],
 		array(
-			__( 'Become Civic Liker', LC_PLUGIN_SLUG ),
+			__( 'Become a Civic Liker', LC_PLUGIN_SLUG ),
 			'publish_posts',
 			'https://liker.land/civic?utm_source=wp-plugin',
 		)
