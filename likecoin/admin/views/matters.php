@@ -94,6 +94,12 @@ function likecoin_replace_matters_attachment_url( $content ) {
 		if ( 'figure' === $parent->nodeName ) {
 			$classes = $parent->getAttribute( 'class' );
 			$parent->setAttribute( 'class', $classes . ' image' );
+		} else {
+			$figure = $dom_document->createElement( 'figure' );
+			$figure->setAttribute( 'class', 'image' );
+			$image = $parent->replaceChild( $figure, $image );
+			$figure->appendChild( $image );
+			$parent = $figure;
 		}
 		$url           = $image->getAttribute( 'src' );
 		$classes       = $image->getAttribute( 'class' );
@@ -145,9 +151,15 @@ function likecoin_replace_matters_attachment_url( $content ) {
 		if ( 'figure' === $parent->nodeName ) {
 			$classes = $parent->getAttribute( 'class' );
 			$parent->setAttribute( 'class', $classes . ' audio' );
-			$player = likecoin_generate_matters_player_widget( $filename );
-			$parent->appendChild( $dom_document->importNode( $player, true ) );
+		} else {
+			$figure = $dom_document->createElement( 'figure' );
+			$figure->setAttribute( 'class', 'audio' );
+			$audio = $parent->replaceChild( $figure, $audio );
+			$figure->appendChild( $audio );
+			$parent = $figure;
 		}
+		$player = likecoin_generate_matters_player_widget( $filename );
+		$parent->appendChild( $dom_document->importNode( $player, true ) );
 	}
 	$figures = $dom_document->getElementsByTagName( 'figure' );
 	foreach ( $figures as $figure ) {
