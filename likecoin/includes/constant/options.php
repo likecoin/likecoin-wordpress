@@ -52,6 +52,7 @@ define( 'LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE', 'button_display_author_overr
 define( 'LC_OPTION_SITE_MATTERS_USER', 'site_matters_user' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_DRAFT', 'site_matters_auto_save_draft' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_PUBLISH', 'site_matters_auto_publish' );
+define( 'LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK', 'site_matters_add_footer_link' );
 
 define( 'LC_MATTERS_ID_FIELD', 'matters_id' );
 define( 'LC_MATTERS_USER_ACCESS_TOKEN_FIELD', 'access_token' );

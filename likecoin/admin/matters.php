@@ -28,6 +28,21 @@ require_once dirname( __FILE__ ) . '/views/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
 
 /**
+ * Apply post filter for matters
+ *
+ * @param WP_Post| $post Post object.
+ */
+function likecoin_filter_matters_post_content( $post ) {
+	$option = get_option( LC_PUBLISH_OPTION_NAME );
+	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) );
+	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
+	$content = apply_filters( 'the_content', $post->post_content );
+	$content = likecoin_replace_matters_attachment_url( $content, $params );
+	remove_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
+	return $content;
+}
+
+/**
  * Save a post as a draft to matters
  *
  * @param int|     $post_id Post id to be saved to matters.
@@ -45,12 +60,9 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
-	$content = apply_filters( 'the_content', $post->post_content );
-	$content = likecoin_replace_matters_attachment_url( $content );
-	$title   = apply_filters( 'the_title_rss', $post->post_title );
-	remove_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
-	$api = LikeCoin_Matters_API::get_instance();
+	$content          = likecoin_filter_matters_post_content( $post );
+	$title            = apply_filters( 'the_title_rss', $post->post_title );
+	$api              = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
 		$draft = $api->update_draft( $matters_draft_id, $title, $content );
 		if ( ! isset( $draft['id'] ) ) {
@@ -92,12 +104,9 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
-	$content = apply_filters( 'the_content', $post->post_content );
-	$content = likecoin_replace_matters_attachment_url( $content );
-	$title   = apply_filters( 'the_title_rss', $post->post_title );
-	remove_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
-	$api = LikeCoin_Matters_API::get_instance();
+	$content          = likecoin_filter_matters_post_content( $post );
+	$title            = apply_filters( 'the_title_rss', $post->post_title );
+	$api              = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content );
 		if ( isset( $draft['error'] ) ) {

@@ -71,18 +71,43 @@ function likecoin_generate_matters_player_widget( $filename ) {
 	return $dom_document->documentElement;
 }
 
+
+/**
+ * Append footer link into DOM
+ *
+ * @param DOMDocument| $dom_document Parent dom document.
+ */
+function likecoin_append_footer_link_element( $dom_document ) {
+	global $post;
+	$site_title = get_bloginfo( 'name' );
+	if ( ! $post ) {
+		return;
+	}
+	$url = get_permalink( $post );
+	if ( ! $url ) {
+		return;
+	}
+	$p = $dom_document->createElement( 'p', esc_html__( 'Original link: ', LC_PLUGIN_SLUG ) );
+	$a = $dom_document->createElement( 'a', $site_title );
+	$a->setAttribute( 'href', $url );
+	$p->appendChild( $a );
+	$dom_document->documentElement->appendChild( $p );
+}
+
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
  * @param string| $content raw post HTML content.
+ * @param array|  $params post options for addtional components.
  */
-function likecoin_replace_matters_attachment_url( $content ) {
+function likecoin_replace_matters_attachment_url( $content, $params ) {
 	if ( ! $content ) {
 		return $content;
 	}
-	$dom_document          = new DOMDocument();
-	$libxml_previous_state = libxml_use_internal_errors( true );
-	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	$should_add_footer_link = $params['add_footer_link'];
+	$dom_document           = new DOMDocument();
+	$libxml_previous_state  = libxml_use_internal_errors( true );
+	$dom_content            = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 	libxml_clear_errors();
 	libxml_use_internal_errors( $libxml_previous_state );
 	if ( false === $dom_content ) {
@@ -180,6 +205,10 @@ function likecoin_replace_matters_attachment_url( $content ) {
 			$new_caption->appendChild( $span );
 			$figure->appendChild( $new_caption );
 		}
+	}
+
+	if ( $should_add_footer_link ) {
+		likecoin_append_footer_link_element( $dom_document );
 	}
 
 	$root   = $dom_document->documentElement;
