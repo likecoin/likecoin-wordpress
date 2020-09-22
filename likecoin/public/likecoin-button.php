@@ -64,6 +64,9 @@ function likecoin_content_filter( $content ) {
 	$option          = get_option( LC_BUTTON_OPTION_NAME );
 	$post_type_query = '';
 
+	if ( ! isset( $post ) ) {
+		return $content;
+	}
 	do {
 		// follow post meta if option is not set yet.
 		if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
