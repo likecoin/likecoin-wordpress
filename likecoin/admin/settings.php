@@ -106,11 +106,13 @@ function likecoin_add_button_settings() {
 	add_settings_field(
 		LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
 		__( 'Allow per Post option', LC_PLUGIN_SLUG ),
-		'likecoin_add_site_likebutton_allow_author_override',
+		'likecoin_add_generic_checkbox',
 		LC_BUTTON_SITE_OPTIONS_PAGE,
 		$site_likebutton_options_section,
 		array(
-			'label_for' => LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
+			'option_name' => LC_BUTTON_OPTION_NAME,
+			'label_for'   => LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE,
+			'text'        => __( 'Allow editors to customize display setting per post', LC_PLUGIN_SLUG ),
 		)
 	);
 }
@@ -166,25 +168,45 @@ function likecoin_add_publish_settings() {
 		)
 	);
 
+	$save_draft_to_matters_text = __( 'Auto save draft to Matters', LC_PLUGIN_SLUG );
 	add_settings_field(
 		LC_OPTION_SITE_MATTERS_AUTO_DRAFT,
-		__( 'Auto save draft to Matters', LC_PLUGIN_SLUG ),
-		'likecoin_add_site_matters_auto_draft',
+		$save_draft_to_matters_text,
+		'likecoin_add_generic_checkbox',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		$site_matters_publish_options_section,
 		array(
-			'label_for' => LC_OPTION_SITE_MATTERS_AUTO_DRAFT,
+			'option_name' => LC_PUBLISH_OPTION_NAME,
+			'label_for'   => LC_OPTION_SITE_MATTERS_AUTO_DRAFT,
+			'text'        => $save_draft_to_matters_text,
 		)
 	);
 
+	$publish_to_matters_text = __( 'Auto publish post to Matters', LC_PLUGIN_SLUG );
 	add_settings_field(
 		LC_OPTION_SITE_MATTERS_AUTO_PUBLISH,
-		__( 'Auto publish post to Matters', LC_PLUGIN_SLUG ),
-		'likecoin_add_site_matters_auto_publish',
+		$publish_to_matters_text,
+		'likecoin_add_generic_checkbox',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		$site_matters_publish_options_section,
 		array(
-			'label_for' => LC_OPTION_SITE_MATTERS_AUTO_PUBLISH,
+			'option_name' => LC_PUBLISH_OPTION_NAME,
+			'label_for'   => LC_OPTION_SITE_MATTERS_AUTO_PUBLISH,
+			'text'        => $publish_to_matters_text,
+		)
+	);
+
+	$footer_link_text = __( 'Add post link in footer', LC_PLUGIN_SLUG );
+	add_settings_field(
+		LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK,
+		$footer_link_text,
+		'likecoin_add_generic_checkbox',
+		LC_PUBLISH_SITE_OPTIONS_PAGE,
+		$site_matters_publish_options_section,
+		array(
+			'option_name' => LC_PUBLISH_OPTION_NAME,
+			'label_for'   => LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK,
+			'text'        => $footer_link_text,
 		)
 	);
 }

@@ -175,29 +175,6 @@ function likecoin_add_site_likebutton_display_option( $args ) {
 }
 
 /**
- * Add the likebutton author checkbox
- *
- * @param array| $args settings field extra argument, e.g. label_for and class.
- */
-function likecoin_add_site_likebutton_allow_author_override( $args ) {
-	$option = get_option( LC_BUTTON_OPTION_NAME );
-	?>
-	<input type='hidden'
-		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
-		value="0">
-	<input type="checkbox"
-		id="<?php echo esc_attr( $args['label_for'] ); ?>"
-		name="<?php echo esc_attr( LC_BUTTON_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
-		value="1"
-	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
-	>
-	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Allow editors to customize display setting per post', LC_PLUGIN_SLUG ); ?>
-	</label>
-	<?php
-}
-
-/**
  * Add the Matters login table section
  */
 function likecoin_add_site_matters_login_table() {
@@ -240,47 +217,24 @@ function likecoin_add_site_matters_login_status( $args ) {
 }
 
 /**
- * Add the Matters auto draft checkbox
+ * Add generic settings check box
  *
  * @param array| $args settings field extra argument, e.g. label_for and class.
  */
-function likecoin_add_site_matters_auto_draft( $args ) {
-	$option = get_option( LC_PUBLISH_OPTION_NAME );
+function likecoin_add_generic_checkbox( $args ) {
+	$option = get_option( $args['option_name'] );
 	?>
 	<input type='hidden'
-		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( $args['option_name'] . '[' . $args['label_for'] . ']' ); ?>"
 		value="0">
 	<input type="checkbox"
 		id="<?php echo esc_attr( $args['label_for'] ); ?>"
-		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+		name="<?php echo esc_attr( $args['option_name'] . '[' . $args['label_for'] . ']' ); ?>"
 		value="1"
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Auto save draft to Matters', LC_PLUGIN_SLUG ); ?>
-	</label>
-	<?php
-}
-
-/**
- * Add the Matters auto publish checkbox
- *
- * @param array| $args settings field extra argument, e.g. label_for and class.
- */
-function likecoin_add_site_matters_auto_publish( $args ) {
-	$option = get_option( LC_PUBLISH_OPTION_NAME );
-	?>
-	<input type='hidden'
-		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
-		value="0">
-	<input type="checkbox"
-		id="<?php echo esc_attr( $args['label_for'] ); ?>"
-		name="<?php echo esc_attr( LC_PUBLISH_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
-		value="1"
-	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
-	>
-	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Auto publish to Matters', LC_PLUGIN_SLUG ); ?>
+		<?php echo esc_html( $args['text'] ); ?>
 	</label>
 	<?php
 }
