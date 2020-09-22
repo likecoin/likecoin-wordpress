@@ -31,7 +31,7 @@ function likecoin_add_matters_introduction() {
 	<p>
 		<h2><a href="https://matters.news">
 		<img height="32" weight="32" src="https://matters.news/static/icon-144x144.png"/>
-		</a><?php esc_html_e( 'What is matters.news?' ); ?></h2>
+		</a><?php esc_html_e( 'What is Matters.news?' ); ?></h2>
 	</p>
 	<p>
 	<?php

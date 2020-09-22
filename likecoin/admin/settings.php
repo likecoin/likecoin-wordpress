@@ -168,7 +168,7 @@ function likecoin_add_publish_settings() {
 
 	add_settings_field(
 		LC_OPTION_SITE_MATTERS_AUTO_DRAFT,
-		__( 'Auto save draft to matters', LC_PLUGIN_SLUG ),
+		__( 'Auto save draft to Matters', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_matters_auto_draft',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		$site_matters_publish_options_section,
@@ -179,7 +179,7 @@ function likecoin_add_publish_settings() {
 
 	add_settings_field(
 		LC_OPTION_SITE_MATTERS_AUTO_PUBLISH,
-		__( 'Auto publish post to matters', LC_PLUGIN_SLUG ),
+		__( 'Auto publish post to Matters', LC_PLUGIN_SLUG ),
 		'likecoin_add_site_matters_auto_publish',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		$site_matters_publish_options_section,

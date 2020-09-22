@@ -257,7 +257,7 @@ function likecoin_add_site_matters_auto_draft( $args ) {
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Auto save draft to matters', LC_PLUGIN_SLUG ); ?>
+		<?php esc_html_e( 'Auto save draft to Matters', LC_PLUGIN_SLUG ); ?>
 	</label>
 	<?php
 }
@@ -280,7 +280,7 @@ function likecoin_add_site_matters_auto_publish( $args ) {
 	<?php isset( $option[ $args['label_for'] ] ) && checked( $option[ $args['label_for'] ] ); ?>
 	>
 	<label for="<?php echo esc_attr( $args['label_for'] ); ?>">
-		<?php esc_html_e( 'Auto publish to matters', LC_PLUGIN_SLUG ); ?>
+		<?php esc_html_e( 'Auto publish to Matters', LC_PLUGIN_SLUG ); ?>
 	</label>
 	<?php
 }
