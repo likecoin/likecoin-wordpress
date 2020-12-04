@@ -62,10 +62,10 @@ function likecoin_show_admin_errors() {
 	$error   = get_transient( "likecoin_errors_{$user_id}" );
 	if ( $error ) {
 		if ( 'publish' === $error['type'] ) {
-			$title       = __( 'LikeCoin publish error', LC_PLUGIN_SLUG );
+			$title       = __( 'LikeCoin publish Error', LC_PLUGIN_SLUG );
 			$option_page = LC_PUBLISH_SITE_OPTIONS_PAGE;
 		} else {
-			$title       = __( 'LikeCoin plugin error:', LC_PLUGIN_SLUG );
+			$title       = __( 'LikeCoin plugin Error:', LC_PLUGIN_SLUG );
 			$option_page = LC_BUTTON_SITE_OPTIONS_PAGE;
 		}
 		?>
@@ -73,7 +73,7 @@ function likecoin_show_admin_errors() {
 			<p><?php echo esc_html( $title ); ?></p>
 			<p><?php echo esc_html( $error['message'] ); ?></p>
 			<a href="
-			<?php echo esc_url( admin_url( 'options-general.php?page=' . $option_page ) ); ?> "><?php esc_html__( 'Please confirm your settings are correct', LC_PLUGIN_SLUG ); ?></a>
+			<?php echo esc_url( admin_url( 'options-general.php?page=' . $option_page ) ); ?> "><?php esc_html_e( 'Go to settings', LC_PLUGIN_SLUG ); ?></a>
 		</div>
 		<?php
 		// do not delete since Gutenberg fetch edit post once before restful.
