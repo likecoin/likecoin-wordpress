@@ -20,12 +20,56 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 /**
  * Include useful functions
  */
 require_once dirname( __FILE__ ) . '/../includes/class-likecoin-matters-api.php';
 require_once dirname( __FILE__ ) . '/views/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
+
+/**
+ * Clear all matters id and token in options
+ */
+function likecoin_logout_matters_session() {
+	$option = get_option( LC_PUBLISH_OPTION_NAME );
+	if ( ! isset( $option[ LC_OPTION_SITE_MATTERS_USER ] ) ) {
+		return;
+	}
+	unset( $option[ LC_OPTION_SITE_MATTERS_USER ] );
+	update_option( LC_PUBLISH_OPTION_NAME, $option );
+}
+
+/**
+ * Parse error handling string
+ *
+ * @param string| $error Error string.
+ */
+function likecoin_handle_matters_api_error( $error ) {
+	$decoded_error = json_decode( $error, true );
+	if ( ! $decoded_error ) {
+		likecoin_set_admin_errors( $error, 'publish' );
+		return;
+	}
+	$error_message = isset( $decoded_error['errors'][0]['message'] ) ? $decoded_error['errors'][0]['message'] : null;
+	$error_code    = isset( $decoded_error['errors'][0]['extensions']['code'] ) ? $decoded_error['errors'][0]['extensions']['code'] : null;
+	if ( $error_code ) {
+		if ( 'TOKEN_INVALID' === $error_code ) {
+			likecoin_logout_matters_session();
+			likecoin_set_admin_errors(
+				__( 'Matters session expired. Please relogin in LikeCoin publish settings', LC_PLUGIN_SLUG ),
+				'publish'
+			);
+		} else {
+			likecoin_set_admin_errors( $error_code, 'publish' );
+		}
+	} elseif ( $error_message ) {
+		likecoin_set_admin_errors( $error_message, 'publish' );
+	} else {
+		likecoin_set_admin_errors( $error, 'publish' );
+	}
+}
 
 /**
  * Apply post filter for matters
@@ -78,7 +122,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content );
 		if ( isset( $draft['error'] ) ) {
-			likecoin_set_admin_errors( $draft['error'], 'publish' );
+			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		$matters_info['draft_id'] = $draft['id'];
@@ -110,7 +154,7 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content );
 		if ( isset( $draft['error'] ) ) {
-			likecoin_set_admin_errors( $draft['error'], 'publish' );
+			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		$matters_draft_id         = $draft['id'];
@@ -118,13 +162,13 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	} else {
 		$draft = $api->update_draft( $matters_draft_id, $title, $content );
 		if ( isset( $draft['error'] ) ) {
-			likecoin_set_admin_errors( $draft['error'], 'publish' );
+			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 	}
 	$res = $api->publish_draft( $matters_draft_id );
 	if ( isset( $res['error'] ) ) {
-		likecoin_set_admin_errors( $res['error'], 'publish' );
+		likecoin_handle_matters_api_error( $res['error'] );
 		return;
 	}
 	$matters_info['published'] = true;
@@ -161,7 +205,7 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	}
 	if ( ! $matters_draft_id ) {
 		if ( ! likecoin_get_admin_errors() ) {
-			likecoin_set_admin_errors( 'Cannot save draft before publishing', 'publish' );
+			likecoin_handle_matters_api_error( 'Cannot save draft before publishing' );
 		}
 		return;
 	}
@@ -185,7 +229,7 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 		$matters_draft_id
 	);
 	if ( isset( $res['error'] ) ) {
-		likecoin_set_admin_errors( $res['error'], 'publish' );
+		likecoin_handle_matters_api_error( $res['error'] );
 		return;
 	}
 	$matters_attachment_id = $res['id'];
