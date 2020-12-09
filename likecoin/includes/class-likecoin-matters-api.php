@@ -231,12 +231,14 @@ class LikeCoin_Matters_API {
 	 *
 	 * @param string| $title Draft title.
 	 * @param string| $html_content Draft HTML content.
+	 * @param array|  $tags Array of tag strings.
 	 */
-	public function new_draft( $title, $html_content ) {
+	public function new_draft( $title, $html_content, $tags ) {
 		$payload  = 'mutation {
       putDraft(input: {
         title: ' . wp_json_encode( $title ) . ',
         content: ' . wp_json_encode( $html_content ) . ',
+        tags: ' . wp_json_encode( $tags ) . ',
       }) {
         id
       }
@@ -254,13 +256,15 @@ class LikeCoin_Matters_API {
 	 * @param string| $id Draft ID to be updated.
 	 * @param string| $title Draft title.
 	 * @param string| $html_content Draft HTML content.
+	 * @param array|  $tags Array of tag strings.
 	 */
-	public function update_draft( $id, $title, $html_content ) {
+	public function update_draft( $id, $title, $html_content, $tags ) {
 		$payload  = 'mutation {
       putDraft(input: {
-				id: ' . wp_json_encode( $id ) . ',
+        id: ' . wp_json_encode( $id ) . ',
         title: ' . wp_json_encode( $title ) . ',
         content: ' . wp_json_encode( $html_content ) . ',
+        tags: ' . wp_json_encode( $tags ) . ',
       }) {
         id
       }
