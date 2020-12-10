@@ -17,7 +17,7 @@ if (wp) {
         data: 'action=likecoin_get_error_notice',
       });
       if (res) {
-        const errorMsg = res.errors.map(e => e.message || e).join(', ');
+        const errorMsg = res.errors ? res.errors.map(e => e.message || e).join(', ') : res;
         wp.data.dispatch('core/notices').createNotice(
           'error', // Can be one of: success, info, warning, error.
           `LikeCoin Error: ${errorMsg}`, // Text string to display.
