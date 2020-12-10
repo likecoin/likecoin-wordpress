@@ -45,10 +45,10 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 	if ( strlen( $likecoin_id ) > 0 ) {
 		$referrer     = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
 		$sandbox_attr = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
-		$widget_code  = '<iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
+		$widget_code  = '<figure><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
 		'style="height: 212px; width: 100%;" ' .
 		'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
-		'?type=wp' . $referrer . '"></iframe>';
+		'?type=wp' . $referrer . '"></iframe></figure>';
 		return $widget_code;
 	}
 	return '';
