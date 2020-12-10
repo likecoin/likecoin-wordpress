@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 4.0
 Tested up to: 5.5
 Requires PHP: 5.4
-Stable tag: 2.0.3
+Stable tag: 2.0.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,6 +54,11 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.0.4 =
+
+* Fix Matters session expiration message is unreadable
+* Sync post tags to Matters
 
 = 2.0.3 =
 
