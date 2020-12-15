@@ -22,6 +22,8 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
+require_once dirname( __FILE__ ) . '/matters.php';
+
 /**
  * Get button related params for metabox
  *
@@ -63,7 +65,23 @@ function likecoin_get_meta_box_button_params( $post ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_get_meta_box_publish_params( $post ) {
-	$publish_params = array();
+	$matters_info = likecoin_refresh_post_matters_status( $post );
+	if ( isset( $matters_info['error'] ) ) {
+		$publish_params = array(
+			'error' => $matters_info['error'],
+		);
+	} else {
+		$option         = get_option( LC_PUBLISH_OPTION_NAME );
+		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
+		$publish_params = array(
+			'matters_id'   => $matters_id,
+			'draft_id'     => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
+			'published'    => isset( $matters_info['published'] ) ? $matters_info['published'] : '',
+			'article_id'   => isset( $matters_info['article_id'] ) ? $matters_info['article_id'] : '',
+			'article_slug' => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
+			'ipfs_hash'    => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
+		);
+	}
 	return $publish_params;
 }
 

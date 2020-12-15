@@ -30,6 +30,88 @@ require_once dirname( __FILE__ ) . '/views/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
 
 /**
+ * Format a draft url to matters.news.
+ *
+ * @param string| $draft_id Matters draft id.
+ */
+function likecoin_matters_get_draft_link( $draft_id ) {
+	return 'https://matters.news/me/drafts/' . $draft_id;
+}
+
+/**
+ * Format a article url to matters.news.
+ *
+ * @param string| $matters_id User Matters id.
+ * @param string| $ipfs_hash IPFS hash of article.
+ * @param string| $article_slug slug of matters article.
+ */
+function likecoin_matters_get_article_link( $matters_id, $ipfs_hash, $article_slug = '' ) {
+	return 'https://matters.news/@' . $matters_id . '/' . $article_slug . '-' . $ipfs_hash;
+}
+
+/**
+ * Query post publish status via matters api
+ *
+ * @param int| $post_id Post id of post to query matters status.
+ */
+function likecoin_query_post_matters_status( $post_id ) {
+	$matters_info     = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
+	if ( ! $matters_draft_id ) {
+		return;
+	}
+	$api = LikeCoin_Matters_API::get_instance();
+	$res = $api->query_post_status( $matters_draft_id );
+	if ( isset( $res['error'] ) ) {
+		return $res;
+	}
+	return $res;
+}
+
+/**
+ * Refresh and store publish status in post metadata
+ *
+ * @param WP_Post| $post Post object.
+ */
+function likecoin_refresh_post_matters_status( $post ) {
+	$post_id          = $post->ID;
+	$matters_info     = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
+	if ( ! $matters_draft_id ) {
+		return;
+	}
+
+	$time_now = time();
+	// limit refresh rate to 5 min.
+	if ( isset( $matters_info['last_refresh_time'] ) && $matters_info['last_refresh_time'] + 300 < $time_now ) {
+		return $matters_info;
+	}
+
+	if ( isset( $matters_info['published'] ) && isset( $matters_info['ipfs_hash'] ) ) {
+		return;
+	}
+	$res = likecoin_query_post_matters_status( $post_id );
+	if ( isset( $res['error'] ) ) {
+		return $res;
+	}
+	if ( isset( $res['publishState'] ) && 'published' === $res['publishState'] ) {
+		$matters_info['published'] = true;
+	}
+	if ( ! empty( $res['article']['id'] ) ) {
+		$matters_info['article_id'] = $res['article']['id'];
+	}
+	if ( ! empty( $res['article']['slug'] ) ) {
+		$matters_info['article_slug'] = $res['article']['slug'];
+	}
+	if ( ! empty( $res['article']['mediaHash'] ) ) {
+		$matters_info['ipfs_hash'] = $res['article']['mediaHash'];
+	}
+	$matters_info['last_refresh_time'] = $time_now;
+	update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
+	return $matters_info;
+}
+
+/**
  * Clear all matters id and token in options
  */
 function likecoin_logout_matters_session() {

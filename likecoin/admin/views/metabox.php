@@ -22,6 +22,8 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
+require_once dirname( __FILE__ ) . '/../matters.php';
+
 /**
  * Add the button session for likecoin widget metabox
  *
@@ -66,6 +68,54 @@ function likecoin_add_button_meta_box( $button_params ) {
  * @param object| $publish_params Params for displaying publish related settings.
  */
 function likecoin_add_publish_meta_box( $publish_params ) {
+	if ( isset( $publish_params['error'] ) ) {
+		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
+		echo esc_html( $publish_params['error'] );
+		return;
+	}
+	esc_html_e( 'Matters Status: ', LC_PLUGIN_SLUG );
+	if ( ! isset( $publish_params['draft_id'] ) ) {
+		esc_html_e( 'Not inited' );
+		return;
+	}
+	if ( ! empty( $publish_params['published'] ) ) {
+		?>
+		<a href="
+		<?php
+		echo esc_url(
+			likecoin_matters_get_article_link(
+				$publish_params['matters_id'],
+				$publish_params['ipfs_hash'],
+				$publish_params['article_slug']
+			)
+		);
+		?>
+		">
+		<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
+		</a>
+		<?php
+	} else {
+		?>
+		<a href="
+		<?php echo esc_url( likecoin_matters_get_draft_link( $publish_params['draft_id'] ) ); ?> ">
+		<?php esc_html_e( 'Draft', LC_PLUGIN_SLUG ); ?>
+		</a>
+		<?php
+	}
+	echo '<br />';
+	esc_html_e( 'IPFS Status: ', LC_PLUGIN_SLUG );
+	if ( ! empty( $publish_params['ipfs_hash'] ) ) {
+		// TODO: Fix cid v0 vs v1 format for ipfs gateway.
+		?>
+		<a href="
+		<?php echo esc_url( 'https://ipfs.io/ipfs/' . $publish_params['ipfs_hash'] ); ?> ">
+		<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
+		</a>
+		<?php
+	} else {
+		esc_html_e( 'Unpublished', LC_PLUGIN_SLUG );
+	}
+
 }
 
 /**

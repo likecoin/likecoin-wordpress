@@ -356,7 +356,7 @@ class LikeCoin_Matters_API {
 		if ( isset( $response['error'] ) ) {
 			return $response;
 		}
-		return $response['putDraft'];
+		return $response['node'];
 	}
 
 	/**
