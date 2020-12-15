@@ -12,7 +12,7 @@
 
  * Plugin Name:  LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
- * Description:  Integrate Liker ID with WordPress, allow users to add LikeButton into posts.
+ * Description:  Integrate your Liker ID, add LikeCoin Button and decentralized publishing to WordPress.
  * Version:      2.0.5
  * Author:       LikeCoin Foundation
  * Author URI:   https://like.co/
