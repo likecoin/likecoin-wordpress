@@ -22,56 +22,76 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
+/**
+ * Add the button session for likecoin widget metabox
+ *
+ * @param object| $button_params Params for displaying button related settings.
+ */
+function likecoin_add_button_meta_box( $button_params ) {
+	$button_checked   = $button_params['is_widget_enabled'];
+	$is_disabled      = $button_params['is_disabled'];
+	$show_no_id_error = $button_params['show_no_id_error'];
+	if ( $is_disabled ) {
+		?>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_BUTTON_SITE_OPTIONS_PAGE ) ); ?>">
+			<?php esc_html_e( 'LikeCoin button per post setting is disabled by admin.', LC_PLUGIN_SLUG ); ?>
+		</a>
+		<?php
+	} elseif ( $show_no_id_error ) {
+		?>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_BUTTON_USER_OPTIONS_PAGE ) ); ?>">
+			<?php esc_html_e( 'Author has no Liker ID yet.', LC_PLUGIN_SLUG ); ?>
+		</a>
+	<?php } else { ?>
+		<input type='hidden' name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>" value="none">
+		<input type="checkbox"
+			id="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>"
+			name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>"
+			value="bottom"
+			<?php
+			if ( $button_checked ) {
+				echo esc_attr( 'checked' );}
+			?>
+		>
+		<label for="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>">
+			<?php esc_html_e( 'Enabled LikeCoin button in this post', LC_PLUGIN_SLUG ); ?>
+		</label>
+		<?php
+}
+}
+
+/**
+ * Add the publish session of likecoin widget metabox
+ *
+ * @param object| $publish_params Params for displaying publish related settings.
+ */
+function likecoin_add_publish_meta_box( $publish_params ) {
+}
 
 /**
  * Add the likecoin widget metabox
  *
- * @param object|  $post WordPress post object.
- * @param boolean| $default_checked Default status for checkbox.
- * @param boolean| $is_disabled Show metabox disabled message.
- * @param boolean| $skip_id_check Skip author Liker ID check.
+ * @param object| $button_params Params for displaying button related settings.
+ * @param object| $publish_params Params for displaying publish related settings.
  */
-function likecoin_add_meta_box( $post, $default_checked = false, $is_disabled = false, $skip_id_check = false ) {
-	$author            = $post->post_author;
-	$likecoin_id       = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
-	$widget_option     = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
-	$widget_position   = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-	$is_widget_enabled = strlen( $widget_position ) > 0 ? 'none' !== $widget_position : $default_checked;
-	$has_likecoin_id   = strlen( $likecoin_id ) > 0;
+function likecoin_add_meta_box( $button_params, $publish_params ) {
+
 	?>
 	<div class="wrapper">
 		<section class="likecoin">
 		<?php
-		if ( $is_disabled ) {
-			?>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_BUTTON_SITE_OPTIONS_PAGE ) ); ?>">
-				<?php esc_html_e( 'LikeCoin button per post setting is disabled by admin.', LC_PLUGIN_SLUG ); ?>
-			</a>
-			<?php
-		} elseif ( ! $skip_id_check && ! $has_likecoin_id ) {
-			?>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_BUTTON_USER_OPTIONS_PAGE ) ); ?>">
-				<?php esc_html_e( 'Author has no Liker ID yet.', LC_PLUGIN_SLUG ); ?>
-			</a>
-		<?php } else { ?>
-			<input type='hidden' name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>" value="none">
-			<input type="checkbox"
-				id="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>"
-				name="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>"
-				value="bottom"
-				<?php
-				if ( $is_widget_enabled ) {
-					echo esc_attr( 'checked' );}
-				?>
-			>
-			<label for="<?php echo esc_attr( LC_OPTION_WIDGET_OPTION ); ?>">
-				<?php esc_html_e( 'Enabled LikeCoin button in this post', LC_PLUGIN_SLUG ); ?>
-			</label>
+			likecoin_add_button_meta_box( $button_params );
+		?>
+		</section>
+		<hr />
+		<section class="likecoin">
+		<?php
+			likecoin_add_publish_meta_box( $publish_params );
+		?>
 		</section>
 	</div>
-			<?php
-			wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
-}
+	<?php
+		wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
 }

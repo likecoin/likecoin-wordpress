@@ -23,27 +23,61 @@
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 /**
+ * Get button related params for metabox
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_get_meta_box_button_params( $post ) {
+	$author          = $post->post_author;
+	$option          = get_option( LC_BUTTON_OPTION_NAME );
+	$is_disabled     = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
+	$site_id_enabled = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
+	$likecoin_id     = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
+	$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
+	$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
+	$has_likecoin_id = strlen( $likecoin_id ) > 0;
+	$is_page         = 'page' === $post->post_type;
+	$default_enabled = false;
+	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
+		if ( $is_page ) {
+			if ( 'always' === $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
+				$default_enabled = true;
+			}
+		} elseif ( 'none' !== $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
+			$default_enabled = true;
+		}
+	}
+	$is_widget_enabled = strlen( $widget_position ) > 0 ? 'none' !== $widget_position : $default_enabled;
+	$show_no_id_error  = ! $has_likecoin_id && ! $site_id_enabled;
+	$button_params     = array(
+		'is_widget_enabled' => $is_widget_enabled,
+		'is_disabled'       => $is_disabled,
+		'show_no_id_error'  => $show_no_id_error,
+	);
+	return $button_params;
+}
+
+/**
+ * Get publish related params for metabox
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_get_meta_box_publish_params( $post ) {
+	$publish_params = array();
+	return $publish_params;
+}
+
+
+/**
  * Displays metabox
  *
  * @param object| $post WordPress post object.
  */
 function likecoin_display_meta_box( $post ) {
 	include_once dirname( __FILE__ ) . '/views/metabox.php';
-	$option          = get_option( LC_BUTTON_OPTION_NAME );
-	$is_disabled     = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
-	$skip_id_check   = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
-	$is_page         = 'page' === $post->post_type;
-	$default_checked = false;
-	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
-		if ( $is_page ) {
-			if ( 'always' === $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
-				$default_checked = true;
-			}
-		} elseif ( 'none' !== $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
-			$default_checked = true;
-		}
-	}
-	likecoin_add_meta_box( $post, $default_checked, $is_disabled, $skip_id_check );
+	$button_params  = likecoin_get_meta_box_button_params( $post );
+	$publish_params = likecoin_get_meta_box_publish_params( $post );
+	likecoin_add_meta_box( $button_params, $publish_params );
 }
 
 /**
