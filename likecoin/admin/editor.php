@@ -20,6 +20,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 /**
  * Load custom frontend js for Gutenberg editor
  */
@@ -35,4 +37,71 @@ function likecoin_load_editor_scripts() {
 		LC_PLUGIN_VERSION,
 		true
 	);
+}
+
+/**
+ * Add custom posts columns
+ *
+ * @param string[]| $columns An associative array of column headings.
+ */
+function likecoin_add_posts_columns( $columns ) {
+	$columns['matters'] = __( 'Matters Publish status', LC_PLUGIN_SLUG );
+	$columns['ipfs']    = __( 'IPFS status', LC_PLUGIN_SLUG );
+	return $columns;
+}
+
+/**
+ * Populate custom posts columnsParameters
+ *
+ * @param string| $column The name of the column to display..
+ * @param int|    $post_id The current post ID.
+ */
+function likecoin_populate_posts_columns( $column, $post_id ) {
+	switch ( $column ) {
+		case 'matters':
+			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+			if ( ! isset( $matters_info['draft_id'] ) ) {
+				esc_html_e( '-' );
+				return;
+			}
+			if ( ! empty( $matters_info['published'] ) ) {
+				?>
+					<a href="
+				<?php
+				echo esc_url(
+					likecoin_matters_get_article_link(
+						$matters_info['matters_id'],
+						$matters_info['ipfs_hash'],
+						$matters_info['article_slug']
+					)
+				);
+				?>
+					">
+				<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
+					</a>
+					<?php
+			} else {
+				?>
+					<a href="
+				<?php echo esc_url( likecoin_matters_get_draft_link( $publish_params['draft_id'] ) ); ?> ">
+					<?php esc_html_e( 'Draft', LC_PLUGIN_SLUG ); ?>
+					</a>
+					<?php
+			}
+			break;
+		case 'ipfs':
+			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+			if ( ! empty( $matters_info['ipfs_hash'] ) ) {
+				// TODO: Fix cid v0 vs v1 format for ipfs gateway.
+				?>
+					<a href="
+				<?php echo esc_url( 'https://ipfs.io/ipfs/' . $matters_info['ipfs_hash'] ); ?> ">
+					<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
+					</a>
+					<?php
+			} else {
+				esc_html_e( 'Unpublished', LC_PLUGIN_SLUG );
+			}
+			break;
+	}
 }
