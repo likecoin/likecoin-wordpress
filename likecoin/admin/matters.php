@@ -104,7 +104,10 @@ function likecoin_refresh_post_matters_status( $post ) {
 		$matters_info['article_slug'] = $res['article']['slug'];
 	}
 	if ( ! empty( $res['article']['mediaHash'] ) ) {
-		$matters_info['ipfs_hash'] = $res['article']['mediaHash'];
+		$matters_info['article_hash'] = $res['article']['mediaHash'];
+	}
+	if ( ! empty( $res['article']['dataHash'] ) ) {
+		$matters_info['ipfs_hash'] = $res['article']['dataHash'];
 	}
 	$matters_info['last_refresh_time'] = $time_now;
 	update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );

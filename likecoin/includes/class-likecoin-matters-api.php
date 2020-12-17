@@ -345,6 +345,7 @@ class LikeCoin_Matters_API {
             id
             slug
             mediaHash
+            dataHash
             author {
               userName
             }
