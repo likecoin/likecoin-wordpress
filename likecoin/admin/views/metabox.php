@@ -80,7 +80,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	}
 	if ( ! empty( $publish_params['published'] ) ) {
 		?>
-		<a href="
+		<a rel="noopener" target="_blank" href="
 		<?php
 		echo esc_url(
 			likecoin_matters_get_article_link(
@@ -96,7 +96,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		<?php
 	} else {
 		?>
-		<a href="
+		<a rel="noopener" target="_blank" href="
 		<?php echo esc_url( likecoin_matters_get_draft_link( $publish_params['draft_id'] ) ); ?> ">
 		<?php esc_html_e( 'Draft', LC_PLUGIN_SLUG ); ?>
 		</a>
@@ -107,7 +107,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	if ( ! empty( $publish_params['ipfs_hash'] ) ) {
 		// TODO: Fix cid v0 vs v1 format for ipfs gateway.
 		?>
-		<a href="
+		<a rel="noopener" target="_blank" href="
 		<?php echo esc_url( 'https://ipfs.io/ipfs/' . $publish_params['ipfs_hash'] ); ?> ">
 		<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
 		</a>

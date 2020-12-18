@@ -36,7 +36,7 @@ function likecoin_add_sponsor_page() {
 		/* translators: %s is the link to likecoin official website*/
 		esc_html__( '%s is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.', LC_PLUGIN_SLUG ),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			'https://like.co',
 			esc_html__( 'LikeCoin', LC_PLUGIN_SLUG )
 		)
@@ -50,17 +50,17 @@ function likecoin_add_sponsor_page() {
 		/* translators: %1%s is the link to ISCN, %2%s is the link to LikeCoin chain explorer, %1%s is the link to IPFS */
 		esc_html__( 'The heart of Decentralized Publishing is decentralized registry powered by %1$s, a specification we drafted in collaboration with the industry. Inspired by ISBN for books, ISCN is a unique number assigned to content such as articles and images, and comes with metadata such as author, publisher, content address, license terms and creation footprint. Stored on %2$s, ISCN is immutable and censorship resilient. The content, on the other hand, is stored on %3$s for tamper resistance and peer-to-peer distribution.', LC_PLUGIN_SLUG ),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://iscn.io' ),
 			esc_html__( 'ISCN', LC_PLUGIN_SLUG )
 		),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://likecoin.bigdipper.live' ),
 			esc_html__( 'LikeCoin chain', LC_PLUGIN_SLUG )
 		),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://ipfs.io' ),
 			esc_html__( 'IPFS', LC_PLUGIN_SLUG )
 		)
@@ -73,12 +73,12 @@ function likecoin_add_sponsor_page() {
 		/* translators: %1%s is the link to LikeCoin token page on coingecko, %2%s is the link to Civic Liker intro page */
 		esc_html__( 'By simply attaching a LikeCoin button beneath your content and without setting up a paywall, every Like by readers is turned into measurable rewards in %1$s,. The %2$s, movement encourages readers to contribute USD5/mo to reward creativity and journalism, while the matching fund, distributed according to the Likes of all users, doubles the rewarding pool. With decentralized rewards, every Like counts.', LC_PLUGIN_SLUG ),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://www.coingecko.com/en/coins/likecoin' ),
 			esc_html__( 'LikeCoin tokens', LC_PLUGIN_SLUG )
 		),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://liker.land/civic' ),
 			esc_html__( 'Civic Liker', LC_PLUGIN_SLUG )
 		)
@@ -103,12 +103,12 @@ function likecoin_add_sponsor_page() {
 		/* translators: %1%s is the link to LikeCoin chain explorer, %2%s is the link to the proposal page */
 		esc_html__( 'Not only is LikeCoin token a reward to creators and Content Jockeys, it also serves doubly as the governing token for the decentralized autonomous organization (DAO), namely the %1$s. Likers participate in liquid democracy by delegating their LikeCoin tokens to validators they trust, and freely switch among them without a fixed term of office. Issues such as default Content Jockeys, inflation rate and protocol updates require passing a corresponding %2$s by the Republic.', LC_PLUGIN_SLUG ),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://likecoin.bigdipper.live' ),
 			esc_html__( 'Republic of Liker Land', LC_PLUGIN_SLUG )
 		),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://likecoin.bigdipper.live/proposalsc' ),
 			esc_html__( 'proposal', LC_PLUGIN_SLUG )
 		)
