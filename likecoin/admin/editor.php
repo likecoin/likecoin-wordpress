@@ -59,6 +59,8 @@ function likecoin_add_posts_columns( $columns ) {
 function likecoin_populate_posts_columns( $column, $post_id ) {
 	switch ( $column ) {
 		case 'matters':
+			$option         = get_option( LC_PUBLISH_OPTION_NAME );
+			$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
 			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
 			if ( ! isset( $matters_info['draft_id'] ) ) {
 				esc_html_e( '-' );
@@ -70,7 +72,7 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 				<?php
 				echo esc_url(
 					likecoin_matters_get_article_link(
-						$matters_info['matters_id'],
+						$matters_id,
 						$matters_info['ipfs_hash'],
 						$matters_info['article_slug']
 					)
@@ -83,7 +85,7 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 			} else {
 				?>
 					<a href="
-				<?php echo esc_url( likecoin_matters_get_draft_link( $publish_params['draft_id'] ) ); ?> ">
+				<?php echo esc_url( likecoin_matters_get_draft_link( $matters_info['draft_id'] ) ); ?> ">
 					<?php esc_html_e( 'Draft', LC_PLUGIN_SLUG ); ?>
 					</a>
 					<?php
