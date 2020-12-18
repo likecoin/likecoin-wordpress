@@ -42,11 +42,11 @@ function likecoin_matters_get_draft_link( $draft_id ) {
  * Format a article url to matters.news.
  *
  * @param string| $matters_id User Matters id.
- * @param string| $ipfs_hash IPFS hash of article.
+ * @param string| $article_hash IPFS hash of article.
  * @param string| $article_slug slug of matters article.
  */
-function likecoin_matters_get_article_link( $matters_id, $ipfs_hash, $article_slug = '' ) {
-	return 'https://matters.news/@' . $matters_id . '/' . $article_slug . '-' . $ipfs_hash;
+function likecoin_matters_get_article_link( $matters_id, $article_hash, $article_slug = '' ) {
+	return 'https://matters.news/@' . $matters_id . '/' . $article_slug . '-' . $article_hash;
 }
 
 /**
@@ -82,8 +82,8 @@ function likecoin_refresh_post_matters_status( $post ) {
 	}
 
 	$time_now = time();
-	// limit refresh rate to 5 min.
-	if ( isset( $matters_info['last_refresh_time'] ) && $matters_info['last_refresh_time'] + 300 < $time_now ) {
+	// limit refresh rate to 1 min.
+	if ( isset( $matters_info['last_refresh_time'] ) && $matters_info['last_refresh_time'] + 60 < $time_now ) {
 		return $matters_info;
 	}
 

@@ -79,21 +79,25 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		return;
 	}
 	if ( ! empty( $publish_params['published'] ) ) {
-		?>
+		if ( ! empty( $publish_params['article_hash'] ) ) {
+			?>
 		<a rel="noopener" target="_blank" href="
-		<?php
-		echo esc_url(
-			likecoin_matters_get_article_link(
-				$publish_params['matters_id'],
-				$publish_params['ipfs_hash'],
-				$publish_params['article_slug']
-			)
-		);
-		?>
+			<?php
+			echo esc_url(
+				likecoin_matters_get_article_link(
+					$publish_params['matters_id'],
+					$publish_params['article_hash'],
+					$publish_params['article_slug']
+				)
+			);
+			?>
 		">
-		<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
+			<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
 		</a>
-		<?php
+			<?php
+		} else {
+			esc_html_e( 'Pending', LC_PLUGIN_SLUG );
+		}
 	} else {
 		?>
 		<a rel="noopener" target="_blank" href="
@@ -117,7 +121,6 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	} else {
 		esc_html_e( '-', LC_PLUGIN_SLUG );
 	}
-
 }
 
 /**

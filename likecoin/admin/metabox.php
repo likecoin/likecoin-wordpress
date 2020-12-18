@@ -78,6 +78,7 @@ function likecoin_get_meta_box_publish_params( $post ) {
 			'draft_id'     => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
 			'published'    => isset( $matters_info['published'] ) ? $matters_info['published'] : '',
 			'article_id'   => isset( $matters_info['article_id'] ) ? $matters_info['article_id'] : '',
+			'article_hash' => isset( $matters_info['article_hash'] ) ? $matters_info['article_hash'] : '',
 			'article_slug' => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
 			'ipfs_hash'    => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
 		);
