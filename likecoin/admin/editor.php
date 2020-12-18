@@ -99,8 +99,10 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 					<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
 					</a>
 					<?php
+			} elseif ( ! empty( $matters_info['published'] ) ) {
+				esc_html_e( 'Pending', LC_PLUGIN_SLUG );
 			} else {
-				esc_html_e( 'Unpublished', LC_PLUGIN_SLUG );
+				esc_html_e( '-', LC_PLUGIN_SLUG );
 			}
 			break;
 	}

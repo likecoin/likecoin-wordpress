@@ -112,8 +112,10 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
 		</a>
 		<?php
+	} elseif ( ! empty( $publish_params['published'] ) ) {
+		esc_html_e( 'Pending', LC_PLUGIN_SLUG );
 	} else {
-		esc_html_e( 'Unpublished', LC_PLUGIN_SLUG );
+		esc_html_e( '-', LC_PLUGIN_SLUG );
 	}
 
 }
