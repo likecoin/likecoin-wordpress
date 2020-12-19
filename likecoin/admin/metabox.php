@@ -74,7 +74,7 @@ function likecoin_get_meta_box_publish_params( $post ) {
 		$option         = get_option( LC_PUBLISH_OPTION_NAME );
 		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
 		$publish_params = array(
-			'matters_id'   => $matters_id,
+			'matters_id'   => isset( $matters_info['article_author'] ) ? $matters_info['article_author'] : $matters_id,
 			'draft_id'     => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
 			'published'    => isset( $matters_info['published'] ) ? $matters_info['published'] : '',
 			'article_id'   => isset( $matters_info['article_id'] ) ? $matters_info['article_id'] : '',

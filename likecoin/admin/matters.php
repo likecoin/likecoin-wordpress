@@ -109,6 +109,9 @@ function likecoin_refresh_post_matters_status( $post ) {
 	if ( ! empty( $res['article']['dataHash'] ) ) {
 		$matters_info['ipfs_hash'] = $res['article']['dataHash'];
 	}
+	if ( ! empty( $res['article']['author']['userName'] ) ) {
+		$matters_info['article_author'] = $res['article']['author']['userName'];
+	}
 	$matters_info['last_refresh_time'] = $time_now;
 	update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 	return $matters_info;
