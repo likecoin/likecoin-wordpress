@@ -1,6 +1,6 @@
 {
   "name": "likecoin-wordpress",
-  "version": "1.0.0",
+  "version": "2.0.6",
   "description": "",
   "scripts": {
     "build": "npm run build:babel && NODE_ENV=production rollup -c",
