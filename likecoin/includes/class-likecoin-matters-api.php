@@ -345,6 +345,7 @@ class LikeCoin_Matters_API {
             id
             slug
             mediaHash
+            dataHash
             author {
               userName
             }
@@ -356,7 +357,7 @@ class LikeCoin_Matters_API {
 		if ( isset( $response['error'] ) ) {
 			return $response;
 		}
-		return $response['putDraft'];
+		return $response['node'];
 	}
 
 	/**

@@ -29,7 +29,7 @@ function likecoin_add_matters_introduction() {
 	?>
 	<div>
 	<p>
-		<h2><a href="https://matters.news">
+		<h2><a rel="noopener" target="_blank" href="https://matters.news">
 		<img height="32" weight="32" src="https://matters.news/static/icon-144x144.png"/>
 		</a><?php esc_html_e( 'What is Matters.news?' ); ?></h2>
 	</p>
@@ -39,7 +39,7 @@ function likecoin_add_matters_introduction() {
 		/* translators: %s is the link to matters.news */
 		esc_html__( '%s is a decentralized, cryptocurrency driven content creation and discussion platform.', LC_PLUGIN_SLUG ),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://matters.news' ),
 			esc_html__( 'Matters', LC_PLUGIN_SLUG )
 		)
@@ -49,7 +49,7 @@ function likecoin_add_matters_introduction() {
 		/* translators: %s is the link to ipfs.io */
 		esc_html__( 'By publishing on Matters, your articles will be stored to the distributed InterPlanetary File System (%s) nodes and get rewarded. Take the first step to publish your creation and reclaim your ownership of data!', LC_PLUGIN_SLUG ),
 		sprintf(
-			'<a href="%s">%s</a>',
+			'<a rel="noopener" target="_blank" href="%s">%s</a>',
 			esc_url( 'https://ipfs.io' ),
 			esc_html__( 'IPFS', LC_PLUGIN_SLUG )
 		)

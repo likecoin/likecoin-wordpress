@@ -109,7 +109,7 @@ function likecoin_add_button_preview( $likecoin_id ) {
 <section class="likecoin optionsSection" style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>">
 	<section class="previewSection">
 		<span><?php esc_html_e( 'Preview', LC_PLUGIN_SLUG ); ?></span>
-		<a class="icon" href="https://like.co/in/settings" target="_blank">
+		<a rel="noopener" target="_blank" class="icon" href="https://like.co/in/settings" target="_blank">
 		<?php
 		/* output actual <svg> to allow styling */
 

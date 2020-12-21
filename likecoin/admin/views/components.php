@@ -97,7 +97,10 @@ function likecoin_add_likecoin_info_table( $info, $editable = true, $disconnecta
 						name="<?php echo esc_attr( $likecoin_avatar_name ); ?>"
 						value="<?php echo esc_url( $likecoin_avatar ); ?>"
 					>
-					<a id="likecoinId"
+					<a
+						id="likecoinId"
+						rel="noopener"
+						target="_blank"
 						href="<?php echo esc_url( 'https://like.co/' . $likecoin_id ); ?>"
 						class="likecoin likecoinId"
 						style="<?php echo $has_likecoin_id ? '' : 'display: none'; ?>"
@@ -232,9 +235,11 @@ function likecoin_add_matters_login_status( $info ) {
 	<span><b>
 	<?php
 	if ( $has_matters_access_token ) {
-		esc_html_e( 'Logged in', LC_PLUGIN_SLUG );
 		if ( $has_matters_id ) {
-			echo ' as <a href="' . esc_url( 'https://matters.news/@' . $matters_id ) . '">' . esc_html( $matters_id ) . '</a>';
+			esc_html_e( 'Logged in as ', LC_PLUGIN_SLUG );
+			echo '<a rel="noopener" target="_blank" href="' . esc_url( 'https://matters.news/@' . $matters_id ) . '">' . esc_html( $matters_id ) . '</a>';
+		} else {
+			esc_html_e( 'Logged in', LC_PLUGIN_SLUG );
 		}
 	} else {
 		esc_html_e( 'Not connected', LC_PLUGIN_SLUG );

@@ -22,6 +22,71 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
+require_once dirname( __FILE__ ) . '/matters.php';
+
+/**
+ * Get button related params for metabox
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_get_meta_box_button_params( $post ) {
+	$author          = $post->post_author;
+	$option          = get_option( LC_BUTTON_OPTION_NAME );
+	$is_disabled     = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
+	$site_id_enabled = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
+	$likecoin_id     = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
+	$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
+	$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
+	$has_likecoin_id = strlen( $likecoin_id ) > 0;
+	$is_page         = 'page' === $post->post_type;
+	$default_enabled = false;
+	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
+		if ( $is_page ) {
+			if ( 'always' === $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
+				$default_enabled = true;
+			}
+		} elseif ( 'none' !== $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
+			$default_enabled = true;
+		}
+	}
+	$is_widget_enabled = strlen( $widget_position ) > 0 ? 'none' !== $widget_position : $default_enabled;
+	$show_no_id_error  = ! $has_likecoin_id && ! $site_id_enabled;
+	$button_params     = array(
+		'is_widget_enabled' => $is_widget_enabled,
+		'is_disabled'       => $is_disabled,
+		'show_no_id_error'  => $show_no_id_error,
+	);
+	return $button_params;
+}
+
+/**
+ * Get publish related params for metabox
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_get_meta_box_publish_params( $post ) {
+	$matters_info = likecoin_refresh_post_matters_status( $post );
+	if ( isset( $matters_info['error'] ) ) {
+		$publish_params = array(
+			'error' => $matters_info['error'],
+		);
+	} else {
+		$option         = get_option( LC_PUBLISH_OPTION_NAME );
+		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
+		$publish_params = array(
+			'matters_id'   => isset( $matters_info['article_author'] ) ? $matters_info['article_author'] : $matters_id,
+			'draft_id'     => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
+			'published'    => isset( $matters_info['published'] ) ? $matters_info['published'] : '',
+			'article_id'   => isset( $matters_info['article_id'] ) ? $matters_info['article_id'] : '',
+			'article_hash' => isset( $matters_info['article_hash'] ) ? $matters_info['article_hash'] : '',
+			'article_slug' => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
+			'ipfs_hash'    => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
+		);
+	}
+	return $publish_params;
+}
+
+
 /**
  * Displays metabox
  *
@@ -29,21 +94,9 @@
  */
 function likecoin_display_meta_box( $post ) {
 	include_once dirname( __FILE__ ) . '/views/metabox.php';
-	$option          = get_option( LC_BUTTON_OPTION_NAME );
-	$is_disabled     = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
-	$skip_id_check   = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
-	$is_page         = 'page' === $post->post_type;
-	$default_checked = false;
-	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
-		if ( $is_page ) {
-			if ( 'always' === $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
-				$default_checked = true;
-			}
-		} elseif ( 'none' !== $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) {
-			$default_checked = true;
-		}
-	}
-	likecoin_add_meta_box( $post, $default_checked, $is_disabled, $skip_id_check );
+	$button_params  = likecoin_get_meta_box_button_params( $post );
+	$publish_params = likecoin_get_meta_box_publish_params( $post );
+	likecoin_add_meta_box( $button_params, $publish_params );
 }
 
 /**
