@@ -33,6 +33,6 @@ const configs = [
   'admin/likecoin_editor.js',
   'admin/likecoin_site_options.js',
   'admin/likecoin_site_publish_options.js',
-].map(filename => createConfig(filename));
+].map((filename) => createConfig(filename));
 
 export default configs;

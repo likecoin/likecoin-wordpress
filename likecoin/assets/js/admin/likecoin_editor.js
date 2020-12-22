@@ -1,7 +1,7 @@
 /* global ajaxurl, jQuery, wp */
 
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 if (wp) {
@@ -17,7 +17,7 @@ if (wp) {
         data: 'action=likecoin_get_error_notice',
       });
       if (res) {
-        const errorMsg = res.errors ? res.errors.map(e => e.message || e).join(', ') : res;
+        const errorMsg = res.errors ? res.errors.map((e) => e.message || e).join(', ') : res;
         wp.data.dispatch('core/notices').createNotice(
           'error', // Can be one of: success, info, warning, error.
           `LikeCoin Error: ${errorMsg}`, // Text string to display.
