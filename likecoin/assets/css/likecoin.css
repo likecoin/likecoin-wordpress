@@ -29,7 +29,6 @@
 }
 
 .likecoin .likecoinButton {
-
   min-width: 256px;
 
   padding: 8px 16px;
@@ -49,7 +48,6 @@
 }
 
 .likecoin .centerContainer {
-
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -83,7 +81,6 @@
 }
 
 .likecoin .likecoinId {
-
   text-decoration: none;
 
   color: #4a90e2;
@@ -123,14 +120,12 @@
 }
 
 .likecoin .likecoinTable tr {
-
   white-space: nowrap;
 
   border: solid 1px #e6e6e6;
 }
 
 .likecoin .likecoinTable th {
-
   height: 40px;
 
   padding: 0 14px;
@@ -144,7 +139,6 @@
 }
 
 .likecoin .likecoinTable td {
-
   height: 64px;
   padding: 8px 14px;
 
@@ -152,7 +146,6 @@
 }
 
 .likecoin .likecoinTable td.actions {
-
   display: flex;
   align-items: center;
   justify-content: center;
