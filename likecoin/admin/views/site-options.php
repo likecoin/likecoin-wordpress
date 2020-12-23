@@ -51,7 +51,7 @@ function likecoin_add_site_options_page() {
 	<?php
 	wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 	wp_enqueue_style( 'lc_css_common' );
-	wp_enqueue_script( 'lc_js_common', LC_URI . 'assets/js/dist/likecoin.js', array( 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_js_common', LC_URI . 'assets/js/dist/likecoin.js', array( 'wp-polyfill', 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
 }
 
 /**
@@ -106,7 +106,7 @@ function likecoin_add_site_likecoin_id_toggle( $args ) {
 		<?php esc_html_e( 'Override all LikeCoin button with site Liker ID', LC_PLUGIN_SLUG ); ?>
 	</label>
 	<?php
-	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_options.js', array( 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_options.js', array( 'wp-polyfill', 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_js_site_options',
 		'WP_CONFIG',
@@ -205,7 +205,7 @@ function likecoin_add_site_matters_login_status( $args ) {
 		'matters_access_token_field_name' => $matters_access_token_field_name,
 	);
 	likecoin_add_matters_login_status( $params );
-	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_publish_options.js', array( 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
+	wp_enqueue_script( 'lc_js_site_options', LC_URI . 'assets/js/dist/admin/likecoin_site_publish_options.js', array( 'wp-polyfill', 'jquery', 'underscore' ), LC_PLUGIN_VERSION, true );
 	wp_localize_script(
 		'lc_js_site_options',
 		'WP_CONFIG',

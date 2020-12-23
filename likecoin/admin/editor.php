@@ -33,7 +33,7 @@ function likecoin_load_editor_scripts() {
 	wp_enqueue_script(
 		'lc_js_editor',
 		LC_URI . 'assets/js/dist/admin/likecoin_editor.js',
-		array( 'wp-editor', 'wp-i18n' ),
+		array( 'wp-polyfill', 'wp-editor', 'wp-i18n' ),
 		LC_PLUGIN_VERSION,
 		true
 	);
