@@ -118,44 +118,55 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		echo esc_html( $status['error'] );
 		return;
 	}
-	esc_html_e( 'Matters Status: ', LC_PLUGIN_SLUG );
-	if ( ! empty( $status['matters']['url'] ) ) {
-		?>
-		<a rel="noopener" target="_blank" href="
-		<?php
-		echo esc_url( $status['matters']['url'] );
-		?>
-		">
-		<?php echo esc_html( $status['matters']['status'] ); ?>
-		</a>
+	?>
+	<div>
+		<span>
+			<?php esc_html_e( 'Matters Status: ', LC_PLUGIN_SLUG ); ?>
+		</span>
+		<span id="lcMattersStatus">
+		<?php if ( ! empty( $status['matters']['url'] ) ) { ?>
+			<a rel="noopener" target="_blank" href="
 			<?php
-	} else {
-		echo esc_html( $status['matters']['status'] );
-	}
-	echo '<br />';
-	esc_html_e( 'IPFS Status: ', LC_PLUGIN_SLUG );
-	if ( ! empty( $status['ipfs']['url'] ) ) {
-		?>
-		<a rel="noopener" target="_blank" href="
-		<?php
-		echo esc_url( $status['ipfs']['url'] );
-		?>
-		">
-		<?php echo esc_html( $status['ipfs']['status'] ); ?>
-		</a> 
+			echo esc_url( $status['matters']['url'] );
+			?>
+			">
+			<?php echo esc_html( $status['matters']['status'] ); ?>
+			</a>
+		<?php } else { ?>
+			<?php echo esc_html( $status['matters']['status'] ); ?>
+		<?php } ?>
+		</span>
+	</div>
+	<div>
+		<span>
+			<?php esc_html_e( 'IPFS Status: ', LC_PLUGIN_SLUG ); ?>
+		</span>
+		<span id="lcIPFSStatus">
+		<?php if ( ! empty( $status['ipfs']['url'] ) ) { ?>
+			<a rel="noopener" target="_blank" href="
 			<?php
-	} else {
-		echo esc_html( $status['ipfs']['status'] );
-	}
+			echo esc_url( $status['ipfs']['url'] );
+			?>
+			">
+			<?php echo esc_html( $status['ipfs']['status'] ); ?>
+			</a>
+		<?php } else { ?>
+			<?php echo esc_html( $status['ipfs']['status'] ); ?>
+		<?php } ?>
+		</span>
+	</div>
+	<div><a href="#" id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh status', LC_PLUGIN_SLUG ); ?></a></div>
+	<?php
 }
 
 /**
  * Add the likecoin widget metabox
  *
+ * @param int|    $post_id Current post ID.
  * @param object| $button_params Params for displaying button related settings.
  * @param object| $publish_params Params for displaying publish related settings.
  */
-function likecoin_add_meta_box( $button_params, $publish_params ) {
+function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
 
 	?>
 	<div class="wrapper">
@@ -176,5 +187,21 @@ function likecoin_add_meta_box( $button_params, $publish_params ) {
 		wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
+		wp_enqueue_script(
+			'lc_js_metabox',
+			LC_URI . 'assets/js/dist/admin/likecoin_metabox.js',
+			array( 'wp-polyfill', 'jquery' ),
+			LC_PLUGIN_VERSION,
+			true
+		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'wpApiSettings',
+			array(
+				'root'   => esc_url_raw( rest_url() ),
+				'nonce'  => wp_create_nonce( 'wp_rest' ),
+				'postId' => $post_id,
+			)
+		);
 }
 ?>

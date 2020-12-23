@@ -72,8 +72,9 @@ function likecoin_query_post_matters_status( $post_id ) {
  * Refresh and store publish status in post metadata
  *
  * @param WP_Post| $post Post object.
+ * @param boolean| $force Ignore last refresh time.
  */
-function likecoin_refresh_post_matters_status( $post ) {
+function likecoin_refresh_post_matters_status( $post, $force = false ) {
 	$post_id          = $post->ID;
 	$matters_info     = get_post_meta( $post_id, LC_MATTERS_INFO, true );
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
@@ -83,7 +84,7 @@ function likecoin_refresh_post_matters_status( $post ) {
 
 	$time_now = time();
 	// limit refresh rate to 1 min.
-	if ( isset( $matters_info['last_refresh_time'] ) && $matters_info['last_refresh_time'] + 60 < $time_now ) {
+	if ( ! $force && isset( $matters_info['last_refresh_time'] ) && $matters_info['last_refresh_time'] + 60 < $time_now ) {
 		return $matters_info;
 	}
 

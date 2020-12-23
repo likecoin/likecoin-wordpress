@@ -62,8 +62,8 @@ function onMattersLogoutClick(e) {
 }
 
 (() => {
-  const loginBtn = document.getElementById('mattersIdLoginBtn');
-  const logoutBtn = document.getElementById('mattersIdLogoutButton');
+  const loginBtn = document.getElementById('lcMattersIdLoginBtn');
+  const logoutBtn = document.getElementById('lcMattersIdLogoutButton');
   if (loginBtn) loginBtn.addEventListener('click', onMattersLoginClick);
   if (logoutBtn) logoutBtn.addEventListener('click', onMattersLogoutClick);
 })();
