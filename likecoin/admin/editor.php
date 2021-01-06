@@ -22,6 +22,8 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
+require_once dirname( __FILE__ ) . '/views/metabox.php';
+
 /**
  * Load custom frontend js for Gutenberg editor
  */
@@ -33,7 +35,7 @@ function likecoin_load_editor_scripts() {
 	wp_enqueue_script(
 		'lc_js_editor',
 		LC_URI . 'assets/js/dist/admin/likecoin_editor.js',
-		array( 'wp-editor', 'wp-i18n' ),
+		array( 'wp-polyfill', 'wp-editor', 'wp-i18n' ),
 		LC_PLUGIN_VERSION,
 		true
 	);
@@ -59,51 +61,24 @@ function likecoin_add_posts_columns( $columns ) {
 function likecoin_populate_posts_columns( $column, $post_id ) {
 	switch ( $column ) {
 		case 'matters':
-			$option       = get_option( LC_PUBLISH_OPTION_NAME );
-			$matters_id   = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
-			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
-			if ( ! isset( $matters_info['draft_id'] ) ) {
-				esc_html_e( '-' );
-				return;
-			}
-			if ( ! empty( $matters_info['published'] ) ) {
+		case 'ipfs':
+			$option                     = get_option( LC_PUBLISH_OPTION_NAME );
+			$matters_id                 = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
+			$matters_info               = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+			$matters_info['matters_id'] = $matters_id;
+			$status                     = likecoin_parse_publish_status( $matters_info );
+			if ( ! empty( $status[ $column ]['url'] ) ) {
 				?>
 					<a rel="noopener" target="_blank" href="
 				<?php
-				echo esc_url(
-					likecoin_matters_get_article_link(
-						$matters_id,
-						$matters_info['article_hash'],
-						$matters_info['article_slug']
-					)
-				);
+				echo esc_url( $status[ $column ]['url'] );
 				?>
 					">
-				<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
+				<?php echo esc_html( $status[ $column ]['status'] ); ?>
 					</a>
 					<?php
 			} else {
-				?>
-					<a rel="noopener" target="_blank" href="
-				<?php echo esc_url( likecoin_matters_get_draft_link( $matters_info['draft_id'] ) ); ?> ">
-					<?php esc_html_e( 'Draft', LC_PLUGIN_SLUG ); ?>
-					</a>
-					<?php
-			}
-			break;
-		case 'ipfs':
-			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
-			if ( ! empty( $matters_info['ipfs_hash'] ) ) {
-				?>
-					<a rel="noopener" target="_blank" href="
-				<?php echo esc_url( 'https://ipfs.io/ipfs/' . $matters_info['ipfs_hash'] ); ?> ">
-					<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
-					</a>
-					<?php
-			} elseif ( ! empty( $matters_info['published'] ) ) {
-				esc_html_e( 'Pending', LC_PLUGIN_SLUG );
-			} else {
-				esc_html_e( '-', LC_PLUGIN_SLUG );
+				echo esc_html( $status[ $column ]['status'] );
 			}
 			break;
 	}

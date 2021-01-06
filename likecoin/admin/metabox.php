@@ -62,10 +62,11 @@ function likecoin_get_meta_box_button_params( $post ) {
 /**
  * Get publish related params for metabox
  *
- * @param object| $post WordPress post object.
+ * @param object|  $post WordPress post object.
+ * @param boolean| $force Force update status.
  */
-function likecoin_get_meta_box_publish_params( $post ) {
-	$matters_info = likecoin_refresh_post_matters_status( $post );
+function likecoin_get_meta_box_publish_params( $post, $force = false ) {
+	$matters_info = likecoin_refresh_post_matters_status( $post, $force );
 	if ( isset( $matters_info['error'] ) ) {
 		$publish_params = array(
 			'error' => $matters_info['error'],
@@ -96,7 +97,7 @@ function likecoin_display_meta_box( $post ) {
 	include_once dirname( __FILE__ ) . '/views/metabox.php';
 	$button_params  = likecoin_get_meta_box_button_params( $post );
 	$publish_params = likecoin_get_meta_box_publish_params( $post );
-	likecoin_add_meta_box( $button_params, $publish_params );
+	likecoin_add_meta_box( $post->ID, $button_params, $publish_params );
 }
 
 /**

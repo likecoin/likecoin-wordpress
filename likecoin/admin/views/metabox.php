@@ -63,85 +63,123 @@ function likecoin_add_button_meta_box( $button_params ) {
 }
 
 /**
+ * Parse the publish params into array of status
+ *
+ * @param object| $publish_params Params for displaying publish related settings.
+ */
+function likecoin_parse_publish_status( $publish_params ) {
+	if ( isset( $publish_params['error'] ) ) {
+		return array( 'error' => $publish_params['error'] );
+	}
+	$result = array(
+		'matters' => array(
+			'status' => __( '-', LC_PLUGIN_SLUG ),
+		),
+		'ipfs'    => array(
+			'status' => __( '-', LC_PLUGIN_SLUG ),
+		),
+	);
+	if ( ! isset( $publish_params['draft_id'] ) ) {
+		return $result;
+	}
+	if ( ! empty( $publish_params['published'] ) ) {
+		if ( ! empty( $publish_params['article_hash'] ) ) {
+			$result['matters']['status'] = __( 'Published', LC_PLUGIN_SLUG );
+			$result['matters']['url']    = likecoin_matters_get_article_link(
+				$publish_params['matters_id'],
+				$publish_params['article_hash'],
+				$publish_params['article_slug']
+			);
+		} else {
+			$result['matters']['status'] = __( 'Pending', LC_PLUGIN_SLUG );
+		}
+	} else {
+		$result['matters']['status'] = __( 'Draft', LC_PLUGIN_SLUG );
+		$result['matters']['url']    = likecoin_matters_get_draft_link( $publish_params['draft_id'] );
+	}
+	if ( ! empty( $publish_params['ipfs_hash'] ) ) {
+		$result['ipfs']['status'] = __( 'Published', LC_PLUGIN_SLUG );
+		$result['ipfs']['url']    = 'https://ipfs.io/ipfs/' . $publish_params['ipfs_hash'];
+	} elseif ( ! empty( $publish_params['published'] ) ) {
+		$result['ipfs']['status'] = __( 'Pending', LC_PLUGIN_SLUG );
+	}
+		return $result;
+}
+
+/**
  * Add the publish session of likecoin widget metabox
  *
  * @param object| $publish_params Params for displaying publish related settings.
  */
 function likecoin_add_publish_meta_box( $publish_params ) {
-	if ( isset( $publish_params['error'] ) ) {
+	$status = likecoin_parse_publish_status( $publish_params );
+	if ( isset( $status['error'] ) ) {
 		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
-		echo esc_html( $publish_params['error'] );
+		echo esc_html( $status['error'] );
 		return;
 	}
-	esc_html_e( 'Matters Status: ', LC_PLUGIN_SLUG );
-	if ( ! isset( $publish_params['draft_id'] ) ) {
-		esc_html_e( 'Not inited' );
-		return;
-	}
-	if ( ! empty( $publish_params['published'] ) ) {
-		if ( ! empty( $publish_params['article_hash'] ) ) {
-			?>
-		<a rel="noopener" target="_blank" href="
+	?>
+	<div>
+		<span>
+			<?php esc_html_e( 'Matters Status: ', LC_PLUGIN_SLUG ); ?>
+		</span>
+		<span id="lcMattersStatus">
+		<?php if ( ! empty( $status['matters']['url'] ) ) { ?>
+			<a rel="noopener" target="_blank" href="
 			<?php
-			echo esc_url(
-				likecoin_matters_get_article_link(
-					$publish_params['matters_id'],
-					$publish_params['article_hash'],
-					$publish_params['article_slug']
-				)
-			);
+			echo esc_url( $status['matters']['url'] );
 			?>
-		">
-			<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
-		</a>
+			">
+			<?php echo esc_html( $status['matters']['status'] ); ?>
+			</a>
+		<?php } else { ?>
+			<?php echo esc_html( $status['matters']['status'] ); ?>
+		<?php } ?>
+		</span>
+	</div>
+	<div>
+		<span>
+			<?php esc_html_e( 'IPFS Status: ', LC_PLUGIN_SLUG ); ?>
+		</span>
+		<span id="lcIPFSStatus">
+		<?php if ( ! empty( $status['ipfs']['url'] ) ) { ?>
+			<a rel="noopener" target="_blank" href="
 			<?php
-		} else {
-			esc_html_e( 'Pending', LC_PLUGIN_SLUG );
-		}
-	} else {
-		?>
-		<a rel="noopener" target="_blank" href="
-		<?php echo esc_url( likecoin_matters_get_draft_link( $publish_params['draft_id'] ) ); ?> ">
-		<?php esc_html_e( 'Draft', LC_PLUGIN_SLUG ); ?>
-		</a>
-		<?php
-	}
-	echo '<br />';
-	esc_html_e( 'IPFS Status: ', LC_PLUGIN_SLUG );
-	if ( ! empty( $publish_params['ipfs_hash'] ) ) {
-		// TODO: Fix cid v0 vs v1 format for ipfs gateway.
-		?>
-		<a rel="noopener" target="_blank" href="
-		<?php echo esc_url( 'https://ipfs.io/ipfs/' . $publish_params['ipfs_hash'] ); ?> ">
-		<?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?>
-		</a>
-		<?php
-	} elseif ( ! empty( $publish_params['published'] ) ) {
-		esc_html_e( 'Pending', LC_PLUGIN_SLUG );
-	} else {
-		esc_html_e( '-', LC_PLUGIN_SLUG );
-	}
+			echo esc_url( $status['ipfs']['url'] );
+			?>
+			">
+			<?php echo esc_html( $status['ipfs']['status'] ); ?>
+			</a>
+		<?php } else { ?>
+			<?php echo esc_html( $status['ipfs']['status'] ); ?>
+		<?php } ?>
+		</span>
+	</div>
+	<div><a href="#" id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh status', LC_PLUGIN_SLUG ); ?></a></div>
+	<?php
 }
 
 /**
  * Add the likecoin widget metabox
  *
+ * @param int|    $post_id Current post ID.
  * @param object| $button_params Params for displaying button related settings.
  * @param object| $publish_params Params for displaying publish related settings.
  */
-function likecoin_add_meta_box( $button_params, $publish_params ) {
+function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
 
 	?>
 	<div class="wrapper">
 		<section class="likecoin">
+		<h5><?php esc_html_e( 'LikeCoin button', LC_PLUGIN_SLUG ); ?></h5>
 		<?php
-			likecoin_add_button_meta_box( $button_params );
+		likecoin_add_button_meta_box( $button_params );
 		?>
 		</section>
-		<hr />
 		<section class="likecoin">
+		<h5><?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h5>
 		<?php
-			likecoin_add_publish_meta_box( $publish_params );
+		likecoin_add_publish_meta_box( $publish_params );
 		?>
 		</section>
 	</div>
@@ -149,5 +187,21 @@ function likecoin_add_meta_box( $button_params, $publish_params ) {
 		wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
+		wp_enqueue_script(
+			'lc_js_metabox',
+			LC_URI . 'assets/js/dist/admin/likecoin_metabox.js',
+			array( 'wp-polyfill', 'jquery' ),
+			LC_PLUGIN_VERSION,
+			true
+		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'wpApiSettings',
+			array(
+				'root'   => esc_url_raw( rest_url() ),
+				'nonce'  => wp_create_nonce( 'wp_rest' ),
+				'postId' => $post_id,
+			)
+		);
 }
 ?>

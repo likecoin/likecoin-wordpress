@@ -195,13 +195,13 @@ function likecoin_add_matters_login_table() {
 				<td class="actions">
 					<span class="actionWrapper">
 						<input
-							id="mattersIdLoginBtn"
+							id="lcMattersIdLoginBtn"
 							type="submit"
 							value=<?php esc_attr_e( 'Login', LC_PLUGIN_SLUG ); ?>>
 						</a>
 					</span>
 				</td>
-				<td><span id="mattersErrorMessage"></span></td>
+				<td><span id="lcMattersErrorMessage"></span></td>
 			</tr>
 	</table>
 	</form>
@@ -250,7 +250,7 @@ function likecoin_add_matters_login_status( $info ) {
 		<?php if ( $has_matters_access_token ) { ?>
 		<span class="actionWrapper">
 					<a target="_blank"
-						id="mattersIdLogoutButton"
+						id="lcMattersIdLogoutButton"
 						href="#"
 						type="button">
 						<?php esc_attr_e( 'Logout', LC_PLUGIN_SLUG ); ?>
