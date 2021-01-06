@@ -83,6 +83,7 @@ function likecoin_handle_uninstall() {
 	/* clean up all option */
 	delete_option( LC_BUTTON_OPTION_NAME );
 	delete_option( LC_PUBLISH_OPTION_NAME );
+	delete_option( LC_MONETIZATION_OPTION_NAME );
 	delete_option( 'likecoin_plugin_version' );
 }
 

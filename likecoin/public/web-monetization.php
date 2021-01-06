@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin public index
+ * LikeCoin web monetization
  *
- * Index of the public facing side of LikeCoin plugin
+ * Add header for web monetization standard
  *
  * @package   LikeCoin
  *
@@ -21,16 +21,22 @@
  */
 
 /**
- * Require public files
+ * Require shared functions
  */
-require_once dirname( __FILE__ ) . '/likecoin-button.php';
-require_once dirname( __FILE__ ) . '/web-monetization.php';
+require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
 
 /**
- * Run all public related WordPress hook
+ * Add web monetization header if payment pointer exists
  */
-function likecoin_add_public_hooks() {
-	add_filter( 'the_content', 'likecoin_content_filter' );
-	add_action( 'wp_head', 'likecoin_add_web_monetization_header' );
-	add_shortcode( 'likecoin', 'likecoin_likecoin_shortcode' );
+function likecoin_add_web_monetization_header() {
+	$option          = get_option( LC_MONETIZATION_OPTION_NAME );
+	$payment_pointer = isset( $option[ LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER ] ) ? $option[ LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER ] : '';
+
+	if ( ! empty( $payment_pointer ) ) {
+		?>
+			<meta
+				name="monetization"
+				content="<?php echo esc_attr( $payment_pointer ); ?>">
+		<?php
+	}
 }
