@@ -107,12 +107,31 @@ function likecoin_parse_publish_status( $publish_params ) {
 }
 
 /**
+ * Parse the publish params into array of status
+ *
+ * @param object| $publish_params Params for displaying publish related settings.
+ */
+function likecoin_parse_iscn_status( $iscn_hash ) {
+	$result = array();
+
+	if ( ! empty( $iscn_hash ) ) {
+		$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
+		$result['url']    = 'https://like.co/tx/iscn/dev/' . $iscn_hash;
+	} else {
+		$result['status'] = '-';
+	}
+	return $result;
+}
+
+/**
  * Add the publish session of likecoin widget metabox
  *
  * @param object| $publish_params Params for displaying publish related settings.
  */
 function likecoin_add_publish_meta_box( $publish_params ) {
-	$status = likecoin_parse_publish_status( $publish_params );
+	$iscn_hash   = $publish_params['iscn_hash'];
+	$status      = likecoin_parse_publish_status( $publish_params );
+	$iscn_status = likecoin_parse_iscn_status( $iscn_hash );
 	if ( isset( $status['error'] ) ) {
 		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
 		echo esc_html( $status['error'] );
@@ -156,6 +175,25 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		</span>
 	</div>
 	<div><a href="#" id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh status', LC_PLUGIN_SLUG ); ?></a></div>
+	<div>
+		<span>
+			<?php esc_html_e( 'ISCN (testnet) Status: ', LC_PLUGIN_SLUG ); ?>
+		</span>
+		<span id="lcISCNStatus">
+		<?php if ( ! empty( $iscn_hash ) ) { ?>
+			<a rel="noopener" target="_blank" href="
+			<?php
+			echo esc_url( $iscn_status['url'] );
+			?>
+			">
+			<?php echo esc_html( $iscn_status['status'] ); ?>
+			</a>
+		<?php } else { ?>
+			<?php echo esc_html( $iscn_status['status'] ); ?>
+		<?php } ?>
+		</span>
+		<div id="lcISCNPublish"><a href="#" id="lcISCNPublishBtn"><?php esc_html_e( 'Publish to ISCN', LC_PLUGIN_SLUG ); ?></a></div>
+	</div>
 	<?php
 }
 

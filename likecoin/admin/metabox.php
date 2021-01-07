@@ -72,6 +72,8 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 			'error' => $matters_info['error'],
 		);
 	} else {
+		$post_id        = $post->ID;
+		$iscn_info      = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 		$option         = get_option( LC_PUBLISH_OPTION_NAME );
 		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
 		$publish_params = array(
@@ -82,6 +84,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 			'article_hash' => isset( $matters_info['article_hash'] ) ? $matters_info['article_hash'] : '',
 			'article_slug' => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
 			'ipfs_hash'    => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
+			'iscn_hash'    => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
 		);
 	}
 	return $publish_params;
