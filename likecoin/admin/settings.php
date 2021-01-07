@@ -217,7 +217,7 @@ function likecoin_add_publish_settings() {
  * @param array| $option The form input data for options api.
  */
 function likecoin_monetization_settings_validation( $option ) {
-	// TODO: check for corret handle before enabling monetization.
+	// TODO: check for correct handle before enabling monetization.
 	add_settings_error(
 		'lc_settings_messages',
 		'updated',

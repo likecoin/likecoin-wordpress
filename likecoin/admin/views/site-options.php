@@ -262,7 +262,7 @@ function likecoin_add_site_payment_pointer_settings( $args ) {
 			value="<?php echo esc_attr( $option[ $args['label_for'] ] ); ?>"
 			placeholder="$wallet.example.com/alice"
 		>
-			<a rel="nooopener noreferrer" target="_blank" href="https://webmonetization.org/docs/ilp-wallets/">What is payment pointer?</a>
+			<a rel="noopener noreferrer" target="_blank" href="https://webmonetization.org/docs/ilp-wallets/">What is payment pointer?</a>
 	<?php
 }
 
