@@ -23,9 +23,11 @@
 define( 'LC_BUTTON_SITE_OPTIONS_PAGE', 'lc_button_site_options' );
 define( 'LC_BUTTON_USER_OPTIONS_PAGE', 'lc_button_user_options' );
 define( 'LC_PUBLISH_SITE_OPTIONS_PAGE', 'lc_publish_site_options' );
+define( 'LC_MONETIZATION_SITE_OPTIONS_PAGE', 'lc_monetization_site_options' );
 define( 'LC_SPONSOR_PAGE', 'lc_sponsor_page' );
 define( 'LC_BUTTON_OPTION_NAME', 'lc_plugin_options' );
 define( 'LC_PUBLISH_OPTION_NAME', 'lc_publish_options' );
+define( 'LC_MONETIZATION_OPTION_NAME', 'lc_monetization_options' );
 
 define( 'LC_USER_LIKECOIN_ID', 'lc_likecoin_id' );
 define( 'LC_USER_LIKECOIN_USER', 'lc_likecoin_user' );
@@ -53,6 +55,8 @@ define( 'LC_OPTION_SITE_MATTERS_USER', 'site_matters_user' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_DRAFT', 'site_matters_auto_save_draft' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_PUBLISH', 'site_matters_auto_publish' );
 define( 'LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK', 'site_matters_add_footer_link' );
+
+define( 'LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER', 'site_payment_pointer' );
 
 define( 'LC_MATTERS_ID_FIELD', 'matters_id' );
 define( 'LC_MATTERS_USER_ACCESS_TOKEN_FIELD', 'access_token' );

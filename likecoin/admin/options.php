@@ -76,6 +76,15 @@ function likecoin_display_top_options_page() {
 	add_submenu_page(
 		LC_BUTTON_SITE_OPTIONS_PAGE,
 		__( 'LikeCoin', LC_PLUGIN_SLUG ),
+		__( 'Web Monetization (beta)', LC_PLUGIN_SLUG ),
+		'manage_options',
+		LC_MONETIZATION_SITE_OPTIONS_PAGE,
+		'likecoin_add_web_monetization_options_page'
+	);
+
+	add_submenu_page(
+		LC_BUTTON_SITE_OPTIONS_PAGE,
+		__( 'LikeCoin', LC_PLUGIN_SLUG ),
 		__( 'Sponsor LikeCoin', LC_PLUGIN_SLUG ),
 		'publish_posts',
 		LC_SPONSOR_PAGE,

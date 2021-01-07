@@ -212,11 +212,55 @@ function likecoin_add_publish_settings() {
 }
 
 /**
+ * Web monetization settings validation function
+ *
+ * @param array| $option The form input data for options api.
+ */
+function likecoin_monetization_settings_validation( $option ) {
+	// TODO: check for correct handle before enabling monetization.
+	add_settings_error(
+		'lc_settings_messages',
+		'updated',
+		__( 'Settings Saved', LC_PLUGIN_SLUG ),
+		'updated'
+	);
+	return $option;
+}
+
+/**
+ * Add monetization related settings sections
+ */
+function likecoin_add_monetization_settings() {
+
+	register_setting( LC_MONETIZATION_SITE_OPTIONS_PAGE, LC_MONETIZATION_OPTION_NAME, 'likecoin_monetization_settings_validation' );
+
+	$site_payment_pointer_options_section = 'lc_site_payment_pointer_options';
+
+	add_settings_section(
+		$site_payment_pointer_options_section,
+		__( 'Web Monetization', LC_PLUGIN_SLUG ),
+		null,
+		LC_MONETIZATION_SITE_OPTIONS_PAGE
+	);
+
+	add_settings_field(
+		LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER,
+		__( 'Payment pointer', LC_PLUGIN_SLUG ),
+		'likecoin_add_site_payment_pointer_settings',
+		LC_MONETIZATION_SITE_OPTIONS_PAGE,
+		$site_payment_pointer_options_section,
+		array(
+			'label_for' => LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER,
+		)
+	);
+}
+
+/**
  * Init settings API for plugin
  */
 function likecoin_init_settings() {
 	include_once dirname( __FILE__ ) . '/views/site-options.php';
 	likecoin_add_button_settings();
 	likecoin_add_publish_settings();
-
+	likecoin_add_monetization_settings();
 }
