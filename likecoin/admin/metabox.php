@@ -100,7 +100,7 @@ function likecoin_display_meta_box( $post ) {
 	include_once dirname( __FILE__ ) . '/views/metabox.php';
 	$button_params  = likecoin_get_meta_box_button_params( $post );
 	$publish_params = likecoin_get_meta_box_publish_params( $post );
-	likecoin_add_meta_box( $post->ID, $button_params, $publish_params );
+	likecoin_add_meta_box( $post, $button_params, $publish_params );
 }
 
 /**

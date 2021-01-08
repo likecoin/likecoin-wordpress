@@ -192,7 +192,9 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 			<?php echo esc_html( $iscn_status['status'] ); ?>
 		<?php } ?>
 		</span>
+		<?php if ( empty( $iscn_hash ) ) { ?>
 		<div id="lcISCNPublish"><a href="#" id="lcISCNPublishBtn"><?php esc_html_e( 'Publish to ISCN', LC_PLUGIN_SLUG ); ?></a></div>
+		<?php } ?>
 	</div>
 	<?php
 }
@@ -204,7 +206,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
  * @param object| $button_params Params for displaying button related settings.
  * @param object| $publish_params Params for displaying publish related settings.
  */
-function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
+function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 
 	?>
 	<div class="wrapper">
@@ -222,6 +224,9 @@ function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
 		</section>
 	</div>
 	<?php
+		$post_id = $post->ID;
+		$post_title = $post->post_title;
+		$post_tags = likecoin_get_post_tags_for_matters( $post );
 		wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
@@ -237,8 +242,20 @@ function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
 			'wpApiSettings',
 			array(
 				'root'   => esc_url_raw( rest_url() ),
+				'siteurl' => get_option('siteurl'),
 				'nonce'  => wp_create_nonce( 'wp_rest' ),
 				'postId' => $post_id,
+			)
+		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'lcPostInfo',
+			array(
+				'id' => $post_id,
+				'title' => $post_title,
+				'ipfsHash' => $publish_params['ipfs_hash'],
+				'iscnHash' => $publish_params['iscn_hash'],
+				'tags' => $post_tags,
 			)
 		);
 }
