@@ -11,19 +11,27 @@ async function onRefreshPublishStatus() {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
   });
-  const { matters, ipfs } = res;
+  const { matters, ipfs, hash } = res;
   mattersTextField.textContent = matters.status;
   ipfsTextField.textContent = ipfs.status;
+  lcPostInfo.ipfsHash = hash;
 }
 
 async function onISCNCallback(event) {
   if (event.origin !== 'https://like.co') {
     return;
   }
-  const ISCNTextField = document.querySelector('#lcMattersStatus');
+  const { action, data } = JSON.parse(event.data);
+  if (action !== 'ISCN_SUBMITTED') return;
+  const { tx_hash: txHash, error, success } = data;
+  if (error || success === false) return;
+  const ISCNTextField = document.querySelector('#lcISCNStatus');
   const res = await jQuery.ajax({
     type: 'POST',
     url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/iscn`,
+    dataType: 'json',
+    contentType: 'application/json; charset=UTF-8',
+    data: JSON.stringify({ iscnHash: txHash }),
     method: 'POST',
     beforeSend: (xhr) => {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
@@ -38,8 +46,9 @@ function onSubmitToISCN() {
     title,
     ipfsHash,
     tags,
-    siteurl,
   } = lcPostInfo;
+  const { siteurl } = wpApiSettings;
+  if (!ipfsHash) return;
   const titleString = encodeURIComponent(title);
   const tagString = encodeURIComponent(JSON.stringify(tags.map((t) => encodeURIComponent(t))));
   const redirectString = encodeURIComponent(siteurl);

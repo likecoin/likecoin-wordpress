@@ -100,6 +100,7 @@ function likecoin_parse_publish_status( $publish_params ) {
 	if ( ! empty( $publish_params['ipfs_hash'] ) ) {
 		$result['ipfs']['status'] = __( 'Published', LC_PLUGIN_SLUG );
 		$result['ipfs']['url']    = 'https://ipfs.io/ipfs/' . $publish_params['ipfs_hash'];
+		$result['ipfs']['hash']   = $publish_params['ipfs_hash'];
 	} elseif ( ! empty( $publish_params['published'] ) ) {
 		$result['ipfs']['status'] = __( 'Pending', LC_PLUGIN_SLUG );
 	}
@@ -116,7 +117,8 @@ function likecoin_parse_iscn_status( $iscn_hash ) {
 
 	if ( ! empty( $iscn_hash ) ) {
 		$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
-		$result['url']    = 'https://like.co/tx/iscn/dev/' . $iscn_hash;
+		$result['url']    = 'https://node.iscn-dev.like.co/txs/' . $iscn_hash;
+		$result['hash']   = $iscn_hash;
 	} else {
 		$result['status'] = '-';
 	}
@@ -224,9 +226,9 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 		</section>
 	</div>
 	<?php
-		$post_id = $post->ID;
+		$post_id    = $post->ID;
 		$post_title = $post->post_title;
-		$post_tags = likecoin_get_post_tags_for_matters( $post );
+		$post_tags  = likecoin_get_post_tags_for_matters( $post );
 		wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
@@ -241,21 +243,21 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			'lc_js_metabox',
 			'wpApiSettings',
 			array(
-				'root'   => esc_url_raw( rest_url() ),
-				'siteurl' => get_option('siteurl'),
-				'nonce'  => wp_create_nonce( 'wp_rest' ),
-				'postId' => $post_id,
+				'root'    => esc_url_raw( rest_url() ),
+				'siteurl' => get_site_url(),
+				'nonce'   => wp_create_nonce( 'wp_rest' ),
+				'postId'  => $post_id,
 			)
 		);
 		wp_localize_script(
 			'lc_js_metabox',
 			'lcPostInfo',
 			array(
-				'id' => $post_id,
-				'title' => $post_title,
+				'id'       => $post_id,
+				'title'    => $post_title,
 				'ipfsHash' => $publish_params['ipfs_hash'],
 				'iscnHash' => $publish_params['iscn_hash'],
-				'tags' => $post_tags,
+				'tags'     => $post_tags,
 			)
 		);
 }

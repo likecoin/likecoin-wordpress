@@ -30,7 +30,7 @@ require_once dirname( __FILE__ ) . '/metabox.php';
 require_once dirname( __FILE__ ) . '/views/metabox.php';
 
 /**
- * Add plugin restful routes
+ * Add refresh publish status endpoint
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|WP_REST_Response
@@ -43,6 +43,30 @@ function likecoin_rest_refresh_publish_status( $request ) {
 	}
 	$matters_info = likecoin_get_meta_box_publish_params( $post, true );
 	$data         = likecoin_parse_publish_status( $matters_info );
+	return new WP_REST_Response( $data, 200 );
+}
+
+/**
+ * Add submit iscn hash endpoint
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_Error|WP_REST_Response
+ */
+function likecoin_rest_update_iscn_hash( $request ) {
+	$post_id = $request['id'];
+	$params  = $request->get_json_params();
+	$post    = get_post( $post_id );
+	if ( ! isset( $post ) ) {
+		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
+	}
+	$iscn_hash = $params['iscnHash'];
+	$iscn_info = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	if ( ! is_array( $iscn_info ) ) {
+		$iscn_info = array();
+	}
+	$iscn_info['iscn_hash'] = $iscn_hash;
+	update_post_meta( $post_id, LC_ISCN_DEV_INFO, $iscn_info );
+	$data = likecoin_parse_iscn_status( $iscn_hash );
 	return new WP_REST_Response( $data, 200 );
 }
 
@@ -68,6 +92,22 @@ function likecoin_init_restful_service() {
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_rest_refresh_publish_status',
+					'args'                => array(
+						'id' => array(
+							'validate_callback' => 'likecoin_is_numeric',
+						),
+					),
+					'permission_callback' => function () {
+						return current_user_can( 'edit_posts' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/posts/(?P<id>\d+)/publish/iscn',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_rest_update_iscn_hash',
 					'args'                => array(
 						'id' => array(
 							'validate_callback' => 'likecoin_is_numeric',
