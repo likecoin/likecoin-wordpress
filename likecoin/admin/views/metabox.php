@@ -112,13 +112,15 @@ function likecoin_parse_publish_status( $publish_params ) {
  *
  * @param object| $publish_params Params for displaying publish related settings.
  */
-function likecoin_parse_iscn_status( $iscn_hash ) {
-	$result = array();
-
+function likecoin_parse_iscn_status( $publish_params ) {
+	$result    = array();
+	$iscn_hash = $publish_params['iscn_hash'];
 	if ( ! empty( $iscn_hash ) ) {
 		$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
 		$result['url']    = 'https://node.iscn-dev.like.co/txs/' . $iscn_hash;
 		$result['hash']   = $iscn_hash;
+	} elseif ( empty( $publish_params['ipfs_hash'] ) ) {
+		$result['status'] = __( '- (IPFS is required)', LC_PLUGIN_SLUG );
 	} else {
 		$result['status'] = '-';
 	}
@@ -133,7 +135,7 @@ function likecoin_parse_iscn_status( $iscn_hash ) {
 function likecoin_add_publish_meta_box( $publish_params ) {
 	$iscn_hash   = $publish_params['iscn_hash'];
 	$status      = likecoin_parse_publish_status( $publish_params );
-	$iscn_status = likecoin_parse_iscn_status( $iscn_hash );
+	$iscn_status = likecoin_parse_iscn_status( $publish_params );
 	if ( isset( $status['error'] ) ) {
 		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
 		echo esc_html( $status['error'] );
@@ -176,7 +178,6 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		<?php } ?>
 		</span>
 	</div>
-	<div><a href="#" id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh status', LC_PLUGIN_SLUG ); ?></a></div>
 	<div>
 		<span>
 			<?php esc_html_e( 'ISCN (testnet) Status: ', LC_PLUGIN_SLUG ); ?>
@@ -192,11 +193,12 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 			</a>
 		<?php } else { ?>
 			<?php echo esc_html( $iscn_status['status'] ); ?>
+			<?php if ( ! empty( $status['ipfs']['url'] ) ) { ?>
+				<span id="lcISCNPublish"><button id="lcISCNPublishBtn"><?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?></button></span>
+			<?php } ?>
 		<?php } ?>
 		</span>
-		<?php if ( empty( $iscn_hash ) ) { ?>
-		<div id="lcISCNPublish"><a href="#" id="lcISCNPublishBtn"><?php esc_html_e( 'Publish to ISCN', LC_PLUGIN_SLUG ); ?></a></div>
-		<?php } ?>
+		<div><button id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh', LC_PLUGIN_SLUG ); ?></button></div>
 	</div>
 	<?php
 }
