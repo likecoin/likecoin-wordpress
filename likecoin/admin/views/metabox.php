@@ -193,9 +193,11 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 			</a>
 		<?php } else { ?>
 			<?php echo esc_html( $iscn_status['status'] ); ?>
-			<?php if ( ! empty( $status['ipfs']['url'] ) ) { ?>
-				<span id="lcISCNPublish"><button id="lcISCNPublishBtn"><?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?></button></span>
-			<?php } ?>
+			<span id="lcISCNPublish" style="display:
+			<?php
+			echo esc_attr( empty( $status['ipfs']['url'] ) ? 'none' : '' );
+			?>
+			"><button id="lcISCNPublishBtn"><?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?></button></span>
 		<?php } ?>
 		</span>
 		<div><button id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh', LC_PLUGIN_SLUG ); ?></button></div>

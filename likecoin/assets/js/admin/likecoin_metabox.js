@@ -11,10 +11,24 @@ async function onRefreshPublishStatus() {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
   });
-  const { matters, ipfs, hash } = res;
-  mattersTextField.textContent = matters.status;
-  ipfsTextField.textContent = ipfs.status;
-  lcPostInfo.ipfsHash = hash;
+  const { matters, ipfs } = res;
+  if (matters.url) {
+    const { url, status } = matters;
+    mattersTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
+  } else {
+    mattersTextField.textContent = matters.status;
+  }
+  if (ipfs.url) {
+    const { url, status } = ipfs;
+    ipfsTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
+  } else {
+    ipfsTextField.textContent = ipfs.status;
+  }
+  if (ipfs.hash) {
+    lcPostInfo.ipfsHash = ipfs.hash;
+    const ISCNPublishSession = document.getElementById('lcISCNPublish');
+    if (ISCNPublishSession) ISCNPublishSession.style.display = '';
+  }
 }
 
 async function onISCNCallback(event) {
