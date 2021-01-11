@@ -121,7 +121,7 @@ function likecoin_add_likecoin_info_table( $info, $editable = true, $disconnecta
 								id="likecoinInputLabel"
 								class="likecoin likecoinInputLabel"
 								target="blank"
-								rel="noopenner"
+								rel="noopener"
 								href="https://like.co/in"
 							>
 								<?php esc_html_e( 'Sign Up / Find my Liker ID', LC_PLUGIN_SLUG ); ?>
