@@ -208,7 +208,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 /**
  * Add the likecoin widget metabox
  *
- * @param int|    $post_id Current post ID.
+ * @param int|    $post Current post object.
  * @param object| $button_params Params for displaying button related settings.
  * @param object| $publish_params Params for displaying publish related settings.
  */
