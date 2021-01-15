@@ -66,6 +66,8 @@ function likecoin_get_meta_box_button_params( $post ) {
  * @param boolean| $force Force update status.
  */
 function likecoin_get_meta_box_publish_params( $post, $force = false ) {
+	$option       = get_option( LC_PUBLISH_OPTION_NAME );
+	$is_enabled   = ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ] ) || ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ] );
 	$matters_info = likecoin_refresh_post_matters_status( $post, $force );
 	if ( isset( $matters_info['error'] ) ) {
 		$publish_params = array(
@@ -74,9 +76,9 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 	} else {
 		$post_id        = $post->ID;
 		$iscn_info      = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-		$option         = get_option( LC_PUBLISH_OPTION_NAME );
 		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
 		$publish_params = array(
+			'is_enabled'   => $is_enabled,
 			'matters_id'   => isset( $matters_info['article_author'] ) ? $matters_info['article_author'] : $matters_id,
 			'draft_id'     => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
 			'published'    => isset( $matters_info['published'] ) ? $matters_info['published'] : '',

@@ -117,7 +117,7 @@ function likecoin_parse_iscn_status( $publish_params ) {
 	$iscn_hash = $publish_params['iscn_hash'];
 	if ( ! empty( $iscn_hash ) ) {
 		$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
-		$result['url']    = 'https://node.iscn-dev.like.co/txs/' . $iscn_hash;
+		$result['url']    = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
 		$result['hash']   = $iscn_hash;
 	} elseif ( empty( $publish_params['ipfs_hash'] ) ) {
 		$result['status'] = __( '- (IPFS is required)', LC_PLUGIN_SLUG );
@@ -142,7 +142,17 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		return;
 	}
 	?>
-	<div>
+	<?php
+	if ( ! $publish_params['is_enabled'] ) {
+		?>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
+		<?php esc_html_e( 'Please setup publishing settings first.', LC_PLUGIN_SLUG ); ?>
+		</a>
+		<?php
+		return;
+	}
+	?>
+		<div>
 		<span>
 			<?php esc_html_e( 'Matters Status: ', LC_PLUGIN_SLUG ); ?>
 		</span>
