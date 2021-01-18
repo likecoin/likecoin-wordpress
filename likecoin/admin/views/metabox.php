@@ -100,10 +100,31 @@ function likecoin_parse_publish_status( $publish_params ) {
 	if ( ! empty( $publish_params['ipfs_hash'] ) ) {
 		$result['ipfs']['status'] = __( 'Published', LC_PLUGIN_SLUG );
 		$result['ipfs']['url']    = 'https://ipfs.io/ipfs/' . $publish_params['ipfs_hash'];
+		$result['ipfs']['hash']   = $publish_params['ipfs_hash'];
 	} elseif ( ! empty( $publish_params['published'] ) ) {
 		$result['ipfs']['status'] = __( 'Pending', LC_PLUGIN_SLUG );
 	}
 		return $result;
+}
+
+/**
+ * Parse the publish params into array of status
+ *
+ * @param object| $publish_params Params for displaying publish related settings.
+ */
+function likecoin_parse_iscn_status( $publish_params ) {
+	$result    = array();
+	$iscn_hash = $publish_params['iscn_hash'];
+	if ( ! empty( $iscn_hash ) ) {
+		$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
+		$result['url']    = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
+		$result['hash']   = $iscn_hash;
+	} elseif ( empty( $publish_params['ipfs_hash'] ) ) {
+		$result['status'] = __( '- (IPFS is required)', LC_PLUGIN_SLUG );
+	} else {
+		$result['status'] = '-';
+	}
+	return $result;
 }
 
 /**
@@ -112,14 +133,26 @@ function likecoin_parse_publish_status( $publish_params ) {
  * @param object| $publish_params Params for displaying publish related settings.
  */
 function likecoin_add_publish_meta_box( $publish_params ) {
-	$status = likecoin_parse_publish_status( $publish_params );
+	$iscn_hash   = $publish_params['iscn_hash'];
+	$status      = likecoin_parse_publish_status( $publish_params );
+	$iscn_status = likecoin_parse_iscn_status( $publish_params );
 	if ( isset( $status['error'] ) ) {
 		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
 		echo esc_html( $status['error'] );
 		return;
 	}
 	?>
-	<div>
+	<?php
+	if ( ! $publish_params['is_enabled'] ) {
+		?>
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
+		<?php esc_html_e( 'Please setup publishing settings first.', LC_PLUGIN_SLUG ); ?>
+		</a>
+		<?php
+		return;
+	}
+	?>
+		<div>
 		<span>
 			<?php esc_html_e( 'Matters Status: ', LC_PLUGIN_SLUG ); ?>
 		</span>
@@ -155,18 +188,41 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 		<?php } ?>
 		</span>
 	</div>
-	<div><a href="#" id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh status', LC_PLUGIN_SLUG ); ?></a></div>
+	<div>
+		<span>
+			<?php esc_html_e( 'ISCN (testnet) Status: ', LC_PLUGIN_SLUG ); ?>
+		</span>
+		<span id="lcISCNStatus">
+		<?php if ( ! empty( $iscn_hash ) ) { ?>
+			<a rel="noopener" target="_blank" href="
+			<?php
+			echo esc_url( $iscn_status['url'] );
+			?>
+			">
+			<?php echo esc_html( $iscn_status['status'] ); ?>
+			</a>
+		<?php } else { ?>
+			<?php echo esc_html( $iscn_status['status'] ); ?>
+			<span id="lcISCNPublish" style="display:
+			<?php
+			echo esc_attr( empty( $status['ipfs']['url'] ) ? 'none' : '' );
+			?>
+			"><button id="lcISCNPublishBtn"><?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?></button></span>
+		<?php } ?>
+		</span>
+		<div><button id="lcPublishRefreshBtn"><?php esc_html_e( 'Refresh', LC_PLUGIN_SLUG ); ?></button></div>
+	</div>
 	<?php
 }
 
 /**
  * Add the likecoin widget metabox
  *
- * @param int|    $post_id Current post ID.
+ * @param int|    $post Current post object.
  * @param object| $button_params Params for displaying button related settings.
  * @param object| $publish_params Params for displaying publish related settings.
  */
-function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
+function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 
 	?>
 	<div class="wrapper">
@@ -184,6 +240,9 @@ function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
 		</section>
 	</div>
 	<?php
+		$post_id    = $post->ID;
+		$post_title = $post->post_title;
+		$post_tags  = likecoin_get_post_tags_for_matters( $post );
 		wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
@@ -198,9 +257,21 @@ function likecoin_add_meta_box( $post_id, $button_params, $publish_params ) {
 			'lc_js_metabox',
 			'wpApiSettings',
 			array(
-				'root'   => esc_url_raw( rest_url() ),
-				'nonce'  => wp_create_nonce( 'wp_rest' ),
-				'postId' => $post_id,
+				'root'    => esc_url_raw( rest_url() ),
+				'siteurl' => get_site_url(),
+				'nonce'   => wp_create_nonce( 'wp_rest' ),
+				'postId'  => $post_id,
+			)
+		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'lcPostInfo',
+			array(
+				'id'       => $post_id,
+				'title'    => $post_title,
+				'ipfsHash' => $publish_params['ipfs_hash'],
+				'iscnHash' => $publish_params['iscn_hash'],
+				'tags'     => $post_tags,
 			)
 		);
 }
