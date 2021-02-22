@@ -1,6 +1,7 @@
 /* global jQuery, wpApiSettings, lcPostInfo */
 
-async function onRefreshPublishStatus() {
+async function onRefreshPublishStatus(e) {
+  e.preventDefault();
   const mattersTextField = document.querySelector('#lcMattersStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
   const res = await jQuery.ajax({
@@ -55,7 +56,8 @@ async function onISCNCallback(event) {
   ISCNTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
 }
 
-function onSubmitToISCN() {
+function onSubmitToISCN(e) {
+  e.preventDefault();
   const {
     title,
     ipfsHash,
