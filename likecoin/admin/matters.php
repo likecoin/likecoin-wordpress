@@ -184,7 +184,7 @@ function likecoin_get_post_tags_for_matters( $post ) {
  */
 function likecoin_filter_matters_post_content( $post ) {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
-	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) );
+	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) );
 	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$content = apply_filters( 'the_content', $post->post_content );
 	$content = likecoin_replace_matters_attachment_url( $content, $params );
