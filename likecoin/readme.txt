@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.6
 Requires PHP: 5.4
-Stable tag: 2.0.8
+Stable tag: 2.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -54,6 +54,9 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.1.0 =
+* Add publish to ISCN testnet feature
 
 = 2.0.8 =
 * Fix "Illegal string offset 'matters_id'" error
