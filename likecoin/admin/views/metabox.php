@@ -153,7 +153,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	$iscn_status = likecoin_parse_iscn_status( $publish_params );
 	if ( isset( $status['error'] ) ) {
 		?>
-		<h3><?php echo esc_html__( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
+		<h3><?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
 		<?php
 		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
 		echo esc_html( $status['error'] );
@@ -163,7 +163,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	<?php
 	if ( ! $publish_params['is_enabled'] ) {
 		?>
-		<h3><?php echo esc_html__( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
+		<h3><?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
 		<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
 		<?php esc_html_e( 'Please setup publishing settings first.', LC_PLUGIN_SLUG ); ?>
 		</a>
@@ -173,7 +173,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	?>
 
 	<h3>
-		<?php echo esc_html__( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?>
+		<?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?>
 		<button id="lcPublishRefreshBtn" class="button" style="vertical-align:middle">
 			<span class="dashicons dashicons-image-rotate" style="vertical-align:middle"></span>
 		</button>
@@ -181,7 +181,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	<table class="form-table">
 		<tbody>
 			<tr>
-				<th><label><?php echo esc_html__( 'Matters Status', LC_PLUGIN_SLUG ); ?></label></th>
+				<th><label><?php esc_html_e( 'Matters Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcMattersStatus">
 					<?php if ( ! empty( $status['matters']['url'] ) ) { ?>
 						<a class="lc-components-button is-tertiary" rel="noopener" target="_blank" href="<?php echo esc_url( $status['matters']['url'] ); ?>">
@@ -193,7 +193,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 				</td>
 			</tr>
 			<tr>
-				<th><label><?php echo esc_html__( 'IPFS Status', LC_PLUGIN_SLUG ); ?></label></th>
+				<th><label><?php esc_html_e( 'IPFS Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcIPFSStatus">
 					<?php if ( ! empty( $status['ipfs']['url'] ) ) { ?>
 						<a rel="noopener" target="_blank" href="<?php echo esc_url( $status['ipfs']['url'] ); ?>">
@@ -205,7 +205,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 				</td>
 			</tr>
 			<tr>
-				<th><label><?php echo esc_html__( 'ISCN (Testnet) Status', LC_PLUGIN_SLUG ); ?></label></th>
+				<th><label><?php esc_html_e( 'ISCN (Testnet) Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcISCNStatus">
 					<?php if ( ! empty( $iscn_hash ) ) { ?>
 						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['url'] ); ?>">
@@ -214,7 +214,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 					<?php } else { ?>
 						<span id="lcISCNPublish" style="display:<?php echo esc_attr( empty( $status['ipfs']['url'] ) ? 'none' : '' ); ?>">
 							<button id="lcISCNPublishBtn" class="button button-primary">
-								<?php echo esc_html__( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
+								<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
 							</button>
 						</span>
 					<?php } ?>
