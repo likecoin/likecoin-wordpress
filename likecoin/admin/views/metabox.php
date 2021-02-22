@@ -209,7 +209,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 				<td id="lcISCNStatus">
 					<?php if ( ! empty( $iscn_hash ) ) { ?>
 						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['url'] ); ?>">
-							<?php esc_html( $iscn_status['status'] ); ?>
+							<?php echo esc_html( $iscn_status['status'] ); ?>
 						</a>
 					<?php } else { ?>
 						<span id="lcISCNPublish" style="display:<?php echo esc_attr( empty( $status['ipfs']['url'] ) ? 'none' : '' ); ?>">
