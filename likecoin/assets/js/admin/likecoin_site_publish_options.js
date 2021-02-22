@@ -4,7 +4,7 @@ const mattersAccessTokenFieldId = document.getElementById(WP_CONFIG.mattersAcces
 const mattersIdFieldId = document.getElementById(WP_CONFIG.mattersIdFieldId);
 const settingsForm = document.querySelector("form[action='options.php']");
 const ajaxForm = document.querySelector("form[action='admin-ajax.php']");
-const errorMessage = document.getElementById('mattersErrorMessage');
+const errorMessage = document.getElementById('lcMattersErrorMessage');
 
 async function loginMatters(data) {
   const res = await jQuery.ajax({
