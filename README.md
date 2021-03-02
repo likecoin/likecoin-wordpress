@@ -17,15 +17,54 @@ assume you have Docker Community Edition 18+ installed. Please download at
 installation instruction.
 
 ``` bash
-# Build the docker images, run it for the first time or you have dependency
-# updates
+# Build the docker images, run it for the first time or you have dependency updates
 docker-compose build
+
+# Run the dev env
+docker-compose up
 ```
 
 ## Test
+TODO: we are running these command in host, should switch to docker-based test command
+
+Run PHP sniffer for PHP lint
+``` bash
+# Install composer if not exists
+# brew install composer
+
+# Install dependencies
+composer install
+
+# Install WordPress PHP Coding standard
+cd vendors
+git clone -b master https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git ./wpcs
+./bin/phpcs --config-set installed_paths `pwd`/wpcs
+cd ..
+
+# Run phpcs
+./vendor/bin/phpcs likecoin --standard=WordPress --extensions=php
+
+# or, run phpcbf for autofix
+./vendor/bin/phpcbf likecoin --standard=WordPress --extensions=php
+```
+
+Run Eslint for javascript lint
+``` bash
+# Install nodejs dependencies
+npm install
+
+# run eslint
+npm run test
+```
+
+## Production
+
+Javascript files need to be transpile using rollup
 
 ``` bash
-# TODO: switch to a docker-based test command
-./vendor/bin/phpcs likecoin --standard=WordPress --extensions=php
-npm run test
+# Install nodejs dependencies
+# npm install
+
+# Run babel and rollup
+npm run build
 ```
