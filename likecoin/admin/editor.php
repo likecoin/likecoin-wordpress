@@ -42,13 +42,30 @@ function likecoin_load_editor_scripts() {
 }
 
 /**
+ * Format icon for post column
+ *
+ * @param string| $svg Base64 svg string.
+ * @param string| $title Title of post column.
+ */
+function likecoin_format_post_column_icon( $svg, $title ) {
+	return '<img width=20 heigth=20 src="'
+		. esc_attr( $svg ) . '" title="'
+		. esc_attr( $title ) . '" alt="'
+		. esc_attr( $title ) . '" />';
+}
+
+/**
  * Add custom posts columns
  *
  * @param string[]| $columns An associative array of column headings.
  */
 function likecoin_add_posts_columns( $columns ) {
-	$columns['matters'] = __( 'Matters Publish status', LC_PLUGIN_SLUG );
-	$columns['ipfs']    = __( 'IPFS status', LC_PLUGIN_SLUG );
+	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	$matters_svg = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/matters.svg' ) );
+	$ipfs_svg    = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ipfs.svg' ) );
+	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	$columns['matters'] = likecoin_format_post_column_icon( $matters_svg, __( 'Matters Publish status', LC_PLUGIN_SLUG ) );
+	$columns['ipfs']    = likecoin_format_post_column_icon( $ipfs_svg, __( 'IPFS status', LC_PLUGIN_SLUG ) );
 	return $columns;
 }
 
