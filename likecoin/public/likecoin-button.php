@@ -32,8 +32,9 @@ require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
  */
 function likecoin_add_likebutton( $likecoin_id = '' ) {
 	global $post;
-	$option = get_option( LC_BUTTON_OPTION_NAME );
-
+	$option                 = get_option( LC_BUTTON_OPTION_NAME );
+	$likecoin_button_widget = '';
+	$post_type_query        = '';
 	if ( strlen( $likecoin_id ) <= 0 ) {
 		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
 			$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
@@ -43,30 +44,15 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 	}
 
 	if ( strlen( $likecoin_id ) > 0 ) {
-		$referrer     = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
-		$sandbox_attr = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
-		$widget_code  = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
+		$referrer               = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
+		$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
+		$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
 		'style="height: 212px; width: 100%;" ' .
 		'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
 		'?type=wp' . $referrer . '"></iframe></figure>';
-		return $widget_code;
+		$likecoin_button_widget = $widget_code;
 	}
-	return '';
-}
 
-/**
- * Add LikeButton to post content if suitable
- *
- * @param string| $content The original post content.
- */
-function likecoin_content_filter( $content ) {
-	global $post;
-	$option          = get_option( LC_BUTTON_OPTION_NAME );
-	$post_type_query = '';
-
-	if ( ! isset( $post ) ) {
-		return $content;
-	}
 	do {
 		// follow post meta if option is not set yet.
 		if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
@@ -75,7 +61,7 @@ function likecoin_content_filter( $content ) {
 			if ( strlen( $widget_position ) > 0 ) {
 				if ( 'none' === $widget_position ) {
 					// set to none, exit early.
-					return $content;
+					$likecoin_button_widget = '';
 				}
 				// else if set post_meta, cont to render.
 				break;
@@ -86,8 +72,8 @@ function likecoin_content_filter( $content ) {
 			$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
 			switch ( $type ) {
 				case 'none':
-					// set to none, exit early.
-					return $content;
+					// no change on content.
+					break;
 				case 'post':
 					$post_type_query = 'post';
 					break;
@@ -99,18 +85,15 @@ function likecoin_content_filter( $content ) {
 		// default show LikeButton if id exist.
 	} while ( false );
 
-	if ( is_singular( $post_type_query ) && in_the_loop() && is_main_query() ) {
-		if ( ! empty( $post->post_password ) ) {
-			return $content;
-		}
-		return $content . likecoin_add_likebutton();
+	if ( ! is_singular( $post_type_query ) ) {
+		$likecoin_button_widget = '';
 	}
-	return $content;
+
+	return $likecoin_button_widget;
 }
 
-
 /**
- * Handle [likecoin] shortcode
+ * Handle [likecoin] sholikecoin_add_likebuttontcode
  *
  * @param array|  $atts [$tag] attributes.
  * @param string| $content Post content.

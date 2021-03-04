@@ -25,6 +25,29 @@
  */
 require_once dirname( __FILE__ ) . '/likecoin-button.php';
 require_once dirname( __FILE__ ) . '/web-monetization.php';
+require_once dirname( __FILE__ ) . '/iscn-badge.php';
+
+/**
+ * Add Likecoin Content Filter
+ *
+ * @param string| $content The original post content.
+ */
+function likecoin_content_filter( $content ) {
+	global $post;
+
+	if ( ! isset( $post ) ) {
+		return $content;
+	}
+
+	if ( is_singular() && in_the_loop() && is_main_query() ) {
+		if ( ! empty( $post->post_password ) ) {
+			return $content;
+		}
+		$content = $content . likecoin_add_likebutton() . likecoin_add_iscn_badge( $post );
+		return $content;
+	}
+	return $content;
+}
 
 /**
  * Run all public related WordPress hook
