@@ -259,6 +259,7 @@ function likecoin_add_monetization_settings() {
  * Init settings API for plugin
  */
 function likecoin_init_settings() {
+	include_once dirname( __FILE__ ) . '/views/components.php';
 	include_once dirname( __FILE__ ) . '/views/site-options.php';
 	likecoin_add_button_settings();
 	likecoin_add_publish_settings();

@@ -25,6 +25,71 @@
 require_once dirname( __FILE__ ) . '/matters.php';
 
 /**
+ * Parse the publish params into array of status
+ *
+ * @param object| $publish_params Params for displaying publish related settings.
+ */
+function likecoin_parse_publish_status( $publish_params ) {
+	if ( isset( $publish_params['error'] ) ) {
+		return array( 'error' => $publish_params['error'] );
+	}
+	$result = array(
+		'matters' => array(
+			'status' => __( '-', LC_PLUGIN_SLUG ),
+		),
+		'ipfs'    => array(
+			'status' => __( '-', LC_PLUGIN_SLUG ),
+		),
+	);
+	if ( ! isset( $publish_params['draft_id'] ) ) {
+		return $result;
+	}
+	if ( ! empty( $publish_params['published'] ) ) {
+		if ( ! empty( $publish_params['article_hash'] ) ) {
+			$result['matters']['status'] = __( 'Published', LC_PLUGIN_SLUG );
+			$result['matters']['url']    = likecoin_matters_get_article_link(
+				$publish_params['matters_id'],
+				$publish_params['article_hash'],
+				$publish_params['article_slug']
+			);
+		} else {
+			$result['matters']['status'] = __( 'Pending', LC_PLUGIN_SLUG );
+		}
+	} else {
+		$result['matters']['status'] = __( 'Draft', LC_PLUGIN_SLUG );
+		$result['matters']['url']    = likecoin_matters_get_draft_link( $publish_params['draft_id'] );
+	}
+	if ( ! empty( $publish_params['ipfs_hash'] ) ) {
+		$result['ipfs']['status'] = __( 'Published', LC_PLUGIN_SLUG );
+		$result['ipfs']['url']    = 'https://ipfs.io/ipfs/' . $publish_params['ipfs_hash'];
+		$result['ipfs']['hash']   = $publish_params['ipfs_hash'];
+	} elseif ( ! empty( $publish_params['published'] ) ) {
+		$result['ipfs']['status'] = __( 'Pending', LC_PLUGIN_SLUG );
+	}
+		return $result;
+}
+
+/**
+ * Parse the publish params into array of status
+ *
+ * @param object| $publish_params Params for displaying publish related settings.
+ */
+function likecoin_parse_iscn_status( $publish_params ) {
+	$result    = array();
+	$iscn_hash = $publish_params['iscn_hash'];
+	if ( ! empty( $iscn_hash ) ) {
+		$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
+		$result['url']    = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
+		$result['hash']   = $iscn_hash;
+	} elseif ( empty( $publish_params['ipfs_hash'] ) ) {
+		$result['status'] = __( '(IPFS is required)', LC_PLUGIN_SLUG );
+	} else {
+		$result['status'] = '-';
+	}
+	return $result;
+}
+
+/**
  * Get button related params for metabox
  *
  * @param object| $post WordPress post object.

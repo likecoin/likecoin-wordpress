@@ -22,7 +22,7 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
-require_once dirname( __FILE__ ) . '/views/metabox.php';
+require_once dirname( __FILE__ ) . '/metabox.php';
 
 /**
  * Load custom frontend js for Gutenberg editor

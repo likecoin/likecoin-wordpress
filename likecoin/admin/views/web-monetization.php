@@ -23,6 +23,51 @@
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 /**
+ * Add the monetization payment pointer page
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
+function likecoin_add_site_payment_pointer_settings( $args ) {
+	$option = get_option( LC_MONETIZATION_OPTION_NAME );
+	?>
+		<input type="text"
+			name="<?php echo esc_attr( LC_MONETIZATION_OPTION_NAME . '[' . $args['label_for'] . ']' ); ?>"
+			value="<?php echo esc_attr( $option[ $args['label_for'] ] ); ?>"
+			placeholder="$wallet.example.com/alice"
+		>
+			<a rel="noopener noreferrer" target="_blank" href="https://webmonetization.org/docs/ilp-wallets/">What is payment pointer?</a>
+	<?php
+}
+
+/**
+ * Add web monetization option menu
+ */
+function likecoin_add_web_monetization_options_page() {
+	if ( ! current_user_can( 'manage_options' ) ) {
+		return;
+	}
+	settings_errors( 'lc_settings_messages' );
+	?>
+	<div class="wrap likecoin">
+	<h1><?php echo esc_html( get_admin_page_title() ); ?></h1>
+	<?php likecoin_add_web_monetization_introduction(); ?>
+	<form action="options.php" method="post">
+	<?php
+		settings_fields( LC_MONETIZATION_SITE_OPTIONS_PAGE );
+		do_settings_sections( LC_MONETIZATION_SITE_OPTIONS_PAGE );
+	?>
+		<p class="submit">
+			<input type="submit" name="submit" id="submit" class="likecoinButton"
+				value="<?php esc_attr_e( 'Confirm', LC_PLUGIN_SLUG ); ?>">
+		</p>
+	</form>
+	</div>
+	<?php
+	wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
+	wp_enqueue_style( 'lc_css_common' );
+}
+
+/**
  * Generate web monetization introduction
  */
 function likecoin_add_web_monetization_introduction() {
