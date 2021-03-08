@@ -142,6 +142,7 @@ function likecoin_add_publish_settings() {
 
 	$site_matters_id_options_section      = 'lc_site_matters_id_options';
 	$site_matters_publish_options_section = 'lc_site_matters_publish_options';
+	$site_iscn_badge_section              = 'lc_iscn_badge_options';
 
 	add_settings_section(
 		$site_matters_id_options_section,
@@ -153,6 +154,13 @@ function likecoin_add_publish_settings() {
 	add_settings_section(
 		$site_matters_publish_options_section,
 		__( 'Publish to Matters', LC_PLUGIN_SLUG ),
+		null,
+		LC_PUBLISH_SITE_OPTIONS_PAGE
+	);
+
+	add_settings_section(
+		$site_iscn_badge_section,
+		__( 'Publish to ISCN', LC_PLUGIN_SLUG ),
 		null,
 		LC_PUBLISH_SITE_OPTIONS_PAGE
 	);
@@ -207,6 +215,20 @@ function likecoin_add_publish_settings() {
 			'option_name' => LC_PUBLISH_OPTION_NAME,
 			'label_for'   => LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK,
 			'text'        => $footer_link_text,
+		)
+	);
+
+	$iscn_badge_text = __( 'Show ISCN badge in post', LC_PLUGIN_SLUG );
+	add_settings_field(
+		LC_OPTION_SITE_ADD_ISCN_BADGE,
+		$iscn_badge_text,
+		'likecoin_add_generic_checkbox',
+		LC_PUBLISH_SITE_OPTIONS_PAGE,
+		$site_iscn_badge_section,
+		array(
+			'option_name' => LC_PUBLISH_OPTION_NAME,
+			'label_for'   => LC_OPTION_SITE_ADD_ISCN_BADGE,
+			'text'        => $iscn_badge_text,
 		)
 	);
 }

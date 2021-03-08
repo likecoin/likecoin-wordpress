@@ -35,6 +35,8 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 	$option                 = get_option( LC_BUTTON_OPTION_NAME );
 	$likecoin_button_widget = '';
 	$post_type_query        = '';
+	$type                   = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
+
 	if ( strlen( $likecoin_id ) <= 0 ) {
 		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
 			$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
@@ -43,57 +45,48 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		}
 	}
 
-	if ( strlen( $likecoin_id ) > 0 ) {
-		$referrer               = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
-		$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
-		$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
-		'style="height: 212px; width: 100%;" ' .
-		'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
-		'?type=wp' . $referrer . '"></iframe></figure>';
-		$likecoin_button_widget = $widget_code;
-	}
-
 	do {
 		// follow post meta if option is not set yet.
 		if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
 			$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
 			$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-			if ( strlen( $widget_position ) > 0 ) {
-				if ( 'none' === $widget_position ) {
-					// set to none, exit early.
-					$likecoin_button_widget = '';
+			if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
+				$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
+				switch ( $type ) {
+					case 'none':
+						$post_type_query = 'none';
+						break;
+					case 'post':
+						$post_type_query = 'post';
+						break;
+					case 'always':
+						// no op. is_singular() return true when $post_type_query = ''.
+						break;
 				}
-				// else if set post_meta, cont to render.
-				break;
 			}
+
+			if ( strlen( $widget_position ) > 0 && 'none' !== $post_type_query && strlen( $likecoin_id ) > 0 && is_singular( $post_type_query ) && 'none' !== $widget_position ) {
+				$referrer               = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
+				$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
+				$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
+				'style="height: 212px; width: 100%;" ' .
+				'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
+				'?type=wp' . $referrer . '"></iframe></figure>';
+				$likecoin_button_widget = $widget_code;
+			}
+			// else if set post_meta, cont to render.
+			break;
+
 			// otherwise judge by switch case below.
-		}
-		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
-			$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
-			switch ( $type ) {
-				case 'none':
-					// no change on content.
-					break;
-				case 'post':
-					$post_type_query = 'post';
-					break;
-				case 'always':
-					// no op.
-					break;
-			}
 		}
 		// default show LikeButton if id exist.
 	} while ( false );
-
-	if ( ! is_singular( $post_type_query ) ) {
-		$likecoin_button_widget = '';
-	}
 
 	return $likecoin_button_widget;
 }
 
 /**
- * Handle [likecoin] sholikecoin_add_likebuttontcode
+ * Handle [likecoin] shortcode
  *
  * @param array|  $atts [$tag] attributes.
  * @param string| $content Post content.
