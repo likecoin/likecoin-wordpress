@@ -65,7 +65,8 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 				}
 			}
 
-			if ( strlen( $widget_position ) > 0 && 'none' !== $post_type_query && strlen( $likecoin_id ) > 0 && is_singular( $post_type_query ) && 'none' !== $widget_position ) {
+			$widget_is_enabled = strlen( $widget_position ) > 0 && 'none' !== $widget_position;
+			if ( strlen( $likecoin_id ) > 0 && $widget_is_enabled && 'none' !== $post_type_query && is_singular( $post_type_query ) ) {
 				$referrer               = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
 				$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
 				$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
