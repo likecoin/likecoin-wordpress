@@ -72,7 +72,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 				$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
 				'style="height: 212px; width: 100%;" ' .
 				'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
-				'?type=wp' . $referrer . '"></iframe></figure>';
+				'?type=wp&integration=wordpress_plugin' . $referrer . '"></iframe></figure>';
 				$likecoin_button_widget = $widget_code;
 			}
 			// else if set post_meta, cont to render.
