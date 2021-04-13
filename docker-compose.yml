@@ -12,6 +12,7 @@ services:
     volumes:
       - wp_data:/var/www/html
       - ./likecoin:/var/www/html/wp-content/plugins/likecoin
+      - ./wp-config.php:/var/www/html/wp-config.php
 
   mysql:
     image: mysql:5
