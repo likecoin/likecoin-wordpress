@@ -57,7 +57,7 @@ define( 'LC_OPTION_SITE_MATTERS_AUTO_DRAFT', 'site_matters_auto_save_draft' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_PUBLISH', 'site_matters_auto_publish' );
 define( 'LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK', 'site_matters_add_footer_link' );
 
-define( 'LC_OPTION_SITE_ADD_ISCN_BADGE', 'site_add_iscn_badge' );
+define( 'LC_OPTION_SITE_ISCN_BADGE_DROPDOWN_STYLE', 'iscn_drop_down_style' );
 
 define( 'LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER', 'site_payment_pointer' );
 

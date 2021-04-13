@@ -194,3 +194,32 @@ function likecoin_add_generic_checkbox( $args ) {
 	</label>
 	<?php
 }
+
+
+/**
+ * Add iscn badge style dropdown menu
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
+function likecoin_add_iscn_badge_dropdown( $args ) {
+	$option = get_option( $args['option_name'] );
+	?>
+	<select id="<?php echo esc_attr( $args['label_for'] ); ?>"
+		name="<?php echo esc_attr( $args['option_name'] . '[' . $args['label_for'] . ']' ); ?>"
+	>
+	<option value="light"
+		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'light', false ) ) : ( '' ); ?>>
+		<?php esc_html_e( 'Light Mode', LC_PLUGIN_SLUG ); ?>
+	</option>
+	<option value="dark"
+		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'dark', false ) ) : ( '' ); ?>>
+		<?php esc_html_e( 'Dark Mode', LC_PLUGIN_SLUG ); ?>
+	</option>
+	<option value="hidden"
+		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'hidden', false ) ) : ( '' ); ?>>
+		<?php esc_html_e( 'Hidden', LC_PLUGIN_SLUG ); ?>
+	</option>
+
+	</select>
+	<?php
+}
