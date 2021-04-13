@@ -36,7 +36,7 @@ function likecoin_add_iscn_badge( $post ) {
 	$iscn_hash = isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : null;
 	$option    = get_option( LC_PUBLISH_OPTION_NAME );
 
-	$is_dark_badge   = 0; // default is showing white badge
+	$is_dark_badge   = 0; // default is showing white badge.
 	$show_iscn_badge = 'yes';
 
 	if ( isset( $option[ LC_OPTION_SITE_ISCN_BADGE_DROPDOWN_STYLE ] ) ) {
