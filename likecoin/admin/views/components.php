@@ -196,7 +196,11 @@ function likecoin_add_generic_checkbox( $args ) {
 }
 
 
-
+/**
+ * Add iscn badge style dropdown menu
+ *
+ * @param array| $args settings field extra argument, e.g. label_for and class.
+ */
 function likecoin_add_iscn_badge_dropdown( $args ) {
 	$option = get_option( $args['option_name'] );
 	?>
