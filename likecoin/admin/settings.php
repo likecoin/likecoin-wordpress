@@ -220,16 +220,15 @@ function likecoin_add_publish_settings() {
 
 	$iscn_badge_text = __( 'Show ISCN badge in post', LC_PLUGIN_SLUG );
 	add_settings_field(
-		LC_OPTION_SITE_ADD_ISCN_BADGE,
+		LC_OPTION_SITE_ISCN_BADGE_DROPDOWN_STYLE,
 		$iscn_badge_text,
-		'likecoin_add_generic_checkbox',
+		'likecoin_add_iscn_badge_dropdown',
 		LC_PUBLISH_SITE_OPTIONS_PAGE,
 		$site_iscn_badge_section,
 		array(
 			'option_name' => LC_PUBLISH_OPTION_NAME,
-			'label_for'   => LC_OPTION_SITE_ADD_ISCN_BADGE,
-			'text'        => $iscn_badge_text,
-		)
+			'label_for' => LC_OPTION_SITE_ISCN_BADGE_DROPDOWN_STYLE,
+		)	
 	);
 }
 
