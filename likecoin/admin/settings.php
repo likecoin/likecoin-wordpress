@@ -227,8 +227,8 @@ function likecoin_add_publish_settings() {
 		$site_iscn_badge_section,
 		array(
 			'option_name' => LC_PUBLISH_OPTION_NAME,
-			'label_for' => LC_OPTION_SITE_ISCN_BADGE_DROPDOWN_STYLE,
-		)	
+			'label_for'   => LC_OPTION_SITE_ISCN_BADGE_DROPDOWN_STYLE,
+		)
 	);
 }
 
