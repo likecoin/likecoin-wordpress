@@ -58,7 +58,7 @@ function likecoin_add_iscn_badge( $post ) {
 		$widget_code = '<figure class="likecoin-iscn-badge">' .
 		'<a href="https://like.co/in/tx/iscn/dev/' . $iscn_hash . '" target="_blank" rel="noopener">' .
 		'<img ' .
-		'src="https://static.like.co/badge/iscn/dev/' . $iscn_hash . '?dark=' . $is_dark_badge . '"' .
+		'src="https://static.like.co/badge/iscn/dev/' . $iscn_hash . '.svg?dark=' . $is_dark_badge . '"' .
 		'width="164" height="36' .
 		'</img></a>' .
 		'</figure>';
