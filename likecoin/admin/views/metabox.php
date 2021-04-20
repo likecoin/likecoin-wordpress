@@ -199,6 +199,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'postId'  => $post_id,
 			)
 		);
+		$encode_post_tags = json_encode($post_tags);
 		wp_localize_script(
 			'lc_js_metabox',
 			'lcPostInfo',
@@ -207,7 +208,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'title'    => $post_title,
 				'ipfsHash' => $publish_params['ipfs_hash'],
 				'iscnHash' => $publish_params['iscn_hash'],
-				'tags'     => $post_tags,
+				'tags'     => $encode_post_tags,
 			)
 		);
 }
