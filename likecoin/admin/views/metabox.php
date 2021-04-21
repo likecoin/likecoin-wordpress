@@ -199,7 +199,6 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'postId'  => $post_id,
 			)
 		);
-
 		wp_localize_script(
 			'lc_js_metabox',
 			'lcPostInfo',
