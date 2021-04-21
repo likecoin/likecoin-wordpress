@@ -31,17 +31,35 @@ require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
  * @param WP_Post| $post Post object.
  */
 function likecoin_add_iscn_badge( $post ) {
-	$post_id               = $post->ID;
-	$iscn_info             = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	$iscn_hash             = isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : null;
-	$option                = get_option( LC_PUBLISH_OPTION_NAME );
-	$should_add_iscn_badge = checked( $option[ LC_OPTION_SITE_ADD_ISCN_BADGE ], 1, false );
+	$post_id   = $post->ID;
+	$iscn_info = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	$iscn_hash = isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : null;
+	$option    = get_option( LC_PUBLISH_OPTION_NAME );
 
-	if ( strlen( $iscn_hash ) > 0 && $should_add_iscn_badge ) {
+	$is_dark_badge   = 0; // default is showing light badge.
+	$show_iscn_badge = false;
+
+	if ( isset( $option[ LC_OPTION_ISCN_BADGE_STYLE_OPTION ] ) ) {
+		$iscn_badge_style_option = $option[ LC_OPTION_ISCN_BADGE_STYLE_OPTION ];
+		switch ( $iscn_badge_style_option ) {
+			case 'dark':
+				$show_iscn_badge = true;
+				$is_dark_badge   = 1;
+				break;
+			case 'light':
+				$show_iscn_badge = true;
+				break;
+			case 'none':
+				break;
+		}
+	}
+
+	if ( strlen( $iscn_hash ) > 0 && $show_iscn_badge ) {
 		$widget_code = '<figure class="likecoin-iscn-badge">' .
 		'<a href="https://like.co/in/tx/iscn/dev/' . $iscn_hash . '" target="_blank" rel="noopener">' .
 		'<img ' .
-		'src="https://static.like.co/badge/iscn/dev/' . $iscn_hash . '">' .
+		'src="https://static.like.co/badge/iscn/dev/' . $iscn_hash . '.svg?dark=' . $is_dark_badge . '"' .
+		'width="164" height="36' .
 		'</img></a>' .
 		'</figure>';
 		return $widget_code;
