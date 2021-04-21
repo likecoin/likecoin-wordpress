@@ -166,11 +166,11 @@ function likecoin_handle_matters_api_error( $error ) {
  * @param WP_Post| $post Post object.
  */
 function likecoin_get_post_tags_for_matters( $post ) {
-	$post_id              = $post->ID;
-	$func                 = function( $terms ) {
+	$post_id   = $post->ID;
+	$func      = function( $terms ) {
 		return htmlspecialchars_decode( $terms->name );
 	};
-	$post_tags            = get_the_tags( $post_id );
+	$post_tags = get_the_tags( $post_id );
 
 	if ( ! $post_tags ) {
 		$post_tags = array();
