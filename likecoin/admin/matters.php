@@ -168,9 +168,10 @@ function likecoin_handle_matters_api_error( $error ) {
 function likecoin_get_post_tags_for_matters( $post ) {
 	$post_id   = $post->ID;
 	$func      = function( $terms ) {
-		return $terms->name;
+		return htmlspecialchars_decode( $terms->name );
 	};
 	$post_tags = get_the_tags( $post_id );
+
 	if ( ! $post_tags ) {
 		$post_tags = array();
 	}

@@ -67,10 +67,9 @@ function onSubmitToISCN(e) {
   if (!ipfsHash) return;
   const titleString = encodeURIComponent(title);
   const tagsArray = tags || [];
-  const tagString = encodeURIComponent(JSON.stringify(tagsArray
-    .map((t) => encodeURIComponent(t))));
+  const tagsString = tagsArray.join(',');
   const redirectString = encodeURIComponent(siteurl);
-  const likeCoISCNWidget = `https://like.co/in/widget/iscn/dev?fingerprint=${ipfsHash}&publisher=matters&title=${titleString}&tags=${tagString}&opener=1&redirect_uri=${redirectString}`;
+  const likeCoISCNWidget = `https://like.co/in/widget/iscn/dev?fingerprint=${ipfsHash}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&redirect_uri=${redirectString}`;
   window.open(likeCoISCNWidget, '_blank', 'menubar=no,location=no,width=576,height=768');
   window.addEventListener('message', onISCNCallback, false);
 }
