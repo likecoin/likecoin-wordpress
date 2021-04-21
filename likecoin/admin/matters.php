@@ -169,8 +169,7 @@ function likecoin_get_post_tags_for_matters( $post ) {
 	$post_id              = $post->ID;
 	$raw_encode_post_tags = array();
 	$func                 = function( $terms ) {
-		$decoded_terms = str_replace( '"', '"', htmlspecialchars_decode( $terms->name ) ); // though seems redundant, this line needs to be kept so " won't becomes &quot;
-		return $decoded_terms;
+		return htmlspecialchars_decode( $terms->name );
 	};
 	$post_tags            = get_the_tags( $post_id );
 
