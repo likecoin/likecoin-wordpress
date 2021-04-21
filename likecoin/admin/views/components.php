@@ -216,7 +216,7 @@ function likecoin_add_iscn_badge_dropdown( $args ) {
 		<?php esc_html_e( 'Dark Mode', LC_PLUGIN_SLUG ); ?>
 	</option>
 	<option value="none"
-		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'none', false ) ) : ( '' ); ?>>
+		<?php echo isset( $option[ $args['label_for'] ] ) ? ( selected( $option[ $args['label_for'] ], 'none', false ) ) : ( 'selected' ); ?>>
 		<?php esc_html_e( 'None', LC_PLUGIN_SLUG ); ?>
 	</option>
 
