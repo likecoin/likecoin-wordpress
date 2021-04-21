@@ -66,23 +66,8 @@ function onSubmitToISCN(e) {
   const { siteurl } = wpApiSettings;
   if (!ipfsHash) return;
   const titleString = encodeURIComponent(title);
-  let tagsInput = tags || []; // tags is now string.
-  tagsInput = tagsInput.substring(1,tagsInput.length-1); // omit []
-  let tagsArray = tagsInput.split(','); // string to array.
-  tagsArray = tagsArray.map((tag)=>tag.substring(1,tag.length-1)); // omit "".
-  const tagEncoded = tagsArray.map((tag)=>encodeURIComponent(tag)); // encode each array item.
-  const tagsCombined = tagEncoded.join(); // to string again.
-  const tagsString = encodeURIComponent(tagsCombined).replace(/\-/g, '%2D')
-  .replace(/\_/g, '%5F')
-  .replace(/\./g, '%2E')
-  .replace(/\!/g, '%21')
-  .replace(/\"/g, '%22')
-  .replace(/\~/g, '%7E')
-  .replace(/\*/g, '%2A')
-  .replace(/\'/g, '%27')
-  .replace(/\(/g, '%28')
-  .replace(/\)/g, '%29');
-
+  const tagsArray = tags || [];
+  const tagsString = tagsArray.join(',');
   const redirectString = encodeURIComponent(siteurl);
   const likeCoISCNWidget = `https://like.co/in/widget/iscn/dev?fingerprint=${ipfsHash}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&redirect_uri=${redirectString}`;
   window.open(likeCoISCNWidget, '_blank', 'menubar=no,location=no,width=576,height=768');

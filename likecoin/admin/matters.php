@@ -166,11 +166,14 @@ function likecoin_handle_matters_api_error( $error ) {
  * @param WP_Post| $post Post object.
  */
 function likecoin_get_post_tags_for_matters( $post ) {
-	$post_id   = $post->ID;
-	$func      = function( $terms ) {
-		return $terms->name;
+	$post_id              = $post->ID;
+	$raw_encode_post_tags = array();
+	$func                 = function( $terms ) {
+		$decoded_terms = str_replace( '"', '"', htmlspecialchars_decode( $terms->name ) ); // though seems redundant, this line needs to be kept so " won't becomes &quot;
+		return $decoded_terms;
 	};
-	$post_tags = get_the_tags( $post_id );
+	$post_tags            = get_the_tags( $post_id );
+
 	if ( ! $post_tags ) {
 		$post_tags = array();
 	}
