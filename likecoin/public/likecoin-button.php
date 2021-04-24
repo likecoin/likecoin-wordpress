@@ -32,10 +32,12 @@ require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
  */
 function likecoin_add_likebutton( $likecoin_id = '' ) {
 	global $post;
-	$option                 = get_option( LC_BUTTON_OPTION_NAME );
-	$likecoin_button_widget = '';
-	$post_type_query        = '';
-	$type                   = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
+	$option = get_option( LC_BUTTON_OPTION_NAME );
+	$type   = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
+
+	if ( ! isset( $post ) ) {
+		return '';
+	}
 
 	if ( strlen( $likecoin_id ) <= 0 ) {
 		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
@@ -44,44 +46,45 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 			$likecoin_id = likecoin_get_author_likecoin_id( $post );
 		}
 	}
+	if ( empty( $likecoin_id ) ) {
+		return '';
+	}
 
-	do {
-		// follow post meta if option is not set yet.
-		if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
-			$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
-			$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-			if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
-				$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
-				switch ( $type ) {
-					case 'none':
-						$post_type_query = 'none';
-						break;
-					case 'post':
-						$post_type_query = 'post';
-						break;
-					case 'always':
-						// no op. is_singular() return true when $post_type_query = ''.
-						break;
-				}
+	$post_type_query = '';
+
+	// follow post meta if option is not set yet.
+	if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
+		$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
+		$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
+	} else {
+		$widget_option = get_option( LC_BUTTON_OPTION_NAME );
+		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
+			$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
+			switch ( $type ) {
+				case 'post':
+					$post_type_query = 'post';
+					// fall through to set position.
+				case 'always':
+					// empty query means any type.
+					$widget_position = 'bottom';
+					break;
+				case 'none':
+					break;
 			}
-
-			$widget_is_enabled = strlen( $widget_position ) > 0 && 'none' !== $widget_position;
-			if ( strlen( $likecoin_id ) > 0 && $widget_is_enabled && 'none' !== $post_type_query && is_singular( $post_type_query ) ) {
-				$referrer               = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
-				$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
-				$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
-				'style="height: 212px; width: 100%;" ' .
-				'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
-				'?type=wp&integration=wordpress_plugin' . $referrer . '"></iframe></figure>';
-				$likecoin_button_widget = $widget_code;
-			}
-			// else if set post_meta, cont to render.
-			break;
-
-			// otherwise judge by switch case below.
 		}
-		// default show LikeButton if id exist.
-	} while ( false );
+	}
+
+	$likecoin_button_widget = '';
+	$widget_is_enabled      = ! empty( $widget_position ) && 'none' !== $widget_position;
+	if ( $widget_is_enabled && is_singular( $post_type_query ) ) {
+		$referrer               = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
+		$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
+		$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
+		'style="height: 212px; width: 100%;" ' .
+		'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
+		'?type=wp&integration=wordpress_plugin' . $referrer . '"></iframe></figure>';
+		$likecoin_button_widget = $widget_code;
+	}
 
 	return $likecoin_button_widget;
 }
