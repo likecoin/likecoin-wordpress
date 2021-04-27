@@ -63,9 +63,11 @@ function likecoin_add_posts_columns( $columns ) {
 	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$matters_svg = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/matters.svg' ) );
 	$ipfs_svg    = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ipfs.svg' ) );
+	$iscn_svg    = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ISCN_logo_Dark.svg' ) );
 	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$columns['matters'] = likecoin_format_post_column_icon( $matters_svg, __( 'Matters Publish status', LC_PLUGIN_SLUG ) );
 	$columns['ipfs']    = likecoin_format_post_column_icon( $ipfs_svg, __( 'IPFS status', LC_PLUGIN_SLUG ) );
+	$columns['iscn']    = likecoin_format_post_column_icon( $iscn_svg, __( 'ISCN status', LC_PLUGIN_SLUG ) );
 	return $columns;
 }
 
@@ -76,6 +78,7 @@ function likecoin_add_posts_columns( $columns ) {
  * @param int|    $post_id The current post ID.
  */
 function likecoin_populate_posts_columns( $column, $post_id ) {
+	global $post;
 	switch ( $column ) {
 		case 'matters':
 		case 'ipfs':
@@ -95,12 +98,43 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 				echo esc_url( $status[ $column ]['url'] );
 				?>
 					">
-				<?php echo esc_html( $status[ $column ]['status'] ); ?>
+				<?php echo esc_html( $status[ $column ]['status'] ); ?> 
 					</a>
 					<?php
 			} else {
 				echo esc_html( $status[ $column ]['status'] );
 			}
 			break;
+		case 'iscn':
+			$publish_params = likecoin_get_meta_box_publish_params( $post );
+			$iscn_status    = likecoin_parse_iscn_status( $publish_params );
+			if ( 'Published' === $iscn_status['ipfs_status'] ) {
+				if ( ! empty( $iscn_status['url'] ) ) {
+					?>
+						<a rel="noopener" target="_blank" href="
+					<?php
+					echo esc_url( $iscn_status['url'] );
+					?>
+						">
+					<?php echo esc_html( $iscn_status['status'] ); ?> 
+						</a>
+						<?php
+				} elseif ( ! empty( $iscn_status['redirect_url'] ) ) {
+					?>
+						<a rel="noopener" target="_blank" href="
+					<?php
+					echo esc_url( $iscn_status['redirect_url'] );
+					?>
+						">
+					<?php echo esc_html( $iscn_status['status'] ); ?> 
+						</a>
+						<?php
+				}
+			} else {
+				$iscn_status['status'] = '-'; // replace '(IPFS is required)'
+				echo esc_html( $iscn_status['status'] );
+			}
+			break;
+
 	}
 }
