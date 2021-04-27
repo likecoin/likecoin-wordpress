@@ -131,7 +131,7 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 						<?php
 				}
 			} else {
-				$iscn_status['status'] = '-'; // replace '(IPFS is required)'
+				$iscn_status['status'] = '-'; // replace '(IPFS is required)'.
 				echo esc_html( $iscn_status['status'] );
 			}
 			break;

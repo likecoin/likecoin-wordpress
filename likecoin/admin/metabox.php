@@ -96,7 +96,7 @@ function likecoin_parse_iscn_status( $publish_params ) {
 		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit';
 	} else {
 		$result['status'] = '-';
-		$result['url']    = '/wp-admin/post.php?post=' . $post_id . '&action=edit'; // default to prevent time lag of ipfs
+		$result['url']    = '/wp-admin/post.php?post=' . $post_id . '&action=edit'; // default to prevent time lag of ipfs.
 	}
 	return $result;
 }
