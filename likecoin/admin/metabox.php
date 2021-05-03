@@ -93,10 +93,10 @@ function likecoin_parse_iscn_status( $publish_params ) {
 	} elseif ( ! empty( $publish_params['ipfs_hash'] ) ) {
 		$result['status']       = __( 'Click to submit to ISCN', LC_PLUGIN_SLUG );
 		$result['ipfs_status']  = 'Published';
-		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit';
+		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit&ScrollToSubmitISCN=y#like-coin';
 	} else {
-		$result['status'] = '-';
-		$result['url']    = '/wp-admin/post.php?post=' . $post_id . '&action=edit'; // default to prevent time lag of ipfs.
+		$result['status']       = '-';
+		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit&ScrollToSubmitISCN=y#like-coin';
 	}
 	return $result;
 }

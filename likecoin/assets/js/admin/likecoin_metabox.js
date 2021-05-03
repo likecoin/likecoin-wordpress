@@ -75,8 +75,14 @@ function onSubmitToISCN(e) {
 }
 
 (() => {
+  const urlParams = new URLSearchParams(location.search);
   const refreshBtn = document.getElementById('lcPublishRefreshBtn');
   const submitISCNBtn = document.getElementById('lcISCNPublishBtn');
+  if (urlParams.has('ScrollToSubmitISCN')) {
+    setTimeout(function(){
+      window.scrollTo(0,document.querySelector("#poststuff").scrollHeight);
+    },1000)
+  }
   if (refreshBtn) refreshBtn.addEventListener('click', onRefreshPublishStatus);
   if (submitISCNBtn) submitISCNBtn.addEventListener('click', onSubmitToISCN);
 })();
