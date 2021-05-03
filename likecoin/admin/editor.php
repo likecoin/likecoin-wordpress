@@ -123,7 +123,6 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 			$post_id        = $post->ID;
 
 			if ( 'Published' === $status['ipfs']['status'] ) {
-				error_log( 'cached: ' . $post_id );
 				if ( ! empty( $iscn_status['url'] ) ) {
 					?>
 						<a rel="noopener" target="_blank" href="
