@@ -120,7 +120,6 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 			// get iscn related info status.
 			$publish_params = likecoin_get_meta_box_publish_params( $post );
 			$iscn_status    = likecoin_parse_iscn_status( $publish_params );
-			$post_id        = $post->ID;
 
 			if ( 'Published' === $status['ipfs']['status'] ) {
 				if ( ! empty( $iscn_status['url'] ) ) {
