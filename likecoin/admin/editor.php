@@ -98,7 +98,7 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 				echo esc_url( $status[ $column ]['url'] );
 				?>
 					">
-				<?php echo esc_html( $status[ $column ]['status'] ); ?> 
+				<?php echo esc_html( $status[ $column ]['status'] ); ?>
 					</a>
 					<?php
 			} else {
