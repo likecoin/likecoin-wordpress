@@ -75,8 +75,14 @@ function onSubmitToISCN(e) {
 }
 
 (() => {
+  const submitISCNHash = window.location.hash;
   const refreshBtn = document.getElementById('lcPublishRefreshBtn');
   const submitISCNBtn = document.getElementById('lcISCNPublishBtn');
+  if (submitISCNHash === '#likecoin_submit_iscn') {
+    setTimeout(() => {
+      window.scrollTo(0, document.querySelector('#likecoin_submit_iscn').scrollHeight);
+    }, 500);
+  }
   if (refreshBtn) refreshBtn.addEventListener('click', onRefreshPublishStatus);
   if (submitISCNBtn) submitISCNBtn.addEventListener('click', onSubmitToISCN);
 })();

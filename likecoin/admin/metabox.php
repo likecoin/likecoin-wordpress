@@ -40,6 +40,9 @@ function likecoin_parse_publish_status( $publish_params ) {
 		'ipfs'    => array(
 			'status' => __( '-', LC_PLUGIN_SLUG ),
 		),
+		'iscn'    => array(
+			'status' => __( '-', LC_PLUGIN_SLUG ),
+		),
 	);
 	if ( ! isset( $publish_params['draft_id'] ) ) {
 		return $result;
@@ -75,16 +78,25 @@ function likecoin_parse_publish_status( $publish_params ) {
  * @param object| $publish_params Params for displaying publish related settings.
  */
 function likecoin_parse_iscn_status( $publish_params ) {
-	$result    = array();
-	$iscn_hash = $publish_params['iscn_hash'];
+	global $post;
+	$post_id               = $post->ID;
+	$result                = array();
+	$iscn_hash             = $publish_params['iscn_hash'];
+	$result['ipfs_status'] = 'Pending';
 	if ( ! empty( $iscn_hash ) ) {
-		$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
-		$result['url']    = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
-		$result['hash']   = $iscn_hash;
+		$result['status']      = __( 'Published', LC_PLUGIN_SLUG );
+		$result['ipfs_status'] = 'Published';
+		$result['url']         = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
+		$result['hash']        = $iscn_hash;
 	} elseif ( empty( $publish_params['ipfs_hash'] ) ) {
 		$result['status'] = __( '(IPFS is required)', LC_PLUGIN_SLUG );
+	} elseif ( ! empty( $publish_params['ipfs_hash'] ) ) {
+		$result['status']       = __( 'Click to submit to ISCN', LC_PLUGIN_SLUG );
+		$result['ipfs_status']  = 'Published';
+		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit#likecoin_submit_iscn';
 	} else {
-		$result['status'] = '-';
+		$result['status']       = '-';
+		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit#likecoin_submit_iscn';
 	}
 	return $result;
 }

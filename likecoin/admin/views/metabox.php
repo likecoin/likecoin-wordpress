@@ -139,7 +139,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 					<?php } ?>
 				</td>
 			</tr>
-			<tr>
+			<tr id="likecoin_submit_iscn">
 				<th><label><?php esc_html_e( 'ISCN (Testnet) Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcISCNStatus">
 					<?php if ( ! empty( $iscn_hash ) ) { ?>

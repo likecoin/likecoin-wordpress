@@ -89,7 +89,7 @@ function likecoin_refresh_post_matters_status( $post, $force = false ) {
 	}
 
 	if ( ! $force && ( isset( $matters_info['published'] ) && isset( $matters_info['ipfs_hash'] ) ) ) {
-		return;
+		return $matters_info;
 	}
 	$res = likecoin_query_post_matters_status( $post_id );
 	if ( isset( $res['error'] ) ) {
