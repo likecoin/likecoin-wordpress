@@ -63,9 +63,11 @@ function likecoin_add_posts_columns( $columns ) {
 	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$matters_svg = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/matters.svg' ) );
 	$ipfs_svg    = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ipfs.svg' ) );
+	$iscn_svg    = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ISCN_logo_extra_small.svg' ) );
 	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$columns['matters'] = likecoin_format_post_column_icon( $matters_svg, __( 'Matters Publish status', LC_PLUGIN_SLUG ) );
 	$columns['ipfs']    = likecoin_format_post_column_icon( $ipfs_svg, __( 'IPFS status', LC_PLUGIN_SLUG ) );
+	$columns['iscn']    = likecoin_format_post_column_icon( $iscn_svg, __( 'ISCN status', LC_PLUGIN_SLUG ) );
 	return $columns;
 }
 
@@ -76,6 +78,7 @@ function likecoin_add_posts_columns( $columns ) {
  * @param int|    $post_id The current post ID.
  */
 function likecoin_populate_posts_columns( $column, $post_id ) {
+	global $post;
 	switch ( $column ) {
 		case 'matters':
 		case 'ipfs':
@@ -102,5 +105,49 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 				echo esc_html( $status[ $column ]['status'] );
 			}
 			break;
+		case 'iscn':
+			// get latest matters info to prevent time lag on matters & ipfs status.
+			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
+			if ( ! is_array( $matters_info ) ) {
+				$matters_info = array();
+			} else {
+				$option                     = get_option( LC_PUBLISH_OPTION_NAME );
+				$matters_id                 = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
+				$matters_info['matters_id'] = $matters_id;
+			}
+			$status = likecoin_parse_publish_status( $matters_info );
+
+			// get iscn related info status.
+			$publish_params = likecoin_get_meta_box_publish_params( $post );
+			$iscn_status    = likecoin_parse_iscn_status( $publish_params );
+
+			if ( 'Published' === $status['ipfs']['status'] ) {
+				if ( ! empty( $iscn_status['url'] ) ) {
+					?>
+						<a rel="noopener" target="_blank" href="
+					<?php
+					echo esc_url( $iscn_status['url'] );
+					?>
+						">
+					<?php echo esc_html( $iscn_status['status'] ); ?> 
+						</a>
+						<?php
+				} elseif ( ! empty( $iscn_status['redirect_url'] ) ) {
+					?>
+						<a rel="noopener" target="_blank" href="
+					<?php
+					echo esc_url( $iscn_status['redirect_url'] );
+					?>
+						">
+					<?php echo esc_html( $iscn_status['status'] ); ?> 
+						</a>
+						<?php
+				}
+			} else {
+				$iscn_status['status'] = '-'; // replace '(IPFS is required)'.
+				echo esc_html( $iscn_status['status'] );
+			}
+			break;
+
 	}
 }
