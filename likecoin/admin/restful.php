@@ -58,13 +58,18 @@ function likecoin_rest_update_iscn_hash( $request ) {
 	if ( ! isset( $post ) ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
-	$iscn_hash = $params['iscnHash'];
-	$iscn_info = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	if ( ! is_array( $iscn_info ) ) {
-		$iscn_info = array();
+	$iscn_hash         = $params['iscnHash'];
+	$iscn_testnet_info = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	$iscn_mainnet_info = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	if ( ! is_array( $iscn_testnet_info ) ) {
+		$iscn_testnet_info = array();
 	}
-	$iscn_info['iscn_hash'] = $iscn_hash;
-	update_post_meta( $post_id, LC_ISCN_DEV_INFO, $iscn_info );
+	if ( ! is_array( $iscn_mainnet_info ) ) {
+		$iscn_mainnet_info = array();
+	}
+	// only allow to publish to mainnet going forward
+	$iscn_mainnet_info['iscn_hash'] = $iscn_hash;
+	update_post_meta( $post_id, LC_ISCN_INFO, $iscn_mainnet_info );
 	$data = likecoin_parse_iscn_status( array( 'iscn_hash' => $iscn_hash ) );
 	return new WP_REST_Response( $data, 200 );
 }

@@ -79,14 +79,27 @@ function likecoin_parse_publish_status( $publish_params ) {
  */
 function likecoin_parse_iscn_status( $publish_params ) {
 	global $post;
-	$post_id               = $post->ID;
-	$result                = array();
-	$iscn_hash             = $publish_params['iscn_hash'];
+	$post_id                      = $post->ID;
+	$result                       = array();
+	$iscn_testnet_info            = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	$iscn_mainnet_info            = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	$iscn_hash                    = $publish_params['iscn_hash'];
+	$stargate_data_api_endpoint   = null;
+	$stargate_static_api_endpoint = null;
+	if ( $iscn_testnet_info || $iscn_mainnet_info ) {
+		$stargate_data_api_endpoint   = $iscn_mainnet_info ? 'https://like.co/in/tx/iscn/' : 'https://like.co/in/tx/iscn/dev/'; // TODO: change to mainnet
+		$stargate_static_api_endpoint = $iscn_mainnet_info ? 'https://static.like.co/badge/iscn/' : 'https://static.like.co/badge/iscn/dev/'; // TODO: change to mainnet
+	}
 	$result['ipfs_status'] = 'Pending';
 	if ( ! empty( $iscn_hash ) ) {
-		$result['status']      = __( 'Published', LC_PLUGIN_SLUG );
+		if ( $iscn_mainnet_info ) {
+			$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
+			$result['url']    = $stargate_data_api_endpoint . $iscn_hash;
+		} else {
+			$result['status'] = __( 'Published (testnet)', LC_PLUGIN_SLUG );
+			$result['url']    = $stargate_data_api_endpoint . $iscn_hash;
+		}
 		$result['ipfs_status'] = 'Published';
-		$result['url']         = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
 		$result['hash']        = $iscn_hash;
 	} elseif ( empty( $publish_params['ipfs_hash'] ) ) {
 		$result['status'] = __( '(IPFS is required)', LC_PLUGIN_SLUG );
@@ -152,7 +165,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 		);
 	} else {
 		$post_id        = $post->ID;
-		$iscn_info      = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+		$iscn_info      = get_post_meta( $post_id, LC_ISCN_INFO, true ) ? get_post_meta( $post_id, LC_ISCN_INFO, true ) : get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
 		$publish_params = array(
 			'is_enabled'   => $is_enabled,
