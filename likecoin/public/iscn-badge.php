@@ -39,8 +39,8 @@ function likecoin_add_iscn_badge( $post ) {
 	$stargate_static_api_endpoint = null;
 	if ( $iscn_testnet_info || $iscn_mainnet_info ) {
 		$iscn_hash                    = $iscn_mainnet_info ? $iscn_mainnet_info['iscn_hash'] : $iscn_testnet_info['iscn_hash'];
-		$stargate_data_api_endpoint   = $iscn_mainnet_info ? 'https://like.co/in/tx/iscn/' : 'https://like.co/in/tx/iscn/dev/'; // TODO: change to mainnet url
-		$stargate_static_api_endpoint = $iscn_mainnet_info ? 'https://static.like.co/badge/iscn/' : 'https://static.like.co/badge/iscn/dev/'; // TODO: change to mainnet url
+		$stargate_data_api_endpoint   = $iscn_mainnet_info ? 'https://like.co/in/tx/iscn/' : 'https://like.co/in/tx/iscn/dev/'; // TODO: change to mainnet url.
+		$stargate_static_api_endpoint = $iscn_mainnet_info ? 'https://static.like.co/badge/iscn/' : 'https://static.like.co/badge/iscn/dev/'; // TODO: change to mainnet url.
 	}
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
 

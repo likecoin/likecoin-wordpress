@@ -87,8 +87,8 @@ function likecoin_parse_iscn_status( $publish_params ) {
 	$stargate_data_api_endpoint   = null;
 	$stargate_static_api_endpoint = null;
 	if ( $iscn_testnet_info || $iscn_mainnet_info ) {
-		$stargate_data_api_endpoint   = $iscn_mainnet_info ? 'https://like.co/in/tx/iscn/' : 'https://like.co/in/tx/iscn/dev/'; // TODO: change to mainnet
-		$stargate_static_api_endpoint = $iscn_mainnet_info ? 'https://static.like.co/badge/iscn/' : 'https://static.like.co/badge/iscn/dev/'; // TODO: change to mainnet
+		$stargate_data_api_endpoint   = $iscn_mainnet_info ? 'https://like.co/in/tx/iscn/' : 'https://like.co/in/tx/iscn/dev/'; // TODO: change to mainnet.
+		$stargate_static_api_endpoint = $iscn_mainnet_info ? 'https://static.like.co/badge/iscn/' : 'https://static.like.co/badge/iscn/dev/'; // TODO: change to mainnet.
 	}
 	$result['ipfs_status'] = 'Pending';
 	if ( ! empty( $iscn_hash ) ) {
