@@ -31,16 +31,20 @@ require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
  * @param WP_Post| $post Post object.
  */
 function likecoin_add_iscn_badge( $post ) {
-	$post_id                      = $post->ID;
-	$iscn_testnet_info            = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	$iscn_mainnet_info            = get_post_meta( $post_id, LC_ISCN_INFO, true );
-	$iscn_hash                    = null;
-	$stargate_data_api_endpoint   = null;
-	$stargate_static_api_endpoint = null;
-	if ( $iscn_testnet_info || $iscn_mainnet_info ) {
-		$iscn_hash                    = $iscn_mainnet_info ? $iscn_mainnet_info['iscn_hash'] : $iscn_testnet_info['iscn_hash'];
-		$stargate_data_api_endpoint   = $iscn_mainnet_info ? 'https://like.co/in/tx/iscn/' : 'https://like.co/in/tx/iscn/dev/'; // TODO: change to mainnet url.
-		$stargate_static_api_endpoint = $iscn_mainnet_info ? 'https://static.like.co/badge/iscn/' : 'https://static.like.co/badge/iscn/dev/'; // TODO: change to mainnet url.
+	$post_id                = $post->ID;
+	$iscn_testnet_info      = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	$iscn_mainnet_info      = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	$iscn_hash              = null;
+	$iscn_data_api_endpoint = null;
+	$iscn_badge_endpoint    = null;
+	if ( $iscn_mainnet_info ) {
+		$iscn_hash              = $iscn_mainnet_info['iscn_hash'];
+		$iscn_data_api_endpoint = 'https://like.co/in/tx/iscn/'; // TODO: change to mainnet url.
+		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/'; // TODO: change to mainnet url.
+	} elseif ( $iscn_testnet_info ) {
+		$iscn_hash              = $iscn_testnet_info['iscn_hash'];
+		$iscn_data_api_endpoint = 'https://like.co/in/tx/iscn/dev/';
+		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/dev/';
 	}
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
 
@@ -64,9 +68,9 @@ function likecoin_add_iscn_badge( $post ) {
 
 	if ( strlen( $iscn_hash ) > 0 && $show_iscn_badge ) {
 		$widget_code = '<figure class="likecoin-iscn-badge">' .
-		'<a href="' . $stargate_data_api_endpoint . $iscn_hash . '" target="_blank" rel="noopener">' .
+		'<a href="' . $iscn_data_api_endpoint . $iscn_hash . '" target="_blank" rel="noopener">' .
 		'<img ' .
-		'src="' . $stargate_static_api_endpoint . $iscn_hash . '.svg?dark=' . $is_dark_badge . '"' .
+		'src="' . $iscn_badge_endpoint . $iscn_hash . '.svg?dark=' . $is_dark_badge . '"' .
 		'width="164" height="36"></a></figure>';
 		return $widget_code;
 	}

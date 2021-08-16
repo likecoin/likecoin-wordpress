@@ -79,25 +79,28 @@ function likecoin_parse_publish_status( $publish_params ) {
  */
 function likecoin_parse_iscn_status( $publish_params ) {
 	global $post;
-	$post_id                      = $post->ID;
-	$result                       = array();
-	$iscn_testnet_info            = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	$iscn_mainnet_info            = get_post_meta( $post_id, LC_ISCN_INFO, true );
-	$iscn_hash                    = $publish_params['iscn_hash'];
-	$stargate_data_api_endpoint   = null;
-	$stargate_static_api_endpoint = null;
-	if ( $iscn_testnet_info || $iscn_mainnet_info ) {
-		$stargate_data_api_endpoint   = $iscn_mainnet_info ? 'https://like.co/in/tx/iscn/' : 'https://like.co/in/tx/iscn/dev/'; // TODO: change to mainnet.
-		$stargate_static_api_endpoint = $iscn_mainnet_info ? 'https://static.like.co/badge/iscn/' : 'https://static.like.co/badge/iscn/dev/'; // TODO: change to mainnet.
+	$post_id                = $post->ID;
+	$result                 = array();
+	$iscn_testnet_info      = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	$iscn_mainnet_info      = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	$iscn_hash              = $publish_params['iscn_hash'];
+	$iscn_data_api_endpoint = null;
+	$iscn_badge_endpoint    = null;
+	if ( $iscn_mainnet_info ) {
+		$iscn_data_api_endpoint = 'https://like.co/in/tx/iscn/'; // TODO: change to mainnet.
+		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/'; // TODO: change to mainnet.
+	} elseif ( $iscn_testnet_info ) {
+		$iscn_data_api_endpoint = 'https://like.co/in/tx/iscn/dev/';
+		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/dev/';
 	}
 	$result['ipfs_status'] = 'Pending';
 	if ( ! empty( $iscn_hash ) ) {
 		if ( $iscn_mainnet_info ) {
 			$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
-			$result['url']    = $stargate_data_api_endpoint . $iscn_hash;
+			$result['url']    = $iscn_data_api_endpoint . $iscn_hash;
 		} else {
 			$result['status'] = __( 'Published (testnet)', LC_PLUGIN_SLUG );
-			$result['url']    = $stargate_data_api_endpoint . $iscn_hash;
+			$result['url']    = $iscn_data_api_endpoint . $iscn_hash;
 		}
 		$result['ipfs_status'] = 'Published';
 		$result['hash']        = $iscn_hash;

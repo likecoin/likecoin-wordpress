@@ -59,11 +59,7 @@ function likecoin_rest_update_iscn_hash( $request ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
 	$iscn_hash         = $params['iscnHash'];
-	$iscn_testnet_info = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 	$iscn_mainnet_info = get_post_meta( $post_id, LC_ISCN_INFO, true );
-	if ( ! is_array( $iscn_testnet_info ) ) {
-		$iscn_testnet_info = array();
-	}
 	if ( ! is_array( $iscn_mainnet_info ) ) {
 		$iscn_mainnet_info = array();
 	}
