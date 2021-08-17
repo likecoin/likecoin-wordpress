@@ -31,20 +31,20 @@ require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
  * @param WP_Post| $post Post object.
  */
 function likecoin_add_iscn_badge( $post ) {
-	$post_id                = $post->ID;
-	$iscn_testnet_info      = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	$iscn_mainnet_info      = get_post_meta( $post_id, LC_ISCN_INFO, true );
-	$iscn_hash              = null;
-	$iscn_view_page_url = null;
-	$iscn_badge_endpoint    = null;
+	$post_id             = $post->ID;
+	$iscn_testnet_info   = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	$iscn_mainnet_info   = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	$iscn_hash           = null;
+	$iscn_view_page_url  = null;
+	$iscn_badge_endpoint = null;
 	if ( $iscn_mainnet_info ) {
-		$iscn_hash              = $iscn_mainnet_info['iscn_hash'];
-		$iscn_view_page_url = 'https://like.co/in/tx/iscn/';
-		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/';
+		$iscn_hash           = $iscn_mainnet_info['iscn_hash'];
+		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/';
+		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
 	} elseif ( $iscn_testnet_info ) {
-		$iscn_hash              = $iscn_testnet_info['iscn_hash'];
-		$iscn_view_page_url = 'https://like.co/in/tx/iscn/dev/';
-		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/dev/';
+		$iscn_hash           = $iscn_testnet_info['iscn_hash'];
+		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/';
+		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
 	}
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
 
