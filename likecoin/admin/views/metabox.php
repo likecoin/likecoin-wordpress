@@ -139,7 +139,7 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 					<?php } ?>
 				</td>
 			</tr>
-			<?php if ( 'Published (testnet)' === $iscn_status['status'] ) { ?>
+			<?php if ( $iscn_status['is_dev_published'] ) { ?>
 				<tr id="likecoin_submit_iscn_testnet">
 					<th><label><?php esc_html_e( 'ISCN (Testnet) Status', LC_PLUGIN_SLUG ); ?></label></th>
 					<td id="lcISCNStatus">
@@ -154,11 +154,11 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 			<tr id="likecoin_submit_iscn">
 				<th><label><?php esc_html_e( 'ISCN (Main) Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcISCNStatus">
-					<?php if ( ! empty( $iscn_hash ) && 'Published' === $iscn_status['status'] ) { ?>
+					<?php if ( ! empty( $iscn_hash ) && ! $iscn_status['is_dev_published'] ) { ?>
 						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['url'] ); ?>">
 							<?php echo esc_html( $iscn_status['status'] ); ?>
 						</a>
-					<?php } elseif ( 'Published (testnet)' === $iscn_status['status'] ) { ?>
+					<?php } elseif ( $iscn_status['is_dev_published'] ) { ?>
 						<span id="lcISCNPublish" style="display:<?php echo esc_attr( empty( $status['ipfs']['url'] ) ? 'none' : '' ); ?>">
 							<button id="lcISCNPublishBtn" class="button button-primary">
 								<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>

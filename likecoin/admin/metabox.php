@@ -84,23 +84,25 @@ function likecoin_parse_iscn_status( $publish_params ) {
 	$iscn_testnet_info      = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 	$iscn_mainnet_info      = get_post_meta( $post_id, LC_ISCN_INFO, true );
 	$iscn_hash              = $publish_params['iscn_hash'];
-	$iscn_data_api_endpoint = null;
+	$iscn_view_page_url = null;
 	$iscn_badge_endpoint    = null;
 	if ( $iscn_mainnet_info ) {
-		$iscn_data_api_endpoint = 'https://like.co/in/tx/iscn/'; // TODO: change to mainnet.
-		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/'; // TODO: change to mainnet.
+		$iscn_view_page_url = 'https://like.co/in/tx/iscn/';
+		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/';
 	} elseif ( $iscn_testnet_info ) {
-		$iscn_data_api_endpoint = 'https://like.co/in/tx/iscn/dev/';
+		$iscn_view_page_url = 'https://like.co/in/tx/iscn/dev/';
 		$iscn_badge_endpoint    = 'https://static.like.co/badge/iscn/dev/';
 	}
 	$result['ipfs_status'] = 'Pending';
+	$result['is_dev_published'] = false;
 	if ( ! empty( $iscn_hash ) ) {
 		if ( $iscn_mainnet_info ) {
 			$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
-			$result['url']    = $iscn_data_api_endpoint . $iscn_hash;
+			$result['url']    = $iscn_view_page_url . $iscn_hash;
 		} else {
+			$result['is_dev_published'] = true;
 			$result['status'] = __( 'Published (testnet)', LC_PLUGIN_SLUG );
-			$result['url']    = $iscn_data_api_endpoint . $iscn_hash;
+			$result['url']    = $iscn_view_page_url . $iscn_hash;
 		}
 		$result['ipfs_status'] = 'Published';
 		$result['hash']        = $iscn_hash;
