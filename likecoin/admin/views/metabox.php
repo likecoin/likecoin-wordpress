@@ -197,6 +197,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 		$post_id    = $post->ID;
 		$post_title = $post->post_title;
 		$post_tags  = likecoin_get_post_tags_for_matters( $post );
+		$post_url   = get_permalink( $post );
 		wp_nonce_field( 'lc_save_post', 'lc_metabox_nonce' );
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
@@ -226,6 +227,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'ipfsHash' => $publish_params['ipfs_hash'],
 				'iscnHash' => $publish_params['iscn_hash'],
 				'tags'     => $post_tags,
+				'url'      => $post_url,
 			)
 		);
 }
