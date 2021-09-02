@@ -84,7 +84,7 @@ function likecoin_refresh_post_matters_status( $post, $force = false ) {
 
 	$time_now = time();
 	// limit refresh rate to 1 min.
-	if ( ! $force && isset( $matters_info['last_refresh_time'] ) && $matters_info['last_refresh_time'] + 60 < $time_now ) {
+	if ( ! $force && isset( $matters_info['last_refresh_time'] ) && $matters_info['last_refresh_time'] + 60 > $time_now ) {
 		return $matters_info;
 	}
 
