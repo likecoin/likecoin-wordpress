@@ -97,10 +97,49 @@ function likecoin_append_footer_link_element( $dom_document ) {
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
+ * @param WP_Post| $post Post object.
+ * @param string|  $content raw post HTML content.
+ */
+function likecoin_upload_url_image_to_matters( $post_id ) {
+	global $post;
+	if ( ! $post ) {
+		return;
+	}
+	$content = apply_filters( 'the_content', $post->post_content );
+	$post_id = $post->ID;
+	if ( ! $content ) {
+		return $content;
+	}
+	$dom_document          = new DOMDocument();
+	$libxml_previous_state = libxml_use_internal_errors( true );
+	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
+	if ( false === $dom_content ) {
+		return $content;
+	}
+	$images = $dom_document->getElementsByTagName( 'img' );
+	foreach ( $images as $image ) {
+		$url        = $image->getAttribute( 'src' );
+		$image_info = get_post_meta( $post_id, LC_IMAGE_INFO, true );
+		$image_url  = $url;
+		likecoin_post_url_image_to_matters( $image_url );
+	}
+	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ) );
+	likecoin_replace_matters_attachment_url( $content, $params );
+}
+/**
+ * Parse and modify post HTML to replace Matters asset url and div/class standard
+ *
  * @param string| $content raw post HTML content.
  * @param array|  $params post options for addtional components.
  */
 function likecoin_replace_matters_attachment_url( $content, $params ) {
+	global $post;
+	if ( ! $post ) {
+		return;
+	}
+	$post_id = $post->ID;
 	if ( ! $content ) {
 		return $content;
 	}
@@ -134,8 +173,26 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 		}
 		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
+			// if its url image
+			$image_infos = get_post_meta( $post_id, LC_IMAGE_INFO, true );
+			if ( $image_infos ) {
+				foreach ( $image_infos as $keys => $values ) {
+					if ( is_array( $values ) || is_object( $values ) ) {
+						$matters_image_url                       = $values->matters_url;
+						$matters_url_components                  = preg_split( '#/#', $matters_image_url );
+						$attachment_id_with_mime_type            = end( $matters_url_components );
+						$attachment_id_with_mime_type_components = preg_split( '#[.]#', $attachment_id_with_mime_type );
+						$attachment_id_without_mime_type         = reset( $attachment_id_with_mime_type_components );
+						if ( $values->original_url === $url ) {
+							$image->setAttribute( 'src', $matters_image_url );
+							$image->setAttribute( 'data-asset-id', $attachment_id_without_mime_type );
+						}
+					}
+				}
+			}
 		}
 		if ( $attachment_id ) {
+			// if its uploaded image
 			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
 			if ( isset( $matters_info['url'] ) ) {
 				$image->setAttribute( 'src', $matters_info['url'] );
