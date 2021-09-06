@@ -353,9 +353,9 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 }
 
 /**
- * Upload a file as draft attachment to matters
+ * Upload a file as draft image to matters
  *
- * @param int| $attachment_id Attachment id to be uploaded to matters.
+ * @param int| $image_url image url to be uploaded to matters.
  */
 function likecoin_post_url_image_to_matters( $image_url ) {
 	global $post;

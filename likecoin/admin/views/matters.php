@@ -97,8 +97,7 @@ function likecoin_append_footer_link_element( $dom_document ) {
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
- * @param WP_Post| $post Post object.
- * @param string|  $content raw post HTML content.
+ * @param string| $post_id raw post HTML content.
  */
 function likecoin_upload_url_image_to_matters( $post_id ) {
 	global $post;
@@ -106,7 +105,6 @@ function likecoin_upload_url_image_to_matters( $post_id ) {
 		return;
 	}
 	$content = apply_filters( 'the_content', $post->post_content );
-	$post_id = $post->ID;
 	if ( ! $content ) {
 		return $content;
 	}
@@ -173,7 +171,7 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 		}
 		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
-			// if its url image
+			// if its url image.
 			$image_infos = get_post_meta( $post_id, LC_IMAGE_INFO, true );
 			if ( $image_infos ) {
 				foreach ( $image_infos as $keys => $values ) {
@@ -192,7 +190,7 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 			}
 		}
 		if ( $attachment_id ) {
-			// if its uploaded image
+			// if its uploaded image.
 			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
 			if ( isset( $matters_info['url'] ) ) {
 				$image->setAttribute( 'src', $matters_info['url'] );
