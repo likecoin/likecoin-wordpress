@@ -355,16 +355,18 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 /**
  * Upload a file as draft image to matters
  *
- * @param int| $image_url image url to be uploaded to matters.
+ * @param int|     $image_url image url to be uploaded to matters.
+ * @param object | $image_infos all images' information of the post.
  */
-function likecoin_post_url_image_to_matters( $image_url ) {
+function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
 	global $post;
-	$post_id        = $post->ID;
-	$file_path      = $image_url;
-	$file_mime_type = 'image/jpeg';
-	$filename       = basename( $file_path );
-	$parent_post    = $post_id;
-	$matters_info   = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
+	$post_id              = $post->ID;
+	$file_path            = $image_url;
+	$file_path_components = preg_split( '#[.]#', $file_path );
+	$file_mime_type       = 'image/' . end( $file_path_components );
+	$filename             = basename( $file_path );
+	$parent_post          = $post_id;
+	$matters_info         = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
 	if ( ! $matters_info ) {
 		$matters_info = array(
 			'type' => 'post',
@@ -382,18 +384,7 @@ function likecoin_post_url_image_to_matters( $image_url ) {
 	}
 	$attachment_type = 'image';
 	$api             = LikeCoin_Matters_API::get_instance();
-	$image_infos     = get_post_meta( $post_id, LC_IMAGE_INFO, true );
-	if ( $image_infos ) {
-		foreach ( $image_infos as $keys => $values ) {
-			if ( is_array( $values ) || is_object( $values ) ) {
-				if ( $values->original_url === $image_url ) {
-					return;
-				}
-			}
-		}
-	}
-
-	$res = $api->post_attachment(
+	$res             = $api->post_attachment(
 		array(
 			'path'      => $file_path,
 			'filename'  => $filename,
@@ -407,17 +398,18 @@ function likecoin_post_url_image_to_matters( $image_url ) {
 		return;
 	}
 	$matters_attachment_id = $res['id'];
-	$image_infos           = get_post_meta( $post_id, LC_IMAGE_INFO, true );
 	if ( ! $image_infos ) { // no picture has been uploaded to matters for this post.
 		$image_infos = array(); // initiate the array to avoid empty string can not push error.
 	}
-	$image_info    = (object) array(
-		'original_url' => $image_url,
-		'matters_url'  => $res['path'],
+	$image_info                = (object) array(
+		'original_url'          => $image_url,
+		'matters_url'           => $res['path'],
+		'matters_attachment_id' => $res['id'],
 	);
-	$image_infos[] = $image_info;
-	update_post_meta( $post_id, LC_IMAGE_INFO, $image_infos );
-	likecoin_save_to_matters( $post_id, $post, true );
+	$image_infos               = (array) $image_infos; // turn object into array so we can add properties.
+	$image_infos[ $image_url ] = $image_info;
+	$image_infos               = (object) $image_infos;
+	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
 	return $matters_attachment_id;
 }
 /**
@@ -450,16 +442,17 @@ function likecoin_check_should_hook_matters_publish() {
  */
 function likecoin_add_matters_admin_hook() {
 	if ( likecoin_check_should_hook_matters_draft() ) {
-		add_action( 'save_post_post', 'likecoin_save_to_matters', 10, 3 );
-		add_action( 'save_post_page', 'likecoin_save_to_matters', 10, 3 );
-		add_action( 'save_post_post', 'likecoin_upload_url_image_to_matters', 10, 3 );
+		add_action( 'save_post_post', 'likecoin_save_to_matters', 12, 3 );
+		add_action( 'save_post_page', 'likecoin_save_to_matters', 12, 3 );
+		add_action( 'save_post_post', 'likecoin_upload_url_image_to_matters', 11, 3 );
+		add_action( 'save_post_page', 'likecoin_upload_url_image_to_matters', 11, 3 );
 	}
 	if ( likecoin_check_should_hook_matters_publish() ) {
-		add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
-		add_action( 'publish_post', 'likecoin_upload_url_image_to_matters', 10, 2 );
+		add_action( 'publish_post', 'likecoin_publish_to_matters', 12, 2 );
+		add_action( 'publish_post', 'likecoin_upload_url_image_to_matters', 11, 3 );
 	} elseif ( likecoin_check_should_hook_matters_draft() ) {
-		add_action( 'publish_post', 'likecoin_save_to_matters', 10, 2 );
-		add_action( 'publish_post', 'likecoin_upload_url_image_to_matters', 10, 2 );
+		add_action( 'publish_post', 'likecoin_save_to_matters', 12, 2 );
+		add_action( 'publish_post', 'likecoin_upload_url_image_to_matters', 11, 3 );
 	}
 }
 

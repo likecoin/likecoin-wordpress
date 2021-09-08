@@ -97,14 +97,14 @@ function likecoin_append_footer_link_element( $dom_document ) {
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
- * @param string| $post_id raw post HTML content.
+ * @param string|  $post_id raw post HTML content.
+ * @param WP_Post| $post Post object.
  */
-function likecoin_upload_url_image_to_matters( $post_id ) {
-	global $post;
+function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 	if ( ! $post ) {
 		return;
 	}
-	$content = apply_filters( 'the_content', $post->post_content );
+	$content = $post->post_content;
 	if ( ! $content ) {
 		return $content;
 	}
@@ -116,15 +116,38 @@ function likecoin_upload_url_image_to_matters( $post_id ) {
 	if ( false === $dom_content ) {
 		return $content;
 	}
-	$images = $dom_document->getElementsByTagName( 'img' );
+	$images             = $dom_document->getElementsByTagName( 'img' );
+	$image_infos        = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+	$current_image_urls = array();
 	foreach ( $images as $image ) {
-		$url        = $image->getAttribute( 'src' );
-		$image_info = get_post_meta( $post_id, LC_IMAGE_INFO, true );
-		$image_url  = $url;
-		likecoin_post_url_image_to_matters( $image_url );
+		$url                  = $image->getAttribute( 'src' );
+		$current_image_urls[] = $url;
+		$image_url            = $url;
+		// check if $image_url already existed in the post.
+		if ( $image_infos ) {
+			if ( isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
+				$image_info = $image_infos->$image_url;
+				if ( is_array( $image_info ) || is_object( $image_info ) ) {
+					if ( $image_info->original_url === $image_url ) {
+						continue;
+					}
+				}
+			}
+		}
+		likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
 	}
-	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ) );
-	likecoin_replace_matters_attachment_url( $content, $params );
+	// delete image_info in image_infos collection if the image is deleted from the draft.
+	$image_infos = (array) $image_infos;
+	foreach ( $image_infos as $key => $value ) {
+		if ( ! in_array( $key, $current_image_urls, true ) ) {
+			// remove the image from WordPress.
+			$image_infos = (array) $image_infos;
+			unset( $image_infos[ $key ] );
+			$image_infos = (object) $image_infos;
+			update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
+			// TODO: remove the image from matters.
+		}
+	}
 }
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
@@ -172,18 +195,14 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
 			// if its url image.
-			$image_infos = get_post_meta( $post_id, LC_IMAGE_INFO, true );
-			if ( $image_infos ) {
-				foreach ( $image_infos as $keys => $values ) {
-					if ( is_array( $values ) || is_object( $values ) ) {
-						$matters_image_url                       = $values->matters_url;
-						$matters_url_components                  = preg_split( '#/#', $matters_image_url );
-						$attachment_id_with_mime_type            = end( $matters_url_components );
-						$attachment_id_with_mime_type_components = preg_split( '#[.]#', $attachment_id_with_mime_type );
-						$attachment_id_without_mime_type         = reset( $attachment_id_with_mime_type_components );
-						if ( $values->original_url === $url ) {
-							$image->setAttribute( 'src', $matters_image_url );
-							$image->setAttribute( 'data-asset-id', $attachment_id_without_mime_type );
+			$image_infos = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+			if ( $image_infos ) { // TODO: image_infos may actually be empty object but this check will show true.
+				if ( isset( $image_infos->$url ) ) {
+					$image_info = $image_infos->$url;
+					if ( is_array( $image_info ) || is_object( $image_info ) ) {
+						if ( $image_info->original_url === $url ) {
+							$image->setAttribute( 'src', $image_info->matters_url );
+							$image->setAttribute( 'data-asset-id', $image_info->matters_attachment_id );
 						}
 					}
 				}
