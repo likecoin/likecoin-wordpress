@@ -398,7 +398,7 @@ function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
 		return;
 	}
 	$matters_attachment_id = $res['id'];
-	if ( ! $image_infos ) { // no picture has been uploaded to matters for this post.
+	if ( empty( $image_infos ) ) { // no picture has been uploaded to matters for this post.
 		$image_infos = array(); // initiate the array to avoid empty string can not push error.
 	}
 	$image_info                = (object) array(

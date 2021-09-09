@@ -135,6 +135,7 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 			}
 		}
 		likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
+		$image_infos = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
 	}
 	// delete image_info in image_infos collection if the image is deleted from the draft.
 	$image_infos = (array) $image_infos;
