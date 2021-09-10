@@ -410,7 +410,7 @@ function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
 	$image_infos[ $image_url ] = $image_info;
 	$image_infos               = (object) $image_infos;
 	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
-	return $matters_attachment_id;
+	return $image_infos;
 }
 /**
  * Returns a boolean whether draft options are enabled
@@ -442,17 +442,13 @@ function likecoin_check_should_hook_matters_publish() {
  */
 function likecoin_add_matters_admin_hook() {
 	if ( likecoin_check_should_hook_matters_draft() ) {
-		add_action( 'save_post_post', 'likecoin_save_to_matters', 12, 3 );
-		add_action( 'save_post_page', 'likecoin_save_to_matters', 12, 3 );
-		add_action( 'save_post_post', 'likecoin_upload_url_image_to_matters', 11, 3 );
-		add_action( 'save_post_page', 'likecoin_upload_url_image_to_matters', 11, 3 );
+		add_action( 'save_post_post', 'likecoin_on_save_post_action', 10, 3 );
+		add_action( 'save_post_page', 'likecoin_on_save_post_action', 10, 3 );
 	}
 	if ( likecoin_check_should_hook_matters_publish() ) {
-		add_action( 'publish_post', 'likecoin_publish_to_matters', 12, 2 );
-		add_action( 'publish_post', 'likecoin_upload_url_image_to_matters', 11, 3 );
+		add_action( 'publish_post', 'likecoin_on_publish_post_action', 10, 2 );
 	} elseif ( likecoin_check_should_hook_matters_draft() ) {
-		add_action( 'publish_post', 'likecoin_save_to_matters', 12, 2 );
-		add_action( 'publish_post', 'likecoin_upload_url_image_to_matters', 11, 3 );
+		add_action( 'publish_post', 'likecoin_on_save_post_action', 10, 3 );
 	}
 }
 
