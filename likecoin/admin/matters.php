@@ -399,16 +399,14 @@ function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
 	}
 	$matters_attachment_id = $res['id'];
 	if ( empty( $image_infos ) ) { // no picture has been uploaded to matters for this post.
-		$image_infos = array(); // initiate the array to avoid empty string can not push error.
+		$image_infos = new stdClass(); // initiate the empty object to avoid empty string can not add property error.
 	}
-	$image_info                = (object) array(
+	$image_info              = (object) array(
 		'original_url'          => $image_url,
 		'matters_url'           => $res['path'],
 		'matters_attachment_id' => $res['id'],
 	);
-	$image_infos               = (array) $image_infos; // turn object into array so we can add properties.
-	$image_infos[ $image_url ] = $image_info;
-	$image_infos               = (object) $image_infos;
+	$image_infos->$image_url = $image_info;
 	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
 	return $image_infos;
 }

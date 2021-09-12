@@ -136,14 +136,12 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 		$image_infos = likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
 	}
 	// delete image_info in image_infos collection if the image is deleted from the draft.
-	$image_infos = (array) $image_infos;
 	foreach ( $image_infos as $key => $value ) {
 		if ( ! in_array( $key, $current_image_urls, true ) ) {
 			// remove the image from WordPress.
-			unset( $image_infos[ $key ] );
+			unset( $image_infos->$key );
 		}
 	}
-	$image_infos = (object) $image_infos;
 	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
 	// TODO: remove the image from matters.
 }
