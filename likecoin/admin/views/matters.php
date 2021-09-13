@@ -124,6 +124,15 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 		$url                  = $image->getAttribute( 'src' );
 		$current_image_urls[] = $url;
 		$image_url            = $url;
+		// if it's uploaded image, then skip likecoin_post_url_image_to_matters.
+		$classes       = $image->getAttribute( 'class' );
+		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
+		if ( ! $attachment_id && $classes && preg_match( '/wp-image-([0-9]+)/i', $classes, $class_id ) && absint( $class_id[1] ) ) {
+			$attachment_id = $class_id[1];
+		}
+		if ( $attachment_id ) {
+			continue;
+		}
 		// check if $image_url already existed in the post.
 		if ( ! empty( $image_infos ) && isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
 			$image_info = $image_infos->$image_url;
@@ -136,10 +145,12 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 		$image_infos = likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
 	}
 	// delete image_info in image_infos collection if the image is deleted from the draft.
-	foreach ( $image_infos as $key => $value ) {
-		if ( ! in_array( $key, $current_image_urls, true ) ) {
-			// remove the image from WordPress.
-			unset( $image_infos->$key );
+	if ( ! empty( $image_infos ) ) {
+		foreach ( $image_infos as $key => $value ) {
+			if ( ! in_array( $key, $current_image_urls, true ) ) {
+				// remove the image from WordPress.
+				unset( $image_infos->$key );
+			}
 		}
 	}
 	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
