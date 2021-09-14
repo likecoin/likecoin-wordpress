@@ -377,9 +377,12 @@ function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
 	$file_path      = $image_url;
 	$headers        = get_headers( $file_path, true );
 	$file_mime_type = $headers['Content-Type'];
-	$filename       = basename( $file_path );
-	$parent_post    = $post_id;
-	$matters_info   = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
+	if ( ! ( substr( $file_mime_type, 0, 5 ) === 'image' ) ) {
+		return $image_infos;
+	}
+	$filename     = basename( $file_path );
+	$parent_post  = $post_id;
+	$matters_info = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
 	if ( ! $matters_info ) {
 		$matters_info = array(
 			'type' => 'post',
