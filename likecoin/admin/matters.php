@@ -227,6 +227,11 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 			$matters_info['draft_id'] = $matters_draft_id;
 			update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 		}
+		// incl. url form images after getting draft_id.
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		// upload to matters again.
+		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
 	if ( ! $matters_draft_id ) {
 		$draft = $api->new_draft( $title, $content, $tags );
@@ -236,6 +241,12 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		}
 		$matters_info['draft_id'] = $draft['id'];
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
+		// incl. url form images after getting draft_id.
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		// upload to matters again.
+		$matters_draft_id = $draft['id'];
+		$draft            = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
 	return $matters_draft_id;
 }
@@ -269,12 +280,24 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 		}
 		$matters_draft_id         = $draft['id'];
 		$matters_info['draft_id'] = $matters_draft_id;
+		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
+		// incl. url form images after getting draft_id.
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		// upload to matters again.
+		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	} else {
 		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
+		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
+		// incl. url form images after getting draft_id.
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		// upload to matters again.
+		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
 	$res = $api->publish_draft( $matters_draft_id );
 	if ( isset( $res['error'] ) ) {
@@ -440,13 +463,13 @@ function likecoin_check_should_hook_matters_publish() {
  */
 function likecoin_add_matters_admin_hook() {
 	if ( likecoin_check_should_hook_matters_draft() ) {
-		add_action( 'save_post_post', 'likecoin_on_save_post_action', 10, 3 );
-		add_action( 'save_post_page', 'likecoin_on_save_post_action', 10, 3 );
+		add_action( 'save_post_post', 'likecoin_save_to_matters', 10, 3 );
+		add_action( 'save_post_page', 'likecoin_save_to_matters', 10, 3 );
 	}
 	if ( likecoin_check_should_hook_matters_publish() ) {
-		add_action( 'publish_post', 'likecoin_on_publish_post_action', 10, 2 );
+		add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
 	} elseif ( likecoin_check_should_hook_matters_draft() ) {
-		add_action( 'publish_post', 'likecoin_on_save_post_action', 10, 3 );
+		add_action( 'publish_post', 'likecoin_save_to_matters', 10, 3 );
 	}
 }
 

@@ -157,27 +157,6 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 	// TODO: remove the image from matters.
 }
 
-
-/**
- * Parse and modify post HTML to replace Matters asset url and div/class standard
- *
- * @param string|  $post_id raw post HTML content.
- * @param WP_Post| $post Post object.
- */
-function likecoin_on_save_post_action( $post_id, $post ) {
-	likecoin_upload_url_image_to_matters( $post_id, $post );
-	likecoin_save_to_matters( $post_id, $post );
-}
-/**
- * Parse and modify post HTML to replace Matters asset url and div/class standard
- *
- * @param string|  $post_id raw post HTML content.
- * @param WP_Post| $post Post object.
- */
-function likecoin_on_publish_post_action( $post_id, $post ) {
-	likecoin_upload_url_image_to_matters( $post_id, $post );
-	likecoin_publish_to_matters( $post_id, $post );
-}
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
