@@ -117,13 +117,13 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 		return $content;
 	}
 	$images             = $dom_document->getElementsByTagName( 'img' );
-	$current_image_urls = array();
+	$current_image_urls = new stdClass();
 	$image_infos        = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
 	foreach ( $images as $image ) {
-		$image_infos          = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
-		$url                  = $image->getAttribute( 'src' );
-		$current_image_urls[] = $url;
-		$image_url            = $url;
+		$image_infos              = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+		$url                      = $image->getAttribute( 'src' );
+		$current_image_urls->$url = $image;
+		$image_url                = $url;
 		// if it's uploaded image, then skip likecoin_post_url_image_to_matters.
 		$classes       = $image->getAttribute( 'class' );
 		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
@@ -136,10 +136,8 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 		// check if $image_url already existed in the post.
 		if ( ! empty( $image_infos ) && isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
 			$image_info = $image_infos->$image_url;
-			if ( is_object( $image_info ) ) {
-				if ( $image_info->original_url === $image_url ) {
-					continue;
-				}
+			if ( is_object( $image_info ) && $image_info->original_url === $image_url ) {
+				continue;
 			}
 		}
 		$image_infos = likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
@@ -147,7 +145,7 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 	// delete image_info in image_infos collection if the image is deleted from the draft.
 	if ( ! empty( $image_infos ) ) {
 		foreach ( $image_infos as $key => $value ) {
-			if ( ! in_array( $key, $current_image_urls, true ) ) {
+			if ( ! isset( $current_image_urls->$key ) ) {
 				// remove the image from WordPress.
 				unset( $image_infos->$key );
 			}
@@ -164,11 +162,7 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
  * @param array|  $params post options for addtional components.
  */
 function likecoin_replace_matters_attachment_url( $content, $params ) {
-	global $post;
-	if ( ! $post ) {
-		return;
-	}
-	$post_id = $post->ID;
+	$post_id = $params ['post_id'];
 	if ( ! $content ) {
 		return $content;
 	}

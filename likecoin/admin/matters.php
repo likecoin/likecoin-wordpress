@@ -185,7 +185,10 @@ function likecoin_get_post_tags_for_matters( $post ) {
  */
 function likecoin_filter_matters_post_content( $post ) {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
-	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ) );
+	$params = array(
+		'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ),
+		'post_id'         => $post->ID,
+	);
 	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$content = apply_filters( 'the_content', $post->post_content );
 	$content = likecoin_replace_matters_attachment_url( $content, $params );
@@ -462,7 +465,7 @@ function likecoin_add_matters_admin_hook() {
 	if ( likecoin_check_should_hook_matters_publish() ) {
 		add_action( 'publish_post', 'likecoin_publish_to_matters', 10, 2 );
 	} elseif ( likecoin_check_should_hook_matters_draft() ) {
-		add_action( 'publish_post', 'likecoin_save_to_matters', 10, 3 );
+		add_action( 'publish_post', 'likecoin_save_to_matters', 10, 2 );
 	}
 }
 
