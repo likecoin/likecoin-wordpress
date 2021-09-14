@@ -211,13 +211,14 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	$content          = likecoin_filter_matters_post_content( $post );
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
 	$tags             = likecoin_get_post_tags_for_matters( $post );
 
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( ! isset( $draft['id'] ) ) {
 			unset( $matters_info['draft_id'] );
 			$matters_draft_id = null;
@@ -227,24 +228,18 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 			$matters_info['draft_id'] = $matters_draft_id;
 			update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 		}
-		// incl. url form images after getting draft_id.
-		likecoin_upload_url_image_to_matters( $post_id, $post );
-		$content = likecoin_filter_matters_post_content( $post );
-		// upload to matters again.
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
 	if ( ! $matters_draft_id ) {
-		$draft = $api->new_draft( $title, $content, $tags );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->new_draft( $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		$matters_info['draft_id'] = $draft['id'];
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-		// incl. url form images after getting draft_id.
 		likecoin_upload_url_image_to_matters( $post_id, $post );
-		$content = likecoin_filter_matters_post_content( $post );
-		// upload to matters again.
+		$content          = likecoin_filter_matters_post_content( $post );
 		$matters_draft_id = $draft['id'];
 		$draft            = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
@@ -268,12 +263,12 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	$content          = likecoin_filter_matters_post_content( $post );
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
 	$tags             = likecoin_get_post_tags_for_matters( $post );
 	$api              = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
-		$draft = $api->new_draft( $title, $content, $tags );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->new_draft( $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
@@ -281,23 +276,18 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 		$matters_draft_id         = $draft['id'];
 		$matters_info['draft_id'] = $matters_draft_id;
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-		// incl. url form images after getting draft_id.
 		likecoin_upload_url_image_to_matters( $post_id, $post );
 		$content = likecoin_filter_matters_post_content( $post );
-		// upload to matters again.
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	} else {
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-		// incl. url form images after getting draft_id.
-		likecoin_upload_url_image_to_matters( $post_id, $post );
-		$content = likecoin_filter_matters_post_content( $post );
-		// upload to matters again.
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
 	$res = $api->publish_draft( $matters_draft_id );
 	if ( isset( $res['error'] ) ) {
@@ -383,13 +373,13 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
  */
 function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
 	global $post;
-	$post_id              = $post->ID;
-	$file_path            = $image_url;
-	$file_path_components = preg_split( '#[.]#', $file_path );
-	$file_mime_type       = 'image/' . end( $file_path_components );
-	$filename             = basename( $file_path );
-	$parent_post          = $post_id;
-	$matters_info         = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
+	$post_id        = $post->ID;
+	$file_path      = $image_url;
+	$headers        = get_headers( $file_path, true );
+	$file_mime_type = $headers['Content-Type'];
+	$filename       = basename( $file_path );
+	$parent_post    = $post_id;
+	$matters_info   = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
 	if ( ! $matters_info ) {
 		$matters_info = array(
 			'type' => 'post',
