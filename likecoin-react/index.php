@@ -12,7 +12,28 @@ if (!defined('ABSPATH') ) exit; // Exit if user type url directly
 class LikecoinReact {
     function __construct() {
 		add_action('admin_menu', array($this, 'adminPage'));
+        add_action('rest_api_init', array($this,'getRestAPI'));
 	}
+    function likecoin_react_rest_get_options( $request ) {
+        $adminEmail = get_option('admin_email');
+        $result['code'] = 200;
+        $result['data'] = $adminEmail;
+        $result['message'] = 'success yeah!';
+        return $result;
+    }
+    function getRestAPI() {
+        register_rest_route(
+                'likecoin-react/v1',
+                '/main-settingpage',
+                array(
+                    'methods'             => 'GET',
+                    'callback'            => array($this, 'likecoin_react_rest_get_options'),
+                )
+            );
+    }
+    function likecoin_react_is_ok() {
+        return true; // TODO
+    }
     function adminPage() {
         global $likecoinAdminMainPage;
         $likecoinAdminMainPage = add_menu_page(
@@ -70,7 +91,17 @@ class LikecoinReact {
         }
         // create a window.rpReactPlugin which can be accessed by JavaScript.
         wp_localize_script('react-plugin-0', 'rpReactPlugin',
-		array('appSelector' => '#wpbody #wpbody-content'));
+		    array('appSelector' => '#wpbody #wpbody-content') // only works if the script is enqueued! (it's enqueue above with react-plugin-$index 而 $index 為零)
+        );
+        wp_localize_script('react-plugin-0','wpApiSettings',
+            array(
+				'root'    => esc_url_raw( rest_url() ),
+				'siteurl' => get_site_url(),
+				'nonce'   => wp_create_nonce( 'wp_rest' ),
+				// 'postId'  => $post_id,
+			)
+            );
+        
 	}
 
 }
