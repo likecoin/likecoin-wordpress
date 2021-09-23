@@ -54,17 +54,28 @@ class LikecoinReact {
     function adminPage() {
         global $likecoinAdminMainPage;
         $likecoinAdminMainPage = add_menu_page(
-			'LikecoinReact Settings',
-   			'LikecoinReact',
+			'top-menu-title',
+   			'likecoin-main-page',
 			'manage_options',
-			'likecoinReact-main-settings-page',
-			array($this, 'show_likecoin_admin_main_page_content'), // load on EVERY admin pages
+			'likecoin-react-main', // slug name
+			[$this, 'show_likecoin_admin_main_page_content'], // load on EVERY admin pages
 			'',
 			50
 		);
         // load the script only on likecoinAdminMainPage.
         // below JS will overwrite show_likecoin_admin_main_page_content's effect.
-		add_action('load-' . $likecoinAdminMainPage, array($this,'load_admin_js'));
+		add_action('load-' . $likecoinAdminMainPage, [$this,'load_admin_js']);
+
+        global $likecoinSubmenuPage;
+        $likecoinSubmenuPage = add_submenu_page(
+            'likecoin-react-main', // parent slug name
+            'submenu1-page-title',
+            'submenu1-menu-title',
+            'manage_options',
+            '/likecoin-react-main#/submenu1', // submenu slug name (url)
+            [$this, 'load_admin_js']
+        );
+        add_action('load-' . $likecoinSubmenuPage, [$this, 'load_admin_js']);
 	}
     function show_likecoin_admin_main_page_content() {
         ?> 
@@ -72,7 +83,7 @@ class LikecoinReact {
         <?php
     }
     function load_admin_js() {
-		add_action('admin_enqueue_scripts', array($this,'enqueue_admin_js'), 13);
+		add_action('admin_enqueue_scripts', [$this,'enqueue_admin_js'], 13);
 	}
     function get_js_files ($file_string) {
             return pathinfo($file_string, PATHINFO_EXTENSION) === 'js';
@@ -98,19 +109,19 @@ class LikecoinReact {
         }
         $assets_files = $files_data->entrypoints;
         
-        $js_files = array_filter($assets_files, array($this, 'get_js_files'));
-        $css_files = array_filter($assets_files, array($this, 'get_css_files'));
+        $js_files = array_filter($assets_files, [$this, 'get_js_files']);
+        $css_files = array_filter($assets_files, [$this, 'get_css_files']);
         foreach( $css_files as $index => $css_file) {
             wp_enqueue_style('react-plugin-' . $index, $react_app_build_url . $css_file);
         }
         foreach( $js_files as $index => $js_file) {
-            wp_enqueue_script('react-plugin-'. $index, $react_app_build_url . $js_file, ['wp-api-request'], 1, true);
+            wp_enqueue_script('react-plugin-'. $index, $react_app_build_url . $js_file, ['wp-api-request'], 1, true); // add wp-api-request as dependency so React can access window.wpApiSettings
         }
         // create a window.rpReactPlugin which can be accessed by JavaScript.
         wp_localize_script('react-plugin-0', 'rpReactPlugin',
 		    array('appSelector' => '#wpbody #wpbody-content') // only works if the script is enqueued! (it's enqueue above with react-plugin-$index 而 $index 為零)
         );
-        
+
 	}
 
 }
