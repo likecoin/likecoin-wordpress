@@ -12,22 +12,39 @@ if (!defined('ABSPATH') ) exit; // Exit if user type url directly
 class LikecoinReact {
     function __construct() {
 		add_action('admin_menu', array($this, 'adminPage'));
-        add_action('rest_api_init', array($this,'getRestAPI'));
+        add_action('rest_api_init', array($this,'getAdminMainPageAPI'));
 	}
-    function likecoin_react_rest_get_options( $request ) {
-        $adminEmail = get_option('admin_email');
+    function testGetPostRequests( $request ) {
+        $publishOptions = get_option('lc_publish_options'); // get from DB
+        $params  = $request->get_json_params(); // 一次 get 很多 params. 若只拿一個：$request['user_email']
+        $likerId = $params['likerId'];
+        $publishOptions['site_matters_user']['matters_id'] = $likerId;
+        
+        update_option('lc_publish_options', $publishOptions);
+        $publishOptions2 = get_option('lc_publish_options');
+        $newId = $publishOptions2['site_matters_user']['matters_id'];
         $result['code'] = 200;
-        $result['data'] = $adminEmail;
+        $result['data'] = $newId;
         $result['message'] = 'success yeah!';
-        return $result;
+        return rest_ensure_response( $result ); // ensure REST valid format even if it's null.
     }
-    function getRestAPI() {
+    function getAdminMainPageAPI() {
         register_rest_route(
-                'likecoin-react/v1',
+                'likecoin-react/v1', // namespace
                 '/main-settingpage',
                 array(
-                    'methods'             => 'GET',
-                    'callback'            => array($this, 'likecoin_react_rest_get_options'),
+                    'methods'             => 'POST',
+                    'callback'            => array($this, 'testGetPostRequests'),
+                    // 'args' => [
+                    //     'user_email'=> [
+                    //         'required' => false,
+                    //         'type' => 'string',
+                    //         // TODO: validate_callback (valid) & sanitize_callback (safe)
+                    //     ]
+                    // ],
+                    'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
                 )
             );
     }
@@ -87,20 +104,12 @@ class LikecoinReact {
             wp_enqueue_style('react-plugin-' . $index, $react_app_build_url . $css_file);
         }
         foreach( $js_files as $index => $js_file) {
-            wp_enqueue_script('react-plugin-'. $index, $react_app_build_url . $js_file, array(), 1, true);
+            wp_enqueue_script('react-plugin-'. $index, $react_app_build_url . $js_file, ['wp-api-request'], 1, true);
         }
         // create a window.rpReactPlugin which can be accessed by JavaScript.
         wp_localize_script('react-plugin-0', 'rpReactPlugin',
 		    array('appSelector' => '#wpbody #wpbody-content') // only works if the script is enqueued! (it's enqueue above with react-plugin-$index 而 $index 為零)
         );
-        wp_localize_script('react-plugin-0','wpApiSettings',
-            array(
-				'root'    => esc_url_raw( rest_url() ),
-				'siteurl' => get_site_url(),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				// 'postId'  => $post_id,
-			)
-            );
         
 	}
 
