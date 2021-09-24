@@ -14,17 +14,26 @@ class LikecoinReact {
 		add_action('admin_menu', array($this, 'adminPage'));
         add_action('rest_api_init', array($this,'getAdminMainPageAPI'));
 	}
-    function testGetPostRequests( $request ) {
-        $publishOptions = get_option('lc_publish_options'); // get from DB
-        $params  = $request->get_json_params(); // 一次 get 很多 params. 若只拿一個：$request['user_email']
-        $likerId = $params['likerId'];
-        $publishOptions['site_matters_user']['matters_id'] = $likerId;
+    function getPluginOptions( $request ) {
+        $pluginOptions = get_option('lc_plugin_options');
+
+        $displayOverridepre = $pluginOptions['button_display_author_override'];
         
-        update_option('lc_publish_options', $publishOptions);
-        $publishOptions2 = get_option('lc_publish_options');
-        $newId = $publishOptions2['site_matters_user']['matters_id'];
+        $params  = $request->get_json_params(); // 一次 get 很多 params. 若只拿一個：$request['user_email'].
+        
+        $siteLikerIdEnabled = $params['siteLikerIdEnabled'];
+        $displayOption = $params['displayOption'];
+        $perPostOptionEnabled = $params['perPostOptionEnabled'];
+
+        $pluginOptions['site_likecoin_id_enabled'] = $siteLikerIdEnabled;
+        $pluginOptions['button_display_option'] = $displayOption;
+        $pluginOptions['button_display_author_override'] = $perPostOptionEnabled;
+
+        update_option('lc_plugin_options', $pluginOptions);
+        $pluginOptions = get_option('lc_plugin_options'); // use the updated data as response.
+
         $result['code'] = 200;
-        $result['data'] = $newId;
+        $result['data'] = $pluginOptions;
         $result['message'] = 'success yeah!';
         return rest_ensure_response( $result ); // ensure REST valid format even if it's null.
     }
@@ -34,14 +43,7 @@ class LikecoinReact {
                 '/main-settingpage',
                 array(
                     'methods'             => 'POST',
-                    'callback'            => array($this, 'testGetPostRequests'),
-                    // 'args' => [
-                    //     'user_email'=> [
-                    //         'required' => false,
-                    //         'type' => 'string',
-                    //         // TODO: validate_callback (valid) & sanitize_callback (safe)
-                    //     ]
-                    // ],
+                    'callback'            => [$this, 'getPluginOptions'],
                     'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},
@@ -55,9 +57,9 @@ class LikecoinReact {
         global $likecoinAdminMainPage;
         $likecoinAdminMainPage = add_menu_page(
 			'top-menu-title',
-   			'likecoin-main-page',
+   			'Plugin Setting Newy',
 			'manage_options',
-			'likecoin-react-main', // slug name
+			'likecoin-react', // slug name
 			[$this, 'show_likecoin_admin_main_page_content'], // load on EVERY admin pages
 			'',
 			50
@@ -68,11 +70,11 @@ class LikecoinReact {
 
         global $likecoinSubmenuPage;
         $likecoinSubmenuPage = add_submenu_page(
-            'likecoin-react-main', // parent slug name
+            'likecoin-react', // parent slug name
             'submenu1-page-title',
-            'submenu1-menu-title',
+            'Likecoin Button Newy',
             'manage_options',
-            '/likecoin-react-main#/submenu1', // submenu slug name (url)
+            '/likecoin-react#/likecoin-button', // submenu slug name (url)
             [$this, 'load_admin_js']
         );
         add_action('load-' . $likecoinSubmenuPage, [$this, 'load_admin_js']);

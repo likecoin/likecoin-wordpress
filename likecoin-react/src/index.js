@@ -4,9 +4,9 @@ import { HashRouter as Router } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 
+// for wordpress to show
 const reactAppData = window.rpReactPlugin || {};
 const { appSelector } = reactAppData;
-console.log(appSelector);
 const appAnchorElement = document.querySelector(appSelector);
 if (appAnchorElement) {
   ReactDOM.render(
@@ -14,3 +14,14 @@ if (appAnchorElement) {
     <App />
   </Router>, appAnchorElement);
 }
+
+// for npm run start development
+// const root = document.querySelector('#root');
+// if (root) {
+//   ReactDOM.render(
+//     <Router>
+//       <App />
+//     </Router>,
+//     root
+//   );
+// }
