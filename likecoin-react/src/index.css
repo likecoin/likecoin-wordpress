@@ -12,7 +12,51 @@ code {
     monospace;
 }
 
+h1 {
+  text-align: left;
+}
+
+tr {
+  text-align: left;
+}
+
+
 .optionTitle {
-  color: red;
+  color: black;
   font-weight: bold;
+  width: 200px;
+  padding: 20px 10px 20px 0px;
+}
+
+.optionDetails {
+  color: black;
+  font-weight: normal;
+  padding: 15px 10px;
+}
+
+.likecoinTable th {
+  height: 40px;
+  padding: 0 14px;
+  vertical-align: middle;
+  background: white;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.likecoinTable td {
+  height: 64px;
+  padding: 8px 14px;
+  font-size: 14px;
+}
+
+.likecoinSubmitButton {
+  min-width: 256px;
+  padding: 8px 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  border: 0;
+  background-color: #28646e;
+  font-size: 24px;
 }

@@ -2,25 +2,23 @@ import { useRef, useState } from "react";
 import SubmitButton from "./SubmitButton";
 import CheckBox from "./CheckBox";
 import SelectDropDown from "./SelectDropDown";
+import Section from "./Section";
+import LikecoinIDTable from "./LikecoinIDTable";
 
 function InputForm(props) {
-  const likerIdRef = useRef();
   const siteLikerIdEnabledRef = useRef();
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
-  // const [likerIdFilled, setLikerId] = useState(false);
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(false);
   const [displayOptionSelected, selectDisplayOption] = useState('Nonee');
   const [perPostOptionEnabled, allowPerPostOption] = useState(false);
   
   function submitHandler(event) {
     event.preventDefault();
-    const likerId = likerIdRef.current.value;
     const siteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
     const displayOption = displayOptionRef.current.value;
     const perPostOptionEnabled = perPostOptionEnabledRef.current.checked;
     const data = {
-      likerId,
       siteLikerIdEnabled,
       displayOption,
       perPostOptionEnabled,
@@ -31,10 +29,9 @@ function InputForm(props) {
 
   return (
     <div>
+      <h1> LikeCoin </h1>
       <form onSubmit={submitHandler}>
-        <label>Input Your Liker ID</label>
-        <input type="text" required id="likerId" ref={likerIdRef} />
-        <br />
+        <Section title={"Site Liker ID"} />
         <CheckBox
           checked={siteLikerIdEnabled}
           handleCheck={enableSiteLikerId}
@@ -42,14 +39,14 @@ function InputForm(props) {
           details="Override all LikeCoin button with site Liker ID"
           checkRef={siteLikerIdEnabledRef}
         />
-        <br />
+        {siteLikerIdEnabled ? <LikecoinIDTable /> : ""}
+        <Section title={"Site LikeCoin button display setting"} />
         <SelectDropDown
           selected={displayOptionSelected}
           handleSelect={selectDisplayOption}
           title="Display option"
           selectRef={displayOptionRef}
         />
-        <br />
         <CheckBox
           checked={perPostOptionEnabled}
           handleCheck={allowPerPostOption}
@@ -57,7 +54,6 @@ function InputForm(props) {
           details="Allow editors to customize display setting per post"
           checkRef={perPostOptionEnabledRef}
         />
-        <br />
         <SubmitButton />
       </form>
       {siteLikerIdEnabled ? <p>Liker ID YES</p> : <p>Liker ID No</p>}

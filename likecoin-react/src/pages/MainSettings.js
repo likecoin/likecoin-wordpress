@@ -21,7 +21,6 @@ function MainSettings() {
     }
   return (
     <div>
-      <p>Hi from Main Settings page! :) </p>
       <InputForm onAddInput={postDataToWordpress} />
     </div>
   );

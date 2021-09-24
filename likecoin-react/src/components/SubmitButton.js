@@ -1,5 +1,9 @@
 function SubmitButton() {
-    return <button>Submit</button>;
+    return (
+      <tr style={{ textAlign: "left" }}>
+        <button className="likecoinSubmitButton">Submit</button>
+      </tr>
+    );
 }
 
 export default SubmitButton;
