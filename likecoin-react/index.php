@@ -15,7 +15,7 @@ class LikecoinReact {
         add_action('rest_api_init', array($this,'getAdminMainPageAPI'));
 	}
     function getPluginOptions( $request ) {
-        $pluginOptions = get_option('lc_plugin_options');
+        $pluginOptions = get_option('lc_plugin_options_new');
 
         $displayOverridepre = $pluginOptions['button_display_author_override'];
         
@@ -29,8 +29,8 @@ class LikecoinReact {
         $pluginOptions['button_display_option'] = $displayOption;
         $pluginOptions['button_display_author_override'] = $perPostOptionEnabled;
 
-        update_option('lc_plugin_options', $pluginOptions);
-        $pluginOptions = get_option('lc_plugin_options'); // use the updated data as response.
+        update_option('lc_plugin_options_new', $pluginOptions);
+        $pluginOptions = get_option('lc_plugin_options_new'); // use the updated data as response.
 
         $result['code'] = 200;
         $result['data'] = $pluginOptions;
