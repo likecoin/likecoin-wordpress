@@ -3,7 +3,7 @@ import SubmitButton from "./SubmitButton";
 import CheckBox from "./CheckBox";
 import SelectDropDown from "./SelectDropDown";
 import Section from "./Section";
-import LikecoinIDTable from "./LikecoinIDTable";
+import LikecoinInfoTable from "./LikecoinInfoTable";
 
 function InputForm(props) {
   const siteLikerIdEnabledRef = useRef();
@@ -13,8 +13,8 @@ function InputForm(props) {
   const [displayOptionSelected, selectDisplayOption] = useState('Nonee');
   const [perPostOptionEnabled, allowPerPostOption] = useState(false);
   
-  function submitHandler(event) {
-    event.preventDefault();
+  function submitHandler(e) {
+    e.preventDefault();
     const siteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
     const displayOption = displayOptionRef.current.value;
     const perPostOptionEnabled = perPostOptionEnabledRef.current.checked;
@@ -39,7 +39,7 @@ function InputForm(props) {
           details="Override all LikeCoin button with site Liker ID"
           checkRef={siteLikerIdEnabledRef}
         />
-        {siteLikerIdEnabled ? <LikecoinIDTable /> : ""}
+        {siteLikerIdEnabled ? <LikecoinInfoTable /> : ""}
         <Section title={"Site LikeCoin button display setting"} />
         <SelectDropDown
           selected={displayOptionSelected}
