@@ -290,7 +290,6 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
-		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
 	}
 	$res = $api->publish_draft( $matters_draft_id );
 	if ( isset( $res['error'] ) ) {
