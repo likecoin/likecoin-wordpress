@@ -97,10 +97,72 @@ function likecoin_append_footer_link_element( $dom_document ) {
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
+ * @param string|  $post_id raw post HTML content.
+ * @param WP_Post| $post Post object.
+ */
+function likecoin_upload_url_image_to_matters( $post_id, $post ) {
+	if ( ! $post ) {
+		return;
+	}
+	$content = $post->post_content;
+	if ( ! $content ) {
+		return $content;
+	}
+	$dom_document          = new DOMDocument();
+	$libxml_previous_state = libxml_use_internal_errors( true );
+	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
+	if ( false === $dom_content ) {
+		return $content;
+	}
+	$images             = $dom_document->getElementsByTagName( 'img' );
+	$current_image_urls = new stdClass();
+	$image_infos        = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+	foreach ( $images as $image ) {
+		$image_infos              = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+		$url                      = $image->getAttribute( 'src' );
+		$current_image_urls->$url = $image;
+		$image_url                = $url;
+		// if it's uploaded image, then skip likecoin_post_url_image_to_matters.
+		$classes       = $image->getAttribute( 'class' );
+		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
+		if ( ! $attachment_id && $classes && preg_match( '/wp-image-([0-9]+)/i', $classes, $class_id ) && absint( $class_id[1] ) ) {
+			$attachment_id = $class_id[1];
+		}
+		if ( $attachment_id ) {
+			continue;
+		}
+		// check if $image_url already existed in the post.
+		if ( ! empty( $image_infos ) && isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
+			$image_info = $image_infos->$image_url;
+			if ( is_object( $image_info ) && $image_info->original_url === $image_url ) {
+				continue;
+			}
+		}
+		$image_infos = likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
+	}
+	// delete image_info in image_infos collection if the image is deleted from the draft.
+	if ( ! empty( $image_infos ) ) {
+		foreach ( $image_infos as $key => $value ) {
+			if ( ! isset( $current_image_urls->$key ) ) {
+				// remove the image from WordPress.
+				unset( $image_infos->$key );
+			}
+		}
+	}
+	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
+	// TODO: remove the image from matters.
+}
+
+/**
+ * Parse and modify post HTML to replace Matters asset url and div/class standard
+ *
  * @param string| $content raw post HTML content.
  * @param array|  $params post options for addtional components.
  */
 function likecoin_replace_matters_attachment_url( $content, $params ) {
+	$post_id = $params ['post_id'];
 	if ( ! $content ) {
 		return $content;
 	}
@@ -134,8 +196,22 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 		}
 		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
+			// if its url image.
+			$image_infos = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+			if ( ! empty( $image_infos ) && isset( $image_infos->$url ) ) {
+				if ( isset( $image_infos->$url ) ) {
+					$image_info = $image_infos->$url;
+					if ( is_object( $image_info ) ) {
+						if ( $image_info->original_url === $url ) {
+							$image->setAttribute( 'src', $image_info->matters_url );
+							$image->setAttribute( 'data-asset-id', $image_info->matters_attachment_id );
+						}
+					}
+				}
+			}
 		}
 		if ( $attachment_id ) {
+			// if its uploaded image.
 			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
 			if ( isset( $matters_info['url'] ) ) {
 				$image->setAttribute( 'src', $matters_info['url'] );
