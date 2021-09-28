@@ -14,7 +14,7 @@ class LikecoinReact {
 		add_action('admin_menu', array($this, 'adminPage'));
         add_action('rest_api_init', array($this,'getAdminMainPageAPI'));
 	}
-    function getPluginOptions( $request ) {
+    function postPluginOptions( $request ) {
         $pluginOptions = get_option('lc_plugin_options_new');
 
         $displayOverridepre = $pluginOptions['button_display_author_override'];
@@ -36,21 +36,39 @@ class LikecoinReact {
 
         $result['code'] = 200;
         $result['data'] = $pluginOptions;
-        $result['message'] = 'success yeah!';
+        $result['message'] = 'Successfully POST!';
+        return rest_ensure_response( $result ); // ensure REST valid format even if it's null.
+    }
+    function getPluginOptions( $request ) {
+        $pluginOptions = get_option('lc_plugin_options_new');
+        $result['code'] = 200;
+        $result['data'] = $pluginOptions;
+        $result['message'] = 'Successfully GET!';
         return rest_ensure_response( $result ); // ensure REST valid format even if it's null.
     }
     function getAdminMainPageAPI() {
         register_rest_route(
-                'likecoin-react/v1', // namespace
-                '/main-settingpage',
-                array(
-                    'methods'             => 'POST',
-                    'callback'            => [$this, 'getPluginOptions'],
-                    'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
-					},
-                )
-            );
+            'likecoin-react/v1', // namespace
+            '/main-settingpage',
+            array(
+                'methods'             => 'POST',
+                'callback'            => [$this, 'postPluginOptions'],
+                'permission_callback' => function () {
+                    return current_user_can( 'manage_options' );
+                },
+            )
+        );
+        register_rest_route(
+            'likecoin-react/v1', // namespace
+            '/main-settingpage',
+            array(
+                'methods'             => 'GET',
+                'callback'            => [$this, 'getPluginOptions'],
+                'permission_callback' => function () {
+                    return current_user_can( 'manage_options' );
+                },
+            )
+        );
     }
     function likecoin_react_is_ok() {
         return true; // TODO

@@ -1,32 +1,49 @@
-import { useRef, useState } from "react";
+import { useRef, useContext, useState, useEffect } from "react";
 import SubmitButton from "./SubmitButton";
 import CheckBox from "./CheckBox";
 import SelectDropDown from "./SelectDropDown";
 import Section from "./Section";
 import LikecoinInfoTable from "./LikecoinInfoTable";
+import LikerInfoContext from "../context/likerInfo-context";
 
 function InputForm(props) {
+  const ctx = useContext(LikerInfoContext); 
+  console.log("ctx at InputForm: ", ctx);
   const siteLikerIdEnabledRef = useRef();
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
   const likerInfosObj = {};
-  const [siteLikerIdEnabled, enableSiteLikerId] = useState(false);
-  const [displayOptionSelected, selectDisplayOption] = useState('Nonee');
-  const [perPostOptionEnabled, allowPerPostOption] = useState(false);
-  
+  const [siteLikerIdEnabled, enableSiteLikerId] = useState(
+    ctx.DBsiteLikerIdEnabled
+  );
+  const [displayOptionSelected, selectDisplayOption] = useState(
+    ctx.DBdisplayOptionSelected
+  );
+  const [perPostOptionEnabled, allowPerPostOption] = useState(
+    ctx.DBperPostOptionEnabled
+  );
+
+  useEffect(() => {
+    enableSiteLikerId(ctx.DBsiteLikerIdEnabled);
+    selectDisplayOption(ctx.DBdisplayOptionSelected);
+    allowPerPostOption(ctx.DBperPostOptionEnabled);
+  }, [
+    ctx.DBsiteLikerIdEnabled,
+    ctx.DBdisplayOptionSelected,
+    ctx.DBperPostOptionEnabled,
+  ]);
   function submitHandler(e) {
     e.preventDefault();
     const siteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
     const displayOption = displayOptionRef.current.value;
     const perPostOptionEnabled = perPostOptionEnabledRef.current.checked;
-    console.log("likerInfosObj: ", likerInfosObj);
     const data = {
       siteLikerIdEnabled,
       displayOption,
       perPostOptionEnabled,
       likerInfos: likerInfosObj,
     };
-    console.log("data to store:", data);
+    console.log("data to store in Wordpress DB:", data);
     props.onAddInput(data);
   }
 

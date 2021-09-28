@@ -1,17 +1,33 @@
-import { useRef, useState, useEffect, useCallback, useMemo } from "react";
-import Test from "./Test";
+import { useRef, useContext, useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
+import Test from "./Test";
+import LikerInfoContext from "../context/likerInfo-context";
+
 function LikecoinInfoTable(props) {
-  const likerIdRef = useRef();
-  const [likerIdValue, getLikerIdValue] = useState("");
-  const [likerDisplayName, getLikerDisplayName] = useState("");
-  const [likerWalletAddress, getLikerWalletAddress] = useState("");
-  const [likerAvatar, getLikerAvatar] = useState("");
+  const ctx = useContext(LikerInfoContext); 
+  console.log("ctx at LikecoinInfoTable: ", ctx); // undefined !?
+  const [likerIdValue, getLikerIdValue] = useState(ctx.DBLikerId);
+  const [likerDisplayName, getLikerDisplayName] = useState(ctx.DBdisplayName);
+  const [likerWalletAddress, getLikerWalletAddress] = useState(ctx.DBwallet);
+  const [likerAvatar, getLikerAvatar] = useState(ctx.DBavatar);
   const [isLoading, setIsLoading] = useState(false);
-  
-  const fetchLikeCoinID = useMemo(()=>
-    debounce(async (likerId) => {
+  const likerIdRef = useRef();
+  function handleChange(e) {
+    const typingLikerId = e.target.value;
+    getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
+  }
+  useEffect(() => {
+    getLikerIdValue(ctx.DBLikerId);
+    getLikerDisplayName(ctx.DBdisplayName);
+    getLikerWalletAddress(ctx.DBwallet);
+    getLikerAvatar(ctx.DBavatar);
+  }, [ctx.DBLikerId, ctx.DBdisplayName, ctx.DBwallet, ctx.DBavatar]);
+
+  // Update Data
+  const fetchLikeCoinID = useMemo(
+    () =>
+      debounce(async (likerId) => {
         setIsLoading(true);
         try {
           const response = await axios.get(
@@ -20,10 +36,10 @@ function LikecoinInfoTable(props) {
           getLikerDisplayName(response.data.displayName);
           getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
           getLikerAvatar(response.data.avatar);
-          
-          props.likerInfos.likerDisplayName = response.data.displayName;
-          props.likerInfos.likerWalletAddress = response.data.cosmosWallet;
-          props.likerInfos.likerAvatar = response.data.avatar;
+          props.likerInfos.likecoin_id = response.data.user;
+          props.likerInfos.display_name = response.data.displayName;
+          props.likerInfos.wallet = response.data.cosmosWallet;
+          props.likerInfos.avatar = response.data.avatar;
           console.log("props: ", props);
           console.log("response: ", response);
           setIsLoading(false);
@@ -32,16 +48,12 @@ function LikecoinInfoTable(props) {
           setIsLoading(false);
         }
       }, 500),
-    [props]
+    []
   );
-  function handleChange(e) {
-    const typingLikerId = e.target.value;
-    getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
-  }
-
   useEffect(() => {
     fetchLikeCoinID(likerIdValue);
   }, [fetchLikeCoinID, likerIdValue]);
+
 
   return (
     <div>
@@ -90,11 +102,13 @@ function LikecoinInfoTable(props) {
           </label>
         </tr>
       </form>
-      {/* <td>{likerIdValue.length > 0 && likerIdValue.length} </td> */}
       <td>{likerIdValue.length !== 0 && isLoading && "loading..."} </td>
-      <td>{likerIdValue.length !== 0 && !isLoading && !likerDisplayName && "Liker ID not found"} </td>
-      
-      
+      <td>
+        {likerIdValue.length !== 0 &&
+          !isLoading &&
+          !likerDisplayName &&
+          "Liker ID not found"}
+      </td>
     </div>
   );
 }

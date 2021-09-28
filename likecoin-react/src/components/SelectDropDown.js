@@ -7,7 +7,7 @@ function SelectDropDown(props) {
       <label>
         <th className="optionTitle">{props.title}</th>
         <th>
-          <select ref={props.selectRef} onChange={handleSelect}>
+          <select ref={props.selectRef} onChange={handleSelect} value={props.selected}>
             <option> Page and Post</option>
             <option> Post Only</option>
             <option> None</option>
