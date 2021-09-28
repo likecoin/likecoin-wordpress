@@ -1,6 +1,7 @@
-import { useRef, useState, useEffect, useCallback } from "react";
+import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Test from "./Test";
 import axios from "axios";
+import { debounce } from 'lodash';
 // import SubmitButton from "./SubmitButton";
 function LikecoinInfoTable(props) {
   const likerIdRef = useRef();
@@ -9,25 +10,25 @@ function LikecoinInfoTable(props) {
   const [likerWalletAddress, getLikerWalletAddress] = useState("");
   const [likerAvatar, getLikerAvatar] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const fetchLikeCoinID = useCallback(
-    async (likerId) => {
-      setIsLoading(true);
-      console.log(`start fetching ${likerId}`);
-      try {
-        const response = await axios.get(
-          `https://api.like.co/users/id/${likerId}/min`
-        );
-        getLikerDisplayName(response.data.displayName);
-        getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
-        getLikerAvatar(response.data.avatar);
-        console.log("response: ", response);
-        setIsLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
-    },
-    // we want to re-create the function because the value of likerIdValue can change. When it changes, we want to recreate fetchlikerID function. rather than use the old value for the function.
-    [likerIdValue] // Don't need likerIdValue. dep is not changing with App() component re-rendered unless likerIdValue changed
+  
+  const fetchLikeCoinID = useMemo(()=>
+    debounce(async (likerId) => {
+        setIsLoading(true);
+        try {
+          const response = await axios.get(
+            `https://api.like.co/users/id/${likerId}/min`
+          );
+          getLikerDisplayName(response.data.displayName);
+          getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
+          getLikerAvatar(response.data.avatar);
+          console.log("response: ", response);
+          setIsLoading(false);
+        } catch (error) {
+          console.log(error);
+          setIsLoading(false);
+        }
+      }, 500),
+    []
   );
   function handleChange(e) {
     const typingLikerId = e.target.value;
@@ -35,17 +36,8 @@ function LikecoinInfoTable(props) {
   }
 
   useEffect(() => {
-    setTimeout(() => {
-      console.log("waiting..");
-      fetchLikeCoinID(likerIdValue);
-    }, 500);
-    return () => {
-      console.log("start clean up"); // CleanUp function to re-start the timer
-    };
-  }, [fetchLikeCoinID]); // useEffect(callback, dep) callback runs when dep changes.
-  // but fetchLikeCoinID() will always change when the component re-rendered if we do not control it with useCallback.
-  // fetchLikeCoinID() change will cause the component re-rendered-> re-render will cause fetchLikeCoinID() to change again--> infinite loop.
-  // hence, we need useCallback to make sure that fetchLikeCoinID() don't always change.
+    fetchLikeCoinID(likerIdValue);
+  }, [fetchLikeCoinID, likerIdValue]);
 
   return (
     <div>
@@ -95,8 +87,10 @@ function LikecoinInfoTable(props) {
         </tr>
       </form>
       {/* <td>{likerIdValue.length > 0 && likerIdValue.length} </td> */}
-      <td>{likerIdValue.length === 0 && isLoading && "loading..."} </td>
-      <td>{likerIdValue.length === 0 && !isLoading && "User not found"} </td>
+      <td>{likerIdValue.length !== 0 && isLoading && "loading..."} </td>
+      <td>{likerIdValue.length !== 0 && !isLoading && !likerDisplayName && "Liker ID not found"} </td>
+      
+      
     </div>
   );
 }
