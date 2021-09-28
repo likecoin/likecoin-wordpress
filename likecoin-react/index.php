@@ -24,10 +24,12 @@ class LikecoinReact {
         $siteLikerIdEnabled = $params['siteLikerIdEnabled'];
         $displayOption = $params['displayOption'];
         $perPostOptionEnabled = $params['perPostOptionEnabled'];
+        $likerInfos = $params['likerInfos'];
 
         $pluginOptions['site_likecoin_id_enabled'] = $siteLikerIdEnabled;
         $pluginOptions['button_display_option'] = $displayOption;
         $pluginOptions['button_display_author_override'] = $perPostOptionEnabled;
+        $pluginOptions['site_likecoin_user'] = $likerInfos;
 
         update_option('lc_plugin_options_new', $pluginOptions);
         $pluginOptions = get_option('lc_plugin_options_new'); // use the updated data as response.

@@ -2,7 +2,6 @@ import { useRef, useState, useEffect, useCallback, useMemo } from "react";
 import Test from "./Test";
 import axios from "axios";
 import { debounce } from 'lodash';
-// import SubmitButton from "./SubmitButton";
 function LikecoinInfoTable(props) {
   const likerIdRef = useRef();
   const [likerIdValue, getLikerIdValue] = useState("");
@@ -21,6 +20,11 @@ function LikecoinInfoTable(props) {
           getLikerDisplayName(response.data.displayName);
           getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
           getLikerAvatar(response.data.avatar);
+          
+          props.likerInfos.likerDisplayName = response.data.displayName;
+          props.likerInfos.likerWalletAddress = response.data.cosmosWallet;
+          props.likerInfos.likerAvatar = response.data.avatar;
+          console.log("props: ", props);
           console.log("response: ", response);
           setIsLoading(false);
         } catch (error) {
@@ -28,7 +32,7 @@ function LikecoinInfoTable(props) {
           setIsLoading(false);
         }
       }, 500),
-    []
+    [props]
   );
   function handleChange(e) {
     const typingLikerId = e.target.value;
