@@ -15,7 +15,7 @@ class LikecoinReact {
         add_action('rest_api_init', array($this,'getAdminMainPageAPI'));
 	}
     function postPluginOptions( $request ) {
-        $pluginOptions = get_option('lc_plugin_options_new');
+        $pluginOptions = get_option('lc_plugin_options');
 
         $displayOverridepre = $pluginOptions['button_display_author_override'];
         
@@ -26,13 +26,13 @@ class LikecoinReact {
         $perPostOptionEnabled = $params['perPostOptionEnabled'];
         $likerInfos = $params['likerInfos'];
 
-        $pluginOptions['site_likecoin_id_enabled'] = $siteLikerIdEnabled;
+        $pluginOptions['site_likecoin_id_enbled'] = $siteLikerIdEnabled;
         $pluginOptions['button_display_option'] = $displayOption;
         $pluginOptions['button_display_author_override'] = $perPostOptionEnabled;
         $pluginOptions['site_likecoin_user'] = $likerInfos;
 
-        update_option('lc_plugin_options_new', $pluginOptions);
-        $pluginOptions = get_option('lc_plugin_options_new'); // use the updated data as response.
+        update_option('lc_plugin_options', $pluginOptions);
+        $pluginOptions = get_option('lc_plugin_options'); // use the updated data as response.
 
         $result['code'] = 200;
         $result['data'] = $pluginOptions;
@@ -40,7 +40,7 @@ class LikecoinReact {
         return rest_ensure_response( $result ); // ensure REST valid format even if it's null.
     }
     function getPluginOptions( $request ) {
-        $pluginOptions = get_option('lc_plugin_options_new');
+        $pluginOptions = get_option('lc_plugin_options');
         $result['code'] = 200;
         $result['data'] = $pluginOptions;
         $result['message'] = 'Successfully GET!';

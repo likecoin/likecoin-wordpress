@@ -28,8 +28,6 @@ export const LikerInfoProvider = (props) => {
     })
       .then((res) => res.json())
       .then((res) => {
-        console.log("2 GET res.data: ", res.data);
-        console.log("2 Update UI based on data from GET");
         if (
           res.data.site_likecoin_user.likecoin_id &&
           res.data.site_likecoin_user.avatar &&
@@ -41,7 +39,7 @@ export const LikerInfoProvider = (props) => {
           getDBdisplayName(res.data.site_likecoin_user.wallet);
           getDBwallet(res.data.site_likecoin_user.display_name);
         }
-        enableDBSiteLikerId(res.data.site_likecoin_id_enabled);
+        enableDBSiteLikerId(res.data.site_likecoin_id_enbled);
         selectDBDisplayOption(res.data.button_display_option);
         allowDBPerPostOption(res.data.button_display_author_override);
       });

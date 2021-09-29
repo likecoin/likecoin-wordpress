@@ -7,21 +7,33 @@ import SelectDropDown from "./SelectDropDown";
 import Section from "./Section";
 import LikecoinInfoTable from "./LikecoinInfoTable";
 import LikerInfoContext from "../context/likerInfo-context";
+import SettingNotice from "./SettingNotice";
 
 function InputForm(props) {
   const ctx = useContext(LikerInfoContext);
-  console.log("ctx at InputForm: ", ctx);
-  const siteLikerIdEnabledRef = useRef();
+  const siteLikerIdEnabledRef = useRef(); // do not want to re-render the whole component until submit. Hence use useRef().
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
+  // in existing php method, it will show as '1', in React, it will show as true
+  const DBsiteLikerIdEnable =
+    ctx.DBsiteLikerIdEnabled === "1" || ctx.DBsiteLikerIdEnabled === true
+      ? true
+      : false;
+  const DBperPostOptionEnabled =
+    ctx.DBperPostOptionEnabled === "1" || ctx.DBperPostOptionEnabled === true
+      ? true
+      : false;
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(
-    ctx.DBsiteLikerIdEnabled
+    // need to re-render the component while user typing. Hence use useState.
+
+    DBsiteLikerIdEnable
   );
+
   const [displayOptionSelected, selectDisplayOption] = useState(
     ctx.DBdisplayOptionSelected
   );
   const [perPostOptionEnabled, allowPerPostOption] = useState(
-    ctx.DBperPostOptionEnabled
+    DBperPostOptionEnabled
   );
   const [likerIdValue, getLikerIdValue] = useState(ctx.DBLikerId);
   const [likerDisplayName, getLikerDisplayName] = useState(ctx.DBdisplayName);
@@ -29,6 +41,8 @@ function InputForm(props) {
   const [likerAvatar, getLikerAvatar] = useState(ctx.DBavatar);
   const [isLoading, setIsLoading] = useState(false);
 
+  const [savedSuccessful, setSavedSuccessful] = useState(false);
+  const [isChangingSiteLiker, setIsChangingSiteLiker] = useState(false);
   function handleLikerIdInputChange(e) {
     const typingLikerId = e.target.value;
     getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
@@ -37,7 +51,7 @@ function InputForm(props) {
   const fetchLikeCoinID = useMemo(
     () =>
       debounce(async (likerId) => {
-        console.log("Fetch likecoin API");
+        setSavedSuccessful(false);
         setIsLoading(true);
         try {
           const response = await axios.get(
@@ -47,11 +61,13 @@ function InputForm(props) {
           getLikerDisplayName(response.data.displayName);
           getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
           getLikerAvatar(response.data.avatar);
-          console.log("response from likecoin API: ", response);
           setIsLoading(false);
         } catch (error) {
           console.log(error);
           setIsLoading(false);
+          getLikerDisplayName("-");
+          getLikerWalletAddress("-");
+          getLikerAvatar("-");
         }
       }, 500),
     []
@@ -61,22 +77,23 @@ function InputForm(props) {
   }, [fetchLikeCoinID, likerIdValue]);
 
   useEffect(() => {
-    enableSiteLikerId(ctx.DBsiteLikerIdEnabled);
+    enableSiteLikerId(DBsiteLikerIdEnable);
     selectDisplayOption(ctx.DBdisplayOptionSelected);
-    allowPerPostOption(ctx.DBperPostOptionEnabled);
+    allowPerPostOption(DBperPostOptionEnabled);
   }, [
-    ctx.DBsiteLikerIdEnabled,
+    DBsiteLikerIdEnable,
     ctx.DBdisplayOptionSelected,
-    ctx.DBperPostOptionEnabled,
+    DBperPostOptionEnabled,
   ]);
-    useEffect(() => {
-      getLikerIdValue(ctx.DBLikerId);
-      getLikerDisplayName(ctx.DBdisplayName);
-      getLikerWalletAddress(ctx.DBwallet);
-      getLikerAvatar(ctx.DBavatar);
-    }, [ctx.DBLikerId, ctx.DBdisplayName, ctx.DBwallet, ctx.DBavatar]);
-  
+  useEffect(() => {
+    getLikerIdValue(ctx.DBLikerId);
+    getLikerDisplayName(ctx.DBdisplayName);
+    getLikerWalletAddress(ctx.DBwallet);
+    getLikerAvatar(ctx.DBavatar);
+  }, [ctx.DBLikerId, ctx.DBdisplayName, ctx.DBwallet, ctx.DBavatar]);
+
   function submitHandler(e) {
+    setSavedSuccessful(false);
     e.preventDefault();
     const siteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
     const displayOption = displayOptionRef.current.value;
@@ -86,19 +103,46 @@ function InputForm(props) {
       displayOption,
       perPostOptionEnabled,
       likerInfos: {
-        likecoin_id: likerIdValue,
-        display_name: likerDisplayName,
-        wallet: likerWalletAddress,
-        avatar: likerAvatar,
+        likecoin_id: likerDisplayName === "-" ? ctx.DBLikerId : likerIdValue,
+        display_name:
+          likerDisplayName === "-" ? ctx.DBdisplayName : likerDisplayName,
+        wallet: likerDisplayName === "-" ? ctx.DBwallet : likerWalletAddress,
+        avatar: likerDisplayName === "-" ? ctx.DBavatar : likerAvatar,
       },
     };
-    console.log("data to store in Wordpress DB:", data);
-    props.onAddInput(data);
+    try {
+      props.onAddInput(data);
+      // Only re-render . Do not refresh page.
+      setSavedSuccessful(true);
+    } catch (error) {
+      console.log("Error occured when saving to Wordpress DB: ", error);
+    }
   }
-
+  function handleIsChangingSiteLiker(e) {
+    e.preventDefault();
+    setIsChangingSiteLiker(true);
+  }
+  function handleNoticeDismiss(e) {
+    e.preventDefault();
+    setSavedSuccessful(false);
+  }
   return (
     <div>
       <h1> LikeCoin </h1>
+      {!savedSuccessful && ""}
+      {savedSuccessful && likerDisplayName !== "-" && (
+        <SettingNotice
+          text="Settings Saved"
+          cssClass="notice-success"
+          handleNoticeDismiss={handleNoticeDismiss}
+        />
+      )}
+      {savedSuccessful && likerDisplayName === "-" && (
+        <SettingNotice
+          text="Site Liker ID is missing"
+          cssClass="notice-error"
+        />
+      )}
       <form onSubmit={submitHandler}>
         <Section title={"Site Liker ID"} />
         <CheckBox
@@ -115,6 +159,8 @@ function InputForm(props) {
             likerWalletAddress={likerWalletAddress}
             likerAvatar={likerAvatar}
             isLoading={isLoading}
+            isChangingSiteLiker={isChangingSiteLiker}
+            handleIsChangingSiteLiker={handleIsChangingSiteLiker}
             handleLikerIdInputChange={handleLikerIdInputChange}
           />
         ) : (
@@ -136,9 +182,6 @@ function InputForm(props) {
         />
         <SubmitButton />
       </form>
-      {siteLikerIdEnabled ? <p>Liker ID YES</p> : <p>Liker ID No</p>}
-      {displayOptionSelected}
-      {perPostOptionEnabled ? <p>Per post YES</p> : <p>Per post NO</p>}
     </div>
   );
 }
