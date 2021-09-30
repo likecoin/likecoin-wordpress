@@ -1,6 +1,6 @@
 {
+  "extends": ["airbnb-base", "react-app"],
   "env": {
     "browser": true
-  },
-  "extends": "airbnb-base"
+  }
 }
