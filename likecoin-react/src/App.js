@@ -1,5 +1,6 @@
 import './App.css';
-import MainSettings from './pages/MainSettings';
+import MainSettingsPage from './pages/MainSettingsPage';
+import LikecoinButtonPage from './pages/LikecoinButtonPage';
 import { Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -7,9 +8,11 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/" exact>
-          <MainSettings />
+          <MainSettingsPage />
         </Route>
-        <Route path="/likecoin-button" exact></Route>
+        <Route path="/likecoin-button" exact>
+          <LikecoinButtonPage />
+        </Route>
       </Switch>
     </div>
   );

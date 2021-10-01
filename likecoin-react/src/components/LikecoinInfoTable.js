@@ -8,7 +8,9 @@ function LikecoinInfoTable(props) {
       <form>
         <tr>
           <label>
-            <th className="optionTitle">Site Liker ID</th>
+            {props.isMainSettingPage && (
+              <th className="optionTitle">Site Liker ID</th>
+            )}
             <td>
               <table className="form-table likecoinTable">
                 <tbody>
@@ -32,7 +34,7 @@ function LikecoinInfoTable(props) {
                             />
                           )}
                         {props.likerIdValue.length > 0 &&
-                          !props.isChangingSiteLiker && (
+                          !props.isChangingTypingLiker && (
                             <a
                               id="likecoinId"
                               rel="noopener noreferrer"
@@ -44,7 +46,7 @@ function LikecoinInfoTable(props) {
                             </a>
                           )}
                         {(props.likerIdValue.length === 0 ||
-                          props.isChangingSiteLiker) && (
+                          props.isChangingTypingLiker) && (
                           <div>
                             <input
                               type="text"
@@ -79,15 +81,28 @@ function LikecoinInfoTable(props) {
                       )}
                     </td>
                     <td className="actions">
-                      <span className="actionWrapper">
-                        <a
-                          id="likecoinChangeBtn"
-                          type="button"
-                          onClick={props.handleIsChangingSiteLiker}
-                        >
-                          Change
-                        </a>
-                      </span>
+                      {props.showChangeButton && props.editable && (
+                        <span className="actionWrapper">
+                          <a
+                            id="likecoinChangeBtn"
+                            type="button"
+                            onClick={props.handleClickOnChange}
+                          >
+                            Change
+                          </a>
+                        </span>
+                      )}
+                      {props.showDisconnectButton && props.editable && (
+                        <span className="actionWrapper">
+                          <a
+                            id="likecoinLogoutBtn"
+                            type="button"
+                            onClick={props.handleDisconnect}
+                          >
+                            Disconnect
+                          </a>
+                        </span>
+                      )}
                     </td>
                   </tr>
                 </tbody>
@@ -97,6 +112,7 @@ function LikecoinInfoTable(props) {
                   props.isLoading &&
                   'loading...'}
               </section>
+
               <section>
                 {props.likerAvatar === '-' && !props.isLoading && (
                   <div className="likecoin likecoinError userNotFound">

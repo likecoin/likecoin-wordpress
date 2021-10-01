@@ -29,7 +29,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function post_plugin_options( $request ) {
+	public function post_main_plugin_options( $request ) {
 		$plugin_options = get_option( 'lc_plugin_options' );
 
 		$params = $request->get_json_params();
@@ -37,7 +37,7 @@ class LikecoinReact {
 		$site_liker_id_enabled   = $params['siteLikerIdEnabled'];
 		$display_option          = $params['displayOption'];
 		$per_post_option_enabled = $params['perPostOptionEnabled'];
-		$liker_infos             = $params['likerInfos'];
+		$liker_infos             = $params['siteLikerInfos'];
 
 		$plugin_options['site_likecoin_id_enbled']        = $site_liker_id_enabled;
 		$plugin_options['button_display_option']          = $display_option;
@@ -57,11 +57,55 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function get_plugin_options( $request ) {
+	public function get_main_plugin_options( $request ) {
 		$plugin_options    = get_option( 'lc_plugin_options' );
 		$result['code']    = 200;
 		$result['data']    = $plugin_options;
-		$result['message'] = 'Successfully GET!';
+		$result['message'] = 'Successfully GET main plugin setting data!';
+		return rest_ensure_response( $result );
+	}
+	/**
+	 * Post user data to WordPress database.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 */
+	public function post_user_data( $request ) {
+		$user    = wp_get_current_user();
+		$user_id = $user->ID;
+		$likecoin_user = get_user_meta( $user_id, 'lc_likecoin_user', true );
+		$likecoin_id   = get_user_meta( $user_id, 'lc_likecoin_id', true );
+		$params      = $request->get_json_params();
+		$liker_infos = $params['userLikerInfos'];
+		$likecoin_user = $liker_infos;
+		$likecoin_id   = $liker_infos['likecoin_id'];
+
+		update_user_meta( $user_id, 'lc_likecoin_user', $likecoin_user );
+		update_user_meta( $user_id, 'lc_likecoin_id', $likecoin_id );
+
+		// retrieve latest data.
+		$likecoin_user = get_user_meta( $user_id, 'lc_likecoin_user', true );
+		$likecoin_id   = get_user_meta( $user_id, 'lc_likecoin_id', true );
+
+		$result['code']                  = 200;
+		$result['data']['likecoin_user'] = $likecoin_user;
+		$result['data']['likecoin_id']   = $likecoin_id;
+		$result['message']               = 'Successfully POST to likecoin user!';
+		return rest_ensure_response( $result );
+	}
+	/**
+	 * Get user data from WordPress database.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 */
+	public function get_user_data( $request ) {
+		$user    = wp_get_current_user();
+		$user_id = $user->ID;
+		$likecoin_user                   = get_user_meta( $user_id, 'lc_likecoin_user', true );
+		$likecoin_id                     = get_user_meta( $user_id, 'lc_likecoin_id', true );
+		$result['code']                  = 200;
+		$result['data']['likecoin_user'] = $likecoin_user;
+		$result['data']['likecoin_id']   = $likecoin_id;
+		$result['message']               = 'Successfully GET user data!';
 		return rest_ensure_response( $result );
 	}
 	/**
@@ -70,10 +114,10 @@ class LikecoinReact {
 	public function get_admin_main_page_api() {
 		register_rest_route(
 			'likecoin-react/v1',
-			'/main-settingpage',
+			'/main-setting-page',
 			array(
 				'methods'             => 'POST',
-				'callback'            => array( $this, 'post_plugin_options' ),
+				'callback'            => array( $this, 'post_main_plugin_options' ),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},
@@ -81,10 +125,32 @@ class LikecoinReact {
 		);
 		register_rest_route(
 			'likecoin-react/v1',
-			'/main-settingpage',
+			'/main-setting-page',
 			array(
 				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_plugin_options' ),
+				'callback'            => array( $this, 'get_main_plugin_options' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+		register_rest_route(
+			'likecoin-react/v1',
+			'/likecoin-button-page',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'post_user_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+		register_rest_route(
+			'likecoin-react/v1',
+			'/likecoin-button-page',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_user_data' ),
 				'permission_callback' => function () {
 					return current_user_can( 'manage_options' );
 				},

@@ -6,44 +6,46 @@ import CheckBox from './CheckBox';
 import DropDown from './DropDown';
 import Section from './Section';
 import LikecoinInfoTable from './LikecoinInfoTable';
-import LikerInfoContext from '../context/likerInfo-context';
+import SiteLikerInfoContext from '../context/site-likerInfo-context';
 import SettingNotice from './SettingNotice';
 
-function InputForm(props) {
-  const ctx = useContext(LikerInfoContext);
+function MainSettingTable(props) {
+  const ctx = useContext(SiteLikerInfoContext);
   const siteLikerIdEnabledRef = useRef(); // do not want to re-render the whole component until submit. Hence use useRef().
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
   // in existing php method, it will show as '1', in React, it will show as true
-  const DBsiteLikerIdEnable =
-    ctx.DBsiteLikerIdEnabled === '1' || ctx.DBsiteLikerIdEnabled === true
+
+  const DBSiteLikerIdEnable =
+    ctx.DBSiteLikerIdEnabled === '1' || ctx.DBSiteLikerIdEnabled === true
       ? true
       : false;
-  const DBperPostOptionEnabled =
-    ctx.DBperPostOptionEnabled === '1' || ctx.DBperPostOptionEnabled === true
+  const DBPerPostOptionEnabled =
+    ctx.DBPerPostOptionEnabled === '1' || ctx.DBPerPostOptionEnabled === true
       ? true
       : false;
-  const [siteLikerIdEnabled, enableSiteLikerId] = useState(
-    // need to re-render the component while user typing. Hence use useState.
-
-    DBsiteLikerIdEnable
-  );
-
+  const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
   const [displayOptionSelected, selectDisplayOption] = useState(
-    ctx.DBdisplayOptionSelected
+    ctx.DBDisplayOptionSelected
   );
   const [perPostOptionEnabled, allowPerPostOption] = useState(
-    DBperPostOptionEnabled
+    DBPerPostOptionEnabled
   );
-  const [likerIdValue, getLikerIdValue] = useState(ctx.DBLikerId);
-  const [likerDisplayName, getLikerDisplayName] = useState(ctx.DBdisplayName);
-  const [likerWalletAddress, getLikerWalletAddress] = useState(ctx.DBwallet);
-  const [likerAvatar, getLikerAvatar] = useState(ctx.DBavatar);
+  const [likerIdValue, getLikerIdValue] = useState(ctx.DBSiteLikerId);
+  const [likerDisplayName, getLikerDisplayName] = useState(
+    ctx.DBSiteLikerDisplayName
+  );
+  const [likerWalletAddress, getLikerWalletAddress] = useState(
+    ctx.DBSiteLikerWallet
+  );
+  const [likerAvatar, getLikerAvatar] = useState(ctx.DBSiteLikerAvatar);
   const [isLoading, setIsLoading] = useState(false);
 
   const [savedSuccessful, setSavedSuccessful] = useState(false);
-  const [isChangingSiteLiker, setIsChangingSiteLiker] = useState(false);
+  const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
   function handleLikerIdInputChange(e) {
+    e.preventDefault();
+    setIsChangingTypingLiker(true);
     const typingLikerId = e.target.value;
     getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
   }
@@ -77,20 +79,30 @@ function InputForm(props) {
   }, [fetchLikeCoinID, likerIdValue]);
 
   useEffect(() => {
-    enableSiteLikerId(DBsiteLikerIdEnable);
-    selectDisplayOption(ctx.DBdisplayOptionSelected);
-    allowPerPostOption(DBperPostOptionEnabled);
+    enableSiteLikerId(DBSiteLikerIdEnable);
+    selectDisplayOption(ctx.DBDisplayOptionSelected);
+    allowPerPostOption(DBPerPostOptionEnabled);
   }, [
-    DBsiteLikerIdEnable,
-    ctx.DBdisplayOptionSelected,
-    DBperPostOptionEnabled,
+    DBSiteLikerIdEnable,
+    ctx.DBDisplayOptionSelected,
+    DBPerPostOptionEnabled,
   ]);
   useEffect(() => {
-    getLikerIdValue(ctx.DBLikerId);
-    getLikerDisplayName(ctx.DBdisplayName);
-    getLikerWalletAddress(ctx.DBwallet);
-    getLikerAvatar(ctx.DBavatar);
-  }, [ctx.DBLikerId, ctx.DBdisplayName, ctx.DBwallet, ctx.DBavatar]);
+    getLikerIdValue(ctx.DBSiteLikerId);
+    getLikerDisplayName(ctx.DBSiteLikerDisplayName);
+    getLikerWalletAddress(ctx.DBSiteLikerWallet);
+    getLikerAvatar(ctx.DBSiteLikerAvatar);
+  }, [
+    ctx.DBSiteLikerId,
+    ctx.DBSiteLikerDisplayName,
+    ctx.DBSiteLikerWallet,
+    ctx.DBSiteLikerAvatar,
+  ]);
+
+  function handleClickOnChange(e) {
+    e.preventDefault();
+    setIsChangingTypingLiker(true);
+  }
 
   function submitHandler(e) {
     setSavedSuccessful(false);
@@ -102,30 +114,35 @@ function InputForm(props) {
       siteLikerIdEnabled,
       displayOption,
       perPostOptionEnabled,
-      likerInfos: {
-        likecoin_id: likerDisplayName === '-' ? ctx.DBLikerId : likerIdValue,
+      siteLikerInfos: {
+        likecoin_id:
+          likerDisplayName === '-' ? ctx.DBSiteLikerId : likerIdValue,
         display_name:
-          likerDisplayName === '-' ? ctx.DBdisplayName : likerDisplayName,
-        wallet: likerDisplayName === '-' ? ctx.DBwallet : likerWalletAddress,
-        avatar: likerDisplayName === '-' ? ctx.DBavatar : likerAvatar,
+          likerDisplayName === '-'
+            ? ctx.DBSiteLikerDisplayName
+            : likerDisplayName,
+        wallet:
+          likerDisplayName === '-' ? ctx.DBSiteLikerWallet : likerWalletAddress,
+        avatar: likerDisplayName === '-' ? ctx.DBSiteLikerAvatar : likerAvatar,
       },
     };
     try {
       props.onAddInput(data);
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
+      // Update parent context component.
+      ctx.setSiteLikerIdEnabled(siteLikerIdEnabled);
+      setIsChangingTypingLiker(false);
     } catch (error) {
       console.log('Error occured when saving to Wordpress DB: ', error);
+      setIsChangingTypingLiker(false);
     }
-  }
-  function handleIsChangingSiteLiker(e) {
-    e.preventDefault();
-    setIsChangingSiteLiker(true);
   }
   function handleNoticeDismiss(e) {
     e.preventDefault();
     setSavedSuccessful(false);
   }
+  const handleDisconnect = () => {};
   return (
     <div>
       <h1> LikeCoin </h1>
@@ -159,9 +176,14 @@ function InputForm(props) {
             likerWalletAddress={likerWalletAddress}
             likerAvatar={likerAvatar}
             isLoading={isLoading}
-            isChangingSiteLiker={isChangingSiteLiker}
-            handleIsChangingSiteLiker={handleIsChangingSiteLiker}
+            isChangingTypingLiker={isChangingTypingLiker}
+            handleClickOnChange={handleClickOnChange}
             handleLikerIdInputChange={handleLikerIdInputChange}
+            handleDisconnect={handleDisconnect}
+            editable={true}
+            isMainSettingPage={true}
+            showChangeButton={true}
+            showDisconnectButton={false}
           />
         ) : (
           ''
@@ -186,4 +208,4 @@ function InputForm(props) {
   );
 }
 
-export default InputForm;
+export default MainSettingTable;

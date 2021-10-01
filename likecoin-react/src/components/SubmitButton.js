@@ -1,7 +1,7 @@
 function SubmitButton() {
   return (
     <tr style={{ textAlign: 'left' }}>
-      <button className="likecoinSubmitButton">Submit</button>
+      <button className="likecoinSubmitButton">Confirm</button>
     </tr>
   );
 }

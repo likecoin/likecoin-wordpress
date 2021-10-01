@@ -3,7 +3,8 @@ import ReactDOM from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import { LikerInfoProvider } from './context/likerInfo-context';
+import { SiteLikerInfoProvider } from './context/site-likerInfo-context';
+import { UserLikerInfoProvider } from './context/user-likerInfo-context';
 
 // for wordpress to show
 const reactAppData = window.rpReactPlugin || {};
@@ -12,9 +13,11 @@ const appAnchorElement = document.querySelector(appSelector);
 if (appAnchorElement) {
   ReactDOM.render(
     <Router>
-      <LikerInfoProvider>
-        <App />
-      </LikerInfoProvider>
+      <SiteLikerInfoProvider>
+        <UserLikerInfoProvider>
+          <App />
+        </UserLikerInfoProvider>
+      </SiteLikerInfoProvider>
     </Router>,
     appAnchorElement
   );

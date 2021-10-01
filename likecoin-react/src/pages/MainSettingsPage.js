@@ -1,8 +1,8 @@
-import InputForm from '../components/InputForm';
-function MainSettings() {
-  function postDataToWordpress(dataToPost) {
+import MainSettingTable from '../components/MainSettingTable';
+function MainSettingsPage() {
+  function postMainOptionDataToWordpress(dataToPost) {
     // TODO? can replace fetch with wp.apiFetch() to get endpoint rather than complete url (but need to put 'wp-api' as dependency)
-    fetch(`${window.wpApiSettings.root}likecoin-react/v1/main-settingpage`, {
+    fetch(`${window.wpApiSettings.root}likecoin-react/v1/main-setting-page`, {
       method: 'POST',
       body: JSON.stringify(dataToPost),
       headers: {
@@ -17,9 +17,9 @@ function MainSettings() {
   }
   return (
     <div>
-      <InputForm onAddInput={postDataToWordpress} />
+      <MainSettingTable onAddInput={postMainOptionDataToWordpress} />
     </div>
   );
 }
 
-export default MainSettings;
+export default MainSettingsPage;
