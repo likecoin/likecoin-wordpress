@@ -5,6 +5,7 @@ import './index.css';
 import App from './App';
 import { SiteLikerInfoProvider } from './context/site-likerInfo-context';
 import { UserLikerInfoProvider } from './context/user-likerInfo-context';
+import { MattersInfoProvider } from './context/site-matters-context';
 
 // for wordpress to show
 const reactAppData = window.rpReactPlugin || {};
@@ -15,7 +16,9 @@ if (appAnchorElement) {
     <Router>
       <SiteLikerInfoProvider>
         <UserLikerInfoProvider>
-          <App />
+          <MattersInfoProvider>
+            <App />
+          </MattersInfoProvider>
         </UserLikerInfoProvider>
       </SiteLikerInfoProvider>
     </Router>,

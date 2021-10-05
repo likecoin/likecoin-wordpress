@@ -8,14 +8,15 @@ import Section from './Section';
 import LikecoinInfoTable from './LikecoinInfoTable';
 import SiteLikerInfoContext from '../context/site-likerInfo-context';
 import SettingNotice from './SettingNotice';
+import LikecoinHeading from './LikecoinHeading';
 
 function MainSettingTable(props) {
   const ctx = useContext(SiteLikerInfoContext);
   const siteLikerIdEnabledRef = useRef(); // do not want to re-render the whole component until submit. Hence use useRef().
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
-  // in existing php method, it will show as '1', in React, it will show as true
 
+  // in existing php method, it will show as '1', in React, it will show as true
   const DBSiteLikerIdEnable =
     ctx.DBSiteLikerIdEnabled === '1' || ctx.DBSiteLikerIdEnabled === true
       ? true
@@ -49,6 +50,11 @@ function MainSettingTable(props) {
     const typingLikerId = e.target.value;
     getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
   }
+  const pluginSettingOptions = [
+    { value: 'always', label: 'Page and Post' },
+    { value: 'post', label: 'Post Only' },
+    { value: 'none', label: 'None' },
+  ];
   // Update Data
   const fetchLikeCoinID = useMemo(
     () =>
@@ -104,7 +110,7 @@ function MainSettingTable(props) {
     setIsChangingTypingLiker(true);
   }
 
-  function submitHandler(e) {
+  function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
     const siteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
@@ -127,7 +133,7 @@ function MainSettingTable(props) {
       },
     };
     try {
-      props.onAddInput(data);
+      props.onSubmit(data);
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
       // Update parent context component.
@@ -145,22 +151,22 @@ function MainSettingTable(props) {
   const handleDisconnect = () => {};
   return (
     <div>
-      <h1> LikeCoin </h1>
+      <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
           text="Settings Saved"
-          cssClass="notice-success"
+          className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
       {savedSuccessful && likerDisplayName === '-' && (
         <SettingNotice
           text="Site Liker ID is missing"
-          cssClass="notice-error"
+          className="notice-error"
         />
       )}
-      <form onSubmit={submitHandler}>
+      <form onSubmit={confirmHandler}>
         <Section title={'Site Liker ID'} />
         <CheckBox
           checked={siteLikerIdEnabled}
@@ -194,6 +200,7 @@ function MainSettingTable(props) {
           handleSelect={selectDisplayOption}
           title="Display option"
           selectRef={displayOptionRef}
+          options={pluginSettingOptions}
         />
         <CheckBox
           checked={perPostOptionEnabled}

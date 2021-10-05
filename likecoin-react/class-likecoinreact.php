@@ -30,10 +30,8 @@ class LikecoinReact {
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function post_main_plugin_options( $request ) {
-		$plugin_options = get_option( 'lc_plugin_options' );
-
-		$params = $request->get_json_params();
-
+		$plugin_options          = get_option( 'lc_plugin_options' );
+		$params                  = $request->get_json_params();
 		$site_liker_id_enabled   = $params['siteLikerIdEnabled'];
 		$display_option          = $params['displayOption'];
 		$per_post_option_enabled = $params['perPostOptionEnabled'];
@@ -70,12 +68,12 @@ class LikecoinReact {
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function post_user_data( $request ) {
-		$user    = wp_get_current_user();
-		$user_id = $user->ID;
+		$user          = wp_get_current_user();
+		$user_id       = $user->ID;
 		$likecoin_user = get_user_meta( $user_id, 'lc_likecoin_user', true );
 		$likecoin_id   = get_user_meta( $user_id, 'lc_likecoin_id', true );
-		$params      = $request->get_json_params();
-		$liker_infos = $params['userLikerInfos'];
+		$params        = $request->get_json_params();
+		$liker_infos   = $params['userLikerInfos'];
 		$likecoin_user = $liker_infos;
 		$likecoin_id   = $liker_infos['likecoin_id'];
 
@@ -98,14 +96,62 @@ class LikecoinReact {
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function get_user_data( $request ) {
-		$user    = wp_get_current_user();
-		$user_id = $user->ID;
+		$user                            = wp_get_current_user();
+		$user_id                         = $user->ID;
 		$likecoin_user                   = get_user_meta( $user_id, 'lc_likecoin_user', true );
 		$likecoin_id                     = get_user_meta( $user_id, 'lc_likecoin_id', true );
 		$result['code']                  = 200;
 		$result['data']['likecoin_user'] = $likecoin_user;
 		$result['data']['likecoin_id']   = $likecoin_id;
 		$result['message']               = 'Successfully GET user data!';
+		return rest_ensure_response( $result );
+	}
+	/**
+	 * Post matters login data to WordPress database.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 */
+	public function post_site_publish_options_data( $request ) {
+		$publish_options = get_option( 'lc_publish_options' );
+		$params          = $request->get_json_params();
+		$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
+		$publish_options['site_matters_auto_publish']    = $params['siteMattersAutoPublish'];
+		$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
+		$publish_options['iscn_badge_style_option']      = $params['ISCNBadgeStyleOption'];
+		update_option( 'lc_publish_options', $publish_options );
+		$publish_options   = get_option( 'lc_publish_options' );
+		$result['code']    = 200;
+		$result['data']    = $publish_options;
+		$result['message'] = 'Successfully POST matters login data!';
+		return rest_ensure_response( $result );
+	}
+	/**
+	 * Post matters login data to WordPress database.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 */
+	public function post_site_matters_login_data( $request ) {
+		$publish_options = get_option( 'lc_publish_options' );
+		$params          = $request->get_json_params();
+		$publish_options['site_matters_user']['matters_id']   = $params['mattersId'];
+		$publish_options['site_matters_user']['access_token'] = $params['accessToken'];
+		update_option( 'lc_publish_options', $publish_options );
+		$publish_options   = get_option( 'lc_publish_options' );
+		$result['code']    = 200;
+		$result['data']    = $publish_options;
+		$result['message'] = 'Successfully POST matters login data!';
+		return rest_ensure_response( $result );
+	}
+	/**
+	 * Get matters login data from WordPress database.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 */
+	public function get_site_matters_data( $request ) {
+		$publish_options   = get_option( 'lc_publish_options' );
+		$result['code']    = 200;
+		$result['data']    = $publish_options;
+		$result['message'] = 'Successfully POST matters login data!';
 		return rest_ensure_response( $result );
 	}
 	/**
@@ -156,6 +202,39 @@ class LikecoinReact {
 				},
 			)
 		);
+		register_rest_route(
+			'likecoin-react/v1',
+			'/publish-setting-page/publish-options',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'post_site_publish_options_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+		register_rest_route(
+			'likecoin-react/v1',
+			'/publish-setting-page/matters-login',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'post_site_matters_login_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+		register_rest_route(
+			'likecoin-react/v1',
+			'/publish-setting-page',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_site_matters_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 	/**
 	 * Set up Admin Page menus on the left side bar.
@@ -171,20 +250,30 @@ class LikecoinReact {
 			'',
 			50
 		);
-		// Load the script only on likecoinAdminMainPage.
-		// Below JS will overwrite show_likecoin_admin_main_page_content's effect.
+		// Load the script only on AdminMainPage, overwrite show_likecoin_admin_main_page_content's effect.
 		add_action( 'load-' . $likecoin_admin_main_page, array( $this, 'load_admin_js' ) );
 
-		global $likecoin_submenu_page;
-		$likecoin_submenu_page = add_submenu_page(
+		global $likecoin_button_page;
+		$likecoin_button_page = add_submenu_page(
 			'likecoin-react',
-			'submenu1-page-title',
+			'likecoin-button-page-title',
 			'Your LikeCoin Button',
 			'manage_options',
 			'/likecoin-react#/likecoin-button',
 			array( $this, 'load_admin_js' )
 		);
-		add_action( 'load-' . $likecoin_submenu_page, array( $this, 'load_admin_js' ) );
+		add_action( 'load-' . $likecoin_button_page, array( $this, 'load_admin_js' ) );
+
+		global $publish_setting_page;
+		$publish_setting_page = add_submenu_page(
+			'likecoin-react',
+			'publish-setting-page-title',
+			'Publish Setting',
+			'manage_options',
+			'/likecoin-react#/publish-setting',
+			array( $this, 'load_admin_js' )
+		);
+		add_action( 'load-' . $publish_setting_page, array( $this, 'load_admin_js' ) );
 	}
 	/**
 	 * Show default UI for admin main page.

@@ -11,19 +11,19 @@ function LikeButtonPreview(props) {
     width: '500px',
   };
   return (
-    <section class="likecoin optionsSection">
-      <section class="previewSection">
+    <section className="likecoin optionsSection">
+      <section className="previewSection">
         <span style={{ float: 'left' }}>Preview</span>
         <a
           rel="noopener noreferrer"
           target="_blank"
-          class="icon"
+          className="icon"
           href="https://like.co/in/settings"
         >
           <SettingSvg />
         </a>
-        <div class="centerContainer">
-          <figure class="likecoin-embed likecoin-button">
+        <div className="centerContainer">
+          <figure className="likecoin-embed likecoin-button">
             <iframe
               id="likecoinPreview"
               scrolling="no"

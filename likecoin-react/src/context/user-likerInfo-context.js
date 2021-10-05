@@ -14,14 +14,14 @@ export const UserLikerInfoProvider = (props) => {
   const [DBUserLikerWallet, getDBUserLikerWallet] = useState('');
   const [hasValidLikecoinId, setHasValidLikecoinId] = useState(false);
 
-  async function fetchInitialUserLikerInfoData() {
+  async function fetchWordpressDBUserLikerInfoData() {
     fetch(
       `${window.wpApiSettings.root}likecoin-react/v1/likecoin-button-page`,
       {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
+          'X-WP-Nonce': window.wpApiSettings.nonce,
         },
       }
     )
@@ -41,7 +41,7 @@ export const UserLikerInfoProvider = (props) => {
       });
   }
   useEffect(() => {
-    fetchInitialUserLikerInfoData();
+    fetchWordpressDBUserLikerInfoData();
   }, []);
 
   return (

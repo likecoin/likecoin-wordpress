@@ -4,19 +4,19 @@ function CheckBox(props) {
   };
   return (
     <tr>
-      <label>
-        <th className="optionTitle">{props.title}</th>
-        <th>
-          <input
-            type="checkbox"
-            checked={props.checked}
-            onChange={handleCheck}
-            ref={props.checkRef}
-            optionDetails
-          />
-          <label className="optionDetails">{props.details}</label>
-        </th>
-      </label>
+      <th scope="row" className="optionTitle">
+        <label>{props.title}</label>
+      </th>
+      <td>
+        <input
+          type="checkbox"
+          checked={props.checked}
+          onChange={handleCheck}
+          ref={props.checkRef}
+          optionDetails
+        />
+        <label className="optionDetails">{props.details}</label>
+      </td>
     </tr>
   );
 }

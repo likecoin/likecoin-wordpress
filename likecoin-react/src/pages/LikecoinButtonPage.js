@@ -8,6 +8,7 @@ import SiteLikerInfoContext from '../context/site-likerInfo-context';
 import SubmitButton from '../components/SubmitButton';
 import LikeButtonPreview from '../components/LikeButtonPreview';
 import SettingNotice from '../components/SettingNotice';
+import LikecoinHeading from '../components/LikecoinHeading';
 
 function LikecoinButtonPage() {
   const siteLikerCtx = useContext(SiteLikerInfoContext);
@@ -112,7 +113,7 @@ function LikecoinButtonPage() {
         console.log('Successfully post USER Data to Wordpress!');
       });
   }
-  function submitHandler(e) {
+  function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
     setShowChangeButton(false);
@@ -174,23 +175,23 @@ function LikecoinButtonPage() {
   }
   return (
     <>
-      <h1> LikeCoin </h1>
+      <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
           text="Settings Saved"
-          cssClass="notice-success"
+          className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
       {savedSuccessful && likerDisplayName === '-' && (
         <SettingNotice
           text="Your Liker ID is missing"
-          cssClass="notice-error"
+          className="notice-error"
         />
       )}
       <Section title={'Your Liker ID'} />
-      <form onSubmit={submitHandler}>
+      <form onSubmit={confirmHandler}>
         <LikecoinInfoTable
           likerIdValue={likerIdValue}
           likerDisplayName={likerDisplayName}

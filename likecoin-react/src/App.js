@@ -1,6 +1,7 @@
 import './App.css';
-import MainSettingsPage from './pages/MainSettingsPage';
+import MainSettingPage from './pages/MainSettingPage';
 import LikecoinButtonPage from './pages/LikecoinButtonPage';
+import PublishSettingPage from './pages/PublishSettingPage';
 import { Route, Switch } from 'react-router-dom';
 
 function App() {
@@ -8,10 +9,13 @@ function App() {
     <div className="App">
       <Switch>
         <Route path="/" exact>
-          <MainSettingsPage />
+          <MainSettingPage />
         </Route>
         <Route path="/likecoin-button" exact>
           <LikecoinButtonPage />
+        </Route>
+        <Route path="/publish-setting" exact>
+          <PublishSettingPage />
         </Route>
       </Switch>
     </div>

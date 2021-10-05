@@ -1,6 +1,6 @@
 function SettingNotice(props) {
   return (
-    <div className={`notice ${props.cssClass} is-dismissable`}>
+    <div className={`notice ${props.className} is-dismissable`}>
       <p>
         <strong>{props.text}</strong>
       </p>

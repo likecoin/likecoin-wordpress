@@ -1,5 +1,5 @@
 import MainSettingTable from '../components/MainSettingTable';
-function MainSettingsPage() {
+function MainSettingPage() {
   function postMainOptionDataToWordpress(dataToPost) {
     // TODO? can replace fetch with wp.apiFetch() to get endpoint rather than complete url (but need to put 'wp-api' as dependency)
     fetch(`${window.wpApiSettings.root}likecoin-react/v1/main-setting-page`, {
@@ -17,9 +17,9 @@ function MainSettingsPage() {
   }
   return (
     <div>
-      <MainSettingTable onAddInput={postMainOptionDataToWordpress} />
+      <MainSettingTable onSubmit={postMainOptionDataToWordpress} />
     </div>
   );
 }
 
-export default MainSettingsPage;
+export default MainSettingPage;

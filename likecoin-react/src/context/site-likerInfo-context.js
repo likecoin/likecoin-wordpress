@@ -20,7 +20,7 @@ export const SiteLikerInfoProvider = (props) => {
   const [DBPerPostOptionEnabled, allowDBPerPostOption] = useState(false);
   const setSiteLikerIdEnabled = (status) => enableDBSiteLikerId(status);
   // Get stored Data from DB when refreshing page
-  async function fetchInitialSiteLikerInfoData() {
+  async function fetchWordpressDBSiteLikerInfoData() {
     fetch(`${window.wpApiSettings.root}likecoin-react/v1/main-setting-page`, {
       method: 'GET',
       headers: {
@@ -47,7 +47,7 @@ export const SiteLikerInfoProvider = (props) => {
       });
   }
   useEffect(() => {
-    fetchInitialSiteLikerInfoData();
+    fetchWordpressDBSiteLikerInfoData();
   }, []);
 
   return (
