@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 const UserLikerInfoContext = React.createContext({
   DBUserLikerId: '',
   DBUserLikerAvatar: '',
@@ -15,30 +16,32 @@ export const UserLikerInfoProvider = (props) => {
   const [hasValidLikecoinId, setHasValidLikecoinId] = useState(false);
 
   async function fetchWordpressDBUserLikerInfoData() {
-    fetch(
-      `${window.wpApiSettings.root}likecoin-react/v1/likecoin-button-page`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiSettings.nonce,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        if (
-          res.data.likecoin_user &&
-          res.data.likecoin_id.length > 0 &&
-          res.data.likecoin_id !== '-'
-        ) {
-          getDBUserLikerId(res.data.likecoin_id);
-          getDBUserLikerAvatar(res.data.likecoin_user.avatar);
-          getDBUserLikerDisplayName(res.data.likecoin_user.display_name);
-          getDBUserLikerWallet(res.data.likecoin_user.wallet);
-          setHasValidLikecoinId(true);
+    try {
+      const response = await axios.get(
+        `${window.wpApiSettings.root}likecoin-react/v1/likecoin-button-page`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': window.wpApiSettings.nonce,
+          },
         }
-      });
+      );
+      if (
+        response.data.data.likecoin_user &&
+        response.data.data.likecoin_id.length > 0 &&
+        response.data.data.likecoin_id !== '-'
+      ) {
+        getDBUserLikerId(response.data.data.likecoin_id);
+        getDBUserLikerAvatar(response.data.data.likecoin_user.avatar);
+        getDBUserLikerDisplayName(
+          response.data.data.likecoin_user.display_name
+        );
+        getDBUserLikerWallet(response.data.data.likecoin_user.wallet);
+        setHasValidLikecoinId(true);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   useEffect(() => {
     fetchWordpressDBUserLikerInfoData();

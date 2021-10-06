@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 const SiteLikerInfoContext = React.createContext({
   DBSiteLikerId: '',
   DBSiteLikerAvatar: '',
@@ -21,30 +22,37 @@ export const SiteLikerInfoProvider = (props) => {
   const setSiteLikerIdEnabled = (status) => enableDBSiteLikerId(status);
   // Get stored Data from DB when refreshing page
   async function fetchWordpressDBSiteLikerInfoData() {
-    fetch(`${window.wpApiSettings.root}likecoin-react/v1/main-setting-page`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-      },
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (
-          res.data.site_likecoin_user.likecoin_id &&
-          res.data.site_likecoin_user.avatar &&
-          res.data.site_likecoin_user.wallet &&
-          res.data.site_likecoin_user.display_name
-        ) {
-          getDBSiteLikerId(res.data.site_likecoin_user.likecoin_id);
-          getDBSiteLikerAvatar(res.data.site_likecoin_user.avatar);
-          getDBSiteLikerDisplayName(res.data.site_likecoin_user.display_name);
-          getDBSiteLikerWallet(res.data.site_likecoin_user.wallet);
+    try {
+      const response = await axios.get(
+        `${window.wpApiSettings.root}likecoin-react/v1/main-setting-page`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
+          },
         }
-        enableDBSiteLikerId(res.data.site_likecoin_id_enbled);
-        selectDBDisplayOption(res.data.button_display_option);
-        allowDBPerPostOption(res.data.button_display_author_override);
-      });
+      );
+      if (response.data) {
+        if (
+          response.data.data.site_likecoin_user.likecoin_id &&
+          response.data.data.site_likecoin_user.avatar &&
+          response.data.data.site_likecoin_user.wallet &&
+          response.data.data.site_likecoin_user.display_name
+        ) {
+          getDBSiteLikerId(response.data.data.site_likecoin_user.likecoin_id);
+          getDBSiteLikerAvatar(response.data.data.site_likecoin_user.avatar);
+          getDBSiteLikerDisplayName(
+            response.data.data.site_likecoin_user.display_name
+          );
+          getDBSiteLikerWallet(response.data.data.site_likecoin_user.wallet);
+        }
+        enableDBSiteLikerId(response.data.data.site_likecoin_id_enbled);
+        selectDBDisplayOption(response.data.data.button_display_option);
+        allowDBPerPostOption(response.data.data.button_display_author_override);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   useEffect(() => {
     fetchWordpressDBSiteLikerInfoData();

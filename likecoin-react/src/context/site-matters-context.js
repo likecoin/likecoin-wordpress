@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 const MattersInfoContext = React.createContext({
   DBSiteMattersId: '',
   DBSiteMattersToken: '',
@@ -29,39 +30,43 @@ export const MattersInfoProvider = (props) => {
   const setISCNBadgeStyleOption = (option) => getDBISCNBadgeStyleOption(option);
 
   async function fetchWordpressDBMattersInfoData() {
-    fetch(
-      `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page`,
-      {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiSettings.nonce,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.data) {
-          if (res.data.site_matters_user) {
-            if (res.data.site_matters_user.matters_id.length !== 0) {
-              getDBSiteMattersId(res.data.site_matters_user.matters_id);
-              getDBSiteMattersToken(res.data.site_matters_user.access_token);
-            }
-          }
-          if (res.data.site_matters_auto_save_draft)
-            getDBSiteMattersAutoSaveDraft(
-              res.data.site_matters_auto_save_draft
-            );
-          if (res.data.site_matters_auto_publish)
-            getDBSiteMattersAutoPublish(res.data.site_matters_auto_publish);
-          if (res.data.site_matters_add_footer_link)
-            getDBSiteMattersAddFooterLink(
-              res.data.site_matters_add_footer_link
-            );
-          if (res.data.iscn_badge_style_option)
-            getDBISCNBadgeStyleOption(res.data.iscn_badge_style_option);
+    try {
+      const response = await axios.get(
+        `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page`,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': window.wpApiSettings.nonce,
+          },
         }
-      });
+      );
+      if (response.data) {
+        if (response.data.data.site_matters_user) {
+          if (response.data.data.site_matters_user.matters_id.length !== 0) {
+            getDBSiteMattersId(response.data.data.site_matters_user.matters_id);
+            getDBSiteMattersToken(
+              response.data.data.site_matters_user.access_token
+            );
+          }
+        }
+        if (response.data.data.site_matters_auto_save_draft)
+          getDBSiteMattersAutoSaveDraft(
+            response.data.data.site_matters_auto_save_draft
+          );
+        if (response.data.data.site_matters_auto_publish)
+          getDBSiteMattersAutoPublish(
+            response.data.data.site_matters_auto_publish
+          );
+        if (response.data.data.site_matters_add_footer_link)
+          getDBSiteMattersAddFooterLink(
+            response.data.data.site_matters_add_footer_link
+          );
+        if (response.data.data.iscn_badge_style_option)
+          getDBISCNBadgeStyleOption(response.data.data.iscn_badge_style_option);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   }
   useEffect(() => {
     fetchWordpressDBMattersInfoData();

@@ -95,23 +95,21 @@ function LikecoinButtonPage() {
     defaultLikerWalletAddress,
     defaultLikerAvatar,
   ]);
-  function postUserDataToWordpress(dataToPost) {
-    // TODO? use wp.apiFetch().
-    fetch(
-      `${window.wpApiSettings.root}likecoin-react/v1/likecoin-button-page`,
-      {
-        method: 'POST',
-        body: JSON.stringify(dataToPost),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiSettings.nonce,
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        console.log('Successfully post USER Data to Wordpress!');
-      });
+  async function postUserDataToWordpress(dataToPost) {
+    try {
+      await axios.post(
+        `${window.wpApiSettings.root}likecoin-react/v1/likecoin-button-page`,
+        JSON.stringify(dataToPost),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': window.wpApiSettings.nonce,
+          },
+        }
+      );
+    } catch (error) {
+      console.log(error);
+    }
   }
   function confirmHandler(e) {
     setSavedSuccessful(false);
@@ -174,7 +172,7 @@ function LikecoinButtonPage() {
     setIsDisconnect(true);
   }
   return (
-    <>
+    <div class="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
@@ -220,7 +218,7 @@ function LikecoinButtonPage() {
         )}
         <SubmitButton />
       </form>
-    </>
+    </div>
   );
 }
 

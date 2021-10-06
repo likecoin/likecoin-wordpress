@@ -69,14 +69,13 @@ function MainSettingTable(props) {
           getLikerDisplayName(response.data.displayName);
           getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
           getLikerAvatar(response.data.avatar);
-          setIsLoading(false);
         } catch (error) {
           console.log(error);
-          setIsLoading(false);
           getLikerDisplayName('-');
           getLikerWalletAddress('-');
           getLikerAvatar('-');
         }
+        setIsLoading(false);
       }, 500),
     []
   );
@@ -150,7 +149,7 @@ function MainSettingTable(props) {
   }
   const handleDisconnect = () => {};
   return (
-    <div>
+    <div class="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (

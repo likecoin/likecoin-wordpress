@@ -1,4 +1,5 @@
-import { useRef, useContext, useState, useEffect, useMemo } from 'react';
+import { useRef, useContext, useState, useEffect } from 'react';
+import axios from 'axios';
 import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
@@ -6,6 +7,9 @@ import CheckBox from '../components/CheckBox';
 import DropDown from '../components/DropDown';
 import SubmitButton from '../components/SubmitButton';
 import MattersInfoContext from '../context/site-matters-context';
+import MattersDescription from '../components/MattersDescription';
+import MattersLoginTable from '../components/MattersLoginTable';
+import MattersStatusTable from '../components/MattersStatusTable';
 
 function PublishSettingPage() {
   const mattersCtx = useContext(MattersInfoContext);
@@ -55,8 +59,7 @@ function PublishSettingPage() {
     mattersCtx.DBISCNBadgeStyleOption
   );
   const [mattersLoginError, setMattersLoginError] = useState('');
-
-  function loginToMattersAndSaveDataToWordpress(data) {
+  async function loginToMattersAndSaveDataToWordpress(data) {
     const getTokenQuery = JSON.stringify({
       query: `mutation {
             userLogin(input: {
@@ -72,105 +75,87 @@ function PublishSettingPage() {
       query: 'query { viewer { id userName displayName}}',
     });
     try {
-      fetch('https://server-develop.matters.news/graphql', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: getTokenQuery,
-      })
-        .then((res) => res.json())
-        .then((res) => {
-          if (res.errors) {
-            let errorMessage = 'ERROR:';
-            if (res.errors.length > 0) {
-              res.errors.forEach((error) => {
-                if (error.message.indexOf('password') > 0) {
-                  const passwordIndex = error.message.search('password');
-                  errorMessage = error.message
+      // Get token from matters
+      const getTokenResponse = await axios.post(
+        'https://server-develop.matters.news/graphql',
+        getTokenQuery,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      console.log('getTokenResponse:', getTokenResponse);
+      if (!getTokenResponse.data.data || getTokenResponse.data.errors) {
+        console.log(
+          'getTokenResponse.data.errors[0]: ',
+          getTokenResponse.data.errors[0]
+        );
+        throw new Error(getTokenResponse.data.errors[0].message);
+      }
+      const token = getTokenResponse.data.data.userLogin.token;
+      // Get user info from matters
+      const getUserInfoResponse = await axios.post(
+        'https://server-develop.matters.news/graphql',
+        getMattersUserInfoQuery,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'x-access-token': token,
+          },
+        }
+      );
+      const siteMattersUser = {
+        mattersId: getUserInfoResponse.data.data.viewer.userName, // other props: displayName, id
+        accessToken: token,
+      };
+
+      // Post data to Wordpress DB
+      const postToWordpressResponse = await axios.post(
+        `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/matters-login`,
+        JSON.stringify(siteMattersUser),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
+          },
+        }
+      );
+      setSiteMattersId(
+        postToWordpressResponse.data.data.site_matters_user.matters_id
+      );
+      setSiteMattersToken(
+        postToWordpressResponse.data.data.site_matters_user.access_token
+      );
+      setSavedSuccessful(true);
+    } catch (error) {
+      if (error.response) {
+        if (error.response.data) {
+          let errorMessage = 'ERROR:';
+          if (error.response.data.errors.length > 0) {
+            error.response.data.errors.forEach((error) => {
+              if (error.message.indexOf('password') > 0) {
+                const passwordIndex = error.message.search('password');
+                errorMessage = errorMessage.concat(
+                  error.message
                     .slice(0, passwordIndex)
-                    .concat('password: "***"}');
-                } else {
-                  errorMessage = errorMessage.concat(error.message);
-                }
-              });
-            }
-            setMattersLoginError(errorMessage);
-            throw new Error('Failed when post to matters graphQL', {
-              message: res.errors,
+                    .concat('password: "***"}')
+                );
+              } else {
+                errorMessage = errorMessage.concat(error.message);
+              }
             });
           }
-
-          const token = res.data.userLogin.token;
-
-          // Get user Id from matters
-          fetch('https://server-develop.matters.news/graphql', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'x-access-token': token,
-            },
-            body: getMattersUserInfoQuery,
-          })
-            .then((res) => res.json())
-            .then((res) => {
-              const siteMattersUser = {
-                mattersId: res.data.viewer.userName, // other props: displayName, id
-                accessToken: token,
-              };
-              // Post data to Wordpress DB
-              fetch(
-                `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/matters-login`,
-                {
-                  method: 'POST',
-                  body: JSON.stringify(siteMattersUser),
-                  headers: {
-                    'Content-Type': 'application/json',
-                    'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-                  },
-                }
-              )
-                .then((res) => res.json())
-                .then((res) => {
-                  console.log(
-                    'Successully saved matters login data to Wordpress!'
-                  );
-                  fetch(
-                    `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page`,
-                    {
-                      method: 'GET',
-                      headers: {
-                        'Content-Type': 'application/json',
-                        'X-WP-Nonce': window.wpApiSettings.nonce,
-                      },
-                    }
-                  )
-                    .then((res) => res.json())
-                    .then((res) => {
-                      if (res.data) {
-                        if (res.data.site_matters_user) {
-                          if (
-                            res.data.site_matters_user.matters_id.length !== 0
-                          ) {
-                            setSiteMattersId(
-                              res.data.site_matters_user.matters_id
-                            );
-                            setSiteMattersToken(
-                              res.data.site_matters_user.access_token
-                            );
-                          }
-                        }
-                      }
-                      setSavedSuccessful(true);
-                    });
-                });
-            });
-        });
-    } catch (error) {
-      console.log('error:', error);
+          setMattersLoginError(errorMessage);
+        }
+      } else if (error.message) {
+        let errorMessage = 'ERROR:';
+        errorMessage = errorMessage.concat(error.message);
+        setMattersLoginError(errorMessage);
+      }
     }
   }
-  function loginHandler(e) {
+  async function loginHandler(e) {
     e.preventDefault();
     const mattersId = mattersIdRef.current.value;
     const mattersPassword = mattersPasswordRef.current.value;
@@ -179,31 +164,25 @@ function PublishSettingPage() {
       mattersPassword,
     };
     // send to Matters API.
+    await loginToMattersAndSaveDataToWordpress(data);
+  }
+  async function postMattersOptionDataToWordpress(dataToPost) {
     try {
-      loginToMattersAndSaveDataToWordpress(data);
+      await axios.post(
+        `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/publish-options`,
+        JSON.stringify(dataToPost),
+        {
+          headers: {
+            'Content-Type': 'application/json',
+            'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
+          },
+        }
+      );
     } catch (error) {
-      console.log('error happened when logging to Matters. error: ', error);
+      console.log(error);
     }
   }
-  function postMattersOptionDataToWordpress(dataToPost) {
-    // TODO? can replace fetch with wp.apiFetch() to get endpoint rather than complete url (but need to put 'wp-api' as dependency)
-    fetch(
-      `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/publish-options`,
-      {
-        method: 'POST',
-        body: JSON.stringify(dataToPost),
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-        },
-      }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        console.log('Successfully post Data to Wordpress!');
-      });
-  }
-  function handleMattersLogout(e) {
+  async function handleMattersLogout(e) {
     setSavedSuccessful(false);
     e.preventDefault();
     // set state
@@ -215,22 +194,17 @@ function PublishSettingPage() {
       mattersId: '', // other props: displayName, id
       accessToken: '',
     };
-    fetch(
+    await axios.post(
       `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/matters-login`,
+      JSON.stringify(siteMattersUser),
       {
-        method: 'POST',
-        body: JSON.stringify(siteMattersUser),
         headers: {
           'Content-Type': 'application/json',
           'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
         },
       }
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        console.log('Successully saved matters login data to Wordpress!');
-        setSavedSuccessful(true);
-      });
+    );
+    setSavedSuccessful(true);
 
     // change context
     mattersCtx.setSiteMattersId('');
@@ -240,7 +214,7 @@ function PublishSettingPage() {
     e.preventDefault();
     setSavedSuccessful(false);
   }
-  function confirmHandler(e) {
+  async function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
     const siteMattersAutoSaveDraft =
@@ -259,7 +233,7 @@ function PublishSettingPage() {
 
     // save to Wordpress DB.
     try {
-      postMattersOptionDataToWordpress(data);
+      await postMattersOptionDataToWordpress(data);
       setSavedSuccessful(true);
     } catch (error) {
       console.log('Error occured when saving to Wordpress DB: ', error);
@@ -286,7 +260,7 @@ function PublishSettingPage() {
     mattersCtx,
   ]);
   return (
-    <>
+    <div class="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && (
@@ -296,136 +270,20 @@ function PublishSettingPage() {
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      <div style={{ textAlign: 'left' }}>
-        <p></p>
-        <h2>
-          <a
-            rel="noopener noreferrer"
-            target="_blank"
-            href="https://matters.news"
-          >
-            <img
-              height="32"
-              weight="32"
-              src="https://matters.news/static/icon-144x144.png"
-              alt="matters-logo"
-            ></img>
-          </a>
-          What is Matters.news?
-        </h2>
-        <p></p>
-        <p>
-          <a
-            rel="noopener noreferrer"
-            target="_blank"
-            href="https://matters.news"
-          >
-            Matters
-          </a>
-          is a decentralized, cryptocurrency driven content creation and
-          discussion platform.
-        </p>
-        <p>
-          By publishing on Matters, your articles will be stored to the
-          distributed InterPlanetary File System (
-          <a rel="noopener noreferrer" target="_blank" href="https://ipfs.io">
-            IPFS
-          </a>
-          ) nodes and get rewarded. Take the first step to publish your creation
-          and reclaim your ownership of data!
-        </p>
-        <br />
-      </div>
+      <MattersDescription />
       <Section title={'Login with Matters ID'} />
-      <form onSubmit={loginHandler}>
-        <table className="form-table">
-          <tbody>
-            <tr>
-              <td>
-                <label for="matters_id">Matters login email</label>
-                <input
-                  type="text"
-                  name="lc_matters_id"
-                  id="matters_id"
-                  ref={mattersIdRef}
-                ></input>
-              </td>
-              <td>
-                <label for="matters_password">Password</label>
-                <input
-                  type="password"
-                  name="lc_matters_password"
-                  id="matters_password"
-                  ref={mattersPasswordRef}
-                ></input>
-              </td>
-            </tr>
-            <tr>
-              <td className="actions" style={{ float: 'left' }}>
-                <span className="actionWrapper" style={{ border: '0px' }}>
-                  <input
-                    id="lcMattersIdLoginBtn"
-                    type="submit"
-                    value="login"
-                  ></input>
-                </span>
-              </td>
-              <td>
-                <span id="lcMattersErrorMessage">{mattersLoginError}</span>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
+      <MattersLoginTable
+        loginHandler={loginHandler}
+        mattersIdRef={mattersIdRef}
+        mattersPasswordRef={mattersPasswordRef}
+        mattersLoginError={mattersLoginError}
+      />
       <form onSubmit={confirmHandler}>
         <Section title={'Matters connection status'} />
-        <table class="form-table" role="presentation">
-          <tbody>
-            <tr>
-              <th scope="row">
-                <label for="site_matters_user">Connection Status</label>
-              </th>
-              <td>
-                <div>
-                  <span>
-                    <b>
-                      {siteMattersId.length > 0 && (
-                        <>
-                          Logged in as{' '}
-                          <a
-                            rel="noopener noreferrer"
-                            target="_blank"
-                            href={`https://matters.news/@${siteMattersId}`}
-                          >
-                            {siteMattersId}
-                            {'    '}
-                          </a>
-                        </>
-                      )}
-                      {siteMattersId.length === 0 && <b> Not connected </b>}
-                    </b>
-                  </span>
-                  {siteMattersId.length > 0 && (
-                    <span
-                      className="actionWrapper"
-                      style={{ paddingLeft: '20px' }}
-                    >
-                      <a
-                        id="lcMattersIdLogoutButton"
-                        type="button"
-                        onClick={handleMattersLogout}
-                        target="_blank"
-                        href="#"
-                      >
-                        Logout
-                      </a>
-                    </span>
-                  )}
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+        <MattersStatusTable
+          siteMattersId={siteMattersId}
+          handleMattersLogout={handleMattersLogout}
+        />
         <Section title={'Publish to Matters'} />
         <table className="form-table" role="presentation">
           <tbody>
@@ -464,7 +322,7 @@ function PublishSettingPage() {
         </table>
         <SubmitButton />
       </form>
-    </>
+    </div>
   );
 }
 

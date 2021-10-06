@@ -65,4 +65,4 @@ define( 'LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER', 'site_payment_pointer' );
 define( 'LC_MATTERS_ID_FIELD', 'matters_id' );
 define( 'LC_MATTERS_USER_ACCESS_TOKEN_FIELD', 'access_token' );
 
-define( 'LC_MATTERS_API_ENDPOINT', 'https://server.matters.news/graphql' );
+define( 'LC_MATTERS_API_ENDPOINT', 'https://server-develop.matters.news/graphql' );
