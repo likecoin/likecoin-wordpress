@@ -172,7 +172,7 @@ function LikecoinButtonPage() {
     setIsDisconnect(true);
   }
   return (
-    <div class="wrap likecoin">
+    <div className="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (

@@ -4,6 +4,7 @@ import LikecoinButtonPage from './pages/LikecoinButtonPage';
 import PublishSettingPage from './pages/PublishSettingPage';
 import WebMonetizationPage from './pages/WebMonetizationPage';
 import { Route, Switch } from 'react-router-dom';
+import SponsorLikecoinPage from './pages/SponsorLikecoinPage';
 
 function App() {
   return (
@@ -20,6 +21,9 @@ function App() {
         </Route>
         <Route path="/web-monetization" exact>
           <WebMonetizationPage />
+        </Route>
+        <Route path="/sponsor-likecoin" exact>
+          <SponsorLikecoinPage />
         </Route>
       </Switch>
     </div>

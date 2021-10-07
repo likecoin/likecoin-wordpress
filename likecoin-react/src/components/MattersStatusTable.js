@@ -1,6 +1,6 @@
 function MattersStatusTable(props) {
   return (
-    <table class="form-table" role="presentation">
+    <table className="form-table" role="presentation">
       <tbody>
         <tr>
           <th scope="row">

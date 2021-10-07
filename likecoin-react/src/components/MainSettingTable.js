@@ -149,7 +149,7 @@ function MainSettingTable(props) {
   }
   const handleDisconnect = () => {};
   return (
-    <div class="wrap likecoin">
+    <div className="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (

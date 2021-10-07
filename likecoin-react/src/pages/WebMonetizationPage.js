@@ -58,7 +58,7 @@ function WebMonetizationPage() {
   }, [DBPaymentPointer]);
 
   return (
-    <div class="wrap likecoin">
+    <div className="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && (
@@ -71,7 +71,7 @@ function WebMonetizationPage() {
       <WebMonetizationDescription />
       <form onSubmit={confirmHandler}>
         <Section title={'Web Monetization'} />
-        <table class="form-table" role="presentation">
+        <table className="form-table" role="presentation">
           <tbody>
             <tr>
               <th scope="row">

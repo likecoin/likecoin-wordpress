@@ -260,7 +260,7 @@ function PublishSettingPage() {
     mattersCtx,
   ]);
   return (
-    <div class="wrap likecoin">
+    <div className="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
       {savedSuccessful && (

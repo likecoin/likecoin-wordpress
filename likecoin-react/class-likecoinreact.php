@@ -349,6 +349,17 @@ class LikecoinReact {
 			array( $this, 'load_admin_js' )
 		);
 		add_action( 'load-' . $web_monetization_page, array( $this, 'load_admin_js' ) );
+
+		global $sponsor_likecoin_page;
+		$sponsor_likecoin_page = add_submenu_page(
+			'likecoin-react',
+			'sponsor-likecoin-page-title',
+			'Sponsor Likecoin',
+			'manage_options',
+			'/likecoin-react#/sponsor-likecoin',
+			array( $this, 'load_admin_js' )
+		);
+		add_action( 'load-' . $sponsor_likecoin_page, array( $this, 'load_admin_js' ) );
 	}
 	/**
 	 * Show default UI for admin main page.
