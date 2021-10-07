@@ -1,11 +1,11 @@
 import axios from 'axios';
 import MainSettingTable from '../components/MainSettingTable';
 function MainSettingPage() {
-  async function postMainOptionDataToWordpress(dataToPost) {
+  async function postMainOptionDataToWordpress(data) {
     try {
       await axios.post(
         `${window.wpApiSettings.root}likecoin-react/v1/main-setting-page`,
-        JSON.stringify(dataToPost),
+        JSON.stringify(data),
         {
           headers: {
             'Content-Type': 'application/json',

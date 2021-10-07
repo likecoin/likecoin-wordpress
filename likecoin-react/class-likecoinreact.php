@@ -56,7 +56,10 @@ class LikecoinReact {
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function get_main_plugin_options( $request ) {
-		$plugin_options    = get_option( 'lc_plugin_options' );
+		$plugin_options = get_option( 'lc_plugin_options' );
+		if ( ! $plugin_options ) {
+			return;
+		}
 		$result['code']    = 200;
 		$result['data']    = $plugin_options;
 		$result['message'] = 'Successfully GET main plugin setting data!';
@@ -96,9 +99,12 @@ class LikecoinReact {
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function get_user_data( $request ) {
-		$user                            = wp_get_current_user();
-		$user_id                         = $user->ID;
-		$likecoin_user                   = get_user_meta( $user_id, 'lc_likecoin_user', true );
+		$user          = wp_get_current_user();
+		$user_id       = $user->ID;
+		$likecoin_user = get_user_meta( $user_id, 'lc_likecoin_user', true );
+		if ( ! $likecoin_user ) {
+			return;
+		}
 		$likecoin_id                     = get_user_meta( $user_id, 'lc_likecoin_id', true );
 		$result['code']                  = 200;
 		$result['data']['likecoin_user'] = $likecoin_user;
@@ -148,11 +154,47 @@ class LikecoinReact {
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function get_site_matters_data( $request ) {
+		// incl. login and publish data.
+		if ( ! $publish_options ) {
+			return;
+		}
 		$publish_options   = get_option( 'lc_publish_options' );
 		$result['code']    = 200;
 		$result['data']    = $publish_options;
-		$result['message'] = 'Successfully POST matters login data!';
+		$result['message'] = 'Successfully GET matters data!';
 		return rest_ensure_response( $result );
+	}
+	/**
+	 * Post matters login data from WordPress database.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 */
+	public function post_web_monetization_data( $request ) {
+		$monetization_options                         = get_option( 'lc_monetization_options' );
+		$params                                       = $request->get_json_params();
+		$monetization_options['site_payment_pointer'] = $params['paymentPointer'];
+		update_option( 'lc_monetization_options', $monetization_options );
+		$monetization_options = get_option( 'lc_monetization_options' );
+		$result['code']       = 200;
+		$result['data']       = $monetization_options;
+		$result['message']    = 'Successfully POST web monetization data!';
+		return rest_ensure_response( $result );
+	}
+	/**
+	 * Get matters login data from WordPress database.
+	 *
+	 * @param WP_REST_Request $request Full data about the request.
+	 */
+	public function get_web_monetization_data( $request ) {
+		$monetization_options = get_option( 'lc_monetization_options' );
+		if ( ! $monetization_options ) {
+			return;
+		}
+		$result['code']    = 200;
+		$result['data']    = $monetization_options;
+		$result['message'] = 'Successfully GET web monetization data!';
+		return rest_ensure_response( $result );
+
 	}
 	/**
 	 * Set up API route for JavaScript file to call.
@@ -235,6 +277,28 @@ class LikecoinReact {
 				},
 			)
 		);
+		register_rest_route(
+			'likecoin-react/v1',
+			'/web-monetization-page',
+			array(
+				'methods'             => 'POST',
+				'callback'            => array( $this, 'post_web_monetization_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
+		register_rest_route(
+			'likecoin-react/v1',
+			'/web-monetization-page',
+			array(
+				'methods'             => 'GET',
+				'callback'            => array( $this, 'get_web_monetization_data' ),
+				'permission_callback' => function () {
+					return current_user_can( 'manage_options' );
+				},
+			)
+		);
 	}
 	/**
 	 * Set up Admin Page menus on the left side bar.
@@ -274,6 +338,17 @@ class LikecoinReact {
 			array( $this, 'load_admin_js' )
 		);
 		add_action( 'load-' . $publish_setting_page, array( $this, 'load_admin_js' ) );
+
+		global $web_monetization_page;
+		$web_monetization_page = add_submenu_page(
+			'likecoin-react',
+			'web-monetization-page-title',
+			'Web Monetization',
+			'manage_options',
+			'/likecoin-react#/web-monetization',
+			array( $this, 'load_admin_js' )
+		);
+		add_action( 'load-' . $web_monetization_page, array( $this, 'load_admin_js' ) );
 	}
 	/**
 	 * Show default UI for admin main page.

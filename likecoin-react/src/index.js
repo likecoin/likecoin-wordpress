@@ -6,6 +6,7 @@ import App from './App';
 import { SiteLikerInfoProvider } from './context/site-likerInfo-context';
 import { UserLikerInfoProvider } from './context/user-likerInfo-context';
 import { MattersInfoProvider } from './context/site-matters-context';
+import { WebMonetizationProvider } from './context/web-monetization-context';
 
 // for wordpress to show
 const reactAppData = window.rpReactPlugin || {};
@@ -17,7 +18,9 @@ if (appAnchorElement) {
       <SiteLikerInfoProvider>
         <UserLikerInfoProvider>
           <MattersInfoProvider>
-            <App />
+            <WebMonetizationProvider>
+              <App />
+            </WebMonetizationProvider>
           </MattersInfoProvider>
         </UserLikerInfoProvider>
       </SiteLikerInfoProvider>
