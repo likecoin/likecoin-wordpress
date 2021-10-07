@@ -360,6 +360,15 @@ class LikecoinReact {
 			array( $this, 'load_admin_js' )
 		);
 		add_action( 'load-' . $sponsor_likecoin_page, array( $this, 'load_admin_js' ) );
+		
+		global $become_civic_liker_page;
+		$become_civic_liker_page = add_submenu_page(
+			'likecoin-react',
+			'become-civic-liker-title',
+			'Become a Civic Liker',
+			'manage_options',
+			'https://liker.land/civic?utm_source=wp-plugin'
+		);
 	}
 	/**
 	 * Show default UI for admin main page.
