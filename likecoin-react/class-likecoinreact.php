@@ -8,6 +8,7 @@
  * Version 1.0
  * Author: Liker Land
  * Aurhor URI: https://liker.land/
+ * Text Domain: likecoin-react
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -23,6 +24,12 @@ class LikecoinReact {
 	public function __construct() {
 		add_action( 'admin_menu', array( $this, 'admin_page' ) );
 		add_action( 'rest_api_init', array( $this, 'get_admin_main_page_api' ) );
+	}
+	/**
+	 * Enable JavaScript translation string to work.
+	 */
+	public function set_script_translations() {
+		wp_set_script_translations( 'myguten-script', 'likecoin-react' );
 	}
 	/**
 	 * Post options data to WordPress database.
@@ -360,7 +367,7 @@ class LikecoinReact {
 			array( $this, 'load_admin_js' )
 		);
 		add_action( 'load-' . $sponsor_likecoin_page, array( $this, 'load_admin_js' ) );
-		
+
 		global $become_civic_liker_page;
 		$become_civic_liker_page = add_submenu_page(
 			'likecoin-react',
@@ -431,6 +438,8 @@ class LikecoinReact {
 		foreach ( $js_files as $index => $js_file ) {
 			// add wp-api-request as dependency so React can access window.wpApiSettings.
 			wp_enqueue_script( 'react-plugin-' . $index, $react_app_build_url . $js_file, array( 'wp-api-request' ), 1, true );
+			// add translation.
+			wp_enqueue_script( 'react-plugin-translation', $react_app_build_url . $js_file, array( 'wp-blocks', 'wp-element', 'wp-i18n', 'wp-block-editor' ), 1, true );
 		}
 		// create a window.rpReactPlugin which can be accessed by JavaScript.
 		wp_localize_script(
@@ -438,6 +447,13 @@ class LikecoinReact {
 			'rpReactPlugin',
 			array( 'appSelector' => '#wpbody #wpbody-content' )
 		);
+		wp_localize_script(
+			'react-plugin-translation',
+			'rpReactPlugin',
+			array( 'appSelector' => '#wpbody #wpbody-content' )
+		);
+		// add translation.
+		add_action( 'init', 'set_script_translations' );
 
 	}
 

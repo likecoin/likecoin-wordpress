@@ -4,19 +4,28 @@ import Link from '../components/Link';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
 function SponsorLikecoinPage() {
-    const translatedString = createInterpolateElement(
-      __(
-        `Test: <Link/> is a Decentralized Publishing Infrastructure. 
+  const translatedString = createInterpolateElement(
+    __(
+      `Test: <Link/> is a Decentralized Publishing Infrastructure. 
         It reinvents the publishing industry with decentralized registry, 
-        rewards, editorial, and governance.`
-      ),
-      {
-        Link: createElement(
-          Link,
-          {text:"Likecoin", linkAddress:"https://like.co"}
-        ),
-      }
-    );
+        rewards, editorial, and governance.`,
+      'likecoin-react'
+    ),
+    {
+      Link: createElement(Link, {
+        text: 'Likecoin',
+        linkAddress: 'https://like.co',
+      }),
+    }
+  );
+  const translatedString2 = __(
+    `Test2: ${(
+      <Link text="Likecoin" linkAddress="https://like.co" />
+    )} is a Decentralized Publishing Infrastructure. 
+        It reinvents the publishing industry with decentralized registry, 
+        rewards, editorial, and governance.`,
+    'likecoin-react'
+  );
   return (
     <div>
       <LikecoinHeading />
@@ -35,6 +44,7 @@ function SponsorLikecoinPage() {
           governance.
         </p>
         <p>{translatedString}</p>
+        <p>{translatedString2}</p>
         <ParagraphTitle text={'Decentralized Registry'} />
         <p>
           The heart of Decentralized Publishing is decentralized registry
