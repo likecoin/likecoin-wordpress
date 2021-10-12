@@ -1,0 +1,152 @@
+# Copyright (C) 2021 Liker Land
+# This file is distributed under the same license as the LikecoinReact plugin.
+msgid ""
+msgstr ""
+"Project-Id-Version: LikecoinReact\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/likecoin-react\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2021-10-12T17:11:03+00:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"X-Generator: WP-CLI 2.5.0\n"
+"X-Domain: likecoin-react\n"
+
+#. Plugin Name of the plugin
+msgid "LikecoinReact"
+msgstr ""
+
+#. Description of the plugin
+msgid "LikecoinReact App"
+msgstr ""
+
+#. Author of the plugin
+msgid "Liker Land"
+msgstr ""
+
+#: src/components/LikecoinHeading.js:3
+#: build/static/js/main.0837847e.chunk.js:311
+msgid "LikeCoin"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:8
+#: build/static/js/main.0837847e.chunk.js:1731
+msgid "<Likecoin/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:17
+#: build/static/js/main.0837847e.chunk.js:1740
+msgid "<ISCN/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:26
+#: build/static/js/main.0837847e.chunk.js:1749
+msgid "<LikeCoinChain/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:35
+#: build/static/js/main.0837847e.chunk.js:1758
+msgid "<IPFS/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:44
+#: build/static/js/main.0837847e.chunk.js:1767
+msgid "<LikeCoinToken/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:53
+#: build/static/js/main.0837847e.chunk.js:1776
+msgid "<CivicLiker/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:62
+#: build/static/js/main.0837847e.chunk.js:1785
+msgid "<RepublicOfLikerLand/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:71
+#: build/static/js/main.0837847e.chunk.js:1794
+msgid "<Proposal/>"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:93
+#: build/static/js/main.0837847e.chunk.js:1816
+msgid " is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance."
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:98
+#: build/static/js/main.0837847e.chunk.js:1821
+msgid "Decentralized Registry"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:100
+#: build/static/js/main.0837847e.chunk.js:1823
+msgid "The heart of Decentralized Publishing is decentralized registry powered by "
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:105
+#: build/static/js/main.0837847e.chunk.js:1828
+msgid ", a specification we drafted in collaboration with the industry. Inspired by ISBN for books, ISCN is a unique number assigned to content such as articles and images, and comes with metadata such as author, publisher, content address, license terms and creation footprint. Stored on "
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:110
+#: build/static/js/main.0837847e.chunk.js:1833
+msgid ", ISCN is immutable and censorship resilient. The content, on the other hand, is stored on "
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:115
+#: build/static/js/main.0837847e.chunk.js:1838
+msgid "for tamper resistance and peer-to-peer distribution."
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:120
+#: build/static/js/main.0837847e.chunk.js:1843
+msgid "Decentralized Rewards"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:122
+#: build/static/js/main.0837847e.chunk.js:1845
+msgid "By simply attaching a LikeCoin button beneath your content and without setting up a paywall, every Like by readers is turned into measurable rewards in "
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:126
+#: build/static/js/main.0837847e.chunk.js:1849
+msgid "The "
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:128
+#: build/static/js/main.0837847e.chunk.js:1851
+msgid " movement encourages readers to contribute USD5/mo to reward creativity and journalism, while the matching fund, distributed according to the Likes of all users, doubles the rewarding pool. With decentralized rewards, every Like counts."
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:134
+#: build/static/js/main.0837847e.chunk.js:1857
+msgid "Decentralized Editorials"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:137
+#: build/static/js/main.0837847e.chunk.js:1860
+msgid "Apart from rewarding creators as a Liker, readers may go further to become a Content Jockey. Content Jockeys help curate creative stories and insightful commentaries with Super Like, which is purposely designed to be scarce to cut out noise from signals. When a story gets popular, LikeCoin's unique distribution footprint rewards both creator and Content Jockey, creating an all win situation for the content ecosystem."
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:143
+#: build/static/js/main.0837847e.chunk.js:1866
+msgid "Decentralized Governance"
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:146
+#: build/static/js/main.0837847e.chunk.js:1869
+msgid "Not only is LikeCoin token a reward to creators and Content Jockeys, it also serves doubly as the governing token for the decentralized autonomous organization (DAO), namely the "
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:151
+#: build/static/js/main.0837847e.chunk.js:1874
+msgid ". Likers participate in liquid democracy by delegating their LikeCoin tokens to validators they trust, and freely switch among them without a fixed term of office. Issues such as default Content Jockeys, inflation rate and protocol updates require passing a corresponding "
+msgstr ""
+
+#: src/pages/SponsorLikecoinPage.js:156
+#: build/static/js/main.0837847e.chunk.js:1879
+msgid " by the Republic."
+msgstr ""
