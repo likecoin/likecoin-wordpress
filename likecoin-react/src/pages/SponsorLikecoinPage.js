@@ -4,74 +4,68 @@ import Link from '../components/Link';
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
 function SponsorLikecoinPage() {
-  const localizedlikecoinLink = createInterpolateElement(
-    __('<Likecoin/>', 'likecoin-react'),
+  const localizedIntroduction = createInterpolateElement(
+    __(
+      '<Likecoin/> is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
+      'likecoin-react'
+    ),
     {
       Likecoin: createElement(Link, {
-        text: 'Likecoin',
+        text: __('Likecoin', 'likecoin-react'),
         linkAddress: 'https://like.co',
       }),
     }
   );
-  const localizedISCNLink = createInterpolateElement(
-    __('<ISCN/>', 'likecoin-react'),
+  const localizedDecentralizedRegistry = createInterpolateElement(
+    __(
+      'The heart of Decentralized Publishing is decentralized registry powered by <ISCN/>, a specification we drafted in collaboration with the industry. Inspired by ISBN for books, ISCN is a unique number assigned to content such as articles and images, and comes with metadata such as author, publisher, content address, license terms and creation footprint. Stored on <LikeCoinChain />, ISCN is immutable and censorship resilient. The content, on the other hand, is stored on <IPFS/> for tamper resistance and peer-to-peer distribution.',
+      'likecoin-react'
+    ),
     {
       ISCN: createElement(Link, {
-        text: 'ISCN',
+        text: __('ISCN', 'likecoin-react'),
         linkAddress: 'https://iscn.io',
       }),
-    }
-  );
-  const localizedLikecoinChainLink = createInterpolateElement(
-    __('<LikeCoinChain/>', 'likecoin-react'),
-    {
       LikeCoinChain: createElement(Link, {
-        text: 'LikeCoin chain',
+        text: __('LikeCoin chain', 'likecoin-react'),
         linkAddress: 'https://likecoin.bigdipper.live/',
       }),
-    }
-  );
-  const localizedIPFSLink = createInterpolateElement(
-    __('<IPFS/>', 'likecoin-react'),
-    {
       IPFS: createElement(Link, {
-        text: 'IPFS',
+        text: __('IPFS', 'likecoin-react'),
         linkAddress: 'https://ipfs.io/',
       }),
     }
   );
-  const localizedlikecoinTokenLink = createInterpolateElement(
-    __('<LikeCoinToken/>', 'likecoin-react'),
+
+  const localizedDecentralizedRewards = createInterpolateElement(
+    __(
+      'By simply attaching a LikeCoin button beneath your content and without setting up a paywall, every Like by readers is turned into measurable rewards in <LikeCoinTokens/>. The <CivicLiker/> movement encourages readers to contribute USD5/mo to reward creativity and journalism, while the matching fund, distributed according to the Likes of all users, doubles the rewarding pool. With decentralized rewards, every Like counts.',
+      'likecoin-react'
+    ),
     {
-      LikeCoinToken: createElement(Link, {
-        text: 'LikeCoin tokens',
+      LikeCoinTokens: createElement(Link, {
+        text: __('LikeCoin tokens', 'likecoin-react'),
         linkAddress: 'https://www.coingecko.com/en/coins/likecoin',
       }),
-    }
-  );
-  const localizedCivicLikerLink = createInterpolateElement(
-    __('<CivicLiker/>', 'likecoin-react'),
-    {
       CivicLiker: createElement(Link, {
-        text: 'Civic Liker',
+        text: __('Civic Liker', 'likecoin-react'),
         linkAddress: 'https://liker.land/civic',
       }),
     }
   );
-  const localizedRepublicLikerLandLink = createInterpolateElement(
-    __('<RepublicOfLikerLand/>', 'likecoin-react'),
+
+  const localizedDecentralizedGovernance = createInterpolateElement(
+    __(
+      'Not only is LikeCoin token a reward to creators and Content Jockeys, it also serves doubly as the governing token for the decentralized autonomous organization (DAO), namely the <RepublicOfLikerLand/>. Likers participate in liquid democracy by delegating their LikeCoin tokens to validators they trust, and freely switch among them without a fixed term of office. Issues such as default Content Jockeys, inflation rate and protocol updates require passing a corresponding <Proposal/> by the Republic.',
+      'likecoin-react'
+    ),
     {
       RepublicOfLikerLand: createElement(Link, {
-        text: 'Republic of Liker Land',
+        text: __('Republic of Liker Land', 'likecoin-react'),
         linkAddress: 'https://likecoin.bigdipper.live',
       }),
-    }
-  );
-  const localizedProposalLink = createInterpolateElement(
-    __('<Proposal/>', 'likecoin-react'),
-    {
       Proposal: createElement(Link, {
-        text: 'proposal',
+        text: __('proposal', 'likecoin-react'),
         linkAddress: 'https://likecoin.bigdipper.live/proposalsc',
       }),
     }
@@ -88,48 +82,11 @@ function SponsorLikecoinPage() {
           width="660"
           style={{ overflow: 'hidden', border: 0 }}
         ></iframe>
-        <p>
-          {localizedlikecoinLink}
-          {__(
-            ' is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
-            'likecoin-react'
-          )}
-        </p>
+        <p>{localizedIntroduction}</p>
         <ParagraphTitle text={__('Decentralized Registry', 'likecoin-react')} />
-        <p>
-          {__(
-            'The heart of Decentralized Publishing is decentralized registry powered by ',
-            'likecoin-react'
-          )}{' '}
-          {localizedISCNLink}
-          {__(
-            ', a specification we drafted in collaboration with the industry. Inspired by ISBN for books, ISCN is a unique number assigned to content such as articles and images, and comes with metadata such as author, publisher, content address, license terms and creation footprint. Stored on ',
-            'likecoin-react'
-          )}
-          {localizedLikecoinChainLink}
-          {__(
-            ', ISCN is immutable and censorship resilient. The content, on the other hand, is stored on ',
-            'likecoin-react'
-          )}
-          {localizedIPFSLink}{' '}
-          {__(
-            'for tamper resistance and peer-to-peer distribution.',
-            'likecoin-react'
-          )}
-        </p>
+        <p>{localizedDecentralizedRegistry}</p>
         <ParagraphTitle text={__('Decentralized Rewards', 'likecoin-react')} />
-        <p>
-          {__(
-            'By simply attaching a LikeCoin button beneath your content and without setting up a paywall, every Like by readers is turned into measurable rewards in ',
-            'likecoin-react'
-          )}
-          {localizedlikecoinTokenLink}. {__('The ', 'likecoin-react')}
-          {localizedCivicLikerLink}
-          {__(
-            ' movement encourages readers to contribute USD5/mo to reward creativity and journalism, while the matching fund, distributed according to the Likes of all users, doubles the rewarding pool. With decentralized rewards, every Like counts.',
-            'likecoin-react'
-          )}
-        </p>
+        <p>{localizedDecentralizedRewards}</p>
         <ParagraphTitle
           text={__('Decentralized Editorials', 'likecoin-react')}
         />
@@ -142,19 +99,7 @@ function SponsorLikecoinPage() {
         <ParagraphTitle
           text={__('Decentralized Governance', 'likecoin-react')}
         />
-        <p>
-          {__(
-            'Not only is LikeCoin token a reward to creators and Content Jockeys, it also serves doubly as the governing token for the decentralized autonomous organization (DAO), namely the ',
-            'likecoin-react'
-          )}
-          {localizedRepublicLikerLandLink}
-          {__(
-            '. Likers participate in liquid democracy by delegating their LikeCoin tokens to validators they trust, and freely switch among them without a fixed term of office. Issues such as default Content Jockeys, inflation rate and protocol updates require passing a corresponding ',
-            'likecoin-react'
-          )}
-          {localizedProposalLink}
-          {__(' by the Republic.', 'likecoin-react')}
-        </p>
+        <p>{localizedDecentralizedGovernance}</p>
         <iframe
           src="https://github.com/sponsors/likecoin/button"
           title="Sponsor likecoin"
