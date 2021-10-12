@@ -29,7 +29,7 @@ class LikecoinReact {
 	 * Enable JavaScript translation string to work.
 	 */
 	public function set_script_translations() {
-		wp_set_script_translations( 'myguten-script', 'likecoin-react' );
+		wp_set_script_translations( 'react-plugin-translation', 'likecoin-react' );
 	}
 	/**
 	 * Post options data to WordPress database.
