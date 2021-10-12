@@ -390,6 +390,7 @@ class LikecoinReact {
 	 */
 	public function load_admin_js() {
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_js' ), 13 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'set_script_translations' ), 13 );
 	}
 	/**
 	 * Load JavaScript files coming from React.
@@ -452,8 +453,6 @@ class LikecoinReact {
 			'rpReactPlugin',
 			array( 'appSelector' => '#wpbody #wpbody-content' )
 		);
-		// add translation.
-		add_action( 'init', 'set_script_translations' );
 
 	}
 

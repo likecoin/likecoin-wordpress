@@ -6,9 +6,7 @@ import { createInterpolateElement, createElement } from '@wordpress/element';
 function SponsorLikecoinPage() {
   const translatedString = createInterpolateElement(
     __(
-      `Test: <Link/> is a Decentralized Publishing Infrastructure. 
-        It reinvents the publishing industry with decentralized registry, 
-        rewards, editorial, and governance.`,
+      'Target translation: <Link/> is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
       'likecoin-react'
     ),
     {
@@ -17,14 +15,6 @@ function SponsorLikecoinPage() {
         linkAddress: 'https://like.co',
       }),
     }
-  );
-  const translatedString2 = __(
-    `Test2: ${(
-      <Link text="Likecoin" linkAddress="https://like.co" />
-    )} is a Decentralized Publishing Infrastructure. 
-        It reinvents the publishing industry with decentralized registry, 
-        rewards, editorial, and governance.`,
-    'likecoin-react'
   );
   return (
     <div>
@@ -44,7 +34,6 @@ function SponsorLikecoinPage() {
           governance.
         </p>
         <p>{translatedString}</p>
-        <p>{translatedString2}</p>
         <ParagraphTitle text={'Decentralized Registry'} />
         <p>
           The heart of Decentralized Publishing is decentralized registry
