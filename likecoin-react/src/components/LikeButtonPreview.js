@@ -1,3 +1,4 @@
+import { __ } from '@wordpress/i18n';
 import { ReactComponent as SettingSvg } from './icon/settings.svg';
 
 function LikeButtonPreview(props) {
@@ -13,7 +14,7 @@ function LikeButtonPreview(props) {
   return (
     <section className="likecoin optionsSection">
       <section className="previewSection">
-        <span style={{ float: 'left' }}>Preview</span>
+        <span style={{ float: 'left' }}>{__('Preview', 'likecoin-react')}</span>
         <a
           rel="noopener noreferrer"
           target="_blank"

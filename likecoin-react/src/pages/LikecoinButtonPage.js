@@ -1,5 +1,6 @@
 import { useContext, useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import Section from '../components/Section';
 import LikecoinInfoTable from '../components/LikecoinInfoTable';
@@ -177,18 +178,18 @@ function LikecoinButtonPage() {
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
-          text="Settings Saved"
+          text={__('Settings Saved', 'likecoin-react')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
       {savedSuccessful && likerDisplayName === '-' && (
         <SettingNotice
-          text="Your Liker ID is missing"
+          text={__('Your Liker ID is missing', 'likecoin-react')}
           className="notice-error"
         />
       )}
-      <Section title={'Your Liker ID'} />
+      <Section title={__('Your Liker ID', 'likecoin-react')} />
       <form onSubmit={confirmHandler}>
         <LikecoinInfoTable
           likerIdValue={likerIdValue}
@@ -207,7 +208,7 @@ function LikecoinButtonPage() {
           showChangeButton={showChangeButton}
           showDisconnectButton={showDisconnectButton}
         />
-        <Section title={'Your Likecoin button'} />
+        <Section title={__('Your Likecoin button', 'likecoin-react')} />
         {hasValidLikecoinId ? (
           <LikeButtonPreview
             userLikerId={likerIdValue}
