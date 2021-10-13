@@ -313,22 +313,32 @@ class LikecoinReact {
 	public function admin_page() {
 		global $likecoin_admin_main_page;
 		$likecoin_admin_main_page = add_menu_page(
-			'top-menu-title',
-			'Plugin Setting',
+			__( 'LikeCoin React', 'likecoin-react' ),
+			__( 'LikeCoin React', 'likecoin-react' ),
 			'manage_options',
 			'likecoin-react',
 			array( $this, 'show_likecoin_admin_main_page_content' ),
 			'',
 			50
 		);
-		// Load the script only on AdminMainPage, overwrite show_likecoin_admin_main_page_content's effect.
 		add_action( 'load-' . $likecoin_admin_main_page, array( $this, 'load_admin_js' ) );
+
+		global $likecoin_plugin_main_page;
+		$likecoin_admin_plugin_page = add_submenu_page(
+			'likecoin-react',
+			__( 'LikeCoin', 'likecoin-react' ),
+			__( 'Plugin Setting', 'likecoin-react' ),
+			'manage_options',
+			'likecoin-react',
+			array( $this, 'load_admin_js' )
+		);
+		add_action( 'load-' . $likecoin_plugin_main_page, array( $this, 'load_admin_js' ) );
 
 		global $likecoin_button_page;
 		$likecoin_button_page = add_submenu_page(
 			'likecoin-react',
-			'likecoin-button-page-title',
-			'Your LikeCoin Button',
+			__( 'LikeCoin', 'likecoin-react' ),
+			__( 'Your LikeCoin Button', 'likecoin-react' ),
 			'manage_options',
 			'/likecoin-react#/likecoin-button',
 			array( $this, 'load_admin_js' )
@@ -338,8 +348,8 @@ class LikecoinReact {
 		global $publish_setting_page;
 		$publish_setting_page = add_submenu_page(
 			'likecoin-react',
-			'publish-setting-page-title',
-			'Publish Setting',
+			__( 'LikeCoin', 'likecoin-react' ),
+			__( 'Publish Setting', 'likecoin-react' ),
 			'manage_options',
 			'/likecoin-react#/publish-setting',
 			array( $this, 'load_admin_js' )
@@ -349,8 +359,8 @@ class LikecoinReact {
 		global $web_monetization_page;
 		$web_monetization_page = add_submenu_page(
 			'likecoin-react',
-			'web-monetization-page-title',
-			'Web Monetization',
+			__( 'LikeCoin', 'likecoin-react' ),
+			__( 'Web Monetization', 'likecoin-react' ),
 			'manage_options',
 			'/likecoin-react#/web-monetization',
 			array( $this, 'load_admin_js' )
@@ -360,8 +370,8 @@ class LikecoinReact {
 		global $sponsor_likecoin_page;
 		$sponsor_likecoin_page = add_submenu_page(
 			'likecoin-react',
-			'sponsor-likecoin-page-title',
-			'Sponsor Likecoin',
+			__( 'LikeCoin', 'likecoin-react' ),
+			__( 'Sponsor Likecoin', 'likecoin-react' ),
 			'manage_options',
 			'/likecoin-react#/sponsor-likecoin',
 			array( $this, 'load_admin_js' )
@@ -371,8 +381,8 @@ class LikecoinReact {
 		global $become_civic_liker_page;
 		$become_civic_liker_page = add_submenu_page(
 			'likecoin-react',
-			'become-civic-liker-title',
-			'Become a Civic Liker',
+			__( 'LikeCoin', 'likecoin-react' ),
+			__( 'Become a Civic Liker', 'likecoin-react' ),
 			'manage_options',
 			'https://liker.land/civic?utm_source=wp-plugin'
 		);
