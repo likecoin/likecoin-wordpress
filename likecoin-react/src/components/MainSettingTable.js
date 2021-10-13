@@ -1,5 +1,6 @@
 import { useRef, useContext, useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
+import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import SubmitButton from './SubmitButton';
 import CheckBox from './CheckBox';
@@ -26,6 +27,7 @@ function MainSettingTable(props) {
       ? true
       : false;
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
+  console.log('siteLikerIdEnabled: ', siteLikerIdEnabled);
   const [displayOptionSelected, selectDisplayOption] = useState(
     ctx.DBDisplayOptionSelected
   );
@@ -51,9 +53,9 @@ function MainSettingTable(props) {
     getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
   }
   const pluginSettingOptions = [
-    { value: 'always', label: 'Page and Post' },
-    { value: 'post', label: 'Post Only' },
-    { value: 'none', label: 'None' },
+    { value: 'always', label: __('Page and Post', 'likecoin-react') },
+    { value: 'post', label: __('Post Only', 'likecoin-react') },
+    { value: 'none', label: __('None', 'likecoin-react') },
   ];
   // Update Data
   const fetchLikeCoinID = useMemo(
@@ -154,24 +156,27 @@ function MainSettingTable(props) {
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
-          text="Settings Saved"
+          text={__('Settings Saved', 'likecoin-react')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
       {savedSuccessful && likerDisplayName === '-' && (
         <SettingNotice
-          text="Site Liker ID is missing"
+          text={__('Site Liker ID is missing', 'likecoin-react')}
           className="notice-error"
         />
       )}
       <form onSubmit={confirmHandler}>
-        <Section title={'Site Liker ID'} />
+        <Section title={__('Site Liker ID', 'likecoin-react')} />
         <CheckBox
           checked={siteLikerIdEnabled}
           handleCheck={enableSiteLikerId}
-          title="Enable site Liker ID"
-          details="Override all LikeCoin button with site Liker ID"
+          title={__('Enable site Liker ID', 'likecoin-react')}
+          details={__(
+            'Override all LikeCoin button with site Liker ID',
+            'likecoin-react'
+          )}
           checkRef={siteLikerIdEnabledRef}
         />
         {siteLikerIdEnabled ? (
@@ -193,19 +198,24 @@ function MainSettingTable(props) {
         ) : (
           ''
         )}
-        <Section title={'Site LikeCoin button display setting'} />
+        <Section
+          title={__('Site LikeCoin button display setting', 'likecoin-react')}
+        />
         <DropDown
           selected={displayOptionSelected}
           handleSelect={selectDisplayOption}
-          title="Display option"
+          title={__('Display option', 'likecoin-react')}
           selectRef={displayOptionRef}
           options={pluginSettingOptions}
         />
         <CheckBox
           checked={perPostOptionEnabled}
           handleCheck={allowPerPostOption}
-          title="Allow per Post option"
-          details="Allow editors to customize display setting per post"
+          title={__('Allow per Post option', 'likecoin-react')}
+          details={__(
+            'Allow editors to customize display setting per post',
+            'likecoin-react'
+          )}
           checkRef={perPostOptionEnabledRef}
         />
         <SubmitButton />

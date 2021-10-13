@@ -1,4 +1,5 @@
 import { useRef } from 'react';
+import { __ } from '@wordpress/i18n';
 import Text from './Text';
 
 function LikecoinInfoTable(props) {
@@ -9,15 +10,17 @@ function LikecoinInfoTable(props) {
         <tr>
           <label>
             {props.isMainSettingPage && (
-              <th className="optionTitle">Site Liker ID</th>
+              <th className="optionTitle">
+                {__('Site Liker ID', 'likecoin-react')}
+              </th>
             )}
             <td>
               <table className="form-table likecoinTable">
                 <tbody>
                   <tr>
-                    <th>Liker ID</th>
-                    <th>Display Name</th>
-                    <th>Wallet</th>
+                    <th>{__('Liker ID', 'likecoin-react')}</th>
+                    <th>{__('Display Name', 'likecoin-react')}</th>
+                    <th>{__('Wallet', 'likecoin-react')}</th>
                     <th> </th>
                   </tr>
                   <tr>
@@ -63,7 +66,10 @@ function LikecoinInfoTable(props) {
                                 rel="noopener"
                                 href="https://like.co/in"
                               >
-                                Sign Up / Find my Liker ID
+                                {__(
+                                  'Sign Up / Find my Liker ID',
+                                  'likecoin-react'
+                                )}
                               </a>
                             </p>
                           </div>
@@ -88,7 +94,7 @@ function LikecoinInfoTable(props) {
                             type="button"
                             onClick={props.handleClickOnChange}
                           >
-                            Change
+                            {__('Change', 'likecoin-react')}
                           </a>
                         </span>
                       )}
@@ -99,7 +105,7 @@ function LikecoinInfoTable(props) {
                             type="button"
                             onClick={props.handleDisconnect}
                           >
-                            Disconnect
+                            {__('Disconnect', 'likecoin-react')}
                           </a>
                         </span>
                       )}
@@ -110,13 +116,13 @@ function LikecoinInfoTable(props) {
               <section className="likecoin loading">
                 {props.likerIdValue.length !== 0 &&
                   props.isLoading &&
-                  'loading...'}
+                  __('Loading...', 'likecoin-react')}
               </section>
 
               <section>
                 {props.likerAvatar === '-' && !props.isLoading && (
                   <div className="likecoin likecoinError userNotFound">
-                    <h4>Liker ID not found</h4>
+                    <h4>{__('Liker ID not found', 'likecoin-react')}</h4>
                   </div>
                 )}
               </section>
