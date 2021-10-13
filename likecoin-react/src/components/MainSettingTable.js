@@ -27,7 +27,7 @@ function MainSettingTable(props) {
       ? true
       : false;
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
-  console.log('siteLikerIdEnabled: ', siteLikerIdEnabled);
+
   const [displayOptionSelected, selectDisplayOption] = useState(
     ctx.DBDisplayOptionSelected
   );

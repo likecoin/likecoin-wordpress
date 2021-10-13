@@ -1,4 +1,32 @@
+import { __ } from '@wordpress/i18n';
+import { createInterpolateElement, createElement } from '@wordpress/element';
+import Link from '../components/Link';
+
 function MattersDescription() {
+  const localizedMattersShortIntro = createInterpolateElement(
+    __(
+      '<Matters/> is a decentralized, cryptocurrency driven content creation and discussion platform. ',
+      'likecoin-react'
+    ),
+    {
+      Matters: createElement(Link, {
+        text: __('Matters', 'likecoin-react'),
+        linkAddress: 'https://matters.news',
+      }),
+    }
+  );
+  const localizedMattersLongIntro = createInterpolateElement(
+    __(
+      'By publishing on Matters, your articles will be stored to the distributed InterPlanetary File System (<IPFS/>) nodes and get rewarded. Take the first step to publish your creation and reclaim your ownership of data!',
+      'likecoin-react'
+    ),
+    {
+      IPFS: createElement(Link, {
+        text: __('IPFS', 'likecoin-react'),
+        linkAddress: 'https://ipfs.io',
+      }),
+    }
+  );
   return (
     <div style={{ textAlign: 'left' }}>
       <p></p>
@@ -15,29 +43,11 @@ function MattersDescription() {
             alt="matters-logo"
           ></img>
         </a>
-        What is Matters.news?
+        {__('What is Matters.news?', 'likecoin-react')}
       </h2>
       <p></p>
-      <p>
-        <a
-          rel="noopener noreferrer"
-          target="_blank"
-          href="https://matters.news"
-        >
-          Matters
-        </a>
-        is a decentralized, cryptocurrency driven content creation and
-        discussion platform.
-      </p>
-      <p>
-        By publishing on Matters, your articles will be stored to the
-        distributed InterPlanetary File System (
-        <a rel="noopener noreferrer" target="_blank" href="https://ipfs.io">
-          IPFS
-        </a>
-        ) nodes and get rewarded. Take the first step to publish your creation
-        and reclaim your ownership of data!
-      </p>
+      <p>{localizedMattersShortIntro}</p>
+      <p>{localizedMattersLongIntro}</p>
       <br />
     </div>
   );

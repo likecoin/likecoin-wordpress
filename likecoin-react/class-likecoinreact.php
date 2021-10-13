@@ -161,6 +161,7 @@ class LikecoinReact {
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
 	public function get_site_matters_data( $request ) {
+		$publish_options   = get_option( 'lc_publish_options' );
 		// incl. login and publish data.
 		if ( ! $publish_options ) {
 			return;

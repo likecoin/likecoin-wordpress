@@ -1,10 +1,14 @@
+import { __ } from '@wordpress/i18n';
+
 function MattersStatusTable(props) {
   return (
     <table className="form-table" role="presentation">
       <tbody>
         <tr>
           <th scope="row">
-            <label for="site_matters_user">Connection Status</label>
+            <label for="site_matters_user">
+              {__('Connection Status', 'likecoin-react')}
+            </label>
           </th>
           <td>
             <div>
@@ -12,7 +16,7 @@ function MattersStatusTable(props) {
                 <b>
                   {props.siteMattersId.length > 0 && (
                     <>
-                      Logged in as{' '}
+                      {__('Logged in as ', 'likecoin-react')}
                       <a
                         rel="noopener noreferrer"
                         target="_blank"
@@ -23,7 +27,9 @@ function MattersStatusTable(props) {
                       </a>
                     </>
                   )}
-                  {props.siteMattersId.length === 0 && <b> Not connected </b>}
+                  {props.siteMattersId.length === 0 && (
+                    <b> {__('Not connected', 'likecoin-react')} </b>
+                  )}
                 </b>
               </span>
               {props.siteMattersId.length > 0 && (
@@ -35,7 +41,7 @@ function MattersStatusTable(props) {
                     target="_blank"
                     href="#"
                   >
-                    Logout
+                    {__('Logout', 'likecoin-react')}
                   </a>
                 </span>
               )}

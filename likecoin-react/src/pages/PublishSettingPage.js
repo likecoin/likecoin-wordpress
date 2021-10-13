@@ -1,5 +1,6 @@
 import { useRef, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { __ } from '@wordpress/i18n';
 import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
@@ -20,9 +21,9 @@ function PublishSettingPage() {
   const siteMattersAddFooterLinkRef = useRef();
   const ISCNBadgeStyleOptionRef = useRef();
   const ISCNStyleOptions = [
-    { value: 'light', label: 'Light Mode' },
-    { value: 'dark', label: 'Ddark Mode' },
-    { value: 'none', label: 'None' },
+    { value: 'light', label: __('Light Mode', 'likecoin-react') },
+    { value: 'dark', label: __('Ddark Mode', 'likecoin-react') },
+    { value: 'none', label: __('None', 'likecoin-react') },
   ];
   const DBSiteMattersAutoSaveDraft =
     mattersCtx.DBSiteMattersAutoSaveDraft === '1' ||
@@ -271,7 +272,7 @@ function PublishSettingPage() {
         />
       )}
       <MattersDescription />
-      <Section title={'Login with Matters ID'} />
+      <Section title={__('Login with Matters ID', 'likecoin-react')} />
       <MattersLoginTable
         loginHandler={loginHandler}
         mattersIdRef={mattersIdRef}
@@ -279,43 +280,43 @@ function PublishSettingPage() {
         mattersLoginError={mattersLoginError}
       />
       <form onSubmit={confirmHandler}>
-        <Section title={'Matters connection status'} />
+        <Section title={__('Matters connection status', 'likecoin-react')} />
         <MattersStatusTable
           siteMattersId={siteMattersId}
           handleMattersLogout={handleMattersLogout}
         />
-        <Section title={'Publish to Matters'} />
+        <Section title={__('Publish to Matters', 'likecoin-react')} />
         <table className="form-table" role="presentation">
           <tbody>
             <CheckBox
               checked={siteMattersAutoSaveDraft}
               handleCheck={setSiteMattersAutoSaveDraft}
-              title="Auto save draft to Matters"
-              details="Auto save draft to Matters"
+              title={__('Auto save draft to Matters', 'likecoin-react')}
+              details={__('Auto save draft to Matters', 'likecoin-react')}
               checkRef={siteMattersAutoSaveDraftRef}
             />
             <CheckBox
               checked={siteMattersAutoPublish}
               handleCheck={setSiteMattersAutoPublish}
-              title="Auto publish post to Matters"
-              details="Auto publish post to Matters"
+              title={__('Auto publish post to Matters', 'likecoin-react')}
+              details={__('Auto publish post to Matters', 'likecoin-react')}
               checkRef={siteMattersAutoPublishRef}
             />
             <CheckBox
               checked={siteMattersAddFooterLink}
               handleCheck={setSiteMattersAddFooterLink}
-              title="Add post link in footer"
-              details="Add post link in footer"
+              title={__('Add post link in footer', 'likecoin-react')}
+              details={__('Add post link in footer', 'likecoin-react')}
               checkRef={siteMattersAddFooterLinkRef}
             />
           </tbody>
         </table>
-        <Section title={'Publish to ISCN'} />
+        <Section title={__('Publish to ISCN', 'likecoin-react')} />
         <table className="form-table" role="presentation">
           <DropDown
             selected={ISCNBadgeStyleOption}
             handleSelect={setISCNBadgeStyleOption}
-            title="Show ISCN badge in post"
+            title={__('Show ISCN badge in post', 'likecoin-react')}
             selectRef={ISCNBadgeStyleOptionRef}
             options={ISCNStyleOptions}
           />

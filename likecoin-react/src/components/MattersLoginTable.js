@@ -1,3 +1,5 @@
+import { __ } from '@wordpress/i18n';
+
 function MattersLoginTable(props) {
   return (
     <form onSubmit={props.loginHandler}>
@@ -5,7 +7,9 @@ function MattersLoginTable(props) {
         <tbody>
           <tr>
             <td>
-              <label for="matters_id">Matters login email</label>
+              <label for="matters_id">
+                {__('Matters login email ', 'likecoin-react')}
+              </label>
               <input
                 type="text"
                 name="lc_matters_id"
@@ -14,7 +18,9 @@ function MattersLoginTable(props) {
               ></input>
             </td>
             <td>
-              <label for="matters_password">Password</label>
+              <label for="matters_password">
+                {__('Password ', 'likecoin-react')}
+              </label>
               <input
                 type="password"
                 name="lc_matters_password"
