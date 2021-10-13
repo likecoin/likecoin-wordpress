@@ -6,6 +6,7 @@ import SettingNotice from '../components/SettingNotice';
 import SubmitButton from '../components/SubmitButton';
 import WebMonetizationDescription from '../components/WebMonetizationDescription';
 import WebMonetizationContext from '../context/web-monetization-context';
+import { __ } from '@wordpress/i18n';
 
 function WebMonetizationPage() {
   const webMonetizationCtx = useContext(WebMonetizationContext);
@@ -75,7 +76,9 @@ function WebMonetizationPage() {
           <tbody>
             <tr>
               <th scope="row">
-                <label for="site_payment_pointer">Payment pointer</label>
+                <label for="site_payment_pointer">
+                  {__('Payment pointer', 'likecoin-react')}
+                </label>
               </th>
               <td>
                 <input
@@ -90,7 +93,7 @@ function WebMonetizationPage() {
                   target="_blank"
                   href="https://webmonetization.org/docs/ilp-wallets/"
                 >
-                  What is payment pointer?
+                  {__('What is payment pointer?', 'likecoin-react')}
                 </a>
               </td>
             </tr>

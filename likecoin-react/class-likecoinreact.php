@@ -361,7 +361,7 @@ class LikecoinReact {
 		$web_monetization_page = add_submenu_page(
 			'likecoin-react',
 			__( 'LikeCoin', 'likecoin-react' ),
-			__( 'Web Monetization', 'likecoin-react' ),
+			__( 'Web Monetization (beta)', 'likecoin-react' ),
 			'manage_options',
 			'/likecoin-react#/web-monetization',
 			array( $this, 'load_admin_js' )
