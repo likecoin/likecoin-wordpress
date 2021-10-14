@@ -7,7 +7,7 @@ function MattersStatusTable(props) {
         <tr>
           <th scope="row">
             <label for="site_matters_user">
-              {__('Connection Status', 'likecoin-react')}
+              {__('Connection Status', 'likecoin')}
             </label>
           </th>
           <td>
@@ -16,7 +16,7 @@ function MattersStatusTable(props) {
                 <b>
                   {props.siteMattersId.length > 0 && (
                     <>
-                      {__('Logged in as ', 'likecoin-react')}
+                      {__('Logged in as ', 'likecoin')}
                       <a
                         rel="noopener noreferrer"
                         target="_blank"
@@ -28,7 +28,7 @@ function MattersStatusTable(props) {
                     </>
                   )}
                   {props.siteMattersId.length === 0 && (
-                    <b> {__('Not connected', 'likecoin-react')} </b>
+                    <b> {__('Not connected', 'likecoin')} </b>
                   )}
                 </b>
               </span>
@@ -41,7 +41,7 @@ function MattersStatusTable(props) {
                     target="_blank"
                     href="#"
                   >
-                    {__('Logout', 'likecoin-react')}
+                    {__('Logout', 'likecoin')}
                   </a>
                 </span>
               )}

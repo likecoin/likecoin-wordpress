@@ -32,7 +32,7 @@ export const MattersInfoProvider = (props) => {
   async function fetchWordpressDBMattersInfoData() {
     try {
       const response = await axios.get(
-        `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page`,
+        `${window.wpApiSettings.root}likecoin/v1/publish-setting-page`,
         {
           headers: {
             'Content-Type': 'application/json',

@@ -10,7 +10,7 @@ export const WebMonetizationProvider = (props) => {
   async function fetchWordpressDBWebMonetizationData() {
     try {
       const response = await axios.get(
-        `${window.wpApiSettings.root}likecoin-react/v1/web-monetization-page`,
+        `${window.wpApiSettings.root}likecoin/v1/web-monetization-page`,
         {
           headers: {
             'Content-Type': 'application/json',

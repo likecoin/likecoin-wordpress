@@ -9,7 +9,7 @@
     "lint": "npm run lint:es && npm run lint:style && npm run prettier",
     "lint:es": "eslint .",
     "lint:style": "stylelint 'likecoin/assets/css'",
-    "prettier": "prettier --write ./likecoin-react/src"
+    "prettier": "prettier --write ./admin-frontend/src"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

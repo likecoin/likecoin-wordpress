@@ -1,16 +1,16 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
-import Link from '../components/Link';
+import Link from './Link';
 
 function MattersDescription() {
   const localizedMattersShortIntro = createInterpolateElement(
     __(
       '<Matters/> is a decentralized, cryptocurrency driven content creation and discussion platform. ',
-      'likecoin-react'
+      'likecoin'
     ),
     {
       Matters: createElement(Link, {
-        text: __('Matters', 'likecoin-react'),
+        text: __('Matters', 'likecoin'),
         linkAddress: 'https://matters.news',
       }),
     }
@@ -18,11 +18,11 @@ function MattersDescription() {
   const localizedMattersLongIntro = createInterpolateElement(
     __(
       'By publishing on Matters, your articles will be stored to the distributed InterPlanetary File System (<IPFS/>) nodes and get rewarded. Take the first step to publish your creation and reclaim your ownership of data!',
-      'likecoin-react'
+      'likecoin'
     ),
     {
       IPFS: createElement(Link, {
-        text: __('IPFS', 'likecoin-react'),
+        text: __('IPFS', 'likecoin'),
         linkAddress: 'https://ipfs.io',
       }),
     }
@@ -43,7 +43,7 @@ function MattersDescription() {
             alt="matters-logo"
           ></img>
         </a>
-        {__('What is Matters.news?', 'likecoin-react')}
+        {__('What is Matters.news?', 'likecoin')}
       </h2>
       <p></p>
       <p>{localizedMattersShortIntro}</p>

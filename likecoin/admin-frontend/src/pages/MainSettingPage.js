@@ -4,7 +4,7 @@ function MainSettingPage() {
   async function postMainOptionDataToWordpress(data) {
     try {
       await axios.post(
-        `${window.wpApiSettings.root}likecoin-react/v1/main-setting-page`,
+        `${window.wpApiSettings.root}likecoin/v1/main-setting-page`,
         JSON.stringify(data),
         {
           headers: {

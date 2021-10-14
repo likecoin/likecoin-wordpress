@@ -8,7 +8,7 @@ function MattersLoginTable(props) {
           <tr>
             <td>
               <label for="matters_id">
-                {__('Matters login email ', 'likecoin-react')}
+                {__('Matters login email ', 'likecoin')}
               </label>
               <input
                 type="text"
@@ -19,7 +19,7 @@ function MattersLoginTable(props) {
             </td>
             <td>
               <label for="matters_password">
-                {__('Password ', 'likecoin-react')}
+                {__('Password ', 'likecoin')}
               </label>
               <input
                 type="password"

@@ -14,7 +14,7 @@ function LikeButtonPreview(props) {
   return (
     <section className="likecoin optionsSection">
       <section className="previewSection">
-        <span style={{ float: 'left' }}>{__('Preview', 'likecoin-react')}</span>
+        <span style={{ float: 'left' }}>{__('Preview', 'likecoin')}</span>
         <a
           rel="noopener noreferrer"
           target="_blank"

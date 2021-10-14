@@ -99,7 +99,7 @@ function LikecoinButtonPage() {
   async function postUserDataToWordpress(dataToPost) {
     try {
       await axios.post(
-        `${window.wpApiSettings.root}likecoin-react/v1/likecoin-button-page`,
+        `${window.wpApiSettings.root}likecoin/v1/likecoin-button-page`,
         JSON.stringify(dataToPost),
         {
           headers: {
@@ -178,18 +178,18 @@ function LikecoinButtonPage() {
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
-          text={__('Settings Saved', 'likecoin-react')}
+          text={__('Settings Saved', 'likecoin')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
       {savedSuccessful && likerDisplayName === '-' && (
         <SettingNotice
-          text={__('Your Liker ID is missing', 'likecoin-react')}
+          text={__('Your Liker ID is missing', 'likecoin')}
           className="notice-error"
         />
       )}
-      <Section title={__('Your Liker ID', 'likecoin-react')} />
+      <Section title={__('Your Liker ID', 'likecoin')} />
       <form onSubmit={confirmHandler}>
         <LikecoinInfoTable
           likerIdValue={likerIdValue}
@@ -208,7 +208,7 @@ function LikecoinButtonPage() {
           showChangeButton={showChangeButton}
           showDisconnectButton={showDisconnectButton}
         />
-        <Section title={__('Your Likecoin button', 'likecoin-react')} />
+        <Section title={__('Your Likecoin button', 'likecoin')} />
         {hasValidLikecoinId ? (
           <LikeButtonPreview
             userLikerId={likerIdValue}

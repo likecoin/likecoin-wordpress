@@ -21,9 +21,9 @@ function PublishSettingPage() {
   const siteMattersAddFooterLinkRef = useRef();
   const ISCNBadgeStyleOptionRef = useRef();
   const ISCNStyleOptions = [
-    { value: 'light', label: __('Light Mode', 'likecoin-react') },
-    { value: 'dark', label: __('Ddark Mode', 'likecoin-react') },
-    { value: 'none', label: __('None', 'likecoin-react') },
+    { value: 'light', label: __('Light Mode', 'likecoin') },
+    { value: 'dark', label: __('Dark Mode', 'likecoin') },
+    { value: 'none', label: __('None', 'likecoin') },
   ];
   const DBSiteMattersAutoSaveDraft =
     mattersCtx.DBSiteMattersAutoSaveDraft === '1' ||
@@ -113,7 +113,7 @@ function PublishSettingPage() {
 
       // Post data to Wordpress DB
       const postToWordpressResponse = await axios.post(
-        `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/matters-login`,
+        `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/matters-login`,
         JSON.stringify(siteMattersUser),
         {
           headers: {
@@ -170,7 +170,7 @@ function PublishSettingPage() {
   async function postMattersOptionDataToWordpress(dataToPost) {
     try {
       await axios.post(
-        `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/publish-options`,
+        `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/publish-options`,
         JSON.stringify(dataToPost),
         {
           headers: {
@@ -196,7 +196,7 @@ function PublishSettingPage() {
       accessToken: '',
     };
     await axios.post(
-      `${window.wpApiSettings.root}likecoin-react/v1/publish-setting-page/matters-login`,
+      `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/matters-login`,
       JSON.stringify(siteMattersUser),
       {
         headers: {
@@ -272,7 +272,7 @@ function PublishSettingPage() {
         />
       )}
       <MattersDescription />
-      <Section title={__('Login with Matters ID', 'likecoin-react')} />
+      <Section title={__('Login with Matters ID', 'likecoin')} />
       <MattersLoginTable
         loginHandler={loginHandler}
         mattersIdRef={mattersIdRef}
@@ -280,43 +280,43 @@ function PublishSettingPage() {
         mattersLoginError={mattersLoginError}
       />
       <form onSubmit={confirmHandler}>
-        <Section title={__('Matters connection status', 'likecoin-react')} />
+        <Section title={__('Matters connection status', 'likecoin')} />
         <MattersStatusTable
           siteMattersId={siteMattersId}
           handleMattersLogout={handleMattersLogout}
         />
-        <Section title={__('Publish to Matters', 'likecoin-react')} />
+        <Section title={__('Publish to Matters', 'likecoin')} />
         <table className="form-table" role="presentation">
           <tbody>
             <CheckBox
               checked={siteMattersAutoSaveDraft}
               handleCheck={setSiteMattersAutoSaveDraft}
-              title={__('Auto save draft to Matters', 'likecoin-react')}
-              details={__('Auto save draft to Matters', 'likecoin-react')}
+              title={__('Auto save draft to Matters', 'likecoin')}
+              details={__('Auto save draft to Matters', 'likecoin')}
               checkRef={siteMattersAutoSaveDraftRef}
             />
             <CheckBox
               checked={siteMattersAutoPublish}
               handleCheck={setSiteMattersAutoPublish}
-              title={__('Auto publish post to Matters', 'likecoin-react')}
-              details={__('Auto publish post to Matters', 'likecoin-react')}
+              title={__('Auto publish post to Matters', 'likecoin')}
+              details={__('Auto publish post to Matters', 'likecoin')}
               checkRef={siteMattersAutoPublishRef}
             />
             <CheckBox
               checked={siteMattersAddFooterLink}
               handleCheck={setSiteMattersAddFooterLink}
-              title={__('Add post link in footer', 'likecoin-react')}
-              details={__('Add post link in footer', 'likecoin-react')}
+              title={__('Add post link in footer', 'likecoin')}
+              details={__('Add post link in footer', 'likecoin')}
               checkRef={siteMattersAddFooterLinkRef}
             />
           </tbody>
         </table>
-        <Section title={__('Publish to ISCN', 'likecoin-react')} />
+        <Section title={__('Publish to ISCN', 'likecoin')} />
         <table className="form-table" role="presentation">
           <DropDown
             selected={ISCNBadgeStyleOption}
             handleSelect={setISCNBadgeStyleOption}
-            title={__('Show ISCN badge in post', 'likecoin-react')}
+            title={__('Show ISCN badge in post', 'likecoin')}
             selectRef={ISCNBadgeStyleOptionRef}
             options={ISCNStyleOptions}
           />

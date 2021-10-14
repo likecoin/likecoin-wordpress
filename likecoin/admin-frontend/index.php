@@ -1,42 +1,16 @@
 <?php
 /**
- * LikeCoin WordPress Plugin Built with React
- *
- * @package   LikeCoin
- * Plugin Name: LikecoinReact
- * Description: LikecoinReact App
- * Version 1.0
- * Author: Liker Land
- * Aurhor URI: https://liker.land/
- * Text Domain: likecoin-react
- */
-
-if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if user type url directly.
-}
-/**
- * Init Likecoin React Class.
- */
-class LikecoinReact {
-	/**
-	 * Init the LikecoinReact Class.
-	 */
-	public function __construct() {
-		add_action( 'admin_menu', array( $this, 'admin_page' ) );
-		add_action( 'rest_api_init', array( $this, 'get_admin_main_page_api' ) );
-	}
-	/**
 	 * Enable JavaScript translation string to work.
 	 */
-	public function set_script_translations() {
-		wp_set_script_translations( 'react-plugin-0', 'likecoin-react' );
+	function likecoin_set_script_translations() {
+		wp_set_script_translations( 'react-plugin-0', 'likecoin' );
 	}
 	/**
 	 * Post options data to WordPress database.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function post_main_plugin_options( $request ) {
+	function likecoin_post_main_plugin_options( $request ) {
 		$plugin_options          = get_option( 'lc_plugin_options' );
 		$params                  = $request->get_json_params();
 		$site_liker_id_enabled   = $params['siteLikerIdEnabled'];
@@ -62,7 +36,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function get_main_plugin_options( $request ) {
+	function likecoin_get_main_plugin_options( $request ) {
 		$plugin_options = get_option( 'lc_plugin_options' );
 		if ( ! $plugin_options ) {
 			return;
@@ -77,7 +51,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function post_user_data( $request ) {
+	function likecoin_post_user_data( $request ) {
 		$user          = wp_get_current_user();
 		$user_id       = $user->ID;
 		$likecoin_user = get_user_meta( $user_id, 'lc_likecoin_user', true );
@@ -105,7 +79,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function get_user_data( $request ) {
+	function likecoin_get_user_data( $request ) {
 		$user          = wp_get_current_user();
 		$user_id       = $user->ID;
 		$likecoin_user = get_user_meta( $user_id, 'lc_likecoin_user', true );
@@ -124,7 +98,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function post_site_publish_options_data( $request ) {
+	function likecoin_post_site_publish_options_data( $request ) {
 		$publish_options = get_option( 'lc_publish_options' );
 		$params          = $request->get_json_params();
 		$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
@@ -143,7 +117,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function post_site_matters_login_data( $request ) {
+	function likecoin_post_site_matters_login_data( $request ) {
 		$publish_options = get_option( 'lc_publish_options' );
 		$params          = $request->get_json_params();
 		$publish_options['site_matters_user']['matters_id']   = $params['mattersId'];
@@ -160,7 +134,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function get_site_matters_data( $request ) {
+	function likecoin_get_site_matters_data( $request ) {
 		$publish_options   = get_option( 'lc_publish_options' );
 		// incl. login and publish data.
 		if ( ! $publish_options ) {
@@ -177,7 +151,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function post_web_monetization_data( $request ) {
+	function likecoin_post_web_monetization_data( $request ) {
 		$monetization_options                         = get_option( 'lc_monetization_options' );
 		$params                                       = $request->get_json_params();
 		$monetization_options['site_payment_pointer'] = $params['paymentPointer'];
@@ -193,7 +167,7 @@ class LikecoinReact {
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
 	 */
-	public function get_web_monetization_data( $request ) {
+	function likecoin_get_web_monetization_data( $request ) {
 		$monetization_options = get_option( 'lc_monetization_options' );
 		if ( ! $monetization_options ) {
 			return;
@@ -204,186 +178,83 @@ class LikecoinReact {
 		return rest_ensure_response( $result );
 
 	}
-	/**
-	 * Set up API route for JavaScript file to call.
-	 */
-	public function get_admin_main_page_api() {
-		register_rest_route(
-			'likecoin-react/v1',
-			'/main-setting-page',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'post_main_plugin_options' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/main-setting-page',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_main_plugin_options' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/likecoin-button-page',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'post_user_data' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/likecoin-button-page',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_user_data' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/publish-setting-page/publish-options',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'post_site_publish_options_data' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/publish-setting-page/matters-login',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'post_site_matters_login_data' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/publish-setting-page',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_site_matters_data' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/web-monetization-page',
-			array(
-				'methods'             => 'POST',
-				'callback'            => array( $this, 'post_web_monetization_data' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-		register_rest_route(
-			'likecoin-react/v1',
-			'/web-monetization-page',
-			array(
-				'methods'             => 'GET',
-				'callback'            => array( $this, 'get_web_monetization_data' ),
-				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
-				},
-			)
-		);
-	}
+	
 	/**
 	 * Set up Admin Page menus on the left side bar.
 	 */
-	public function admin_page() {
+	function likecoin_display_admin_pages() {
 		global $likecoin_admin_main_page;
 		$likecoin_admin_main_page = add_menu_page(
-			__( 'LikeCoin React', 'likecoin-react' ),
-			__( 'LikeCoin React', 'likecoin-react' ),
+			__( 'LikeCoin', 'likecoin' ),
+			__( 'LikeCoin', 'likecoin' ),
 			'manage_options',
-			'likecoin-react',
-			array( $this, 'show_likecoin_admin_main_page_content' ),
+			'likecoin',
+			'likecoin_show_likecoin_admin_main_page_content',
 			'',
 			50
 		);
-		add_action( 'load-' . $likecoin_admin_main_page, array( $this, 'load_admin_js' ) );
+		add_action( 'load-' . $likecoin_admin_main_page, 'likecoin_load_admin_js' );
 
 		global $likecoin_plugin_main_page;
 		$likecoin_admin_plugin_page = add_submenu_page(
-			'likecoin-react',
-			__( 'LikeCoin', 'likecoin-react' ),
-			__( 'Plugin Setting', 'likecoin-react' ),
+			'likecoin',
+			__( 'LikeCoin', 'likecoin' ),
+			__( 'Plugin Setting', 'likecoin' ),
 			'manage_options',
-			'likecoin-react',
-			array( $this, 'load_admin_js' )
+			'likecoin',
+			'likecoin_load_admin_js'
 		);
-		add_action( 'load-' . $likecoin_plugin_main_page, array( $this, 'load_admin_js' ) );
+		add_action( 'load-' . $likecoin_plugin_main_page, 'likecoin_load_admin_js'  );
 
 		global $likecoin_button_page;
 		$likecoin_button_page = add_submenu_page(
-			'likecoin-react',
-			__( 'LikeCoin', 'likecoin-react' ),
-			__( 'Your LikeCoin Button', 'likecoin-react' ),
+			'likecoin',
+			__( 'LikeCoin', 'likecoin' ),
+			__( 'Your LikeCoin Button', 'likecoin' ),
 			'manage_options',
-			'/likecoin-react#/likecoin-button',
-			array( $this, 'load_admin_js' )
+			'/likecoin#/likecoin-button',
+			'likecoin_load_admin_js'
 		);
-		add_action( 'load-' . $likecoin_button_page, array( $this, 'load_admin_js' ) );
+		add_action( 'load-' . $likecoin_button_page, 'likecoin_load_admin_js'  );
 
 		global $publish_setting_page;
 		$publish_setting_page = add_submenu_page(
-			'likecoin-react',
-			__( 'LikeCoin', 'likecoin-react' ),
-			__( 'Publish Setting', 'likecoin-react' ),
+			'likecoin',
+			__( 'LikeCoin', 'likecoin' ),
+			__( 'Publish Setting', 'likecoin' ),
 			'manage_options',
-			'/likecoin-react#/publish-setting',
-			array( $this, 'load_admin_js' )
+			'/likecoin#/publish-setting',
+			'likecoin_load_admin_js' 
 		);
-		add_action( 'load-' . $publish_setting_page, array( $this, 'load_admin_js' ) );
+		add_action( 'load-' . $publish_setting_page, 'likecoin_load_admin_js'  );
 
 		global $web_monetization_page;
 		$web_monetization_page = add_submenu_page(
-			'likecoin-react',
-			__( 'LikeCoin', 'likecoin-react' ),
-			__( 'Web Monetization (beta)', 'likecoin-react' ),
+			'likecoin',
+			__( 'LikeCoin', 'likecoin' ),
+			__( 'Web Monetization (beta)', 'likecoin' ),
 			'manage_options',
-			'/likecoin-react#/web-monetization',
-			array( $this, 'load_admin_js' )
+			'/likecoin#/web-monetization',
+			'likecoin_load_admin_js' 
 		);
-		add_action( 'load-' . $web_monetization_page, array( $this, 'load_admin_js' ) );
+		add_action( 'load-' . $web_monetization_page, 'likecoin_load_admin_js'  );
 
 		global $sponsor_likecoin_page;
 		$sponsor_likecoin_page = add_submenu_page(
-			'likecoin-react',
-			__( 'LikeCoin', 'likecoin-react' ),
-			__( 'Sponsor Likecoin', 'likecoin-react' ),
+			'likecoin',
+			__( 'LikeCoin', 'likecoin' ),
+			__( 'Sponsor Likecoin', 'likecoin' ),
 			'manage_options',
-			'/likecoin-react#/sponsor-likecoin',
-			array( $this, 'load_admin_js' )
+			'/likecoin#/sponsor-likecoin',
+			'likecoin_load_admin_js' 
 		);
-		add_action( 'load-' . $sponsor_likecoin_page, array( $this, 'load_admin_js' ) );
+		add_action( 'load-' . $sponsor_likecoin_page, 'likecoin_load_admin_js'  );
 
 		global $become_civic_liker_page;
 		$become_civic_liker_page = add_submenu_page(
-			'likecoin-react',
-			__( 'LikeCoin', 'likecoin-react' ),
-			__( 'Become a Civic Liker', 'likecoin-react' ),
+			'likecoin',
+			__( 'LikeCoin', 'likecoin' ),
+			__( 'Become a Civic Liker', 'likecoin' ),
 			'manage_options',
 			'https://liker.land/civic?utm_source=wp-plugin'
 		);
@@ -391,24 +262,24 @@ class LikecoinReact {
 	/**
 	 * Show default UI for admin main page.
 	 */
-	public function show_likecoin_admin_main_page_content() {
+	function likecoin_show_likecoin_admin_main_page_content() {
 		?> 
-		<p>Hi from default admin page.</p>
+		<p>Default admin page.</p>
 		<?php
 	}
 	/**
 	 * Allow php to load JavaScript files from React.
 	 */
-	public function load_admin_js() {
-		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_admin_js' ), 13 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'set_script_translations' ), 13 );
+	function likecoin_load_admin_js() {
+		add_action( 'admin_enqueue_scripts', 'likecoin_enqueue_admin_js' , 13 );
+		add_action( 'admin_enqueue_scripts', 'likecoin_set_script_translations' , 13 );
 	}
 	/**
 	 * Load JavaScript files coming from React.
 	 *
 	 * @param string| $file_string Part of the React-created JavaScript & css file name.
 	 */
-	public function get_js_files( $file_string ) {
+	function likecoin_get_js_files( $file_string ) {
 			return pathinfo( $file_string, PATHINFO_EXTENSION ) === 'js';
 	}
 	/**
@@ -416,13 +287,13 @@ class LikecoinReact {
 	 *
 	 * @param string| $file_string Part of the React-created JavaScript & css file name.
 	 */
-	public function get_css_files( $file_string ) {
+	function likecoin_get_css_files( $file_string ) {
 		return pathinfo( $file_string, PATHINFO_EXTENSION ) === 'css';
 	}
 	/**
 	 * Define how to load JavaScript files coming from React.
 	 */
-	public function enqueue_admin_js() {
+	function likecoin_enqueue_admin_js() {
 		$react_app_build_url  = plugin_dir_url( __FILE__ ) . 'build/';
 		$react_app_build_path = plugin_dir_path( __FILE__ ) . 'build/';
 		$manifest_path        = $react_app_build_path . 'asset-manifest.json';
@@ -442,8 +313,8 @@ class LikecoinReact {
 		}
 		$assets_files = $files_data->entrypoints;
 
-		$js_files  = array_filter( $assets_files, array( $this, 'get_js_files' ) );
-		$css_files = array_filter( $assets_files, array( $this, 'get_css_files' ) );
+		$js_files  = array_filter( $assets_files, 'likecoin_get_js_files'  );
+		$css_files = array_filter( $assets_files, 'likecoin_get_css_files'  );
 		foreach ( $css_files as $index => $css_file ) {
 			wp_enqueue_style( 'react-plugin-' . $index, $react_app_build_url . $css_file, array(), 1 );
 		}
@@ -458,7 +329,3 @@ class LikecoinReact {
 			array( 'appSelector' => '#wpbody #wpbody-content' )
 		);
 	}
-
-}
-
-$likecoin_react = new LikecoinReact();

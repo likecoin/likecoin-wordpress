@@ -53,9 +53,9 @@ function MainSettingTable(props) {
     getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
   }
   const pluginSettingOptions = [
-    { value: 'always', label: __('Page and Post', 'likecoin-react') },
-    { value: 'post', label: __('Post Only', 'likecoin-react') },
-    { value: 'none', label: __('None', 'likecoin-react') },
+    { value: 'always', label: __('Page and Post', 'likecoin') },
+    { value: 'post', label: __('Post Only', 'likecoin') },
+    { value: 'none', label: __('None', 'likecoin') },
   ];
   // Update Data
   const fetchLikeCoinID = useMemo(
@@ -156,26 +156,26 @@ function MainSettingTable(props) {
       {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
-          text={__('Settings Saved', 'likecoin-react')}
+          text={__('Settings Saved', 'likecoin')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
       {savedSuccessful && likerDisplayName === '-' && (
         <SettingNotice
-          text={__('Site Liker ID is missing', 'likecoin-react')}
+          text={__('Site Liker ID is missing', 'likecoin')}
           className="notice-error"
         />
       )}
       <form onSubmit={confirmHandler}>
-        <Section title={__('Site Liker ID', 'likecoin-react')} />
+        <Section title={__('Site Liker ID', 'likecoin')} />
         <CheckBox
           checked={siteLikerIdEnabled}
           handleCheck={enableSiteLikerId}
-          title={__('Enable site Liker ID', 'likecoin-react')}
+          title={__('Enable site Liker ID', 'likecoin')}
           details={__(
             'Override all LikeCoin button with site Liker ID',
-            'likecoin-react'
+            'likecoin'
           )}
           checkRef={siteLikerIdEnabledRef}
         />
@@ -199,22 +199,22 @@ function MainSettingTable(props) {
           ''
         )}
         <Section
-          title={__('Site LikeCoin button display setting', 'likecoin-react')}
+          title={__('Site LikeCoin button display setting', 'likecoin')}
         />
         <DropDown
           selected={displayOptionSelected}
           handleSelect={selectDisplayOption}
-          title={__('Display option', 'likecoin-react')}
+          title={__('Display option', 'likecoin')}
           selectRef={displayOptionRef}
           options={pluginSettingOptions}
         />
         <CheckBox
           checked={perPostOptionEnabled}
           handleCheck={allowPerPostOption}
-          title={__('Allow per Post option', 'likecoin-react')}
+          title={__('Allow per Post option', 'likecoin')}
           details={__(
             'Allow editors to customize display setting per post',
-            'likecoin-react'
+            'likecoin'
           )}
           checkRef={perPostOptionEnabledRef}
         />

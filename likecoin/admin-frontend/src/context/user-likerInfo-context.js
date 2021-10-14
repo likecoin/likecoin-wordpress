@@ -18,7 +18,7 @@ export const UserLikerInfoProvider = (props) => {
   async function fetchWordpressDBUserLikerInfoData() {
     try {
       const response = await axios.get(
-        `${window.wpApiSettings.root}likecoin-react/v1/likecoin-button-page`,
+        `${window.wpApiSettings.root}likecoin/v1/likecoin-button-page`,
         {
           headers: {
             'Content-Type': 'application/json',

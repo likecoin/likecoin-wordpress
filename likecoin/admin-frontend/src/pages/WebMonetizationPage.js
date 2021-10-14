@@ -18,7 +18,7 @@ function WebMonetizationPage() {
   async function saveToWordpressMonetizationOption(data) {
     try {
       await axios.post(
-        `${window.wpApiSettings.root}likecoin-react/v1/web-monetization-page`,
+        `${window.wpApiSettings.root}likecoin/v1/web-monetization-page`,
         JSON.stringify(data),
         {
           headers: {
@@ -77,7 +77,7 @@ function WebMonetizationPage() {
             <tr>
               <th scope="row">
                 <label for="site_payment_pointer">
-                  {__('Payment pointer', 'likecoin-react')}
+                  {__('Payment pointer', 'likecoin')}
                 </label>
               </th>
               <td>
@@ -93,7 +93,7 @@ function WebMonetizationPage() {
                   target="_blank"
                   href="https://webmonetization.org/docs/ilp-wallets/"
                 >
-                  {__('What is payment pointer?', 'likecoin-react')}
+                  {__('What is payment pointer?', 'likecoin')}
                 </a>
               </td>
             </tr>

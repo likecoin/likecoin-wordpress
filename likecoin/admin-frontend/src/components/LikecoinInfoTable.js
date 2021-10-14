@@ -10,17 +10,15 @@ function LikecoinInfoTable(props) {
         <tr>
           <label>
             {props.isMainSettingPage && (
-              <th className="optionTitle">
-                {__('Site Liker ID', 'likecoin-react')}
-              </th>
+              <th className="optionTitle">{__('Site Liker ID', 'likecoin')}</th>
             )}
             <td>
               <table className="form-table likecoinTable">
                 <tbody>
                   <tr>
-                    <th>{__('Liker ID', 'likecoin-react')}</th>
-                    <th>{__('Display Name', 'likecoin-react')}</th>
-                    <th>{__('Wallet', 'likecoin-react')}</th>
+                    <th>{__('Liker ID', 'likecoin')}</th>
+                    <th>{__('Display Name', 'likecoin')}</th>
+                    <th>{__('Wallet', 'likecoin')}</th>
                     <th> </th>
                   </tr>
                   <tr>
@@ -66,10 +64,7 @@ function LikecoinInfoTable(props) {
                                 rel="noopener"
                                 href="https://like.co/in"
                               >
-                                {__(
-                                  'Sign Up / Find my Liker ID',
-                                  'likecoin-react'
-                                )}
+                                {__('Sign Up / Find my Liker ID', 'likecoin')}
                               </a>
                             </p>
                           </div>
@@ -94,7 +89,7 @@ function LikecoinInfoTable(props) {
                             type="button"
                             onClick={props.handleClickOnChange}
                           >
-                            {__('Change', 'likecoin-react')}
+                            {__('Change', 'likecoin')}
                           </a>
                         </span>
                       )}
@@ -105,7 +100,7 @@ function LikecoinInfoTable(props) {
                             type="button"
                             onClick={props.handleDisconnect}
                           >
-                            {__('Disconnect', 'likecoin-react')}
+                            {__('Disconnect', 'likecoin')}
                           </a>
                         </span>
                       )}
@@ -116,13 +111,13 @@ function LikecoinInfoTable(props) {
               <section className="likecoin loading">
                 {props.likerIdValue.length !== 0 &&
                   props.isLoading &&
-                  __('Loading...', 'likecoin-react')}
+                  __('Loading...', 'likecoin')}
               </section>
 
               <section>
                 {props.likerAvatar === '-' && !props.isLoading && (
                   <div className="likecoin likecoinError userNotFound">
-                    <h4>{__('Liker ID not found', 'likecoin-react')}</h4>
+                    <h4>{__('Liker ID not found', 'likecoin')}</h4>
                   </div>
                 )}
               </section>

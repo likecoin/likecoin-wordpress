@@ -3,7 +3,7 @@ function SubmitButton() {
   return (
     <tr style={{ textAlign: 'left' }}>
       <button className="likecoinSubmitButton">
-        {__('Confirm', 'likecoin-react')}
+        {__('Confirm', 'likecoin')}
       </button>
     </tr>
   );
