@@ -190,7 +190,9 @@
 			'manage_options',
 			'likecoin',
 			'likecoin_show_likecoin_admin_main_page_content',
-			'',
+			// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+			'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/likecoin.svg' ) ),
+			// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 			50
 		);
 		add_action( 'load-' . $likecoin_admin_main_page, 'likecoin_load_admin_js' );
