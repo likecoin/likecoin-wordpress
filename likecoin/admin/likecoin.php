@@ -28,13 +28,11 @@
 require_once dirname( __FILE__ ) . '/ajax.php';
 require_once dirname( __FILE__ ) . '/editor.php';
 require_once dirname( __FILE__ ) . '/metabox.php';
-require_once dirname( __FILE__ ) . '/options.php';
 require_once dirname( __FILE__ ) . '/plugin-action.php';
 require_once dirname( __FILE__ ) . '/post.php';
-require_once dirname( __FILE__ ) . '/settings.php';
 require_once dirname( __FILE__ ) . '/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
-
+require_once dirname( __FILE__ ) . '/admin-frontend/index.php';
 /**
  * Inject web3.js on related admin pages
  *
@@ -75,7 +73,6 @@ function likecoin_add_privacy_policy_content() {
  * Run all functions for admin_init hook
  */
 function likecoin_admin_init() {
-	likecoin_init_settings();
 	likecoin_add_privacy_policy_content();
 }
 
@@ -84,7 +81,7 @@ function likecoin_admin_init() {
  */
 function likecoin_add_admin_hooks() {
 	add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
-	add_action( 'admin_menu', 'likecoin_display_top_options_page' );
+	add_action( 'admin_menu', 'likecoin_display_admin_pages' );
 	add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 	add_action( 'admin_init', 'likecoin_admin_init' );
 	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );

@@ -27,6 +27,7 @@
  */
 require_once dirname( __FILE__ ) . '/matters.php';
 require_once dirname( __FILE__ ) . '/metabox.php';
+require_once dirname( __FILE__ ) . '/admin-frontend/index.php';
 
 /**
  * Add refresh publish status endpoint
@@ -86,6 +87,105 @@ function likecoin_init_restful_service() {
 	add_action(
 		'rest_api_init',
 		function () {
+			register_rest_route(
+				'likecoin/v1',
+				'/main-setting-page',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_post_main_plugin_options',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/main-setting-page',
+				array(
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_get_main_plugin_options',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/likecoin-button-page',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_post_user_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/likecoin-button-page',
+				array(
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_get_user_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/publish-setting-page/publish-options',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_post_site_publish_options_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/publish-setting-page/matters-login',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_post_site_matters_login_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/publish-setting-page',
+				array(
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_get_site_matters_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/web-monetization-page',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_post_web_monetization_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/web-monetization-page',
+				array(
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_get_web_monetization_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
 			register_rest_route(
 				'likecoin/v1',
 				'/posts/(?P<id>\d+)/publish/refresh',
