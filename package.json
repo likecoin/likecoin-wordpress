@@ -6,16 +6,17 @@
     "build": "npm run build:babel && NODE_ENV=production rollup -c",
     "build:babel": "cd likecoin/assets/js && BABEL_ENV=production babel admin --out-dir 'dist/admin'",
     "test": "npm run lint",
-    "lint": "npm run lint:es && npm run lint:style",
+    "lint": "npm run lint:es && npm run lint:style && npm run prettier",
     "lint:es": "eslint .",
-    "lint:style": "stylelint 'likecoin/assets/css'"
+    "lint:style": "stylelint 'likecoin/assets/css'",
+    "prettier": "prettier --write ./admin/admin-frontend/src"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/runtime-corejs2": "^7.3.4",
     "@wordpress/babel-preset-default": "^4.20.0",
-    "eslint": "^6.8.0",
+    "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.22.1",
     "rollup": "^2.35.1",
@@ -27,5 +28,10 @@
     "stylelint": "^13.5.0",
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-order": "^4.1.0"
+  },
+  "dependencies": {
+    "eslint-config-react-app": "^6.0.0",
+    "react-scripts": "^4.0.3",
+    "prettier": "2.4.1"
   }
 }
