@@ -37,7 +37,7 @@ services:
       - ./site.conf:/etc/nginx/conf.d/default.conf:ro
       - wp_data:/var/www/html
       - ./likecoin:/var/www/html/wp-content/plugins/likecoin
-      
+
 volumes:
   mysql_data:
     driver: local
