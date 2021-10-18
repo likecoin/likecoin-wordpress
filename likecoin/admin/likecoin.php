@@ -32,7 +32,7 @@ require_once dirname( __FILE__ ) . '/plugin-action.php';
 require_once dirname( __FILE__ ) . '/post.php';
 require_once dirname( __FILE__ ) . '/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
-require_once dirname( __FILE__ ) . '/../admin-frontend/index.php';
+require_once dirname( __FILE__ ) . '/admin-frontend/index.php';
 /**
  * Inject web3.js on related admin pages
  *
