@@ -32,8 +32,6 @@ const configs = [
   'likecoin.js',
   'admin/likecoin_editor.js',
   'admin/likecoin_metabox.js',
-  'admin/likecoin_site_options.js',
-  'admin/likecoin_site_publish_options.js',
 ].map((filename) => createConfig(filename));
 
 export default configs;
