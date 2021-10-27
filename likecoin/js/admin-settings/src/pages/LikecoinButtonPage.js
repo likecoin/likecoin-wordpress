@@ -20,7 +20,8 @@ function LikecoinButtonPage() {
     || siteLikerCtx.DBSiteLikerIdEnabled === true);
 
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
-  // If siteLikerId is enabled === not editable, then overwrite the user liker info with site liker info
+  // If siteLikerId is enabled === not editable,
+  // then overwrite the user liker info with site liker info
   const defaultLikerId = siteLikerIdEnabled
     ? siteLikerCtx.DBSiteLikerId
     : userLikerCtx.DBUserLikerId;
@@ -43,7 +44,7 @@ function LikecoinButtonPage() {
   const [likerAvatar, getLikerAvatar] = useState(defaultLikerAvatar);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDisconnect, setIsDisconnect] = useState(false);
+  const [, setIsDisconnect] = useState(false);
   const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
   const [hasValidLikecoinId, setHasValidLikecoinId] = useState(
     userLikerCtx.hasValidLikecoinId,
@@ -62,7 +63,8 @@ function LikecoinButtonPage() {
         );
         getLikerIdValue(response.data.user);
         getLikerDisplayName(response.data.displayName);
-        getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
+        /* change wallet address based on database. */
+        getLikerWalletAddress(response.data.cosmosWallet);
         getLikerAvatar(response.data.avatar);
         setIsLoading(false);
         setHasValidLikecoinId(true);

@@ -37,7 +37,7 @@ function PublishSettingPage() {
   const [siteMattersId, setSiteMattersId] = useState(
     mattersCtx.DBSiteMattersId,
   );
-  const [siteMattersToken, setSiteMattersToken] = useState(
+  const [, setSiteMattersToken] = useState(
     mattersCtx.DBSiteMattersToken,
   );
   const [siteMattersAutoSaveDraft, setSiteMattersAutoSaveDraft] = useState(
@@ -127,16 +127,16 @@ function PublishSettingPage() {
         if (error.response.data) {
           let errorMessage = 'ERROR:';
           if (error.response.data.errors.length > 0) {
-            error.response.data.errors.forEach((error) => {
-              if (error.message.indexOf('password') > 0) {
-                const passwordIndex = error.message.search('password');
+            error.response.data.errors.forEach((e) => {
+              if (e.message.indexOf('password') > 0) {
+                const passwordIndex = e.message.search('password');
                 errorMessage = errorMessage.concat(
-                  error.message
+                  e.message
                     .slice(0, passwordIndex)
                     .concat('password: "***"}'),
                 );
               } else {
-                errorMessage = errorMessage.concat(error.message);
+                errorMessage = errorMessage.concat(e.message);
               }
             });
           }
@@ -211,16 +211,16 @@ function PublishSettingPage() {
   async function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
-    const siteMattersAutoSaveDraft = siteMattersAutoSaveDraftRef.current.checked;
-    const siteMattersAutoPublish = siteMattersAutoPublishRef.current.checked;
-    const siteMattersAddFooterLink = siteMattersAddFooterLinkRef.current.checked;
-    const ISCNBadgeStyleOption = ISCNBadgeStyleOptionRef.current.value;
+    const isSiteMattersAutoSaveDraft = siteMattersAutoSaveDraftRef.current.checked;
+    const isSiteMattersAutoPublish = siteMattersAutoPublishRef.current.checked;
+    const isSiteMattersAddFooterLink = siteMattersAddFooterLinkRef.current.checked;
+    const currentISCNBadgeStyleOption = ISCNBadgeStyleOptionRef.current.value;
 
     const data = {
-      siteMattersAutoSaveDraft,
-      siteMattersAutoPublish,
-      siteMattersAddFooterLink,
-      ISCNBadgeStyleOption,
+      siteMattersAutoSaveDraft: isSiteMattersAutoSaveDraft,
+      siteMattersAutoPublish: isSiteMattersAutoPublish,
+      siteMattersAddFooterLink: isSiteMattersAddFooterLink,
+      ISCNBadgeStyleOption: currentISCNBadgeStyleOption,
     };
 
     // save to Wordpress DB.

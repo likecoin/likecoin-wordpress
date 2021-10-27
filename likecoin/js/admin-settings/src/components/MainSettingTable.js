@@ -15,7 +15,8 @@ import LikecoinHeading from './LikecoinHeading';
 
 function MainSettingTable(props) {
   const ctx = useContext(SiteLikerInfoContext);
-  const siteLikerIdEnabledRef = useRef(); // do not want to re-render the whole component until submit. Hence use useRef().
+  /* do not want to re-render the whole component until submit. Hence use useRef(). */
+  const siteLikerIdEnabledRef = useRef();
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
 
@@ -64,7 +65,8 @@ function MainSettingTable(props) {
         );
         getLikerIdValue(response.data.user);
         getLikerDisplayName(response.data.displayName);
-        getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
+        /* change wallet address based on database. */
+        getLikerWalletAddress(response.data.cosmosWallet);
         getLikerAvatar(response.data.avatar);
       } catch (error) {
         console.log(error);
@@ -109,13 +111,13 @@ function MainSettingTable(props) {
   function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
-    const siteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
+    const isSiteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
     const displayOption = displayOptionRef.current.value;
-    const perPostOptionEnabled = perPostOptionEnabledRef.current.checked;
+    const isPerPostOptionEnabled = perPostOptionEnabledRef.current.checked;
     const data = {
-      siteLikerIdEnabled,
+      siteLikerIdEnabled: isSiteLikerIdEnabled,
       displayOption,
-      perPostOptionEnabled,
+      perPostOptionEnabled: isPerPostOptionEnabled,
       siteLikerInfos: {
         likecoin_id:
           likerDisplayName === '-' ? ctx.DBSiteLikerId : likerIdValue,
@@ -133,7 +135,7 @@ function MainSettingTable(props) {
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
       // Update parent context component.
-      ctx.setSiteLikerIdEnabled(siteLikerIdEnabled);
+      ctx.setSiteLikerIdEnabled(isSiteLikerIdEnabled);
       setIsChangingTypingLiker(false);
     } catch (error) {
       console.log('Error occured when saving to Wordpress DB: ', error);

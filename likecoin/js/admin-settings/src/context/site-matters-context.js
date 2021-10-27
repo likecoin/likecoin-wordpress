@@ -60,7 +60,9 @@ export const MattersInfoProvider = (props) => {
             response.data.data.site_matters_add_footer_link,
           );
         }
-        if (response.data.data.iscn_badge_style_option) getDBISCNBadgeStyleOption(response.data.data.iscn_badge_style_option);
+        if (response.data.data.iscn_badge_style_option) {
+          getDBISCNBadgeStyleOption(response.data.data.iscn_badge_style_option);
+        }
       }
     } catch (error) {
       console.log(error);
