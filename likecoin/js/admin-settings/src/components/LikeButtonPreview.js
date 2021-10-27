@@ -2,10 +2,9 @@ import { __ } from '@wordpress/i18n';
 import { ReactComponent as SettingSvg } from './icon/settings.svg';
 
 function LikeButtonPreview(props) {
-  const iframeSrc =
-    props.userLikerId.length > 0
-      ? `https://button.like.co/in/embed/${props.userLikerId}/button?type=wp&integration=wordpress_plugin`
-      : '';
+  const iframeSrc = props.userLikerId.length > 0
+    ? `https://button.like.co/in/embed/${props.userLikerId}/button?type=wp&integration=wordpress_plugin`
+    : '';
   const iframeStyle = {
     pointerEvents: 'none',
     height: '212px',

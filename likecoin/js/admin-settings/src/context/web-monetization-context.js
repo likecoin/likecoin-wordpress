@@ -16,7 +16,7 @@ export const WebMonetizationProvider = (props) => {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
           },
-        }
+        },
       );
       if (response.data) {
         if (response.data.data) {

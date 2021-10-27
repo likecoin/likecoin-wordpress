@@ -1,4 +1,6 @@
-import { useRef, useContext, useState, useEffect } from 'react';
+import {
+  useRef, useContext, useState, useEffect,
+} from 'react';
 import axios from 'axios';
 import { __ } from '@wordpress/i18n';
 import LikecoinHeading from '../components/LikecoinHeading';
@@ -25,39 +27,30 @@ function PublishSettingPage() {
     { value: 'dark', label: __('Dark Mode', 'likecoin') },
     { value: 'none', label: __('None', 'likecoin') },
   ];
-  const DBSiteMattersAutoSaveDraft =
-    mattersCtx.DBSiteMattersAutoSaveDraft === '1' ||
-    mattersCtx.DBSiteMattersAutoSaveDraft === true
-      ? true
-      : false;
-  const DBSiteMattersAutoPublish =
-    mattersCtx.DBSiteMattersAutoPublish === '1' ||
-    mattersCtx.DBSiteMattersAutoPublish === true
-      ? true
-      : false;
-  const DBSiteMattersAddFooterLink =
-    mattersCtx.DBSiteMattersAddFooterLink === '1' ||
-    mattersCtx.DBSiteMattersAddFooterLink === true
-      ? true
-      : false;
+  const DBSiteMattersAutoSaveDraft = !!(mattersCtx.DBSiteMattersAutoSaveDraft === '1'
+    || mattersCtx.DBSiteMattersAutoSaveDraft === true);
+  const DBSiteMattersAutoPublish = !!(mattersCtx.DBSiteMattersAutoPublish === '1'
+    || mattersCtx.DBSiteMattersAutoPublish === true);
+  const DBSiteMattersAddFooterLink = !!(mattersCtx.DBSiteMattersAddFooterLink === '1'
+    || mattersCtx.DBSiteMattersAddFooterLink === true);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [siteMattersId, setSiteMattersId] = useState(
-    mattersCtx.DBSiteMattersId
+    mattersCtx.DBSiteMattersId,
   );
   const [siteMattersToken, setSiteMattersToken] = useState(
-    mattersCtx.DBSiteMattersToken
+    mattersCtx.DBSiteMattersToken,
   );
   const [siteMattersAutoSaveDraft, setSiteMattersAutoSaveDraft] = useState(
-    DBSiteMattersAutoSaveDraft
+    DBSiteMattersAutoSaveDraft,
   );
   const [siteMattersAutoPublish, setSiteMattersAutoPublish] = useState(
-    DBSiteMattersAutoPublish
+    DBSiteMattersAutoPublish,
   );
   const [siteMattersAddFooterLink, setSiteMattersAddFooterLink] = useState(
-    DBSiteMattersAddFooterLink
+    DBSiteMattersAddFooterLink,
   );
   const [ISCNBadgeStyleOption, setISCNBadgeStyleOption] = useState(
-    mattersCtx.DBISCNBadgeStyleOption
+    mattersCtx.DBISCNBadgeStyleOption,
   );
   const [mattersLoginError, setMattersLoginError] = useState('');
   async function loginToMattersAndSaveDataToWordpress(data) {
@@ -84,17 +77,17 @@ function PublishSettingPage() {
           headers: {
             'Content-Type': 'application/json',
           },
-        }
+        },
       );
       console.log('getTokenResponse:', getTokenResponse);
       if (!getTokenResponse.data.data || getTokenResponse.data.errors) {
         console.log(
           'getTokenResponse.data.errors[0]: ',
-          getTokenResponse.data.errors[0]
+          getTokenResponse.data.errors[0],
         );
         throw new Error(getTokenResponse.data.errors[0].message);
       }
-      const token = getTokenResponse.data.data.userLogin.token;
+      const { token } = getTokenResponse.data.data.userLogin;
       // Get user info from matters
       const getUserInfoResponse = await axios.post(
         'https://server-develop.matters.news/graphql',
@@ -104,7 +97,7 @@ function PublishSettingPage() {
             'Content-Type': 'application/json',
             'x-access-token': token,
           },
-        }
+        },
       );
       const siteMattersUser = {
         mattersId: getUserInfoResponse.data.data.viewer.userName, // other props: displayName, id
@@ -120,13 +113,13 @@ function PublishSettingPage() {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
           },
-        }
+        },
       );
       setSiteMattersId(
-        postToWordpressResponse.data.data.site_matters_user.matters_id
+        postToWordpressResponse.data.data.site_matters_user.matters_id,
       );
       setSiteMattersToken(
-        postToWordpressResponse.data.data.site_matters_user.access_token
+        postToWordpressResponse.data.data.site_matters_user.access_token,
       );
       setSavedSuccessful(true);
     } catch (error) {
@@ -140,7 +133,7 @@ function PublishSettingPage() {
                 errorMessage = errorMessage.concat(
                   error.message
                     .slice(0, passwordIndex)
-                    .concat('password: "***"}')
+                    .concat('password: "***"}'),
                 );
               } else {
                 errorMessage = errorMessage.concat(error.message);
@@ -177,7 +170,7 @@ function PublishSettingPage() {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
           },
-        }
+        },
       );
     } catch (error) {
       console.log(error);
@@ -203,7 +196,7 @@ function PublishSettingPage() {
           'Content-Type': 'application/json',
           'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
         },
-      }
+      },
     );
     setSavedSuccessful(true);
 
@@ -218,11 +211,9 @@ function PublishSettingPage() {
   async function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
-    const siteMattersAutoSaveDraft =
-      siteMattersAutoSaveDraftRef.current.checked;
+    const siteMattersAutoSaveDraft = siteMattersAutoSaveDraftRef.current.checked;
     const siteMattersAutoPublish = siteMattersAutoPublishRef.current.checked;
-    const siteMattersAddFooterLink =
-      siteMattersAddFooterLinkRef.current.checked;
+    const siteMattersAddFooterLink = siteMattersAddFooterLinkRef.current.checked;
     const ISCNBadgeStyleOption = ISCNBadgeStyleOptionRef.current.value;
 
     const data = {

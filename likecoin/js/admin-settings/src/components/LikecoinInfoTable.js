@@ -24,18 +24,18 @@ function LikecoinInfoTable(props) {
                   <tr>
                     <td>
                       <div className="avatarWrapper">
-                        {!props.isLoading &&
-                          props.likerAvatar.length > 0 &&
-                          props.likerAvatar !== '-' && (
+                        {!props.isLoading
+                          && props.likerAvatar.length > 0
+                          && props.likerAvatar !== '-' && (
                             <img
                               id="likecoinAvatar"
                               className="likecoinAvatar"
                               src={props.likerAvatar}
                               alt="Avatar"
                             />
-                          )}
-                        {props.likerIdValue.length > 0 &&
-                          !props.isChangingTypingLiker && (
+                        )}
+                        {props.likerIdValue.length > 0
+                          && !props.isChangingTypingLiker && (
                             <a
                               id="likecoinId"
                               rel="noopener noreferrer"
@@ -45,9 +45,9 @@ function LikecoinInfoTable(props) {
                             >
                               {props.likerIdValue}
                             </a>
-                          )}
-                        {(props.likerIdValue.length === 0 ||
-                          props.isChangingTypingLiker) && (
+                        )}
+                        {(props.likerIdValue.length === 0
+                          || props.isChangingTypingLiker) && (
                           <div>
                             <input
                               type="text"
@@ -109,9 +109,9 @@ function LikecoinInfoTable(props) {
                 </tbody>
               </table>
               <section className="likecoin loading">
-                {props.likerIdValue.length !== 0 &&
-                  props.isLoading &&
-                  __('Loading...', 'likecoin')}
+                {props.likerIdValue.length !== 0
+                  && props.isLoading
+                  && __('Loading...', 'likecoin')}
               </section>
 
               <section>

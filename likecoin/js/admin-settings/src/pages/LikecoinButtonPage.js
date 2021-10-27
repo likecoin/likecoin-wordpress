@@ -1,4 +1,6 @@
-import { useContext, useState, useEffect, useMemo } from 'react';
+import {
+  useContext, useState, useEffect, useMemo,
+} from 'react';
 import axios from 'axios';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
@@ -14,11 +16,8 @@ import LikecoinHeading from '../components/LikecoinHeading';
 function LikecoinButtonPage() {
   const siteLikerCtx = useContext(SiteLikerInfoContext);
   const userLikerCtx = useContext(UserLikerInfoContext);
-  const DBSiteLikerIdEnable =
-    siteLikerCtx.DBSiteLikerIdEnabled === '1' ||
-    siteLikerCtx.DBSiteLikerIdEnabled === true
-      ? true
-      : false;
+  const DBSiteLikerIdEnable = !!(siteLikerCtx.DBSiteLikerIdEnabled === '1'
+    || siteLikerCtx.DBSiteLikerIdEnabled === true);
 
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
   // If siteLikerId is enabled === not editable, then overwrite the user liker info with site liker info
@@ -36,10 +35,10 @@ function LikecoinButtonPage() {
     : userLikerCtx.DBUserLikerAvatar;
   const [likerIdValue, getLikerIdValue] = useState(defaultLikerId);
   const [likerDisplayName, getLikerDisplayName] = useState(
-    defaultLikerDisplayName
+    defaultLikerDisplayName,
   );
   const [likerWalletAddress, getLikerWalletAddress] = useState(
-    defaultLikerWalletAddress
+    defaultLikerWalletAddress,
   );
   const [likerAvatar, getLikerAvatar] = useState(defaultLikerAvatar);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
@@ -47,36 +46,35 @@ function LikecoinButtonPage() {
   const [isDisconnect, setIsDisconnect] = useState(false);
   const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
   const [hasValidLikecoinId, setHasValidLikecoinId] = useState(
-    userLikerCtx.hasValidLikecoinId
+    userLikerCtx.hasValidLikecoinId,
   );
   const [showChangeButton, setShowChangeButton] = useState(true);
   const [showDisconnectButton, setShowDisconnectButton] = useState(false);
 
   // Update Data based on data returned by likecoin server.
   const fetchLikeCoinID = useMemo(
-    () =>
-      debounce(async (likerId) => {
-        setSavedSuccessful(false);
-        setIsLoading(true);
-        try {
-          const response = await axios.get(
-            `https://api.like.co/users/id/${likerId}/min`
-          );
-          getLikerIdValue(response.data.user);
-          getLikerDisplayName(response.data.displayName);
-          getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
-          getLikerAvatar(response.data.avatar);
-          setIsLoading(false);
-          setHasValidLikecoinId(true);
-        } catch (error) {
-          setIsLoading(false);
-          getLikerDisplayName('-');
-          getLikerWalletAddress('-');
-          getLikerAvatar('-');
-          setHasValidLikecoinId(false);
-        }
-      }, 500),
-    []
+    () => debounce(async (likerId) => {
+      setSavedSuccessful(false);
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `https://api.like.co/users/id/${likerId}/min`,
+        );
+        getLikerIdValue(response.data.user);
+        getLikerDisplayName(response.data.displayName);
+        getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
+        getLikerAvatar(response.data.avatar);
+        setIsLoading(false);
+        setHasValidLikecoinId(true);
+      } catch (error) {
+        setIsLoading(false);
+        getLikerDisplayName('-');
+        getLikerWalletAddress('-');
+        getLikerAvatar('-');
+        setHasValidLikecoinId(false);
+      }
+    }, 500),
+    [],
   );
   useEffect(() => {
     fetchLikeCoinID(likerIdValue);
@@ -87,8 +85,8 @@ function LikecoinButtonPage() {
     getLikerDisplayName(defaultLikerDisplayName);
     getLikerWalletAddress(defaultLikerWalletAddress);
     getLikerAvatar(defaultLikerAvatar);
-    setShowChangeButton(defaultLikerId ? true : false);
-    setShowDisconnectButton(defaultLikerId ? true : false);
+    setShowChangeButton(!!defaultLikerId);
+    setShowDisconnectButton(!!defaultLikerId);
   }, [
     DBSiteLikerIdEnable,
     defaultLikerId,
@@ -106,7 +104,7 @@ function LikecoinButtonPage() {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce,
           },
-        }
+        },
       );
     } catch (error) {
       console.log(error);

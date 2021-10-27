@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 const MattersInfoContext = React.createContext({
   DBSiteMattersId: '',
   DBSiteMattersToken: '',
@@ -13,20 +14,15 @@ const MattersInfoContext = React.createContext({
 export const MattersInfoProvider = (props) => {
   const [DBSiteMattersId, getDBSiteMattersId] = useState('');
   const [DBSiteMattersToken, getDBSiteMattersToken] = useState('');
-  const [DBSiteMattersAutoSaveDraft, getDBSiteMattersAutoSaveDraft] =
-    useState('');
+  const [DBSiteMattersAutoSaveDraft, getDBSiteMattersAutoSaveDraft] = useState('');
   const [DBSiteMattersAutoPublish, getDBSiteMattersAutoPublish] = useState('');
-  const [DBSiteMattersAddFooterLink, getDBSiteMattersAddFooterLink] =
-    useState('');
+  const [DBSiteMattersAddFooterLink, getDBSiteMattersAddFooterLink] = useState('');
   const [DBISCNBadgeStyleOption, getDBISCNBadgeStyleOption] = useState('');
   const setSiteMattersId = (id) => getDBSiteMattersId(id);
   const setSiteMattersToken = (token) => getDBSiteMattersToken(token);
-  const setSiteMattersAutoSaveDraft = (status) =>
-    getDBSiteMattersAutoSaveDraft(status);
-  const setSiteMattersAutoPublish = (status) =>
-    getDBSiteMattersAutoPublish(status);
-  const setSiteMattersAddFooterLink = (status) =>
-    getDBSiteMattersAddFooterLink(status);
+  const setSiteMattersAutoSaveDraft = (status) => getDBSiteMattersAutoSaveDraft(status);
+  const setSiteMattersAutoPublish = (status) => getDBSiteMattersAutoPublish(status);
+  const setSiteMattersAddFooterLink = (status) => getDBSiteMattersAddFooterLink(status);
   const setISCNBadgeStyleOption = (option) => getDBISCNBadgeStyleOption(option);
 
   async function fetchWordpressDBMattersInfoData() {
@@ -38,31 +34,33 @@ export const MattersInfoProvider = (props) => {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce,
           },
-        }
+        },
       );
       if (response.data) {
         if (response.data.data.site_matters_user) {
           if (response.data.data.site_matters_user.matters_id.length !== 0) {
             getDBSiteMattersId(response.data.data.site_matters_user.matters_id);
             getDBSiteMattersToken(
-              response.data.data.site_matters_user.access_token
+              response.data.data.site_matters_user.access_token,
             );
           }
         }
-        if (response.data.data.site_matters_auto_save_draft)
+        if (response.data.data.site_matters_auto_save_draft) {
           getDBSiteMattersAutoSaveDraft(
-            response.data.data.site_matters_auto_save_draft
+            response.data.data.site_matters_auto_save_draft,
           );
-        if (response.data.data.site_matters_auto_publish)
+        }
+        if (response.data.data.site_matters_auto_publish) {
           getDBSiteMattersAutoPublish(
-            response.data.data.site_matters_auto_publish
+            response.data.data.site_matters_auto_publish,
           );
-        if (response.data.data.site_matters_add_footer_link)
+        }
+        if (response.data.data.site_matters_add_footer_link) {
           getDBSiteMattersAddFooterLink(
-            response.data.data.site_matters_add_footer_link
+            response.data.data.site_matters_add_footer_link,
           );
-        if (response.data.data.iscn_badge_style_option)
-          getDBISCNBadgeStyleOption(response.data.data.iscn_badge_style_option);
+        }
+        if (response.data.data.iscn_badge_style_option) getDBISCNBadgeStyleOption(response.data.data.iscn_badge_style_option);
       }
     } catch (error) {
       console.log(error);

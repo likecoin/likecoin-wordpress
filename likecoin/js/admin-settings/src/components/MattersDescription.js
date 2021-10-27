@@ -6,26 +6,26 @@ function MattersDescription() {
   const localizedMattersShortIntro = createInterpolateElement(
     __(
       '<Matters/> is a decentralized, cryptocurrency driven content creation and discussion platform. ',
-      'likecoin'
+      'likecoin',
     ),
     {
       Matters: createElement(Link, {
         text: __('Matters', 'likecoin'),
         linkAddress: 'https://matters.news',
       }),
-    }
+    },
   );
   const localizedMattersLongIntro = createInterpolateElement(
     __(
       'By publishing on Matters, your articles will be stored to the distributed InterPlanetary File System (<IPFS/>) nodes and get rewarded. Take the first step to publish your creation and reclaim your ownership of data!',
-      'likecoin'
+      'likecoin',
     ),
     {
       IPFS: createElement(Link, {
         text: __('IPFS', 'likecoin'),
         linkAddress: 'https://ipfs.io',
       }),
-    }
+    },
   );
   return (
     <div style={{ textAlign: 'left' }}>

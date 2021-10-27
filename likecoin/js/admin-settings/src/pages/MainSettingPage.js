@@ -1,5 +1,6 @@
 import axios from 'axios';
 import MainSettingTable from '../components/MainSettingTable';
+
 function MainSettingPage() {
   async function postMainOptionDataToWordpress(data) {
     try {
@@ -11,7 +12,7 @@ function MainSettingPage() {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
           },
-        }
+        },
       );
     } catch (error) {
       console.log(error);

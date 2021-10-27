@@ -1,9 +1,9 @@
 import './App.css';
+import { Route, Switch } from 'react-router-dom';
 import MainSettingPage from './pages/MainSettingPage';
 import LikecoinButtonPage from './pages/LikecoinButtonPage';
 import PublishSettingPage from './pages/PublishSettingPage';
 import WebMonetizationPage from './pages/WebMonetizationPage';
-import { Route, Switch } from 'react-router-dom';
 import SponsorLikecoinPage from './pages/SponsorLikecoinPage';
 
 function App() {

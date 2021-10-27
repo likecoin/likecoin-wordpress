@@ -25,7 +25,7 @@ if (appAnchorElement) {
         </UserLikerInfoProvider>
       </SiteLikerInfoProvider>
     </Router>,
-    appAnchorElement
+    appAnchorElement,
   );
 }
 

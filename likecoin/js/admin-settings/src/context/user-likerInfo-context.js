@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 const UserLikerInfoContext = React.createContext({
   DBUserLikerId: '',
   DBUserLikerAvatar: '',
@@ -24,17 +25,17 @@ export const UserLikerInfoProvider = (props) => {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce,
           },
-        }
+        },
       );
       if (
-        response.data.data.likecoin_user &&
-        response.data.data.likecoin_id.length > 0 &&
-        response.data.data.likecoin_id !== '-'
+        response.data.data.likecoin_user
+        && response.data.data.likecoin_id.length > 0
+        && response.data.data.likecoin_id !== '-'
       ) {
         getDBUserLikerId(response.data.data.likecoin_id);
         getDBUserLikerAvatar(response.data.data.likecoin_user.avatar);
         getDBUserLikerDisplayName(
-          response.data.data.likecoin_user.display_name
+          response.data.data.likecoin_user.display_name,
         );
         getDBUserLikerWallet(response.data.data.likecoin_user.wallet);
         setHasValidLikecoinId(true);

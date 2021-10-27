@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 const SiteLikerInfoContext = React.createContext({
   DBSiteLikerId: '',
   DBSiteLikerAvatar: '',
@@ -30,19 +31,19 @@ export const SiteLikerInfoProvider = (props) => {
             'Content-Type': 'application/json',
             'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
           },
-        }
+        },
       );
       if (response.data) {
         if (
-          response.data.data.site_likecoin_user.likecoin_id &&
-          response.data.data.site_likecoin_user.avatar &&
-          response.data.data.site_likecoin_user.wallet &&
-          response.data.data.site_likecoin_user.display_name
+          response.data.data.site_likecoin_user.likecoin_id
+          && response.data.data.site_likecoin_user.avatar
+          && response.data.data.site_likecoin_user.wallet
+          && response.data.data.site_likecoin_user.display_name
         ) {
           getDBSiteLikerId(response.data.data.site_likecoin_user.likecoin_id);
           getDBSiteLikerAvatar(response.data.data.site_likecoin_user.avatar);
           getDBSiteLikerDisplayName(
-            response.data.data.site_likecoin_user.display_name
+            response.data.data.site_likecoin_user.display_name,
           );
           getDBSiteLikerWallet(response.data.data.site_likecoin_user.wallet);
         }

@@ -1,4 +1,6 @@
-import { useRef, useContext, useState, useEffect, useMemo } from 'react';
+import {
+  useRef, useContext, useState, useEffect, useMemo,
+} from 'react';
 import axios from 'axios';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
@@ -18,28 +20,22 @@ function MainSettingTable(props) {
   const perPostOptionEnabledRef = useRef();
 
   // in existing php method, it will show as '1', in React, it will show as true
-  const DBSiteLikerIdEnable =
-    ctx.DBSiteLikerIdEnabled === '1' || ctx.DBSiteLikerIdEnabled === true
-      ? true
-      : false;
-  const DBPerPostOptionEnabled =
-    ctx.DBPerPostOptionEnabled === '1' || ctx.DBPerPostOptionEnabled === true
-      ? true
-      : false;
+  const DBSiteLikerIdEnable = !!(ctx.DBSiteLikerIdEnabled === '1' || ctx.DBSiteLikerIdEnabled === true);
+  const DBPerPostOptionEnabled = !!(ctx.DBPerPostOptionEnabled === '1' || ctx.DBPerPostOptionEnabled === true);
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
 
   const [displayOptionSelected, selectDisplayOption] = useState(
-    ctx.DBDisplayOptionSelected
+    ctx.DBDisplayOptionSelected,
   );
   const [perPostOptionEnabled, allowPerPostOption] = useState(
-    DBPerPostOptionEnabled
+    DBPerPostOptionEnabled,
   );
   const [likerIdValue, getLikerIdValue] = useState(ctx.DBSiteLikerId);
   const [likerDisplayName, getLikerDisplayName] = useState(
-    ctx.DBSiteLikerDisplayName
+    ctx.DBSiteLikerDisplayName,
   );
   const [likerWalletAddress, getLikerWalletAddress] = useState(
-    ctx.DBSiteLikerWallet
+    ctx.DBSiteLikerWallet,
   );
   const [likerAvatar, getLikerAvatar] = useState(ctx.DBSiteLikerAvatar);
   const [isLoading, setIsLoading] = useState(false);
@@ -59,27 +55,26 @@ function MainSettingTable(props) {
   ];
   // Update Data
   const fetchLikeCoinID = useMemo(
-    () =>
-      debounce(async (likerId) => {
-        setSavedSuccessful(false);
-        setIsLoading(true);
-        try {
-          const response = await axios.get(
-            `https://api.like.co/users/id/${likerId}/min`
-          );
-          getLikerIdValue(response.data.user);
-          getLikerDisplayName(response.data.displayName);
-          getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
-          getLikerAvatar(response.data.avatar);
-        } catch (error) {
-          console.log(error);
-          getLikerDisplayName('-');
-          getLikerWalletAddress('-');
-          getLikerAvatar('-');
-        }
-        setIsLoading(false);
-      }, 500),
-    []
+    () => debounce(async (likerId) => {
+      setSavedSuccessful(false);
+      setIsLoading(true);
+      try {
+        const response = await axios.get(
+          `https://api.like.co/users/id/${likerId}/min`,
+        );
+        getLikerIdValue(response.data.user);
+        getLikerDisplayName(response.data.displayName);
+        getLikerWalletAddress(response.data.cosmosWallet); // change wallet address based on database.
+        getLikerAvatar(response.data.avatar);
+      } catch (error) {
+        console.log(error);
+        getLikerDisplayName('-');
+        getLikerWalletAddress('-');
+        getLikerAvatar('-');
+      }
+      setIsLoading(false);
+    }, 500),
+    [],
   );
   useEffect(() => {
     fetchLikeCoinID(likerIdValue);
@@ -175,7 +170,7 @@ function MainSettingTable(props) {
           title={__('Enable site Liker ID', 'likecoin')}
           details={__(
             'Override all LikeCoin button with site Liker ID',
-            'likecoin'
+            'likecoin',
           )}
           checkRef={siteLikerIdEnabledRef}
         />
@@ -214,7 +209,7 @@ function MainSettingTable(props) {
           title={__('Allow per Post option', 'likecoin')}
           details={__(
             'Allow editors to customize display setting per post',
-            'likecoin'
+            'likecoin',
           )}
           checkRef={perPostOptionEnabledRef}
         />
