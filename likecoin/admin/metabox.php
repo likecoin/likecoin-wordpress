@@ -364,7 +364,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 		wp_enqueue_style( 'lc_css_common' );
 		wp_enqueue_script(
 			'lc_js_metabox',
-			LC_URI . 'assets/js/dist/admin/likecoin_metabox.js',
+			LC_URI . 'assets/js/admin/likecoin_metabox.js',
 			array( 'wp-polyfill', 'jquery' ),
 			LC_PLUGIN_VERSION,
 			true
