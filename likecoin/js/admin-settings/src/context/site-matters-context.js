@@ -65,7 +65,7 @@ export const MattersInfoProvider = (props) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   useEffect(() => {

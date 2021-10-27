@@ -26,7 +26,7 @@ export const WebMonetizationProvider = (props) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   useEffect(() => {

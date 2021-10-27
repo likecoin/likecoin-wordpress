@@ -69,7 +69,7 @@ function MainSettingTable(props) {
         getLikerWalletAddress(response.data.cosmosWallet);
         getLikerAvatar(response.data.avatar);
       } catch (error) {
-        console.log(error);
+        console.error(error);
         getLikerDisplayName('-');
         getLikerWalletAddress('-');
         getLikerAvatar('-');
@@ -138,7 +138,7 @@ function MainSettingTable(props) {
       ctx.setSiteLikerIdEnabled(isSiteLikerIdEnabled);
       setIsChangingTypingLiker(false);
     } catch (error) {
-      console.log('Error occured when saving to Wordpress DB: ', error);
+      console.error('Error occured when saving to Wordpress DB: ', error);
       setIsChangingTypingLiker(false);
     }
   }

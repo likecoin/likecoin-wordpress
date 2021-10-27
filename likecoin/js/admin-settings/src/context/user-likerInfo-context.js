@@ -41,7 +41,7 @@ export const UserLikerInfoProvider = (props) => {
         setHasValidLikecoinId(true);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   useEffect(() => {

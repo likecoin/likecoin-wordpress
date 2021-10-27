@@ -52,7 +52,7 @@ export const SiteLikerInfoProvider = (props) => {
         allowDBPerPostOption(response.data.data.button_display_author_override);
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   useEffect(() => {

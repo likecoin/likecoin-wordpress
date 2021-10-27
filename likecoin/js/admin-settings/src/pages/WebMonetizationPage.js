@@ -30,7 +30,7 @@ function WebMonetizationPage() {
         },
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   async function confirmHandler(e) {
@@ -43,7 +43,7 @@ function WebMonetizationPage() {
       await saveToWordpressMonetizationOption(data);
       setSavedSuccessful(true);
     } catch (error) {
-      console.log(error);
+      console.error(error);
       setSavedSuccessful(false);
     }
   }

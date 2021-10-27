@@ -109,7 +109,7 @@ function LikecoinButtonPage() {
         },
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   function confirmHandler(e) {
@@ -143,7 +143,7 @@ function LikecoinButtonPage() {
       setShowChangeButton(true);
       setShowDisconnectButton(true);
     } catch (error) {
-      console.log('Error occured when saving to Wordpress DB: ', error);
+      console.error('Error occured when saving to Wordpress DB: ', error);
       setIsChangingTypingLiker(false);
       setShowChangeButton(true);
     }

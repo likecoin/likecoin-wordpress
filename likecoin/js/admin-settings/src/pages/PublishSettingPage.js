@@ -79,12 +79,7 @@ function PublishSettingPage() {
           },
         },
       );
-      console.log('getTokenResponse:', getTokenResponse);
       if (!getTokenResponse.data.data || getTokenResponse.data.errors) {
-        console.log(
-          'getTokenResponse.data.errors[0]: ',
-          getTokenResponse.data.errors[0],
-        );
         throw new Error(getTokenResponse.data.errors[0].message);
       }
       const { token } = getTokenResponse.data.data.userLogin;
@@ -173,7 +168,7 @@ function PublishSettingPage() {
         },
       );
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
   async function handleMattersLogout(e) {
@@ -228,7 +223,7 @@ function PublishSettingPage() {
       await postMattersOptionDataToWordpress(data);
       setSavedSuccessful(true);
     } catch (error) {
-      console.log('Error occured when saving to Wordpress DB: ', error);
+      console.error('Error occured when saving to Wordpress DB: ', error);
       setSavedSuccessful(false);
     }
   }
