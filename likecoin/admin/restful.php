@@ -27,7 +27,7 @@
  */
 require_once dirname( __FILE__ ) . '/matters.php';
 require_once dirname( __FILE__ ) . '/metabox.php';
-require_once dirname( __FILE__ ) . '/admin-frontend/index.php';
+require_once dirname( __FILE__ ) . '/view/view.php';
 
 /**
  * Add refresh publish status endpoint

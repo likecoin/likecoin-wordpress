@@ -5,7 +5,7 @@
   "scripts": {
     "build": "npm run build:babel && NODE_ENV=production rollup -c && npm run build:admin-settings",
     "build:babel": "cd likecoin/js && BABEL_ENV=production babel admin --out-dir '../assets/js/admin'",
-    "build:admin-settings": "cd likecoin/js/admin-settings && npm run build",
+    "build:admin-settings": "cd likecoin/js/admin-settings && npm run build && cd ../../.. && rm -rf likecoin/assets/js/admin-settings && mv likecoin/js/admin-settings/build likecoin/assets/js/admin-settings",
     "test": "npm run lint && npm run test:admin-settings",
     "test:admin-settings": "cd js/admin-settings && npm run test",
     "lint": "npm run lint:es && npm run lint:style",

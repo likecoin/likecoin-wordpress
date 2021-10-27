@@ -317,9 +317,8 @@ function likecoin_get_css_files( $file_string ) {
  * Define how to load JavaScript files coming from React.
  */
 function likecoin_enqueue_admin_js() {
-	$react_app_build_url  = plugin_dir_url( __FILE__ ) . 'build/';
-	$react_app_build_path = plugin_dir_path( __FILE__ ) . 'build/';
-	$manifest_path        = $react_app_build_path . 'asset-manifest.json';
+	$react_app_build_url  = LC_URI . 'assets/js/admin-settings/';
+	$manifest_path        = LC_DIR . 'assets/js/admin-settings/asset-manifest.json';
 	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	$request = file_get_contents( $manifest_path );
 	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
@@ -339,16 +338,16 @@ function likecoin_enqueue_admin_js() {
 	$js_files  = array_filter( $assets_files, 'likecoin_get_js_files' );
 	$css_files = array_filter( $assets_files, 'likecoin_get_css_files' );
 	foreach ( $css_files as $index => $css_file ) {
-		wp_enqueue_style( 'react-plugin-' . $index, $react_app_build_url . $css_file, array(), 1 );
+		wp_enqueue_style( 'likecoin-admin-settings-' . $index, $react_app_build_url . $css_file, array(), 1 );
 	}
 	foreach ( $js_files as $index => $js_file ) {
 		// add wp-api-request as dependency so React can access window.wpApiSettings.
-		wp_enqueue_script( 'react-plugin-' . $index, $react_app_build_url . $js_file, array( 'wp-api-request', 'wp-i18n' ), 1, true );
+		wp_enqueue_script( 'likecoin-admin-settings-' . $index, $react_app_build_url . $js_file, array( 'wp-api-request', 'wp-i18n' ), 1, true );
 	}
-	// create a window.rpReactPlugin which can be accessed by JavaScript.
+	// create a window.likecoinReactAppData which can be accessed by JavaScript.
 	wp_localize_script(
-		'react-plugin-0',
-		'rpReactPlugin',
+		'likecoin-admin-settings-0',
+		'likecoinReactAppData',
 		array( 'appSelector' => '#wpbody #wpbody-content' )
 	);
 }
