@@ -6,9 +6,9 @@ import { uglify } from 'rollup-plugin-uglify';
 
 function createConfig(filename) {
   return {
-    input: `likecoin/assets/js/${filename}`,
+    input: `likecoin/js/${filename}`,
     output: {
-      file: `likecoin/assets/js/dist/${filename}`,
+      file: `likecoin/assets/js/${filename}`,
       format: 'iife',
       sourcemap: true,
     },
@@ -29,7 +29,6 @@ function createConfig(filename) {
 }
 
 const configs = [
-  'likecoin.js',
   'admin/likecoin_editor.js',
   'admin/likecoin_metabox.js',
 ].map((filename) => createConfig(filename));

@@ -3,14 +3,33 @@
   "version": "2.2.2",
   "description": "",
   "scripts": {
-    "build": "npm run build:babel && NODE_ENV=production rollup -c && cd likecoin/admin/admin-frontend/ npm run build",
-    "build:babel": "cd likecoin/assets/js && BABEL_ENV=production babel admin --out-dir 'dist/admin'",
-    "test": "npm run lint",
+    "build": "npm run build:babel && NODE_ENV=production rollup -c && npm run build:admin-settings",
+    "build:babel": "cd likecoin/js && BABEL_ENV=production babel admin --out-dir '../assets/js/admin'",
+    "build:admin-settings": "cd likecoin/js/admin-settings && npm run build",
+    "test": "npm run lint && npm run test:admin-settings",
+    "test:admin-settings": "cd js/admin-settings && npm run test",
     "lint": "npm run lint:es && npm run lint:style",
-    "lint:es": "eslint .",
-    "lint:style": "stylelint 'likecoin/assets/css'"
+    "lint:es": "eslint . --fix",
+    "lint:style": "stylelint 'js/admin-settings' 'likecoin/assets/css' --fix",
+    "start": "react-scripts start",
+    "eject": "react-scripts eject",
+    "prettier": "prettier --write ./src"
+  },
+  "dependencies": {
+    "@wordpress/element": "^4.0.1",
+    "@wordpress/i18n": "^4.2.2",
+    "axios": "^0.21.4",
+    "lodash": "^4.17.21",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "react-router-dom": "^5.3.0"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
+    "react-scripts": "4.0.3",
+    "web-vitals": "^1.0.1",
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/runtime-corejs2": "^7.3.4",
@@ -26,11 +45,8 @@
     "rollup-plugin-uglify": "^6.0.4",
     "stylelint": "^13.5.0",
     "stylelint-config-recommended": "^3.0.0",
-    "stylelint-order": "^4.1.0"
-  },
-  "dependencies": {
+    "stylelint-order": "^4.1.0",
     "eslint-config-react-app": "^6.0.0",
-    "react-scripts": "^4.0.3",
     "prettier": "2.4.1"
   }
 }
