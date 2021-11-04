@@ -16,6 +16,9 @@
     "prettier": "prettier --write ./src"
   },
   "dependencies": {
+    "@wordpress/api-fetch": "^5.2.4",
+    "@wordpress/data": "^6.1.2",
+    "@wordpress/data-controls": "^2.2.5",
     "@wordpress/element": "^4.0.1",
     "@wordpress/i18n": "^4.2.2",
     "axios": "^0.21.4",
@@ -25,18 +28,19 @@
     "react-router-dom": "^5.3.0"
   },
   "devDependencies": {
-    "@testing-library/jest-dom": "^5.11.4",
-    "@testing-library/react": "^11.1.0",
-    "@testing-library/user-event": "^12.1.10",
-    "react-scripts": "4.0.3",
-    "web-vitals": "^1.0.1",
     "@babel/cli": "^7.2.3",
     "@babel/core": "^7.3.4",
     "@babel/runtime-corejs2": "^7.3.4",
+    "@testing-library/jest-dom": "^5.11.4",
+    "@testing-library/react": "^11.1.0",
+    "@testing-library/user-event": "^12.1.10",
     "@wordpress/babel-preset-default": "^4.20.0",
     "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-import": "^2.22.1",
+    "prettier": "2.4.1",
+    "react-scripts": "4.0.3",
     "rollup": "^2.35.1",
     "rollup-plugin-babel": "^4.3.2",
     "rollup-plugin-commonjs": "^10.1.0",
@@ -46,7 +50,6 @@
     "stylelint": "^13.5.0",
     "stylelint-config-recommended": "^3.0.0",
     "stylelint-order": "^4.1.0",
-    "eslint-config-react-app": "^6.0.0",
-    "prettier": "2.4.1"
+    "web-vitals": "^1.0.1"
   }
 }

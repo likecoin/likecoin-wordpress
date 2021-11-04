@@ -2,17 +2,29 @@ import {
   useRef, useContext, useState, useEffect,
 } from 'react';
 import axios from 'axios';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
 import SubmitButton from '../components/SubmitButton';
 import WebMonetizationDescription from '../components/WebMonetizationDescription';
-import WebMonetizationContext from '../context/web-monetization-context';
+import { WEB_MONETIZATION_STORE_NAME } from '../store/web-monetization/index';
+
+// import WebMonetizationContext from '../context/web-monetization-context';
 
 function WebMonetizationPage() {
-  const webMonetizationCtx = useContext(WebMonetizationContext);
-  const { DBPaymentPointer } = webMonetizationCtx;
+  // const webMonetizationCtx = useContext(WebMonetizationContext);
+
+  // const { DBPaymentPointer } = webMonetizationCtx;
+  // eslint-disable-next-line arrow-body-style
+  const { DBPaymentPointer } = useSelect((select) => {
+    console.log('select(WEB_MONETIZATION_STORE_NAME): ', select(WEB_MONETIZATION_STORE_NAME));
+    return {
+      DBPaymentPointer: select(WEB_MONETIZATION_STORE_NAME).getPaymentPointer(),
+    };
+  });
+  console.log('New DBPaymentPointer: ', DBPaymentPointer);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [paymentPointer, setPaymentPointer] = useState(DBPaymentPointer);
   const paymentPointerRef = useRef();
