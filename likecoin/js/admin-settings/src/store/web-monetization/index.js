@@ -22,6 +22,12 @@ const actions = {
       path,
     };
   },
+  setHTTPErrors(errorMsg) {
+    return {
+      type: 'SET_ERROR_MESSAGE',
+      errorMsg,
+    };
+  },
   postPaymentPointer(pointer) {
     return {
       type: 'POST_PAYMENT_POINTER',
@@ -53,7 +59,7 @@ const resolvers = {
       console.log('at GET store paymentPointer: ', paymentPointer);
       return actions.setPaymentPointer(paymentPointer);
     } catch (error) {
-      console.log(error);
+      return actions.setHTTPErrors(error.message); // need a return value even for errors from lint.
     }
   },
 };
