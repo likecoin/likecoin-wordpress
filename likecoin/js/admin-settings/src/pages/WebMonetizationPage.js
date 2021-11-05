@@ -1,8 +1,9 @@
 import {
-  useRef, useContext, useState, useEffect,
+  useRef, useState, useEffect,
 } from 'react';
 import axios from 'axios';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
+import { useCallback } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
 import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
@@ -14,17 +15,13 @@ import { WEB_MONETIZATION_STORE_NAME } from '../store/web-monetization/index';
 // import WebMonetizationContext from '../context/web-monetization-context';
 
 function WebMonetizationPage() {
-  // const webMonetizationCtx = useContext(WebMonetizationContext);
-
-  // const { DBPaymentPointer } = webMonetizationCtx;
   // eslint-disable-next-line arrow-body-style
   const { DBPaymentPointer } = useSelect((select) => {
-    console.log('select(WEB_MONETIZATION_STORE_NAME): ', select(WEB_MONETIZATION_STORE_NAME));
     return {
       DBPaymentPointer: select(WEB_MONETIZATION_STORE_NAME).getPaymentPointer(),
     };
   });
-  console.log('New DBPaymentPointer: ', DBPaymentPointer);
+  const { postPaymentPointer } = useDispatch(WEB_MONETIZATION_STORE_NAME);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [paymentPointer, setPaymentPointer] = useState(DBPaymentPointer);
   const paymentPointerRef = useRef();
@@ -45,20 +42,24 @@ function WebMonetizationPage() {
       console.error(error);
     }
   }
-  async function confirmHandler(e) {
-    setSavedSuccessful(false);
-    e.preventDefault();
-    const data = {
-      paymentPointer: paymentPointerRef.current.value,
-    };
-    try {
-      await saveToWordpressMonetizationOption(data);
-      setSavedSuccessful(true);
-    } catch (error) {
-      console.error(error);
+  const confirmHandler = useCallback(
+    async (e) => {
       setSavedSuccessful(false);
-    }
-  }
+      e.preventDefault();
+      const data = {
+        paymentPointer: paymentPointerRef.current.value,
+      };
+      try {
+        await saveToWordpressMonetizationOption(data); // change real DB
+        postPaymentPointer(data.paymentPointer); // change the app-wise context
+        setSavedSuccessful(true);
+      } catch (error) {
+        console.error(error);
+        setSavedSuccessful(false);
+      }
+    },
+    [paymentPointerRef, postPaymentPointer],
+  );
   function handlePaymentPointerChange(e) {
     e.preventDefault();
     const typingInput = e.target.value;
