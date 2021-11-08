@@ -1,7 +1,8 @@
 import {
-  useRef, useContext, useState, useEffect,
+  useRef, useState, useEffect,
 } from 'react';
 import axios from 'axios';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
@@ -9,13 +10,42 @@ import SettingNotice from '../components/SettingNotice';
 import CheckBox from '../components/CheckBox';
 import DropDown from '../components/DropDown';
 import SubmitButton from '../components/SubmitButton';
-import MattersInfoContext from '../context/site-matters-context';
 import MattersDescription from '../components/MattersDescription';
 import MattersLoginTable from '../components/MattersLoginTable';
 import MattersStatusTable from '../components/MattersStatusTable';
+import { SITE_MATTERS_STORE_NAME } from '../store/site-matters-store';
 
 function PublishSettingPage() {
-  const mattersCtx = useContext(MattersInfoContext);
+  // eslint-disable-next-line arrow-body-style
+  const {
+    DBSiteMattersId,
+    DBSiteMattersToken,
+    DBSiteMattersAutoSaveDraft,
+    DBSiteMattersAutoPublish,
+    DBSiteMattersAddFooterLink,
+    DBISCNBadgeStyleOption,
+  } = useSelect((select) => ({
+    // change dynamically when app-wise state changes without needing to use useEffect()
+    DBSiteMattersId: select(SITE_MATTERS_STORE_NAME).getSiteMattersOptions()
+      .DBSiteMattersId,
+    DBSiteMattersToken: select(SITE_MATTERS_STORE_NAME).getSiteMattersOptions()
+      .DBSiteMattersToken,
+    DBSiteMattersAutoSaveDraft: select(
+      SITE_MATTERS_STORE_NAME,
+    ).getSiteMattersOptions().DBSiteMattersAutoSaveDraft,
+    DBSiteMattersAutoPublish: select(
+      SITE_MATTERS_STORE_NAME,
+    ).getSiteMattersOptions().DBSiteMattersAutoPublish,
+    DBSiteMattersAddFooterLink: select(
+      SITE_MATTERS_STORE_NAME,
+    ).getSiteMattersOptions().DBSiteMattersAddFooterLink,
+    DBISCNBadgeStyleOption: select(
+      SITE_MATTERS_STORE_NAME,
+    ).getSiteMattersOptions().DBISCNBadgeStyleOption,
+  }));
+  const { postSiteMattersOptions, postSiteMattersLogin } = useDispatch(
+    SITE_MATTERS_STORE_NAME,
+  );
   const mattersIdRef = useRef();
   const mattersPasswordRef = useRef();
   const siteMattersAutoSaveDraftRef = useRef();
@@ -27,18 +57,12 @@ function PublishSettingPage() {
     { value: 'dark', label: __('Dark Mode', 'likecoin') },
     { value: 'none', label: __('None', 'likecoin') },
   ];
-  const DBSiteMattersAutoSaveDraft = !!(mattersCtx.DBSiteMattersAutoSaveDraft === '1'
-    || mattersCtx.DBSiteMattersAutoSaveDraft === true);
-  const DBSiteMattersAutoPublish = !!(mattersCtx.DBSiteMattersAutoPublish === '1'
-    || mattersCtx.DBSiteMattersAutoPublish === true);
-  const DBSiteMattersAddFooterLink = !!(mattersCtx.DBSiteMattersAddFooterLink === '1'
-    || mattersCtx.DBSiteMattersAddFooterLink === true);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [siteMattersId, setSiteMattersId] = useState(
-    mattersCtx.DBSiteMattersId,
+    DBSiteMattersId,
   );
-  const [, setSiteMattersToken] = useState(
-    mattersCtx.DBSiteMattersToken,
+  const [siteMattersToken, setSiteMattersToken] = useState(
+    DBSiteMattersToken,
   );
   const [siteMattersAutoSaveDraft, setSiteMattersAutoSaveDraft] = useState(
     DBSiteMattersAutoSaveDraft,
@@ -50,20 +74,21 @@ function PublishSettingPage() {
     DBSiteMattersAddFooterLink,
   );
   const [ISCNBadgeStyleOption, setISCNBadgeStyleOption] = useState(
-    mattersCtx.DBISCNBadgeStyleOption,
+    DBISCNBadgeStyleOption,
   );
   const [mattersLoginError, setMattersLoginError] = useState('');
+
   async function loginToMattersAndSaveDataToWordpress(data) {
     const getTokenQuery = JSON.stringify({
       query: `mutation {
-            userLogin(input: {
-                email: "${data.mattersId}",
-                password: "${data.mattersPassword}"
-            }) {
-                auth
-                token
-            } 
-          }`,
+          userLogin(input: {
+              email: "${data.mattersId}",
+              password: "${data.mattersPassword}"
+          }) {
+              auth
+              token
+          } 
+        }`,
     });
     const getMattersUserInfoQuery = JSON.stringify({
       query: 'query { viewer { id userName displayName}}',
@@ -71,7 +96,7 @@ function PublishSettingPage() {
     try {
       // Get token from matters
       const getTokenResponse = await axios.post(
-        'https://server-develop.matters.news/graphql',
+        'https://server-develop.matters.news/graphql', // TODO: change to production server
         getTokenQuery,
         {
           headers: {
@@ -85,7 +110,7 @@ function PublishSettingPage() {
       const { token } = getTokenResponse.data.data.userLogin;
       // Get user info from matters
       const getUserInfoResponse = await axios.post(
-        'https://server-develop.matters.news/graphql',
+        'https://server-develop.matters.news/graphql', // TODO: change to production server
         getMattersUserInfoQuery,
         {
           headers: {
@@ -110,6 +135,11 @@ function PublishSettingPage() {
           },
         },
       );
+
+      // change app-wise state
+      postSiteMattersLogin(siteMattersUser);
+
+      // change local state
       setSiteMattersId(
         postToWordpressResponse.data.data.site_matters_user.matters_id,
       );
@@ -126,9 +156,7 @@ function PublishSettingPage() {
               if (e.message.indexOf('password') > 0) {
                 const passwordIndex = e.message.search('password');
                 errorMessage = errorMessage.concat(
-                  e.message
-                    .slice(0, passwordIndex)
-                    .concat('password: "***"}'),
+                  e.message.slice(0, passwordIndex).concat('password: "***"}'),
                 );
               } else {
                 errorMessage = errorMessage.concat(e.message);
@@ -144,6 +172,7 @@ function PublishSettingPage() {
       }
     }
   }
+
   async function loginHandler(e) {
     e.preventDefault();
     const mattersId = mattersIdRef.current.value;
@@ -174,15 +203,20 @@ function PublishSettingPage() {
   async function handleMattersLogout(e) {
     setSavedSuccessful(false);
     e.preventDefault();
-    // set state
+
+    // set local state
     setSiteMattersId('');
     setSiteMattersToken('');
 
-    // change DB
     const siteMattersUser = {
-      mattersId: '', // other props: displayName, id
+      mattersId: '',
       accessToken: '',
     };
+
+    // change app-wise state
+    postSiteMattersLogin(siteMattersUser);
+
+    // change DB
     await axios.post(
       `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/matters-login`,
       JSON.stringify(siteMattersUser),
@@ -194,15 +228,12 @@ function PublishSettingPage() {
       },
     );
     setSavedSuccessful(true);
-
-    // change context
-    mattersCtx.setSiteMattersId('');
-    mattersCtx.setSiteMattersToken('');
   }
   function handleNoticeDismiss(e) {
     e.preventDefault();
     setSavedSuccessful(false);
   }
+
   async function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
@@ -221,20 +252,29 @@ function PublishSettingPage() {
     // save to Wordpress DB.
     try {
       await postMattersOptionDataToWordpress(data);
+      postSiteMattersOptions(data);
       setSavedSuccessful(true);
     } catch (error) {
       console.error('Error occured when saving to Wordpress DB: ', error);
       setSavedSuccessful(false);
     }
   }
+
   useEffect(() => {
-    setSiteMattersId(mattersCtx.DBSiteMattersId);
-    setSiteMattersToken(mattersCtx.DBSiteMattersToken);
-    setSiteMattersAutoSaveDraft(mattersCtx.DBSiteMattersAutoSaveDraft);
-    setSiteMattersAutoPublish(mattersCtx.DBSiteMattersAutoPublish);
-    setSiteMattersAddFooterLink(mattersCtx.DBSiteMattersAddFooterLink);
-    setISCNBadgeStyleOption(mattersCtx.DBISCNBadgeStyleOption);
-  }, [mattersCtx]);
+    setSiteMattersId(DBSiteMattersId);
+    setSiteMattersToken(DBSiteMattersToken);
+    setSiteMattersAutoSaveDraft(DBSiteMattersAutoSaveDraft);
+    setSiteMattersAutoPublish(DBSiteMattersAutoPublish);
+    setSiteMattersAddFooterLink(DBSiteMattersAddFooterLink);
+    setISCNBadgeStyleOption(DBISCNBadgeStyleOption);
+  }, [
+    DBSiteMattersId,
+    DBSiteMattersToken,
+    DBSiteMattersAutoSaveDraft,
+    DBSiteMattersAutoPublish,
+    DBSiteMattersAddFooterLink,
+    DBISCNBadgeStyleOption,
+  ]);
 
   useEffect(() => {
     setSiteMattersAutoSaveDraft(DBSiteMattersAutoSaveDraft);
@@ -244,7 +284,6 @@ function PublishSettingPage() {
     DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink,
-    mattersCtx,
   ]);
   return (
     <div className="wrap likecoin">

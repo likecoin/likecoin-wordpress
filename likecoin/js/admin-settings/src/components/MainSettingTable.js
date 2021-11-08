@@ -1,7 +1,8 @@
 import {
-  useRef, useContext, useState, useEffect, useMemo,
+  useRef, useState, useEffect, useMemo,
 } from 'react';
 import axios from 'axios';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import SubmitButton from './SubmitButton';
@@ -9,36 +10,56 @@ import CheckBox from './CheckBox';
 import DropDown from './DropDown';
 import Section from './Section';
 import LikecoinInfoTable from './LikecoinInfoTable';
-import SiteLikerInfoContext from '../context/site-likerInfo-context';
 import SettingNotice from './SettingNotice';
 import LikecoinHeading from './LikecoinHeading';
+import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 
 function MainSettingTable(props) {
-  const ctx = useContext(SiteLikerInfoContext);
   /* do not want to re-render the whole component until submit. Hence use useRef(). */
   const siteLikerIdEnabledRef = useRef();
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
 
-  // in existing php method, it will show as '1', in React, it will show as true
-  const DBSiteLikerIdEnable = !!(ctx.DBSiteLikerIdEnabled === '1' || ctx.DBSiteLikerIdEnabled === true);
-  const DBPerPostOptionEnabled = !!(ctx.DBPerPostOptionEnabled === '1' || ctx.DBPerPostOptionEnabled === true);
-  const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
+  const {
+    DBSiteLikerId,
+    DBSiteLikerAvatar,
+    DBSiteLikerDisplayName,
+    DBSiteLikerWallet,
+    DBSiteLikerIdEnabled,
+    DBDisplayOptionSelected,
+    DBPerPostOptionEnabled,
+  } = useSelect((select) => ({
+    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerId,
+    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerAvatar,
+    DBSiteLikerDisplayName: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBSiteLikerDisplayName,
+    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBSiteLikerWallet,
+    DBSiteLikerIdEnabled: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBSiteLikerIdEnabled,
+    DBDisplayOptionSelected: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBDisplayOptionSelected,
+    DBPerPostOptionEnabled: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBPerPostOptionEnabled,
+  }));
+
+  const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
+  const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnabled);
 
   const [displayOptionSelected, selectDisplayOption] = useState(
-    ctx.DBDisplayOptionSelected,
+    DBDisplayOptionSelected,
   );
   const [perPostOptionEnabled, allowPerPostOption] = useState(
     DBPerPostOptionEnabled,
   );
-  const [likerIdValue, getLikerIdValue] = useState(ctx.DBSiteLikerId);
+  const [likerIdValue, getLikerIdValue] = useState(DBSiteLikerId);
   const [likerDisplayName, getLikerDisplayName] = useState(
-    ctx.DBSiteLikerDisplayName,
+    DBSiteLikerDisplayName,
   );
   const [likerWalletAddress, getLikerWalletAddress] = useState(
-    ctx.DBSiteLikerWallet,
+    DBSiteLikerWallet,
   );
-  const [likerAvatar, getLikerAvatar] = useState(ctx.DBSiteLikerAvatar);
+  const [likerAvatar, getLikerAvatar] = useState(DBSiteLikerAvatar);
   const [isLoading, setIsLoading] = useState(false);
 
   const [savedSuccessful, setSavedSuccessful] = useState(false);
@@ -83,24 +104,24 @@ function MainSettingTable(props) {
   }, [fetchLikeCoinID, likerIdValue]);
 
   useEffect(() => {
-    enableSiteLikerId(DBSiteLikerIdEnable);
-    selectDisplayOption(ctx.DBDisplayOptionSelected);
+    enableSiteLikerId(DBSiteLikerIdEnabled);
+    selectDisplayOption(DBDisplayOptionSelected);
     allowPerPostOption(DBPerPostOptionEnabled);
   }, [
-    DBSiteLikerIdEnable,
-    ctx.DBDisplayOptionSelected,
+    DBSiteLikerIdEnabled,
+    DBDisplayOptionSelected,
     DBPerPostOptionEnabled,
   ]);
   useEffect(() => {
-    getLikerIdValue(ctx.DBSiteLikerId);
-    getLikerDisplayName(ctx.DBSiteLikerDisplayName);
-    getLikerWalletAddress(ctx.DBSiteLikerWallet);
-    getLikerAvatar(ctx.DBSiteLikerAvatar);
+    getLikerIdValue(DBSiteLikerId);
+    getLikerDisplayName(DBSiteLikerDisplayName);
+    getLikerWalletAddress(DBSiteLikerWallet);
+    getLikerAvatar(DBSiteLikerAvatar);
   }, [
-    ctx.DBSiteLikerId,
-    ctx.DBSiteLikerDisplayName,
-    ctx.DBSiteLikerWallet,
-    ctx.DBSiteLikerAvatar,
+    DBSiteLikerId,
+    DBSiteLikerDisplayName,
+    DBSiteLikerWallet,
+    DBSiteLikerAvatar,
   ]);
 
   function handleClickOnChange(e) {
@@ -120,22 +141,24 @@ function MainSettingTable(props) {
       perPostOptionEnabled: isPerPostOptionEnabled,
       siteLikerInfos: {
         likecoin_id:
-          likerDisplayName === '-' ? ctx.DBSiteLikerId : likerIdValue,
+          likerDisplayName === '-' ? DBSiteLikerId : likerIdValue,
         display_name:
           likerDisplayName === '-'
-            ? ctx.DBSiteLikerDisplayName
+            ? DBSiteLikerDisplayName
             : likerDisplayName,
         wallet:
-          likerDisplayName === '-' ? ctx.DBSiteLikerWallet : likerWalletAddress,
-        avatar: likerDisplayName === '-' ? ctx.DBSiteLikerAvatar : likerAvatar,
+          likerDisplayName === '-' ? DBSiteLikerWallet : likerWalletAddress,
+        avatar: likerDisplayName === '-' ? DBSiteLikerAvatar : likerAvatar,
       },
     };
     try {
       props.onSubmit(data);
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
-      // Update parent context component.
-      ctx.setSiteLikerIdEnabled(isSiteLikerIdEnabled);
+
+      // change app-wise state
+      postSiteLikerInfo(data);
+
       setIsChangingTypingLiker(false);
     } catch (error) {
       console.error('Error occured when saving to Wordpress DB: ', error);

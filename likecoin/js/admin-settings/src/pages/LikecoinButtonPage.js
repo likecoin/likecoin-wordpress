@@ -1,39 +1,71 @@
 import {
-  useContext, useState, useEffect, useMemo,
+  useState, useEffect, useMemo,
 } from 'react';
 import axios from 'axios';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import Section from '../components/Section';
 import LikecoinInfoTable from '../components/LikecoinInfoTable';
-import UserLikerInfoContext from '../context/user-likerInfo-context';
-import SiteLikerInfoContext from '../context/site-likerInfo-context';
 import SubmitButton from '../components/SubmitButton';
 import LikeButtonPreview from '../components/LikeButtonPreview';
 import SettingNotice from '../components/SettingNotice';
 import LikecoinHeading from '../components/LikecoinHeading';
+import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
+import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
 function LikecoinButtonPage() {
-  const siteLikerCtx = useContext(SiteLikerInfoContext);
-  const userLikerCtx = useContext(UserLikerInfoContext);
-  const DBSiteLikerIdEnable = !!(siteLikerCtx.DBSiteLikerIdEnabled === '1'
-    || siteLikerCtx.DBSiteLikerIdEnabled === true);
+  const {
+    DBSiteLikerId,
+    DBSiteLikerAvatar,
+    DBSiteLikerDisplayName,
+    DBSiteLikerWallet,
+    DBSiteLikerIdEnabled,
+  } = useSelect((select) => ({
+    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerId,
+    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerAvatar,
+    DBSiteLikerDisplayName: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBSiteLikerDisplayName,
+    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBSiteLikerWallet,
+    DBSiteLikerIdEnabled: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+      .DBSiteLikerIdEnabled,
+  }));
 
-  const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnable);
+  const {
+    DBUserLikerId,
+    DBUserLikerAvatar,
+    DBUserLikerDisplayName,
+    DBUserLikerWallet,
+  } = useSelect((select) => ({
+    DBUserLikerId: select(USER_LIKER_INFO_STORE_NAME).getUserLikerInfo()
+      .DBUserLikerId,
+    DBUserLikerAvatar: select(USER_LIKER_INFO_STORE_NAME).getUserLikerInfo()
+      .DBUserLikerAvatar,
+    DBUserLikerDisplayName: select(
+      USER_LIKER_INFO_STORE_NAME,
+    ).getUserLikerInfo().DBUserLikerDisplayName,
+    DBUserLikerWallet: select(USER_LIKER_INFO_STORE_NAME).getUserLikerInfo()
+      .DBUserLikerWallet,
+  }));
+
+  const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
+
+  const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnabled);
   // If siteLikerId is enabled === not editable,
   // then overwrite the user liker info with site liker info
   const defaultLikerId = siteLikerIdEnabled
-    ? siteLikerCtx.DBSiteLikerId
-    : userLikerCtx.DBUserLikerId;
+    ? DBSiteLikerId
+    : DBUserLikerId;
   const defaultLikerDisplayName = siteLikerIdEnabled
-    ? siteLikerCtx.DBSiteLikerDisplayName
-    : userLikerCtx.DBUserLikerDisplayName;
+    ? DBSiteLikerDisplayName
+    : DBUserLikerDisplayName;
   const defaultLikerWalletAddress = siteLikerIdEnabled
-    ? siteLikerCtx.DBSiteLikerWallet
-    : userLikerCtx.DBUserLikerWallet;
+    ? DBSiteLikerWallet
+    : DBUserLikerWallet;
   const defaultLikerAvatar = siteLikerIdEnabled
-    ? siteLikerCtx.DBSiteLikerAvatar
-    : userLikerCtx.DBUserLikerAvatar;
+    ? DBSiteLikerAvatar
+    : DBUserLikerAvatar;
   const [likerIdValue, getLikerIdValue] = useState(defaultLikerId);
   const [likerDisplayName, getLikerDisplayName] = useState(
     defaultLikerDisplayName,
@@ -46,9 +78,7 @@ function LikecoinButtonPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [, setIsDisconnect] = useState(false);
   const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
-  const [hasValidLikecoinId, setHasValidLikecoinId] = useState(
-    userLikerCtx.hasValidLikecoinId,
-  );
+  const [hasValidLikecoinId, setHasValidLikecoinId] = useState(false);
   const [showChangeButton, setShowChangeButton] = useState(true);
   const [showDisconnectButton, setShowDisconnectButton] = useState(false);
 
@@ -82,15 +112,16 @@ function LikecoinButtonPage() {
     fetchLikeCoinID(likerIdValue);
   }, [fetchLikeCoinID, likerIdValue]);
   useEffect(() => {
-    enableSiteLikerId(DBSiteLikerIdEnable);
+    enableSiteLikerId(DBSiteLikerIdEnabled);
     getLikerIdValue(defaultLikerId);
     getLikerDisplayName(defaultLikerDisplayName);
     getLikerWalletAddress(defaultLikerWalletAddress);
     getLikerAvatar(defaultLikerAvatar);
     setShowChangeButton(!!defaultLikerId);
     setShowDisconnectButton(!!defaultLikerId);
+    setHasValidLikecoinId(!!defaultLikerId);
   }, [
-    DBSiteLikerIdEnable,
+    DBSiteLikerIdEnabled,
     defaultLikerId,
     defaultLikerDisplayName,
     defaultLikerWalletAddress,
@@ -119,23 +150,28 @@ function LikecoinButtonPage() {
     const data = {
       userLikerInfos: {
         likecoin_id:
-          likerDisplayName === '-' ? userLikerCtx.DBSiteLikerId : likerIdValue,
+          likerDisplayName === '-' ? DBUserLikerId : likerIdValue,
         display_name:
           likerDisplayName === '-'
-            ? userLikerCtx.DBSiteLikerDisplayName
+            ? DBUserLikerDisplayName
             : likerDisplayName,
         wallet:
           likerDisplayName === '-'
-            ? userLikerCtx.DBSiteLikerWallet
+            ? DBUserLikerWallet
             : likerWalletAddress,
         avatar:
           likerDisplayName === '-'
-            ? userLikerCtx.DBSiteLikerAvatar
+            ? DBUserLikerAvatar
             : likerAvatar,
       },
     };
     try {
+      // Change DB.
       postUserDataToWordpress(data);
+
+      // Change app-wise state
+      postUserLikerInfo(data);
+
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
       setShowDisconnectButton(true);

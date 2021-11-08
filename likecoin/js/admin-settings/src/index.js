@@ -3,10 +3,6 @@ import ReactDOM from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
-import { SiteLikerInfoProvider } from './context/site-likerInfo-context';
-import { UserLikerInfoProvider } from './context/user-likerInfo-context';
-import { MattersInfoProvider } from './context/site-matters-context';
-import { WebMonetizationProvider } from './context/web-monetization-context';
 
 // for wordpress to show
 const reactAppData = window.likecoinReactAppData || {};
@@ -15,15 +11,7 @@ const appAnchorElement = document.querySelector(appSelector);
 if (appAnchorElement) {
   ReactDOM.render(
     <Router>
-      <SiteLikerInfoProvider>
-        <UserLikerInfoProvider>
-          <MattersInfoProvider>
-            <WebMonetizationProvider>
-              <App />
-            </WebMonetizationProvider>
-          </MattersInfoProvider>
-        </UserLikerInfoProvider>
-      </SiteLikerInfoProvider>
+      <App />
     </Router>,
     appAnchorElement,
   );

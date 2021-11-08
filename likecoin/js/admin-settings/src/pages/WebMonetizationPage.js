@@ -1,22 +1,27 @@
 import {
-  useRef, useContext, useState, useEffect,
+  useRef, useState, useEffect,
 } from 'react';
 import axios from 'axios';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
 import SubmitButton from '../components/SubmitButton';
 import WebMonetizationDescription from '../components/WebMonetizationDescription';
-import WebMonetizationContext from '../context/web-monetization-context';
+import { WEB_MONETIZATION_STORE_NAME } from '../store/web-monetization-store';
 
 function WebMonetizationPage() {
-  const webMonetizationCtx = useContext(WebMonetizationContext);
-  const { DBPaymentPointer } = webMonetizationCtx;
+  // eslint-disable-next-line arrow-body-style
+  const { DBPaymentPointer } = useSelect((select) => {
+    return {
+      DBPaymentPointer: select(WEB_MONETIZATION_STORE_NAME).getPaymentPointer(),
+    };
+  });
+  const { postPaymentPointer } = useDispatch(WEB_MONETIZATION_STORE_NAME);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [paymentPointer, setPaymentPointer] = useState(DBPaymentPointer);
   const paymentPointerRef = useRef();
-
   async function saveToWordpressMonetizationOption(data) {
     try {
       await axios.post(
@@ -40,7 +45,8 @@ function WebMonetizationPage() {
       paymentPointer: paymentPointerRef.current.value,
     };
     try {
-      await saveToWordpressMonetizationOption(data);
+      await saveToWordpressMonetizationOption(data); // change real DB
+      postPaymentPointer(data.paymentPointer); // change the app-wise context
       setSavedSuccessful(true);
     } catch (error) {
       console.error(error);
