@@ -26,7 +26,7 @@ LikeCoin aims to empower content ownership, authenticity, and provenance. Creato
 
 - Register [ISCN](https://docs.like.co/developer/international-standard-content-number-iscn), an immutable metadata registry on blockchain, for your content
 - By publishing to [Matters.news](https://matters.news), store your content on [IPFS](https://docs.ipfs.io/concepts/case-study-likecoin/) - a decentralized file system
-- Monetizing your content by [LikeCoin button](https://docs.like.co/user-guide/creator).  Share your Civic Liker sponsorship link to your fans for monthly subscription.
+- Monetizing your content by [LikeCoin button](https://docs.like.co/user-guide/creator). Share your Civic Liker sponsorship link to your fans for monthly subscription.
 
 = Ready for NFT =
 
@@ -46,13 +46,13 @@ LikeCoin operates under liquid democracy as a [DAO (Decentralized Autonomous Org
 
 == Trading LikeCoin ==
 
-[LikeCoin tokens](https://coinmarketcap.com/currencies/likecoin/) can be changed to fiat currencies or other cryptocurrencies such as Bitcoin.  The most convenient way for trading LikeCoin is on DEX (decentralized exchange) such as [Osmosis](https://osmosis.zone) and [Emeris](https://emeris.com/), which can be used immediately with a LikeCoin wallet like Keplr without registering any account.
+[LikeCoin tokens](https://coinmarketcap.com/currencies/likecoin/) can be changed to fiat currencies or other cryptocurrencies such as Bitcoin. The most convenient way for trading LikeCoin is on DEX (decentralized exchange) such as [Osmosis](https://osmosis.zone) and [Emeris](https://emeris.com/), which can be used immediately with a LikeCoin wallet like Keplr without registering any account.
 
-You can also trade LikeCoin on centralized exchanges such as [Liquid](https://app.liquid.com/exchange/LIKEUSDT), [DigiFinex](https://www.digifinex.com/en-ww/trade/USDT/LIKE) and [ZB.com](https://www.zb.com/en/).  Information of the LikeCoin token (LIKE) can be found in [Coingecko](https://www.coingecko.com/en/coins/likecoin), [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/) and [Big Dipper](https://likecoin.bigdipper.live/) blockchain explorer.
+You can also trade LikeCoin on centralized exchanges such as [Liquid](https://app.liquid.com/exchange/LIKEUSDT), [DigiFinex](https://www.digifinex.com/en-ww/trade/USDT/LIKE) and [ZB.com](https://www.zb.com/en/). Information of the LikeCoin token (LIKE) can be found in [Coingecko](https://www.coingecko.com/en/coins/likecoin), [CoinMarketCap](https://coinmarketcap.com/currencies/likecoin/) and [Big Dipper](https://likecoin.bigdipper.live/) blockchain explorer.
 
 == Contribution ==
 
-LikeCoin is an open-source project.  You are welcome to contribute to the plugin on [Github](https://github.com/likecoin/likecoin-wordpress) if you are a developer.
+LikeCoin is an open-source project. You are welcome to contribute to the plugin on [Github](https://github.com/likecoin/likecoin-wordpress) if you are a developer.
 
 Welcome to sponsor LikeCoin by being our [Civic Liker](https://liker.land/foundation/civic).
 
@@ -63,51 +63,55 @@ Installing LikeCoin WordPress plugin is easy-peasy, it takes only a few steps, w
 Before installing the LikeCoin plugin, [please register a Liker ID](https://docs.like.co/user-guide/liker-id/register-with-keplr "please register a Liker ID").
 
 Follow the steps:
+
 1. Go to the WordPress admin panel and login ( For example if your website is www.abc.com, the admin panel address is usually on www.abc.com/wp-admin).
 2. Click on the Menu on the left, go to "Plugin" and click on "install plugin" on top.
 3. Search for "LikeCoin" and find the LikeCoin plugin, click "Install Nowl" and wait for the system to finish the job, then click "Activate".
-4. After installation, there will be a "LikeCoin" option in the menu. Congratulations,  installation is done!
+4. After installation, there will be a "LikeCoin" option in the menu. Congratulations, installation is done!
 
 = Configuring LikeCoin plugin =
 
 Before configuring the LikeCoin plugin, please register a Liker ID.
-On the menu, select "Your LikeCoin button",  then fill in your Liker ID in the Liker ID field.
-Then click "Confirm",  your LikeCoin button setup is finished.
+On the menu, select "Your LikeCoin button", then fill in your Liker ID in the Liker ID field.
+Then click "Confirm", your LikeCoin button setup is finished.
 After completing the above procedures, your LikeCoin button will appear underneath each article of your WordPress site.
 Config LikeCoin button to appear in anywhere of the articles. - you can also use shortcode [likecoin] to display extra LikeCoin buttons.
-
 
 == Frequently Asked Questions ==
 
 1. How to register a Liker ID?
-For users who are familiar with crypto currencies, you can [register a Liker ID by Keplr wallet](https://docs.like.co/user-guide/liker-id/register-with-keplr "register a Liker ID by Keplr wallet"), which you can have full control of your wallet private key.  
-An easier way to register a Liker ID without any crypto knowledge, however, is to register via email/password or social accounts such as Google or Facebook.  [Read the guide here](https://docs.like.co/user-guide/liker-id/register "Read the guide here").
+   For users who are familiar with crypto currencies, you can [register a Liker ID by Keplr wallet](https://docs.like.co/user-guide/liker-id/register-with-keplr "register a Liker ID by Keplr wallet"), which you can have full control of your wallet private key.
+   An easier way to register a Liker ID without any crypto knowledge, however, is to register via email/password or social accounts such as Google or Facebook. [Read the guide here](https://docs.like.co/user-guide/liker-id/register "Read the guide here").
 
 2. How to change LikeCoin to fiat currency?
-Can do it in [Liquid.com](https://www.liquid.com/ "Liquid.com"), which supports more than 10 types of popular fiat currencies. LikeCoin can be converted to other currencies in many exchanges, for details please refer to [this guide](https://docs.like.co/general-guides/trade "this guide").
+   Can do it in [Liquid.com](https://www.liquid.com/ "Liquid.com"), which supports more than 10 types of popular fiat currencies. LikeCoin can be converted to other currencies in many exchanges, for details please refer to [this guide](https://docs.like.co/general-guides/trade "this guide").
 
 3. What is Civic Liker?
-Civic Liker is a movement to reward good content and encourage openness. The Civic Liker subscription plan provides a convenient way for supporters to sponsor creators by monthly subscription, and let the creators focus on their work with decent rewards. Readers can pay for at least the cost of a coffee, or up to the cost of a bottle of champagne, to support creators.
-For details please [refer to this guide](https://docs.like.co/user-guide/civic-liker "refer to this guide").
+   Civic Liker is a movement to reward good content and encourage openness. The Civic Liker subscription plan provides a convenient way for supporters to sponsor creators by monthly subscription, and let the creators focus on their work with decent rewards. Readers can pay for at least the cost of a coffee, or up to the cost of a bottle of champagne, to support creators.
+   For details please [refer to this guide](https://docs.like.co/user-guide/civic-liker "refer to this guide").
 
 4. How to earn bonus from Creator's Fund?
-Creators Fund will be distributed daily according to the claps via LikeCoin buttons by Likers.  You can add LikeCoin button to your works by[ installing LikeCoin WordPress plugin](https://docs.like.co/user-guide/creator/wordpress " installing LikeCoin WordPress plugin").   Note that Civic Likers' claps has a much heavier weight for the distribution.
+   Creators Fund will be distributed daily according to the claps via LikeCoin buttons by Likers. You can add LikeCoin button to your works by[ installing LikeCoin WordPress plugin](https://docs.like.co/user-guide/creator/wordpress " installing LikeCoin WordPress plugin"). Note that Civic Likers' claps has a much heavier weight for the distribution.
 
 5. What is Civic Liker Classic?
-Civic Liker Claiss is a USD 5 monthly subscription plan.  The amount will be distributed to the creative work's owner according to the subscrber's claps.  The budget will stay in the civic liker's account unless the subscriber claps.  Unused budget in a billing cycle will be carried through to the next billing cycle.
+   Civic Liker Claiss is a USD 5 monthly subscription plan. The amount will be distributed to the creative work's owner according to the subscrber's claps. The budget will stay in the civic liker's account unless the subscriber claps. Unused budget in a billing cycle will be carried through to the next billing cycle.
 
 6. How to check my LikeCoin balance?
-Users can check LikeCoin balance by:
-- [Keplr wallet](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/general-guides/wallet/keplr "Keplr wallet")
-- [Liker Land mobile app](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/user-guide/liker-land/download "Liker Land mobile app")
-- [stake.like.co](https://stake.like.co "stake.like.co")
-- [Ledger](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/general-guides/wallet/hardware-wallet "Ledger")
+   Users can check LikeCoin balance by:
+
+   [Keplr wallet](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/general-guides/wallet/keplr "Keplr wallet")
+
+   [Liker Land mobile app](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/user-guide/liker-land/download "Liker Land mobile app")
+
+   [stake.like.co](https://stake.like.co "stake.like.co")
+
+   [Ledger](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/general-guides/wallet/hardware-wallet "Ledger")
 
 7. Possible to have different Liker ID within the same WordPress site?
-This function can be confiigured under the [LikeCoin WordPress plugin setting](https://docs.like.co/user-guide/creator/wordpress "LikeCoin WordPress plugin setting").
+   This function can be confiigured under the [LikeCoin WordPress plugin setting](https://docs.like.co/user-guide/creator/wordpress "LikeCoin WordPress plugin setting").
 
 8. LikeCoin button is not shown after I edited other's post?
-Post author's account must be linked to a Liker ID for the LikeCoin button to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
+   Post author's account must be linked to a Liker ID for the LikeCoin button to show in posts. Please login the LikeCoin plugin with the author's WordPress account once before editing with other editor account. You can also use the "Site Liker ID" option to force all posts to use a site-wise Liker ID.
 
 == Screenshots ==
 
@@ -118,168 +122,176 @@ Post author's account must be linked to a Liker ID for the LikeCoin button to sh
 == Changelog ==
 
 = 2.2.2 =
-* Fixed an issue where matters publish status won't auto refresh when entering post editor
 
+- Fixed an issue where matters publish status won't auto refresh when entering post editor
 
 = 2.2.1 =
-* Support url field in ISCN widget
+
+- Support url field in ISCN widget
 
 = 2.2.0 =
-* Add ISCN status column in post list
-* Support ISCN FoTan upgrade
+
+- Add ISCN status column in post list
+- Support ISCN FoTan upgrade
 
 = 2.1.2 =
-* Fix buggy LikeCoin button display logic
+
+- Fix buggy LikeCoin button display logic
 
 = 2.1.1 =
-* Add display of ISCN badge in posts submited to ISCN testnet.
-* Simplify Matters and IPFS column in admin panel post list.
-* Fix a bug that affects parsing of post tags to ISCN transaction.
+
+- Add display of ISCN badge in posts submited to ISCN testnet.
+- Simplify Matters and IPFS column in admin panel post list.
+- Fix a bug that affects parsing of post tags to ISCN transaction.
 
 = 2.1.0 =
-* Add publish to ISCN testnet feature
+
+- Add publish to ISCN testnet feature
 
 = 2.0.8 =
-* Fix "Illegal string offset 'matters_id'" error
-* Fix invalid noopener syntax
+
+- Fix "Illegal string offset 'matters_id'" error
+- Fix invalid noopener syntax
 
 = 2.0.7 =
-* Add refresh publish status button in post metabox
-* Add Web Monetization setting
+
+- Add refresh publish status button in post metabox
+- Add Web Monetization setting
 
 = 2.0.6 =
-* Add Matters and IPFS status display in metabox and post management list
-* Add class to LikeCoin button <figure> to allow CSS customization
+
+- Add Matters and IPFS status display in metabox and post management list
+- Add class to LikeCoin button <figure> to allow CSS customization
 
 = 2.0.5 =
 
-* Fix LikeCoin button size issue in Twenty Twenty-One
+- Fix LikeCoin button size issue in Twenty Twenty-One
 
 = 2.0.4 =
 
-* Fix Matters session expiration message is unreadable
-* Sync post tags to Matters
+- Fix Matters session expiration message is unreadable
+- Sync post tags to Matters
 
 = 2.0.3 =
 
-* Unify Matters.news brand name
-* Improve Matters publish support for classic editor
-* New option to add post link in footer when publishing
+- Unify Matters.news brand name
+- Improve Matters publish support for classic editor
+- New option to add post link in footer when publishing
 
 = 2.0.2 =
 
-* Fix publish to matters checkbox status does not display properly
+- Fix publish to matters checkbox status does not display properly
 
 = 2.0.1 =
 
-* Fix typo in matters.news description
-* Fix users' LikeCoin button setting cannot be updated
+- Fix typo in matters.news description
+- Fix users' LikeCoin button setting cannot be updated
 
 = 2.0.0 =
 
-* Try to fix title encoding issue when saving draft to matters
-* Fix cannot save draft to matters when publishing article
-* Improve formatting of matters ID display
-* Add short introduction on matters.news
+- Try to fix title encoding issue when saving draft to matters
+- Fix cannot save draft to matters when publishing article
+- Improve formatting of matters ID display
+- Add short introduction on matters.news
 
 = 2.0.0-b.2 =
 
-* Add display of current matters ID in settings
-* Add sponsor information
+- Add display of current matters ID in settings
+- Add sponsor information
 
 = 2.0.0-b.1 =
 
-* Add publish to matters function beta
+- Add publish to matters function beta
 
 = 1.3.3 =
 
-* Add become civic liker button and update help url
+- Add become civic liker button and update help url
 
 = 1.3.2 =
 
-* Add liker-id param in [likecoin] shortcode
-* Rename Like Rewards banner to LikeCoin button
+- Add liker-id param in [likecoin] shortcode
+- Rename Like Rewards banner to LikeCoin button
 
 = 1.3.1 =
 
-* Use LikeCoin wallet when updating user info.
+- Use LikeCoin wallet when updating user info.
 
 = 1.3.0 =
 
-* Allow user to input Liker ID directly
-* Remove Metamask related code
+- Allow user to input Liker ID directly
+- Remove Metamask related code
 
 = 1.2.4 =
 
-* Fix Like Rewards banner not showing when using site Liker ID
+- Fix Like Rewards banner not showing when using site Liker ID
 
 = 1.2.3 =
 
-* Add shortcode [likecoin] for displaying Like Rewards banner
+- Add shortcode [likecoin] for displaying Like Rewards banner
 
 = 1.2.2 =
 
-* Fixes options in metabox did not follow current config
+- Fixes options in metabox did not follow current config
 
 = 1.2.1 =
 
-* Fixes Android Facebook Browser stuck in redirect issue
-* Inject sandbox attributes in iframe only in AMP mode
+- Fixes Android Facebook Browser stuck in redirect issue
+- Inject sandbox attributes in iframe only in AMP mode
 
 = 1.2.0 =
 
-* Support Metamask privacy mode
+- Support Metamask privacy mode
 
 = 1.1.7 =
 
-* Update names and branding
-* Do not display Like Rewards banner in password-protected post
+- Update names and branding
+- Do not display Like Rewards banner in password-protected post
 
 = 1.1.6 =
 
-* Remove button referrer when in preview mode
+- Remove button referrer when in preview mode
 
 = 1.1.5 =
 
-* Support AMP plugin in paired/native mode
+- Support AMP plugin in paired/native mode
 
 = 1.1.4 =
 
-* Support new LikeButton setting available like.co
-* Better compatibility with old php versions
-* Add action shortcut to help and settings links
+- Support new LikeButton setting available like.co
+- Better compatibility with old php versions
+- Add action shortcut to help and settings links
 
 = 1.1.3 =
 
-* Better support for page builder like elementor and beaver
-* Fine-tune LikeButton display priority and default display option
+- Better support for page builder like elementor and beaver
+- Fine-tune LikeButton display priority and default display option
 
 = 1.1.2 =
 
-* Fix localization not working
+- Fix localization not working
 
 = 1.1.1 =
 
-* Fix typos
+- Fix typos
 
 = 1.1.0 =
 
-* Add LikeCoin Plugin Settings page
-* Add site LikeButton functionality
-* UI revamp
+- Add LikeCoin Plugin Settings page
+- Add site LikeButton functionality
+- UI revamp
 
 = 1.0.2 =
 
-* Minify JS
-* Update localizations
+- Minify JS
+- Update localizations
 
 = 1.0.1 =
 
-* Add localization headers
+- Add localization headers
 
 = 1.0 =
 
-* Initial release
+- Initial release
 
 == Upgrade Notice ==
 
