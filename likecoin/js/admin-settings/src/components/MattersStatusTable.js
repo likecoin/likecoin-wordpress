@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 
 function MattersStatusTable(props) {
+  console.log('props.siteMattersId: ', props.siteMattersId);
   return (
     <table className="form-table" role="presentation">
       <tbody>
