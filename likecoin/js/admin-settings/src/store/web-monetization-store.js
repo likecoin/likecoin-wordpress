@@ -2,7 +2,7 @@ import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
 
 // eslint-disable-next-line import/prefer-default-export
-export const WEB_MONETIZATION_STORE_NAME = 'likecoin/web_monetization2';
+export const WEB_MONETIZATION_STORE_NAME = 'likecoin/web_monetization';
 
 const endpoint = `${window.wpApiSettings.root}likecoin/v1/web-monetization-page`;
 const INITIAL_STATE = {
@@ -27,16 +27,17 @@ const actions = {
       errorMsg,
     };
   },
-  postPaymentPointer(pointer) {
-    return {
-      type: 'POST_PAYMENT_POINTER',
-      pointer,
+  * postPaymentPointer(pointer) {
+    const data = {
+      paymentPointer: pointer,
     };
+    yield { type: 'POST_TO_DB', data }; // change DB
+    yield { type: 'CHANGE_PAYMENT_POINTER_GLOBAL_STATE', data }; // change global state
   },
 };
 
 const selectors = {
-  getPaymentPointer: (state) => state.pointer || '',
+  selectPaymentPointer: (state) => state.pointer || '',
 };
 
 const controls = {
@@ -48,10 +49,18 @@ const controls = {
       },
     });
   },
+  POST_TO_DB(action) {
+    return axios.post(endpoint, JSON.stringify(action.data), {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
+      },
+    });
+  },
 };
 
 const resolvers = {
-  * getPaymentPointer() {
+  * selectPaymentPointer() { // need to match corresponding selector names
     try {
       const response = yield actions.getPaymentPointer(endpoint);
       const paymentPointer = response.data.data.site_payment_pointer;
@@ -68,14 +77,9 @@ const reducer = (state = INITIAL_STATE, action) => {
         pointer: action.pointer,
       };
     }
-    case 'GET_PAYMENT_POINTER': {
+    case 'CHANGE_PAYMENT_POINTER_GLOBAL_STATE': {
       return {
-        ...state,
-      };
-    }
-    case 'POST_PAYMENT_POINTER': {
-      return {
-        pointer: action.pointer,
+        pointer: action.data.paymentPointer,
       };
     }
     default: {

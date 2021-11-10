@@ -1,19 +1,12 @@
-import axios from 'axios';
+import { useDispatch } from '@wordpress/data';
 import MainSettingTable from '../components/MainSettingTable';
+import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 
 function MainSettingPage() {
+  const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
   async function postMainOptionDataToWordpress(data) {
     try {
-      await axios.post(
-        `${window.wpApiSettings.root}likecoin/v1/main-setting-page`,
-        JSON.stringify(data),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-          },
-        },
-      );
+      postSiteLikerInfo(data);
     } catch (error) {
       console.error(error);
     }

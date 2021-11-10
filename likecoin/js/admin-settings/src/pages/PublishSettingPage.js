@@ -26,22 +26,23 @@ function PublishSettingPage() {
     DBISCNBadgeStyleOption,
   } = useSelect((select) => ({
     // change dynamically when app-wise state changes without needing to use useEffect()
-    DBSiteMattersId: select(SITE_MATTERS_STORE_NAME).getSiteMattersOptions()
+    DBSiteMattersId: select(SITE_MATTERS_STORE_NAME).selectSiteMattersOptions()
       .DBSiteMattersId,
-    DBSiteMattersToken: select(SITE_MATTERS_STORE_NAME).getSiteMattersOptions()
-      .DBSiteMattersToken,
+    DBSiteMattersToken: select(
+      SITE_MATTERS_STORE_NAME,
+    ).selectSiteMattersOptions().DBSiteMattersToken,
     DBSiteMattersAutoSaveDraft: select(
       SITE_MATTERS_STORE_NAME,
-    ).getSiteMattersOptions().DBSiteMattersAutoSaveDraft,
+    ).selectSiteMattersOptions().DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish: select(
       SITE_MATTERS_STORE_NAME,
-    ).getSiteMattersOptions().DBSiteMattersAutoPublish,
+    ).selectSiteMattersOptions().DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink: select(
       SITE_MATTERS_STORE_NAME,
-    ).getSiteMattersOptions().DBSiteMattersAddFooterLink,
+    ).selectSiteMattersOptions().DBSiteMattersAddFooterLink,
     DBISCNBadgeStyleOption: select(
       SITE_MATTERS_STORE_NAME,
-    ).getSiteMattersOptions().DBISCNBadgeStyleOption,
+    ).selectSiteMattersOptions().DBISCNBadgeStyleOption,
   }));
   const { postSiteMattersOptions, postSiteMattersLogin } = useDispatch(
     SITE_MATTERS_STORE_NAME,
@@ -124,28 +125,12 @@ function PublishSettingPage() {
         accessToken: token,
       };
 
-      // Post data to Wordpress DB
-      const postToWordpressResponse = await axios.post(
-        `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/matters-login`,
-        JSON.stringify(siteMattersUser),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-          },
-        },
-      );
-
-      // change app-wise state
+      // change global state & DB
       postSiteMattersLogin(siteMattersUser);
 
       // change local state
-      setSiteMattersId(
-        postToWordpressResponse.data.data.site_matters_user.matters_id,
-      );
-      setSiteMattersToken(
-        postToWordpressResponse.data.data.site_matters_user.access_token,
-      );
+      setSiteMattersId(getUserInfoResponse.data.data.viewer.userName);
+      setSiteMattersToken(token);
       setSavedSuccessful(true);
     } catch (error) {
       if (error.response) {
@@ -184,22 +169,6 @@ function PublishSettingPage() {
     // send to Matters API.
     await loginToMattersAndSaveDataToWordpress(data);
   }
-  async function postMattersOptionDataToWordpress(dataToPost) {
-    try {
-      await axios.post(
-        `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/publish-options`,
-        JSON.stringify(dataToPost),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-          },
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }
   async function handleMattersLogout(e) {
     setSavedSuccessful(false);
     e.preventDefault();
@@ -213,20 +182,8 @@ function PublishSettingPage() {
       accessToken: '',
     };
 
-    // change app-wise state
+    // change global state & DB
     postSiteMattersLogin(siteMattersUser);
-
-    // change DB
-    await axios.post(
-      `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/matters-login`,
-      JSON.stringify(siteMattersUser),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-        },
-      },
-    );
     setSavedSuccessful(true);
   }
   function handleNoticeDismiss(e) {
@@ -251,7 +208,7 @@ function PublishSettingPage() {
 
     // save to Wordpress DB.
     try {
-      await postMattersOptionDataToWordpress(data);
+      // Change global state & DB
       postSiteMattersOptions(data);
       setSavedSuccessful(true);
     } catch (error) {

@@ -32,16 +32,14 @@ const actions = {
       errorMsg,
     };
   },
-  postUserLikerInfo(info) {
-    return {
-      type: 'POST_USER_LIKER_INFO',
-      info,
-    };
+  * postUserLikerInfo(info) {
+    yield { type: 'POST_USER_LIKER_INFO_TO_DB', data: info };
+    yield { type: 'CHANGE_USER_LIKER_INFO_GLOBAL_STATE', data: info };
   },
 };
 
 const selectors = {
-  getUserLikerInfo: (state) => state,
+  selectUserLikerInfo: (state) => state,
 };
 
 const controls = {
@@ -53,10 +51,18 @@ const controls = {
       },
     });
   },
+  POST_USER_LIKER_INFO_TO_DB(action) {
+    return axios.post(endPoint, JSON.stringify(action.data), {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.wpApiSettings.nonce,
+      },
+    });
+  },
 };
 
 const resolvers = {
-  * getUserLikerInfo() {
+  * selectUserLikerInfo() {
     try {
       const response = yield actions.getUserLikerInfo(endPoint);
       const userLikersInfo = response.data.data;
@@ -69,25 +75,20 @@ const resolvers = {
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'GET_USER_LIKER_INFO': {
-      return {
-        ...state,
-      };
-    }
     case 'SET_USER_LIKER_INFO': {
       return {
-        DBUserLikerId: action.info.likecoin_user.likecoin_id,
-        DBUserLikerAvatar: action.info.likecoin_user.avatar,
-        DBUserLikerDisplayName: action.info.likecoin_user.display_name,
-        DBUserLikerWallet: action.info.likecoin_user.wallet,
+        DBUserLikerId: action.info ? action.info.likecoin_user.likecoin_id : '',
+        DBUserLikerAvatar: action.info ? action.info.likecoin_user.avatar : '',
+        DBUserLikerDisplayName: action.info ? action.info.likecoin_user.display_name : '',
+        DBUserLikerWallet: action.info ? action.info.likecoin_user.wallet : '',
       };
     }
-    case 'POST_USER_LIKER_INFO': {
+    case 'CHANGE_USER_LIKER_INFO_GLOBAL_STATE': {
       return {
-        DBUserLikerId: action.info.userLikerInfos.likecoin_id,
-        DBUserLikerAvatar: action.info.userLikerInfos.avatar,
-        DBUserLikerDisplayName: action.info.userLikerInfos.display_name,
-        DBUserLikerWallet: action.info.userLikerInfos.wallet,
+        DBUserLikerId: action.data.userLikerInfos.likecoin_id,
+        DBUserLikerAvatar: action.data.userLikerInfos.avatar,
+        DBUserLikerDisplayName: action.data.userLikerInfos.display_name,
+        DBUserLikerWallet: action.data.userLikerInfos.wallet,
       };
     }
     default: {

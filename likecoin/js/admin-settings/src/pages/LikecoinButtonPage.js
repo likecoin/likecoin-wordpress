@@ -22,14 +22,18 @@ function LikecoinButtonPage() {
     DBSiteLikerWallet,
     DBSiteLikerIdEnabled,
   } = useSelect((select) => ({
-    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerId,
-    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerAvatar,
-    DBSiteLikerDisplayName: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
-      .DBSiteLikerDisplayName,
-    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
+      .DBSiteLikerId,
+    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
+      .DBSiteLikerAvatar,
+    DBSiteLikerDisplayName: select(
+      SITE_LIKER_INFO_STORE_NAME,
+    ).selectSiteLikerInfo().DBSiteLikerDisplayName,
+    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
       .DBSiteLikerWallet,
-    DBSiteLikerIdEnabled: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
-      .DBSiteLikerIdEnabled,
+    DBSiteLikerIdEnabled: select(
+      SITE_LIKER_INFO_STORE_NAME,
+    ).selectSiteLikerInfo().DBSiteLikerIdEnabled,
   }));
 
   const {
@@ -38,14 +42,14 @@ function LikecoinButtonPage() {
     DBUserLikerDisplayName,
     DBUserLikerWallet,
   } = useSelect((select) => ({
-    DBUserLikerId: select(USER_LIKER_INFO_STORE_NAME).getUserLikerInfo()
+    DBUserLikerId: select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo()
       .DBUserLikerId,
-    DBUserLikerAvatar: select(USER_LIKER_INFO_STORE_NAME).getUserLikerInfo()
+    DBUserLikerAvatar: select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo()
       .DBUserLikerAvatar,
     DBUserLikerDisplayName: select(
       USER_LIKER_INFO_STORE_NAME,
-    ).getUserLikerInfo().DBUserLikerDisplayName,
-    DBUserLikerWallet: select(USER_LIKER_INFO_STORE_NAME).getUserLikerInfo()
+    ).selectUserLikerInfo().DBUserLikerDisplayName,
+    DBUserLikerWallet: select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo()
       .DBUserLikerWallet,
   }));
 
@@ -93,7 +97,6 @@ function LikecoinButtonPage() {
         );
         getLikerIdValue(response.data.user);
         getLikerDisplayName(response.data.displayName);
-        /* change wallet address based on database. */
         getLikerWalletAddress(response.data.cosmosWallet);
         getLikerAvatar(response.data.avatar);
         setIsLoading(false);
@@ -127,22 +130,6 @@ function LikecoinButtonPage() {
     defaultLikerWalletAddress,
     defaultLikerAvatar,
   ]);
-  async function postUserDataToWordpress(dataToPost) {
-    try {
-      await axios.post(
-        `${window.wpApiSettings.root}likecoin/v1/likecoin-button-page`,
-        JSON.stringify(dataToPost),
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'X-WP-Nonce': window.wpApiSettings.nonce,
-          },
-        },
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  }
   function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
@@ -166,10 +153,7 @@ function LikecoinButtonPage() {
       },
     };
     try {
-      // Change DB.
-      postUserDataToWordpress(data);
-
-      // Change app-wise state
+      // Change global state & DB
       postUserLikerInfo(data);
 
       // Only re-render . Do not refresh page.

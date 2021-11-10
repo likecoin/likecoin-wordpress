@@ -4,7 +4,9 @@ import axios from 'axios';
 // eslint-disable-next-line import/prefer-default-export
 export const SITE_MATTERS_STORE_NAME = 'likecoin/site_matters';
 
-const endPoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page`;
+const getAllMattersDataEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page`;
+const postMattersOptionsEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/publish-options`;
+const postMattersUserEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/matters-login`;
 
 const INITIAL_STATE = {
   DBSiteMattersId: '',
@@ -34,22 +36,18 @@ const actions = {
       errorMsg,
     };
   },
-  postSiteMattersOptions(options) {
-    return {
-      type: 'POST_SITE_MATTERS_OPTIONS',
-      options,
-    };
+  * postSiteMattersOptions(options) {
+    yield { type: 'POST_SITE_MATTERS_OPTIONS_TO_DB', data: options };
+    yield { type: 'CHANGE_SITE_MATTERS_OPTIONS_GLOBAL_STATE', data: options };
   },
-  postSiteMattersLogin(user) {
-    return {
-      type: 'POST_SITE_MATTERS_USER',
-      user,
-    };
+  * postSiteMattersLogin(user) {
+    yield { type: 'POST_SITE_MATTERS_USER_TO_DB', data: user };
+    yield { type: 'CHANGE_SITE_MATTERS_USER_GLOBAL_STATE', data: user };
   },
 };
 
 const selectors = {
-  getSiteMattersOptions: (state) => state,
+  selectSiteMattersOptions: (state) => state,
 };
 
 const controls = {
@@ -61,13 +59,33 @@ const controls = {
       },
     });
   },
+  POST_SITE_MATTERS_OPTIONS_TO_DB(action) {
+    return axios.post(postMattersOptionsEndpoint, JSON.stringify(action.data), {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
+      },
+    });
+  },
+  POST_SITE_MATTERS_USER_TO_DB(action) {
+    return axios.post(postMattersUserEndpoint, JSON.stringify(action.data), {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
+      },
+    });
+  },
 };
 
 const resolvers = {
-  * getSiteMattersOptions() {
+  * selectSiteMattersOptions() {
     try {
-      const response = yield actions.getSiteMattersOptions(endPoint);
+      const response = yield actions.getSiteMattersOptions(getAllMattersDataEndpoint);
       const siteMattersOptions = response.data.data;
+      const DBMattersId = response.data.data.site_matters_user ? response.data.data.site_matters_user.matters_id : '';
+      const DBAccessToken = response.data.data.site_matters_user
+        ? response.data.data.site_matters_user.access_token
+        : '';
       const DBSiteMattersAutoSaveDraft = !!(
         siteMattersOptions.site_matters_auto_save_draft === '1'
         || siteMattersOptions.site_matters_auto_save_draft === true
@@ -80,6 +98,8 @@ const resolvers = {
         siteMattersOptions.site_matters_add_footer_link === '1'
         || siteMattersOptions.site_matters_add_footer_link === true
       );
+      siteMattersOptions.matters_id = DBMattersId;
+      siteMattersOptions.access_token = DBAccessToken;
       siteMattersOptions.site_matters_auto_save_draft = DBSiteMattersAutoSaveDraft;
       siteMattersOptions.site_matters_auto_publish = DBSiteMattersAutoPublish;
       siteMattersOptions.site_matters_add_footer_link = DBSiteMattersAddFooterLink;
@@ -92,39 +112,30 @@ const resolvers = {
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'GET_SITE_MATTERS_OPTIONS': {
-      return {
-        ...state,
-      };
-    }
     case 'SET_SITE_MATTERS_OPTIONS': {
       return {
-        DBSiteMattersId: action.options.site_matters_user.matters_id,
-        DBSiteMattersToken: action.options.site_matters_user.access_token,
+        DBSiteMattersId: action.options.matters_id,
+        DBSiteMattersToken: action.options.access_token,
         DBSiteMattersAutoSaveDraft: action.options.site_matters_auto_save_draft,
         DBSiteMattersAutoPublish: action.options.site_matters_auto_publish,
         DBSiteMattersAddFooterLink: action.options.site_matters_add_footer_link,
         DBISCNBadgeStyleOption: action.options.iscn_badge_style_option,
       };
     }
-    case 'POST_SITE_MATTERS_OPTIONS': {
+    case 'CHANGE_SITE_MATTERS_OPTIONS_GLOBAL_STATE': {
       return {
-        DBSiteMattersId: state.DBSiteMattersId, // no change
-        DBSiteMattersToken: state.DBSiteMattersToken, // no change
-        DBSiteMattersAutoSaveDraft: action.options.siteMattersAutoSaveDraft,
-        DBSiteMattersAutoPublish: action.options.siteMattersAutoPublish,
-        DBSiteMattersAddFooterLink: action.options.siteMattersAddFooterLink,
-        DBISCNBadgeStyleOption: action.options.ISCNBadgeStyleOption,
+        ...state,
+        DBSiteMattersAutoSaveDraft: action.data.siteMattersAutoSaveDraft,
+        DBSiteMattersAutoPublish: action.data.siteMattersAutoPublish,
+        DBSiteMattersAddFooterLink: action.data.siteMattersAddFooterLink,
+        DBISCNBadgeStyleOption: action.data.ISCNBadgeStyleOption,
       };
     }
-    case 'POST_SITE_MATTERS_USER': {
+    case 'CHANGE_SITE_MATTERS_USER_GLOBAL_STATE': {
       return {
-        DBSiteMattersId: action.user.mattersId,
-        DBSiteMattersToken: action.user.accessToken,
-        DBSiteMattersAutoSaveDraft: state.DBSiteMattersAutoSaveDraft, // no change
-        DBSiteMattersAutoPublish: state.DBSiteMattersAutoPublish, // no change
-        DBSiteMattersAddFooterLink: state.DBSiteMattersAddFooterLink, // no change
-        DBISCNBadgeStyleOption: state.DBISCNBadgeStyleOption, // no change
+        ...state,
+        DBSiteMattersId: action.data.mattersId,
+        DBSiteMattersToken: action.data.accessToken,
       };
     }
     default: {

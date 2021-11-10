@@ -2,7 +2,7 @@ import {
   useRef, useState, useEffect, useMemo,
 } from 'react';
 import axios from 'axios';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import SubmitButton from './SubmitButton';
@@ -29,21 +29,26 @@ function MainSettingTable(props) {
     DBDisplayOptionSelected,
     DBPerPostOptionEnabled,
   } = useSelect((select) => ({
-    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerId,
-    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo().DBSiteLikerAvatar,
-    DBSiteLikerDisplayName: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
-      .DBSiteLikerDisplayName,
-    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
+    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
+      .DBSiteLikerId,
+    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
+      .DBSiteLikerAvatar,
+    DBSiteLikerDisplayName: select(
+      SITE_LIKER_INFO_STORE_NAME,
+    ).selectSiteLikerInfo().DBSiteLikerDisplayName,
+    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
       .DBSiteLikerWallet,
-    DBSiteLikerIdEnabled: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
-      .DBSiteLikerIdEnabled,
-    DBDisplayOptionSelected: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
-      .DBDisplayOptionSelected,
-    DBPerPostOptionEnabled: select(SITE_LIKER_INFO_STORE_NAME).getSiteLikerInfo()
-      .DBPerPostOptionEnabled,
+    DBSiteLikerIdEnabled: select(
+      SITE_LIKER_INFO_STORE_NAME,
+    ).selectSiteLikerInfo().DBSiteLikerIdEnabled,
+    DBDisplayOptionSelected: select(
+      SITE_LIKER_INFO_STORE_NAME,
+    ).selectSiteLikerInfo().DBDisplayOptionSelected,
+    DBPerPostOptionEnabled: select(
+      SITE_LIKER_INFO_STORE_NAME,
+    ).selectSiteLikerInfo().DBPerPostOptionEnabled,
   }));
 
-  const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnabled);
 
   const [displayOptionSelected, selectDisplayOption] = useState(
@@ -86,7 +91,6 @@ function MainSettingTable(props) {
         );
         getLikerIdValue(response.data.user);
         getLikerDisplayName(response.data.displayName);
-        /* change wallet address based on database. */
         getLikerWalletAddress(response.data.cosmosWallet);
         getLikerAvatar(response.data.avatar);
       } catch (error) {
@@ -152,13 +156,10 @@ function MainSettingTable(props) {
       },
     };
     try {
+      // change global state & DB
       props.onSubmit(data);
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
-
-      // change app-wise state
-      postSiteLikerInfo(data);
-
       setIsChangingTypingLiker(false);
     } catch (error) {
       console.error('Error occured when saving to Wordpress DB: ', error);

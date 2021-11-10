@@ -35,16 +35,14 @@ const actions = {
       errorMsg,
     };
   },
-  postSiteLikerInfo(info) {
-    return {
-      type: 'POST_SITE_LIKER_INFO',
-      info,
-    };
+  * postSiteLikerInfo(info) {
+    yield { type: 'POST_SITE_LIKER_INFO_TO_DB', data: info };
+    yield { type: 'CHANGE_SITE_LIKER_INFO_GLOBAL_STATE', data: info };
   },
 };
 
 const selectors = {
-  getSiteLikerInfo: (state) => state,
+  selectSiteLikerInfo: (state) => state,
 };
 
 const controls = {
@@ -56,10 +54,18 @@ const controls = {
       },
     });
   },
+  POST_SITE_LIKER_INFO_TO_DB(action) {
+    return axios.post(endPoint, JSON.stringify(action.data), {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.wpApiSettings.nonce,
+      },
+    });
+  },
 };
 
 const resolvers = {
-  * getSiteLikerInfo() {
+  * selectSiteLikerInfo() {
     try {
       const response = yield actions.getSiteLikerInfo(endPoint);
       const siteLikersInfo = response.data.data;
@@ -82,11 +88,6 @@ const resolvers = {
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'GET_SITE_LIKER_INFO': {
-      return {
-        ...state,
-      };
-    }
     case 'SET_SITE_LIKER_INFO': {
       return {
         DBSiteLikerId: action.info.site_likecoin_user.likecoin_id,
@@ -98,15 +99,15 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBPerPostOptionEnabled: action.info.button_display_author_override,
       };
     }
-    case 'POST_SITE_LIKER_INFO': {
+    case 'CHANGE_SITE_LIKER_INFO_GLOBAL_STATE': {
       return {
-        DBSiteLikerId: action.info.siteLikerInfos.likecoin_id,
-        DBSiteLikerAvatar: action.info.siteLikerInfos.avatar,
-        DBSiteLikerDisplayName: action.info.siteLikerInfos.display_name,
-        DBSiteLikerWallet: action.info.siteLikerInfos.wallet,
-        DBSiteLikerIdEnabled: action.info.siteLikerIdEnabled,
-        DBDisplayOptionSelected: action.info.displayOption,
-        DBPerPostOptionEnabled: action.info.perPostOptionEnabled,
+        DBSiteLikerId: action.data.siteLikerInfos.likecoin_id,
+        DBSiteLikerAvatar: action.data.siteLikerInfos.avatar,
+        DBSiteLikerDisplayName: action.data.siteLikerInfos.display_name,
+        DBSiteLikerWallet: action.data.siteLikerInfos.wallet,
+        DBSiteLikerIdEnabled: action.data.siteLikerIdEnabled,
+        DBDisplayOptionSelected: action.data.displayOption,
+        DBPerPostOptionEnabled: action.data.perPostOptionEnabled,
       };
     }
     default: {
