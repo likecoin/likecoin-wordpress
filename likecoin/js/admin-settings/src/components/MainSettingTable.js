@@ -72,7 +72,7 @@ function MainSettingTable(props) {
         getLikerWalletAddress(response.data.cosmosWallet);
         getLikerAvatar(response.data.avatar);
       } catch (error) {
-        console.error(error);
+        console.error(error); // eslint-disable-line no-console
         getLikerDisplayName('-');
         getLikerWalletAddress('-');
         getLikerAvatar('-');
@@ -140,7 +140,7 @@ function MainSettingTable(props) {
       setSavedSuccessful(true);
       setIsChangingTypingLiker(false);
     } catch (error) {
-      console.error('Error occured when saving to Wordpress DB: ', error);
+      console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console
       setIsChangingTypingLiker(false);
     }
   }

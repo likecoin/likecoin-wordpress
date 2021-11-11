@@ -19,7 +19,6 @@ function PublishSettingPage() {
   // eslint-disable-next-line arrow-body-style
   const {
     DBSiteMattersId,
-    DBSiteMattersToken,
     DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink,
@@ -42,9 +41,6 @@ function PublishSettingPage() {
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [siteMattersId, setSiteMattersId] = useState(
     DBSiteMattersId,
-  );
-  const [siteMattersToken, setSiteMattersToken] = useState(
-    DBSiteMattersToken,
   );
   const [siteMattersAutoSaveDraft, setSiteMattersAutoSaveDraft] = useState(
     DBSiteMattersAutoSaveDraft,
@@ -111,7 +107,6 @@ function PublishSettingPage() {
 
       // change local state
       setSiteMattersId(getUserInfoResponse.data.data.viewer.userName);
-      setSiteMattersToken(token);
       setSavedSuccessful(true);
     } catch (error) {
       if (error.response) {
@@ -156,7 +151,6 @@ function PublishSettingPage() {
 
     // set local state
     setSiteMattersId('');
-    setSiteMattersToken('');
 
     const siteMattersUser = {
       mattersId: '',
@@ -193,21 +187,19 @@ function PublishSettingPage() {
       postSiteMattersOptions(data);
       setSavedSuccessful(true);
     } catch (error) {
-      console.error('Error occured when saving to Wordpress DB: ', error);
+      console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console
       setSavedSuccessful(false);
     }
   }
 
   useEffect(() => {
     setSiteMattersId(DBSiteMattersId);
-    setSiteMattersToken(DBSiteMattersToken);
     setSiteMattersAutoSaveDraft(DBSiteMattersAutoSaveDraft);
     setSiteMattersAutoPublish(DBSiteMattersAutoPublish);
     setSiteMattersAddFooterLink(DBSiteMattersAddFooterLink);
     setISCNBadgeStyleOption(DBISCNBadgeStyleOption);
   }, [
     DBSiteMattersId,
-    DBSiteMattersToken,
     DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink,

@@ -8,7 +8,7 @@ function MainSettingPage() {
     try {
       postSiteLikerInfo(data);
     } catch (error) {
-      console.error(error);
+      console.error(error); // eslint-disable-line no-console
     }
   }
   return (

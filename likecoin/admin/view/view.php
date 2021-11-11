@@ -317,8 +317,8 @@ function likecoin_get_css_files( $file_string ) {
  * Define how to load JavaScript files coming from React.
  */
 function likecoin_enqueue_admin_js() {
-	$react_app_build_url  = LC_URI . 'assets/js/admin-settings/';
-	$manifest_path        = LC_DIR . 'assets/js/admin-settings/asset-manifest.json';
+	$react_app_build_url = LC_URI . 'assets/js/admin-settings/';
+	$manifest_path       = LC_DIR . 'assets/js/admin-settings/asset-manifest.json';
 	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
 	$request = file_get_contents( $manifest_path );
 	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents

@@ -28,7 +28,7 @@ function WebMonetizationPage() {
       postPaymentPointer(data.paymentPointer); // change global state & DB
       setSavedSuccessful(true);
     } catch (error) {
-      console.error(error);
+      console.error(error); // eslint-disable-line no-console
       setSavedSuccessful(false);
     }
   }

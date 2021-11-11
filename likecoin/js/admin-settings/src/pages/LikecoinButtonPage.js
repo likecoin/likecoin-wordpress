@@ -140,7 +140,7 @@ function LikecoinButtonPage() {
       setShowChangeButton(true);
       setShowDisconnectButton(true);
     } catch (error) {
-      console.error('Error occured when saving to Wordpress DB: ', error);
+      console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console
       setIsChangingTypingLiker(false);
       setShowChangeButton(true);
     }
