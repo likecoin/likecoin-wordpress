@@ -72,10 +72,11 @@ Follow the steps:
 = Configuring LikeCoin plugin =
 
 Before configuring the LikeCoin plugin, please register a Liker ID.
-On the menu, select "Your LikeCoin button", then fill in your Liker ID in the Liker ID field.
-Then click "Confirm", your LikeCoin button setup is finished.
-After completing the above procedures, your LikeCoin button will appear underneath each article of your WordPress site.
-Config LikeCoin button to appear in anywhere of the articles. - you can also use shortcode [likecoin] to display extra LikeCoin buttons.
+
+1. On the menu, select "Your LikeCoin button", then fill in your Liker ID in the Liker ID field.
+2. Click "Confirm" to finish setting up your LikeCoin button, the button will appear at the bottom of each article.
+
+Configure LikeCoin button to appear at anywhere of the articles - use the shortcode [likecoin] to display extra LikeCoin buttons.
 
 == Frequently Asked Questions ==
 
