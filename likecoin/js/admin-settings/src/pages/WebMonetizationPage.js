@@ -12,11 +12,8 @@ import { WEB_MONETIZATION_STORE_NAME } from '../store/web-monetization-store';
 
 function WebMonetizationPage() {
   // eslint-disable-next-line arrow-body-style
-  const { DBPaymentPointer } = useSelect((select) => {
-    return {
-      DBPaymentPointer: select(WEB_MONETIZATION_STORE_NAME).selectPaymentPointer(),
-    };
-  });
+  const { DBPaymentPointer } = useSelect((select) => select(WEB_MONETIZATION_STORE_NAME)
+    .selectPaymentPointer());
   const { postPaymentPointer } = useDispatch(WEB_MONETIZATION_STORE_NAME);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [paymentPointer, setPaymentPointer] = useState(DBPaymentPointer);

@@ -6,7 +6,7 @@ export const WEB_MONETIZATION_STORE_NAME = 'likecoin/web_monetization';
 
 const endpoint = `${window.wpApiSettings.root}likecoin/v1/web-monetization-page`;
 const INITIAL_STATE = {
-  paymentPointer: '',
+  DBPaymentPointer: '',
 };
 const actions = {
   setPaymentPointer(pointer) {
@@ -37,7 +37,7 @@ const actions = {
 };
 
 const selectors = {
-  selectPaymentPointer: (state) => state.pointer || '',
+  selectPaymentPointer: (state) => state,
 };
 
 const controls = {
@@ -74,12 +74,12 @@ const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case 'SET_PAYMENT_POINTER': {
       return {
-        pointer: action.pointer,
+        DBPaymentPointer: action.pointer,
       };
     }
     case 'CHANGE_PAYMENT_POINTER_GLOBAL_STATE': {
       return {
-        pointer: action.data.paymentPointer,
+        DBPaymentPointer: action.data.paymentPointer,
       };
     }
     default: {

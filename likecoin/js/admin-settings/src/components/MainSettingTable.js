@@ -19,7 +19,6 @@ function MainSettingTable(props) {
   const siteLikerIdEnabledRef = useRef();
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
-
   const {
     DBSiteLikerId,
     DBSiteLikerAvatar,
@@ -28,29 +27,8 @@ function MainSettingTable(props) {
     DBSiteLikerIdEnabled,
     DBDisplayOptionSelected,
     DBPerPostOptionEnabled,
-  } = useSelect((select) => ({
-    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
-      .DBSiteLikerId,
-    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
-      .DBSiteLikerAvatar,
-    DBSiteLikerDisplayName: select(
-      SITE_LIKER_INFO_STORE_NAME,
-    ).selectSiteLikerInfo().DBSiteLikerDisplayName,
-    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
-      .DBSiteLikerWallet,
-    DBSiteLikerIdEnabled: select(
-      SITE_LIKER_INFO_STORE_NAME,
-    ).selectSiteLikerInfo().DBSiteLikerIdEnabled,
-    DBDisplayOptionSelected: select(
-      SITE_LIKER_INFO_STORE_NAME,
-    ).selectSiteLikerInfo().DBDisplayOptionSelected,
-    DBPerPostOptionEnabled: select(
-      SITE_LIKER_INFO_STORE_NAME,
-    ).selectSiteLikerInfo().DBPerPostOptionEnabled,
-  }));
-
+  } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnabled);
-
   const [displayOptionSelected, selectDisplayOption] = useState(
     DBDisplayOptionSelected,
   );

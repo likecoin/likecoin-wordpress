@@ -24,26 +24,7 @@ function PublishSettingPage() {
     DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink,
     DBISCNBadgeStyleOption,
-  } = useSelect((select) => ({
-    // change dynamically when app-wise state changes without needing to use useEffect()
-    DBSiteMattersId: select(SITE_MATTERS_STORE_NAME).selectSiteMattersOptions()
-      .DBSiteMattersId,
-    DBSiteMattersToken: select(
-      SITE_MATTERS_STORE_NAME,
-    ).selectSiteMattersOptions().DBSiteMattersToken,
-    DBSiteMattersAutoSaveDraft: select(
-      SITE_MATTERS_STORE_NAME,
-    ).selectSiteMattersOptions().DBSiteMattersAutoSaveDraft,
-    DBSiteMattersAutoPublish: select(
-      SITE_MATTERS_STORE_NAME,
-    ).selectSiteMattersOptions().DBSiteMattersAutoPublish,
-    DBSiteMattersAddFooterLink: select(
-      SITE_MATTERS_STORE_NAME,
-    ).selectSiteMattersOptions().DBSiteMattersAddFooterLink,
-    DBISCNBadgeStyleOption: select(
-      SITE_MATTERS_STORE_NAME,
-    ).selectSiteMattersOptions().DBISCNBadgeStyleOption,
-  }));
+  } = useSelect((select) => select(SITE_MATTERS_STORE_NAME).selectSiteMattersOptions());
   const { postSiteMattersOptions, postSiteMattersLogin } = useDispatch(
     SITE_MATTERS_STORE_NAME,
   );

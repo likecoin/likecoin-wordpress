@@ -21,37 +21,14 @@ function LikecoinButtonPage() {
     DBSiteLikerDisplayName,
     DBSiteLikerWallet,
     DBSiteLikerIdEnabled,
-  } = useSelect((select) => ({
-    DBSiteLikerId: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
-      .DBSiteLikerId,
-    DBSiteLikerAvatar: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
-      .DBSiteLikerAvatar,
-    DBSiteLikerDisplayName: select(
-      SITE_LIKER_INFO_STORE_NAME,
-    ).selectSiteLikerInfo().DBSiteLikerDisplayName,
-    DBSiteLikerWallet: select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo()
-      .DBSiteLikerWallet,
-    DBSiteLikerIdEnabled: select(
-      SITE_LIKER_INFO_STORE_NAME,
-    ).selectSiteLikerInfo().DBSiteLikerIdEnabled,
-  }));
+  } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
 
   const {
     DBUserLikerId,
     DBUserLikerAvatar,
     DBUserLikerDisplayName,
     DBUserLikerWallet,
-  } = useSelect((select) => ({
-    DBUserLikerId: select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo()
-      .DBUserLikerId,
-    DBUserLikerAvatar: select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo()
-      .DBUserLikerAvatar,
-    DBUserLikerDisplayName: select(
-      USER_LIKER_INFO_STORE_NAME,
-    ).selectUserLikerInfo().DBUserLikerDisplayName,
-    DBUserLikerWallet: select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo()
-      .DBUserLikerWallet,
-  }));
+  } = useSelect((select) => select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo());
 
   const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
 

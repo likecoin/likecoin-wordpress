@@ -14,7 +14,7 @@ function DropDown(props) {
           value={props.selected}
         >
           {props.options.map((option) => (
-            <option value={option.value}> {option.label} </option>
+            <option value={option.value} key={option.label}> {option.label} </option>
           ))}
         </select>
       </td>
