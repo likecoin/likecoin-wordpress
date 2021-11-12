@@ -34,6 +34,8 @@ function LikecoinButtonPage() {
 
   const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnabled);
   // If siteLikerId is enabled === not editable,
+  // forceDisconnect definition: click Disconnect && did not input any liker ID
+  const [forceDisconnect, setForceDisconnect] = useState(false);
   // then overwrite the user liker info with site liker info
   const defaultLikerId = siteLikerIdEnabled
     ? DBSiteLikerId
@@ -68,6 +70,7 @@ function LikecoinButtonPage() {
     () => debounce(async (likerId) => {
       setSavedSuccessful(false);
       setIsLoading(true);
+      if (!likerId) return; // user did not input any value. Want to forceDisconnect.
       try {
         const response = await axios.get(
           `https://api.like.co/users/id/${likerId}/min`,
@@ -78,12 +81,14 @@ function LikecoinButtonPage() {
         getLikerAvatar(response.data.avatar);
         setIsLoading(false);
         setHasValidLikecoinId(true);
+        setForceDisconnect(false); // has insert liker ID, not pure wanting to disconnect.
       } catch (error) {
         setIsLoading(false);
         getLikerDisplayName('-');
         getLikerWalletAddress('-');
         getLikerAvatar('-');
         setHasValidLikecoinId(false);
+        setForceDisconnect(false); // has insert liker ID, not pure wanting to disconnect.
       }
     }, 500),
     [],
@@ -112,24 +117,23 @@ function LikecoinButtonPage() {
     e.preventDefault();
     setShowChangeButton(false);
     const data = {
-      userLikerInfos: {
-        likecoin_id:
-          likerDisplayName === '-' ? DBUserLikerId : likerIdValue,
-        display_name:
-          likerDisplayName === '-'
-            ? DBUserLikerDisplayName
-            : likerDisplayName,
-        wallet:
-          likerDisplayName === '-'
-            ? DBUserLikerWallet
-            : likerWalletAddress,
-        avatar:
-          likerDisplayName === '-'
-            ? DBUserLikerAvatar
-            : likerAvatar,
-      },
+      userLikerInfos: {},
     };
+    if (likerIdValue) setForceDisconnect(false);
+    if (forceDisconnect) {
+      data.userLikerInfos.likecoin_id = '';
+      data.userLikerInfos.display_name = '';
+      data.userLikerInfos.wallet = '';
+      data.userLikerInfos.avatar = '';
+    } else {
+      data.userLikerInfos.likecoin_id = likerDisplayName === '-' ? DBUserLikerId : likerIdValue;
+      data.userLikerInfos.display_name = likerDisplayName === '-' ? DBUserLikerDisplayName : likerDisplayName;
+      data.userLikerInfos.wallet = likerDisplayName === '-' ? DBUserLikerWallet : likerWalletAddress;
+      data.userLikerInfos.avatar = likerDisplayName === '-' ? DBUserLikerAvatar : likerAvatar;
+    }
     try {
+      // Change notice
+      if (!data.userLikerInfos.likecoin_id) setForceDisconnect(false); // has insert liker ID
       // Change global state & DB
       postUserLikerInfo(data);
 
@@ -163,24 +167,25 @@ function LikecoinButtonPage() {
   }
   function handleDisconnect(e) {
     e.preventDefault();
-    getLikerIdValue('-');
+    getLikerIdValue('');
     getLikerDisplayName('-');
     getLikerWalletAddress('-');
     getLikerAvatar('-');
     setIsDisconnect(true);
+    setForceDisconnect(true);
   }
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
       {!savedSuccessful && ''}
-      {savedSuccessful && likerDisplayName !== '-' && (
+      {(savedSuccessful && (likerDisplayName !== '-' || forceDisconnect)) && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      {savedSuccessful && likerDisplayName === '-' && (
+      {(savedSuccessful && (likerDisplayName === '-' && !forceDisconnect)) && (
         <SettingNotice
           text={__('Your Liker ID is missing', 'likecoin')}
           className="notice-error"
