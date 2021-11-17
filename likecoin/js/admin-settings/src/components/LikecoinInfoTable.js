@@ -34,7 +34,7 @@ function LikecoinInfoTable(props) {
                               alt="Avatar"
                             />
                         )}
-                        {props.likerIdValue.length > 0
+                        {props.likerIdValue.length > 0 && props.likerIdValue !== '-'
                           && !props.isChangingTypingLiker && (
                             <a
                               id="likecoinId"
@@ -46,7 +46,7 @@ function LikecoinInfoTable(props) {
                               {props.likerIdValue}
                             </a>
                         )}
-                        {(props.likerIdValue.length === 0
+                        {(props.likerIdValue.length === 0 || props.likerIdValue === '-'
                           || props.isChangingTypingLiker) && (
                           <div>
                             <input
@@ -72,13 +72,13 @@ function LikecoinInfoTable(props) {
                       </div>
                     </td>
                     <td>
-                      {!props.isLoading && props.likerDisplayName && (
-                        <Text text={props.likerDisplayName} />
+                      {!props.isLoading && (
+                        <Text text={props.likerDisplayName ? props.likerDisplayName : '-'} />
                       )}
                     </td>
                     <td>
-                      {!props.isLoading && props.likerWalletAddress && (
-                        <Text text={props.likerWalletAddress} />
+                      {!props.isLoading && (
+                        <Text text={props.likerWalletAddress ? props.likerWalletAddress : '-'} />
                       )}
                     </td>
                     <td className="actions">
