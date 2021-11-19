@@ -33,9 +33,7 @@ const localizedWebMonetizationLongIntro = createInterpolateElement(
 function WebMonetizationDescription() {
   return (
     <div style={{ textAlign: 'left' }}>
-      <p></p>
-      <h2>{__('What is Web Monetization?', 'likecoin')}</h2>
-      <p></p>
+      <h2 style={{ margin: '20px 0' }}>{__('What is Web Monetization?', 'likecoin')}</h2>
       <p>{localizedWebMonetizationShortIntro}</p>
       <p>{localizedWebMonetizationLongIntro}</p>
     </div>

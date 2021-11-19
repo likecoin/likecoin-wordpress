@@ -32,32 +32,21 @@ function LikecoinButtonPage() {
 
   const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
 
-  const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnabled);
-  // If siteLikerId is enabled === not editable,
-  // then overwrite the user liker info with site liker info
-  const defaultLikerId = siteLikerIdEnabled
-    ? DBSiteLikerId
-    : DBUserLikerId;
-  const defaultLikerDisplayName = siteLikerIdEnabled
-    ? DBSiteLikerDisplayName
-    : DBUserLikerDisplayName;
-  const defaultLikerWalletAddress = siteLikerIdEnabled
-    ? DBSiteLikerWallet
-    : DBUserLikerWallet;
-  const defaultLikerAvatar = siteLikerIdEnabled
-    ? DBSiteLikerAvatar
-    : DBUserLikerAvatar;
-  const [likerIdValue, getLikerIdValue] = useState(defaultLikerId);
-  const [likerDisplayName, getLikerDisplayName] = useState(
+  const [siteLikerIdEnabled, setSiteLikerIdEnabled] = useState(DBSiteLikerIdEnabled);
+  const [defaultLikerId, setDefaultLikerIdValue] = useState('');
+  const [defaultLikerDisplayName, setDefaultDisplayName] = useState('');
+  const [defaultLikerWalletAddress, setDefaultLikerWalletAddress] = useState('');
+  const [defaultLikerAvatar, setDefaultLikerAvatar] = useState('');
+  const [likerIdValue, setLikerIdValue] = useState(defaultLikerId);
+  const [likerDisplayName, setLikerDisplayName] = useState(
     defaultLikerDisplayName,
   );
-  const [likerWalletAddress, getLikerWalletAddress] = useState(
+  const [likerWalletAddress, setLikerWalletAddress] = useState(
     defaultLikerWalletAddress,
   );
-  const [likerAvatar, getLikerAvatar] = useState(defaultLikerAvatar);
+  const [likerAvatar, setLikerAvatar] = useState(defaultLikerAvatar);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [, setIsDisconnect] = useState(false);
   const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
   const [hasValidLikecoinId, setHasValidLikecoinId] = useState(false);
   const [showChangeButton, setShowChangeButton] = useState(true);
@@ -72,18 +61,18 @@ function LikecoinButtonPage() {
         const response = await axios.get(
           `https://api.like.co/users/id/${likerId}/min`,
         );
-        getLikerIdValue(response.data.user);
-        getLikerDisplayName(response.data.displayName);
-        getLikerWalletAddress(response.data.cosmosWallet);
-        getLikerAvatar(response.data.avatar);
+        setLikerIdValue(response.data.user);
+        setLikerDisplayName(response.data.displayName);
+        setLikerWalletAddress(response.data.cosmosWallet);
+        setLikerAvatar(response.data.avatar);
         setIsLoading(false);
         setHasValidLikecoinId(true);
       } catch (error) {
         setIsLoading(false);
-        getLikerIdValue('');
-        getLikerDisplayName('');
-        getLikerWalletAddress('');
-        getLikerAvatar('');
+        setLikerIdValue('');
+        setLikerDisplayName('');
+        setLikerWalletAddress('');
+        setLikerAvatar('');
         setHasValidLikecoinId(false);
       }
     }, 500),
@@ -93,11 +82,34 @@ function LikecoinButtonPage() {
     fetchLikeCoinID(likerIdValue);
   }, [fetchLikeCoinID, likerIdValue]);
   useEffect(() => {
-    enableSiteLikerId(DBSiteLikerIdEnabled);
-    getLikerIdValue(defaultLikerId);
-    getLikerDisplayName(defaultLikerDisplayName);
-    getLikerWalletAddress(defaultLikerWalletAddress);
-    getLikerAvatar(defaultLikerAvatar);
+    if (siteLikerIdEnabled) {
+      setDefaultLikerIdValue(DBSiteLikerId);
+      setDefaultDisplayName(DBSiteLikerDisplayName);
+      setDefaultLikerWalletAddress(DBSiteLikerWallet);
+      setDefaultLikerAvatar(DBSiteLikerAvatar);
+    } else {
+      setDefaultLikerIdValue(DBUserLikerId);
+      setDefaultDisplayName(DBUserLikerDisplayName);
+      setDefaultLikerWalletAddress(DBUserLikerWallet);
+      setDefaultLikerAvatar(DBUserLikerAvatar);
+    }
+  }, [
+    siteLikerIdEnabled,
+    DBSiteLikerId,
+    DBSiteLikerDisplayName,
+    DBSiteLikerWallet,
+    DBSiteLikerAvatar,
+    DBUserLikerId,
+    DBUserLikerDisplayName,
+    DBUserLikerWallet,
+    DBUserLikerAvatar,
+  ]);
+  useEffect(() => {
+    setSiteLikerIdEnabled(DBSiteLikerIdEnabled);
+    setLikerIdValue(defaultLikerId);
+    setLikerDisplayName(defaultLikerDisplayName);
+    setLikerWalletAddress(defaultLikerWalletAddress);
+    setLikerAvatar(defaultLikerAvatar);
     setShowChangeButton(!!defaultLikerId);
     setShowDisconnectButton(!!defaultLikerId);
     setHasValidLikecoinId(!!defaultLikerId);
@@ -146,7 +158,7 @@ function LikecoinButtonPage() {
     setIsChangingTypingLiker(true);
     setIsLoading(true);
     const typingLikerId = e.target.value;
-    getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
+    setLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
   }
   function handleNoticeDismiss(e) {
     e.preventDefault();
@@ -154,16 +166,14 @@ function LikecoinButtonPage() {
   }
   function handleDisconnect(e) {
     e.preventDefault();
-    getLikerIdValue('');
-    getLikerDisplayName('');
-    getLikerWalletAddress('');
-    getLikerAvatar('');
-    setIsDisconnect(true);
+    setLikerIdValue('');
+    setLikerDisplayName('');
+    setLikerWalletAddress('');
+    setLikerAvatar('');
   }
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
-      {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}
@@ -191,19 +201,16 @@ function LikecoinButtonPage() {
           handleDisconnect={handleDisconnect}
           hasValidLikecoinId={hasValidLikecoinId}
           editable={!siteLikerIdEnabled}
-          setIsDisconnect={setIsDisconnect}
           isMainSettingPage={false}
           showChangeButton={showChangeButton}
           showDisconnectButton={showDisconnectButton}
         />
         <Section title={__('Your Likecoin button', 'likecoin')} />
-        {hasValidLikecoinId ? (
+        {hasValidLikecoinId && (
           <LikeButtonPreview
             userLikerId={likerIdValue}
             hasValidLikecoinId={hasValidLikecoinId}
           />
-        ) : (
-          ''
         )}
         <SubmitButton />
       </form>

@@ -73,12 +73,12 @@ function LikecoinInfoTable(props) {
                     </td>
                     <td>
                       {!props.isLoading && (
-                        <Text text={props.likerDisplayName ? props.likerDisplayName : '-'} />
+                        <Text text={props.likerDisplayName || '-'} />
                       )}
                     </td>
                     <td>
                       {!props.isLoading && (
-                        <Text text={props.likerWalletAddress ? props.likerWalletAddress : '-'} />
+                        <Text text={props.likerWalletAddress || '-'} />
                       )}
                     </td>
                     <td className="actions">

@@ -48,7 +48,6 @@ function WebMonetizationPage() {
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
-      {!savedSuccessful && ''}
       {savedSuccessful && (
         <SettingNotice
           text="Settings Saved"

@@ -29,7 +29,6 @@ function MattersDescription() {
   );
   return (
     <div style={{ textAlign: 'left' }}>
-      <p></p>
       <h2>
         <a
           rel="noopener noreferrer"
@@ -45,10 +44,8 @@ function MattersDescription() {
         </a>
         {__('What is Matters.news?', 'likecoin')}
       </h2>
-      <p></p>
       <p>{localizedMattersShortIntro}</p>
       <p>{localizedMattersLongIntro}</p>
-      <br />
     </div>
   );
 }

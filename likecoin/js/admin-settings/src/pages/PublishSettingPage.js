@@ -206,19 +206,9 @@ function PublishSettingPage() {
     DBISCNBadgeStyleOption,
   ]);
 
-  useEffect(() => {
-    setSiteMattersAutoSaveDraft(DBSiteMattersAutoSaveDraft);
-    setSiteMattersAutoPublish(DBSiteMattersAutoPublish);
-    setSiteMattersAddFooterLink(DBSiteMattersAddFooterLink);
-  }, [
-    DBSiteMattersAutoSaveDraft,
-    DBSiteMattersAutoPublish,
-    DBSiteMattersAddFooterLink,
-  ]);
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
-      {!savedSuccessful && ''}
       {savedSuccessful && (
         <SettingNotice
           text="Settings Saved"

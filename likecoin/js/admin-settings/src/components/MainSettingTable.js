@@ -28,21 +28,17 @@ function MainSettingTable(props) {
     DBDisplayOptionSelected,
     DBPerPostOptionEnabled,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
-  const [siteLikerIdEnabled, enableSiteLikerId] = useState(DBSiteLikerIdEnabled);
-  const [displayOptionSelected, selectDisplayOption] = useState(
-    DBDisplayOptionSelected,
-  );
-  const [perPostOptionEnabled, allowPerPostOption] = useState(
-    DBPerPostOptionEnabled,
-  );
-  const [likerIdValue, getLikerIdValue] = useState(DBSiteLikerId);
-  const [likerDisplayName, getLikerDisplayName] = useState(
+  const [siteLikerIdEnabled, setSiteLikerIdEnabled] = useState(DBSiteLikerIdEnabled);
+  const [displayOptionSelected, setDisplayOptionSelected] = useState(DBDisplayOptionSelected);
+  const [perPostOptionEnabled, setPerPostOptionEnabled] = useState(DBPerPostOptionEnabled);
+  const [likerIdValue, setLikerIdValue] = useState(DBSiteLikerId);
+  const [likerDisplayName, setLikerDisplayName] = useState(
     DBSiteLikerDisplayName,
   );
-  const [likerWalletAddress, getLikerWalletAddress] = useState(
+  const [likerWalletAddress, setLikerWalletAddress] = useState(
     DBSiteLikerWallet,
   );
-  const [likerAvatar, getLikerAvatar] = useState(DBSiteLikerAvatar);
+  const [likerAvatar, setLikerAvatar] = useState(DBSiteLikerAvatar);
   const [isLoading, setIsLoading] = useState(false);
 
   const [savedSuccessful, setSavedSuccessful] = useState(false);
@@ -51,7 +47,7 @@ function MainSettingTable(props) {
     e.preventDefault();
     setIsChangingTypingLiker(true);
     const typingLikerId = e.target.value;
-    getLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
+    setLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
   }
   const pluginSettingOptions = [
     { value: 'always', label: __('Page and Post', 'likecoin') },
@@ -67,15 +63,15 @@ function MainSettingTable(props) {
         const response = await axios.get(
           `https://api.like.co/users/id/${likerId}/min`,
         );
-        getLikerIdValue(response.data.user);
-        getLikerDisplayName(response.data.displayName);
-        getLikerWalletAddress(response.data.cosmosWallet);
-        getLikerAvatar(response.data.avatar);
+        setLikerIdValue(response.data.user);
+        setLikerDisplayName(response.data.displayName);
+        setLikerWalletAddress(response.data.cosmosWallet);
+        setLikerAvatar(response.data.avatar);
       } catch (error) {
         console.error(error); // eslint-disable-line no-console
-        getLikerDisplayName('-');
-        getLikerWalletAddress('-');
-        getLikerAvatar('-');
+        setLikerDisplayName('-');
+        setLikerWalletAddress('-');
+        setLikerAvatar('-');
       }
       setIsLoading(false);
     }, 500),
@@ -86,19 +82,19 @@ function MainSettingTable(props) {
   }, [fetchLikeCoinID, likerIdValue]);
 
   useEffect(() => {
-    enableSiteLikerId(DBSiteLikerIdEnabled);
-    selectDisplayOption(DBDisplayOptionSelected);
-    allowPerPostOption(DBPerPostOptionEnabled);
+    setSiteLikerIdEnabled(DBSiteLikerIdEnabled);
+    setDisplayOptionSelected(DBDisplayOptionSelected);
+    setPerPostOptionEnabled(DBPerPostOptionEnabled);
   }, [
     DBSiteLikerIdEnabled,
     DBDisplayOptionSelected,
     DBPerPostOptionEnabled,
   ]);
   useEffect(() => {
-    getLikerIdValue(DBSiteLikerId);
-    getLikerDisplayName(DBSiteLikerDisplayName);
-    getLikerWalletAddress(DBSiteLikerWallet);
-    getLikerAvatar(DBSiteLikerAvatar);
+    setLikerIdValue(DBSiteLikerId);
+    setLikerDisplayName(DBSiteLikerDisplayName);
+    setLikerWalletAddress(DBSiteLikerWallet);
+    setLikerAvatar(DBSiteLikerAvatar);
   }, [
     DBSiteLikerId,
     DBSiteLikerDisplayName,
@@ -152,7 +148,6 @@ function MainSettingTable(props) {
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
-      {!savedSuccessful && ''}
       {savedSuccessful && likerDisplayName !== '-' && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}
@@ -170,7 +165,7 @@ function MainSettingTable(props) {
         <Section title={__('Site Liker ID', 'likecoin')} />
         <CheckBox
           checked={siteLikerIdEnabled}
-          handleCheck={enableSiteLikerId}
+          handleCheck={setSiteLikerIdEnabled}
           title={__('Enable site Liker ID', 'likecoin')}
           details={__(
             'Override all LikeCoin button with site Liker ID',
@@ -178,7 +173,7 @@ function MainSettingTable(props) {
           )}
           checkRef={siteLikerIdEnabledRef}
         />
-        {siteLikerIdEnabled ? (
+        {siteLikerIdEnabled && (
           <LikecoinInfoTable
             likerIdValue={likerIdValue}
             likerDisplayName={likerDisplayName}
@@ -194,22 +189,20 @@ function MainSettingTable(props) {
             showChangeButton={true}
             showDisconnectButton={false}
           />
-        ) : (
-          ''
         )}
         <Section
           title={__('Site LikeCoin button display setting', 'likecoin')}
         />
         <DropDown
           selected={displayOptionSelected}
-          handleSelect={selectDisplayOption}
+          handleSelect={setDisplayOptionSelected}
           title={__('Display option', 'likecoin')}
           selectRef={displayOptionRef}
           options={pluginSettingOptions}
         />
         <CheckBox
           checked={perPostOptionEnabled}
-          handleCheck={allowPerPostOption}
+          handleCheck={setPerPostOptionEnabled}
           title={__('Allow per Post option', 'likecoin')}
           details={__(
             'Allow editors to customize display setting per post',
