@@ -14,37 +14,16 @@ import LikecoinHeading from '../components/LikecoinHeading';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
-function LikecoinButtonPage() {
-  const {
-    DBSiteLikerId,
-    DBSiteLikerAvatar,
-    DBSiteLikerDisplayName,
-    DBSiteLikerWallet,
-    DBSiteLikerIdEnabled,
-  } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
-
-  const {
-    DBUserLikerId,
-    DBUserLikerAvatar,
-    DBUserLikerDisplayName,
-    DBUserLikerWallet,
-  } = useSelect((select) => select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo());
-
-  const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
-
-  const [siteLikerIdEnabled, setSiteLikerIdEnabled] = useState(DBSiteLikerIdEnabled);
-  const [defaultLikerId, setDefaultLikerIdValue] = useState('');
-  const [defaultLikerDisplayName, setDefaultDisplayName] = useState('');
-  const [defaultLikerWalletAddress, setDefaultLikerWalletAddress] = useState('');
-  const [defaultLikerAvatar, setDefaultLikerAvatar] = useState('');
-  const [likerIdValue, setLikerIdValue] = useState(defaultLikerId);
+function PureLikecoinButtonPage(props) {
+  const [siteLikerIdEnabled] = useState(props.DBSiteLikerIdEnabled);
+  const [likerIdValue, setLikerIdValue] = useState(props.defaultLikerId);
   const [likerDisplayName, setLikerDisplayName] = useState(
-    defaultLikerDisplayName,
+    props.defaultLikerDisplayName,
   );
   const [likerWalletAddress, setLikerWalletAddress] = useState(
-    defaultLikerWalletAddress,
+    props.defaultLikerWalletAddress,
   );
-  const [likerAvatar, setLikerAvatar] = useState(defaultLikerAvatar);
+  const [likerAvatar, setLikerAvatar] = useState(props.defaultLikerAvatar);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
@@ -82,43 +61,18 @@ function LikecoinButtonPage() {
     fetchLikeCoinID(likerIdValue);
   }, [fetchLikeCoinID, likerIdValue]);
   useEffect(() => {
-    if (siteLikerIdEnabled) {
-      setDefaultLikerIdValue(DBSiteLikerId);
-      setDefaultDisplayName(DBSiteLikerDisplayName);
-      setDefaultLikerWalletAddress(DBSiteLikerWallet);
-      setDefaultLikerAvatar(DBSiteLikerAvatar);
-    } else {
-      setDefaultLikerIdValue(DBUserLikerId);
-      setDefaultDisplayName(DBUserLikerDisplayName);
-      setDefaultLikerWalletAddress(DBUserLikerWallet);
-      setDefaultLikerAvatar(DBUserLikerAvatar);
-    }
+    setLikerIdValue(props.defaultLikerId);
+    setLikerDisplayName(props.defaultLikerDisplayName);
+    setLikerWalletAddress(props.defaultLikerWalletAddress);
+    setLikerAvatar(props.defaultLikerAvatar);
+    setShowChangeButton(!!props.defaultLikerId);
+    setShowDisconnectButton(!!props.defaultLikerId);
+    setHasValidLikecoinId(!!props.defaultLikerId);
   }, [
-    siteLikerIdEnabled,
-    DBSiteLikerId,
-    DBSiteLikerDisplayName,
-    DBSiteLikerWallet,
-    DBSiteLikerAvatar,
-    DBUserLikerId,
-    DBUserLikerDisplayName,
-    DBUserLikerWallet,
-    DBUserLikerAvatar,
-  ]);
-  useEffect(() => {
-    setSiteLikerIdEnabled(DBSiteLikerIdEnabled);
-    setLikerIdValue(defaultLikerId);
-    setLikerDisplayName(defaultLikerDisplayName);
-    setLikerWalletAddress(defaultLikerWalletAddress);
-    setLikerAvatar(defaultLikerAvatar);
-    setShowChangeButton(!!defaultLikerId);
-    setShowDisconnectButton(!!defaultLikerId);
-    setHasValidLikecoinId(!!defaultLikerId);
-  }, [
-    DBSiteLikerIdEnabled,
-    defaultLikerId,
-    defaultLikerDisplayName,
-    defaultLikerWalletAddress,
-    defaultLikerAvatar,
+    props.defaultLikerId,
+    props.defaultLikerDisplayName,
+    props.defaultLikerWalletAddress,
+    props.defaultLikerAvatar,
   ]);
   function confirmHandler(e) {
     setSavedSuccessful(false);
@@ -133,7 +87,7 @@ function LikecoinButtonPage() {
     data.userLikerInfos.avatar = likerAvatar;
     try {
       // Change global state & DB
-      postUserLikerInfo(data);
+      props.postUserLikerInfo(data);
 
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
@@ -215,6 +169,65 @@ function LikecoinButtonPage() {
         <SubmitButton />
       </form>
     </div>
+  );
+}
+function LikecoinButtonPage() {
+  const {
+    DBSiteLikerId,
+    DBSiteLikerAvatar,
+    DBSiteLikerDisplayName,
+    DBSiteLikerWallet,
+    DBSiteLikerIdEnabled,
+  } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
+
+  const {
+    DBUserLikerId,
+    DBUserLikerAvatar,
+    DBUserLikerDisplayName,
+    DBUserLikerWallet,
+  } = useSelect((select) => select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo());
+
+  const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
+
+  const [siteLikerIdEnabled] = useState(DBSiteLikerIdEnabled);
+  const [defaultLikerId, setDefaultLikerIdValue] = useState('');
+  const [defaultLikerDisplayName, setDefaultDisplayName] = useState('');
+  const [defaultLikerWalletAddress, setDefaultLikerWalletAddress] = useState('');
+  const [defaultLikerAvatar, setDefaultLikerAvatar] = useState('');
+
+  useEffect(() => {
+    if (siteLikerIdEnabled) {
+      setDefaultLikerIdValue(DBSiteLikerId);
+      setDefaultDisplayName(DBSiteLikerDisplayName);
+      setDefaultLikerWalletAddress(DBSiteLikerWallet);
+      setDefaultLikerAvatar(DBSiteLikerAvatar);
+    } else {
+      setDefaultLikerIdValue(DBUserLikerId);
+      setDefaultDisplayName(DBUserLikerDisplayName);
+      setDefaultLikerWalletAddress(DBUserLikerWallet);
+      setDefaultLikerAvatar(DBUserLikerAvatar);
+    }
+  }, [
+    siteLikerIdEnabled,
+    DBSiteLikerId,
+    DBSiteLikerDisplayName,
+    DBSiteLikerWallet,
+    DBSiteLikerAvatar,
+    DBUserLikerId,
+    DBUserLikerDisplayName,
+    DBUserLikerWallet,
+    DBUserLikerAvatar,
+  ]);
+
+  return (
+    <PureLikecoinButtonPage
+      DBSiteLikerIdEnabled={DBSiteLikerIdEnabled}
+      defaultLikerId={defaultLikerId}
+      defaultLikerDisplayName={defaultLikerDisplayName}
+      defaultLikerWalletAddress={defaultLikerWalletAddress}
+      defaultLikerAvatar={defaultLikerAvatar}
+      postUserLikerInfo={postUserLikerInfo}
+    />
   );
 }
 
