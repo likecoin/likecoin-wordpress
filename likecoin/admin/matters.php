@@ -269,6 +269,12 @@ function likecoin_refresh_post_matters_status( $post, $force = false ) {
 	}
 	if ( ! empty( $res['article']['dataHash'] ) ) {
 		$matters_info['ipfs_hash'] = $res['article']['dataHash'];
+		$ipfs_info = get_post_meta( $post_id, LC_IPFS_INFO, true );
+		if ( ! is_array( $ipfs_info ) ) {
+			$ipfs_info = array();
+			$ipfs_info['ipfs_hash'] = $res['article']['dataHash'];
+			update_post_meta( $post_id, LC_IPFS_INFO, $ipfs_info );
+		}
 	}
 	if ( ! empty( $res['article']['author']['userName'] ) ) {
 		$matters_info['article_author'] = $res['article']['author']['userName'];

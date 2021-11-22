@@ -120,6 +120,21 @@ function likecoin_parse_iscn_status( $publish_params ) {
 }
 
 /**
+ * Get arweave status
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_parse_arweave_status( $post ) {
+	$post_id             = $post->ID;
+	$result              = array();
+	$arweave_info   = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
+	if ( ! is_array( $arweave_info ) ) {
+		return $result;
+	}
+	$result['arweave_id'] = $arweave_info['arweave_id'];
+	return $result;
+}
+/**
  * Get button related params for metabox
  *
  * @param object| $post WordPress post object.
@@ -189,11 +204,13 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 /**
  * Add the publish session of likecoin widget metabox
  *
+ * @param WP_Post| $post Post object.
  * @param object| $publish_params Params for displaying publish related settings.
  */
-function likecoin_add_publish_meta_box( $publish_params ) {
+function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	$iscn_hash   = $publish_params['iscn_hash'];
 	$status      = likecoin_parse_publish_status( $publish_params );
+	$arweave_status = likecoin_parse_arweave_status( $post );
 	$iscn_status = likecoin_parse_iscn_status( $publish_params );
 	if ( isset( $status['error'] ) ) {
 		?>
@@ -224,6 +241,24 @@ function likecoin_add_publish_meta_box( $publish_params ) {
 	</h3>
 	<table class="form-table">
 		<tbody>
+			<tr id="likecoin_submit_arweave">
+				<th><label><?php esc_html_e( 'Arweave Status', LC_PLUGIN_SLUG ); ?></label></th>
+				<td id="lcArweaveStatus">
+					
+					<?php if ( ! empty( $arweave_status['arweave_id'] ) ) { ?>
+						<a rel="noopener" target="_blank" href="<?php echo esc_url( $arweave_status['arweave_id'] ); ?>">
+							<?php echo esc_html( $arweave_status['arweave_id'] ); ?>
+						</a>
+					<?php } else { ?>
+						<?php  ?>
+						<span id="lcArweaveUpload">
+						<button id="lcArweaveUploadBtn" class="button button-primary">
+							<?php esc_html_e( 'Submit to Arweave', LC_PLUGIN_SLUG ); ?>
+						</button>
+					</span>
+					<?php } ?>
+				</td>
+			</tr>
 			<tr>
 				<th><label><?php esc_html_e( 'Matters Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcMattersStatus">
@@ -352,7 +387,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 	<div class="wrapper">			
 		<?php likecoin_add_button_meta_box( $button_params ); ?>
 		<hr>
-		<?php likecoin_add_publish_meta_box( $publish_params ); ?>
+		<?php likecoin_add_publish_meta_box( $publish_params, $post ); ?>
 	</div>
 	<?php
 		$post_id    = $post->ID;

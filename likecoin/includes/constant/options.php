@@ -46,6 +46,8 @@ define( 'LC_OPTION_WIDGET_POSITION', 'lc_widget_position' );
 define( 'LC_MATTERS_INFO', 'lc_matters_info' );
 define( 'LC_ISCN_DEV_INFO', 'lc_iscn_dev_info' );
 define( 'LC_ISCN_INFO', 'lc_iscn_info' );
+define( 'LC_ARWEAVE_INFO', 'lc_arweave_info');
+define( 'LC_IPFS_INFO', 'lc_ipfs_info');
 define( 'LC_MATTERS_IMAGE_INFO', 'lc_matters_image_info' );
 
 define( 'LC_OPTION_SITE_BUTTON_ENABLED', 'site_likecoin_id_enbled' );
@@ -66,4 +68,4 @@ define( 'LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER', 'site_payment_pointer' );
 define( 'LC_MATTERS_ID_FIELD', 'matters_id' );
 define( 'LC_MATTERS_USER_ACCESS_TOKEN_FIELD', 'access_token' );
 
-define( 'LC_MATTERS_API_ENDPOINT', 'https://server.matters.news/graphql' );
+define( 'LC_MATTERS_API_ENDPOINT', 'https://server-develop.matters.news/graphql' );
