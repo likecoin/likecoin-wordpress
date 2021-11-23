@@ -338,11 +338,11 @@ function likecoin_enqueue_admin_js() {
 	$js_files  = array_filter( $assets_files, 'likecoin_get_js_files' );
 	$css_files = array_filter( $assets_files, 'likecoin_get_css_files' );
 	foreach ( $css_files as $index => $css_file ) {
-		wp_enqueue_style( 'likecoin-admin-settings-' . $index, $react_app_build_url . $css_file, array(), 1 );
+		wp_enqueue_style( 'likecoin-admin-settings-' . $index, $react_app_build_url . $css_file, array(), LC_PLUGIN_VERSION );
 	}
 	foreach ( $js_files as $index => $js_file ) {
 		// add wp-api-request as dependency so React can access window.wpApiSettings.
-		wp_enqueue_script( 'likecoin-admin-settings-' . $index, $react_app_build_url . $js_file, array( 'wp-api-request', 'wp-i18n' ), 1, true );
+		wp_enqueue_script( 'likecoin-admin-settings-' . $index, $react_app_build_url . $js_file, array( 'wp-api-request', 'wp-i18n' ), LC_PLUGIN_VERSION, true );
 	}
 	// create a window.likecoinReactAppData which can be accessed by JavaScript.
 	wp_localize_script(
