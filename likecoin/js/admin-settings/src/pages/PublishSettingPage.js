@@ -74,7 +74,7 @@ function PublishSettingPage() {
     try {
       // Get token from matters
       const getTokenResponse = await axios.post(
-        'https://server-develop.matters.news/graphql', // TODO: change to production server
+        'https://server.matters.news/graphql',
         getTokenQuery,
         {
           headers: {
@@ -88,7 +88,7 @@ function PublishSettingPage() {
       const { token } = getTokenResponse.data.data.userLogin;
       // Get user info from matters
       const getUserInfoResponse = await axios.post(
-        'https://server-develop.matters.news/graphql', // TODO: change to production server
+        'https://server.matters.news/graphql',
         getMattersUserInfoQuery,
         {
           headers: {
