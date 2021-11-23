@@ -189,35 +189,22 @@ function LikecoinButtonPage() {
 
   const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
 
-  const [siteLikerIdEnabled] = useState(DBSiteLikerIdEnabled);
-  const [defaultLikerId, setDefaultLikerIdValue] = useState('');
-  const [defaultLikerDisplayName, setDefaultDisplayName] = useState('');
-  const [defaultLikerWalletAddress, setDefaultLikerWalletAddress] = useState('');
-  const [defaultLikerAvatar, setDefaultLikerAvatar] = useState('');
-
-  useEffect(() => {
-    if (siteLikerIdEnabled) {
-      setDefaultLikerIdValue(DBSiteLikerId);
-      setDefaultDisplayName(DBSiteLikerDisplayName);
-      setDefaultLikerWalletAddress(DBSiteLikerWallet);
-      setDefaultLikerAvatar(DBSiteLikerAvatar);
-    } else {
-      setDefaultLikerIdValue(DBUserLikerId);
-      setDefaultDisplayName(DBUserLikerDisplayName);
-      setDefaultLikerWalletAddress(DBUserLikerWallet);
-      setDefaultLikerAvatar(DBUserLikerAvatar);
-    }
-  }, [
-    siteLikerIdEnabled,
-    DBSiteLikerId,
-    DBSiteLikerDisplayName,
-    DBSiteLikerWallet,
-    DBSiteLikerAvatar,
-    DBUserLikerId,
-    DBUserLikerDisplayName,
-    DBUserLikerWallet,
-    DBUserLikerAvatar,
-  ]);
+  const defaultLikerId = useMemo(
+    () => (DBSiteLikerIdEnabled ? DBSiteLikerId : DBUserLikerId),
+    [DBSiteLikerIdEnabled, DBSiteLikerId, DBUserLikerId],
+  );
+  const defaultLikerDisplayName = useMemo(
+    () => (DBSiteLikerIdEnabled ? DBSiteLikerDisplayName : DBUserLikerDisplayName),
+    [DBSiteLikerIdEnabled, DBSiteLikerDisplayName, DBUserLikerDisplayName],
+  );
+  const defaultLikerWalletAddress = useMemo(
+    () => (DBSiteLikerIdEnabled ? DBSiteLikerWallet : DBUserLikerWallet),
+    [DBSiteLikerIdEnabled, DBSiteLikerWallet, DBUserLikerWallet],
+  );
+  const defaultLikerAvatar = useMemo(
+    () => (DBSiteLikerIdEnabled ? DBSiteLikerAvatar : DBUserLikerAvatar),
+    [DBSiteLikerIdEnabled, DBSiteLikerAvatar, DBUserLikerAvatar],
+  );
 
   return (
     <PureLikecoinButtonPage
