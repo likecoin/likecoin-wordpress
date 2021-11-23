@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 2.2.2
+Stable tag: 2.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,10 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.3.0 =
+
+- Revamp plugin admin pages
 
 = 2.2.2 =
 
