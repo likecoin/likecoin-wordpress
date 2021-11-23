@@ -72,6 +72,7 @@ function likecoin_append_footer_link_element( $dom_document ) {
  * @param array|  $params post options for addtional components.
  */
 function likecoin_replace_matters_attachment_url( $content, $params ) {
+	$post_id = $params ['post_id'];
 	if ( ! $content ) {
 		return $content;
 	}
@@ -105,8 +106,22 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 		}
 		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
+			// if its url image.
+			$image_infos = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+			if ( ! empty( $image_infos ) && isset( $image_infos->$url ) ) {
+				if ( isset( $image_infos->$url ) ) {
+					$image_info = $image_infos->$url;
+					if ( is_object( $image_info ) ) {
+						if ( $image_info->original_url === $url ) {
+							$image->setAttribute( 'src', $image_info->matters_url );
+							$image->setAttribute( 'data-asset-id', $image_info->matters_attachment_id );
+						}
+					}
+				}
+			}
 		}
 		if ( $attachment_id ) {
+			// if its uploaded image.
 			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
 			if ( isset( $matters_info['url'] ) ) {
 				$image->setAttribute( 'src', $matters_info['url'] );
@@ -345,7 +360,10 @@ function likecoin_get_post_tags_for_matters( $post ) {
  */
 function likecoin_filter_matters_post_content( $post ) {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
-	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ) );
+	$params = array(
+		'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ),
+		'post_id'         => $post->ID,
+	);
 	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$content = apply_filters( 'the_content', $post->post_content );
 	$content = likecoin_replace_matters_attachment_url( $content, $params );
@@ -353,6 +371,66 @@ function likecoin_filter_matters_post_content( $post ) {
 	return $content;
 }
 
+/**
+ * Parse and modify post HTML to replace Matters asset url and div/class standard
+ *
+ * @param string|  $post_id raw post HTML content.
+ * @param WP_Post| $post Post object.
+ */
+function likecoin_upload_url_image_to_matters( $post_id, $post ) {
+	if ( ! $post ) {
+		return;
+	}
+	$content = $post->post_content;
+	if ( ! $content ) {
+		return $content;
+	}
+	$dom_document          = new DOMDocument();
+	$libxml_previous_state = libxml_use_internal_errors( true );
+	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
+	if ( false === $dom_content ) {
+		return $content;
+	}
+	$images             = $dom_document->getElementsByTagName( 'img' );
+	$current_image_urls = new stdClass();
+	$image_infos        = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+	foreach ( $images as $image ) {
+		$image_infos              = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+		$url                      = $image->getAttribute( 'src' );
+		$current_image_urls->$url = $image;
+		$image_url                = $url;
+		// if it's uploaded image, then skip likecoin_post_url_image_to_matters.
+		$classes       = $image->getAttribute( 'class' );
+		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
+		if ( ! $attachment_id && $classes && preg_match( '/wp-image-([0-9]+)/i', $classes, $class_id ) && absint( $class_id[1] ) ) {
+			$attachment_id = $class_id[1];
+		}
+		if ( $attachment_id ) {
+			continue;
+		}
+		// check if $image_url already existed in the post.
+		if ( ! empty( $image_infos ) && isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
+			$image_info = $image_infos->$image_url;
+			if ( is_object( $image_info ) && $image_info->original_url === $image_url ) {
+				continue;
+			}
+		}
+		$image_infos = likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
+	}
+	// delete image_info in image_infos collection if the image is deleted from the draft.
+	if ( ! empty( $image_infos ) ) {
+		foreach ( $image_infos as $key => $value ) {
+			if ( ! isset( $current_image_urls->$key ) ) {
+				// remove the image from WordPress.
+				unset( $image_infos->$key );
+			}
+		}
+	}
+	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
+	// TODO: remove the image from matters.
+}
 /**
  * Save a post as a draft to matters
  *
@@ -371,13 +449,14 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	$content          = likecoin_filter_matters_post_content( $post );
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
 	$tags             = likecoin_get_post_tags_for_matters( $post );
 
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( ! isset( $draft['id'] ) ) {
 			unset( $matters_info['draft_id'] );
 			$matters_draft_id = null;
@@ -389,13 +468,18 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		}
 	}
 	if ( ! $matters_draft_id ) {
-		$draft = $api->new_draft( $title, $content, $tags );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->new_draft( $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		$matters_info['draft_id'] = $draft['id'];
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content          = likecoin_filter_matters_post_content( $post );
+		$matters_draft_id = $draft['id'];
+		$draft            = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
 	return $matters_draft_id;
 }
@@ -417,20 +501,26 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	$content          = likecoin_filter_matters_post_content( $post );
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
 	$tags             = likecoin_get_post_tags_for_matters( $post );
 	$api              = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
-		$draft = $api->new_draft( $title, $content, $tags );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->new_draft( $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		$matters_draft_id         = $draft['id'];
 		$matters_info['draft_id'] = $matters_draft_id;
+		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	} else {
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		likecoin_upload_url_image_to_matters( $post_id, $post );
+		$content = likecoin_filter_matters_post_content( $post );
+		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
@@ -446,6 +536,67 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	return $matters_draft_id;
 }
 
+/**
+ * Upload a file as draft image to matters
+ *
+ * @param int|     $image_url image url to be uploaded to matters.
+ * @param object | $image_infos all images' information of the post.
+ */
+function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
+	global $post;
+	$post_id        = $post->ID;
+	$file_path      = $image_url;
+	$headers        = get_headers( $file_path, true );
+	$file_mime_type = $headers['Content-Type'];
+	if ( ! ( substr( $file_mime_type, 0, 5 ) === 'image' ) ) {
+		return $image_infos;
+	}
+	$filename     = basename( $file_path );
+	$parent_post  = $post_id;
+	$matters_info = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
+	if ( ! $matters_info ) {
+		$matters_info = array(
+			'type' => 'post',
+		);
+	}
+	if ( isset( $matters_info['published'] ) && $matters_info['published'] ) {
+		return;
+	}
+	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
+	if ( ! $matters_draft_id ) {
+		if ( ! likecoin_get_admin_errors() ) {
+			likecoin_handle_matters_api_error( 'Cannot save draft before publishing' );
+		}
+		return;
+	}
+	$attachment_type = 'image';
+	$api             = LikeCoin_Matters_API::get_instance();
+	$res             = $api->post_attachment(
+		array(
+			'path'      => $file_path,
+			'filename'  => $filename,
+			'mime_type' => $file_mime_type,
+			'type'      => $attachment_type,
+		),
+		$matters_draft_id
+	);
+	if ( isset( $res['error'] ) ) {
+		likecoin_handle_matters_api_error( $res['error'] );
+		return;
+	}
+	$matters_attachment_id = $res['id'];
+	if ( empty( $image_infos ) ) { // no picture has been uploaded to matters for this post.
+		$image_infos = new stdClass(); // initiate the empty object to avoid empty string can not add property error.
+	}
+	$image_info              = (object) array(
+		'original_url'          => $image_url,
+		'matters_url'           => $res['path'],
+		'matters_attachment_id' => $res['id'],
+	);
+	$image_infos->$image_url = $image_info;
+	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
+	return $image_infos;
+}
 /**
  * Upload a file as draft attachment to matters
  *
