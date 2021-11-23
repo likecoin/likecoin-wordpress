@@ -2,5 +2,13 @@
   "env": {
     "browser": true
   },
-  "extends": "airbnb-base"
+  "extends": [
+    "airbnb-base",
+    "react-app",
+    "react-app/jest"
+  ],
+  "rules": {
+    "import/no-extraneous-dependencies": "off",
+    "jsx-a11y/anchor-is-valid": 0
+  }
 }

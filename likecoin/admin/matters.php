@@ -20,15 +20,175 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain, WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 /**
  * Include useful functions
  */
 require_once dirname( __FILE__ ) . '/../includes/class-likecoin-matters-api.php';
-require_once dirname( __FILE__ ) . '/views/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
 
+/**
+ * Generate a DOM element for Matters to display audio widget
+ *
+ * @param string| $filename Title of audio file.
+ */
+function likecoin_generate_matters_player_widget( $filename ) {
+	$dom_document          = new DOMDocument();
+	$libxml_previous_state = libxml_use_internal_errors( true );
+	$dom_content           = $dom_document->loadHTML( '<div class="player"><header><div class="meta"><h4 class="title">' . $filename . '</h4><div class="time"><span class="current"></span><span class="duration"></span></div></div><span class="play paused"></span></header><footer><div class="progress-bar"><span></span></div></footer></div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
+	return $dom_document->documentElement;
+}
+
+
+/**
+ * Append footer link into DOM
+ *
+ * @param DOMDocument| $dom_document Parent dom document.
+ */
+function likecoin_append_footer_link_element( $dom_document ) {
+	global $post;
+	$site_title = get_bloginfo( 'name' );
+	if ( ! $post ) {
+		return;
+	}
+	$url = get_permalink( $post );
+	if ( ! $url ) {
+		return;
+	}
+	$p = $dom_document->createElement( 'p', esc_html__( 'Original link: ', LC_PLUGIN_SLUG ) );
+	$a = $dom_document->createElement( 'a', $site_title );
+	$a->setAttribute( 'href', $url );
+	$p->appendChild( $a );
+	$dom_document->documentElement->appendChild( $p );
+}
+
+/**
+ * Parse and modify post HTML to replace Matters asset url and div/class standard
+ *
+ * @param string| $content raw post HTML content.
+ * @param array|  $params post options for addtional components.
+ */
+function likecoin_replace_matters_attachment_url( $content, $params ) {
+	if ( ! $content ) {
+		return $content;
+	}
+	$should_add_footer_link = $params['add_footer_link'];
+	$dom_document           = new DOMDocument();
+	$libxml_previous_state  = libxml_use_internal_errors( true );
+	$dom_content            = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
+	if ( false === $dom_content ) {
+		return $content;
+	}
+	$images = $dom_document->getElementsByTagName( 'img' );
+	foreach ( $images as $image ) {
+		$parent = $image->parentNode;
+		if ( 'figure' === $parent->nodeName ) {
+			$classes = $parent->getAttribute( 'class' );
+			$parent->setAttribute( 'class', $classes . ' image' );
+		} else {
+			$figure = $dom_document->createElement( 'figure' );
+			$figure->setAttribute( 'class', 'image' );
+			$image = $parent->replaceChild( $figure, $image );
+			$figure->appendChild( $image );
+			$parent = $figure;
+		}
+		$url           = $image->getAttribute( 'src' );
+		$classes       = $image->getAttribute( 'class' );
+		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
+		if ( ! $attachment_id && $classes && preg_match( '/wp-image-([0-9]+)/i', $classes, $class_id ) && absint( $class_id[1] ) ) {
+			$attachment_id = $class_id[1];
+		}
+		if ( ! $attachment_id && $url ) {
+			$attachment_id = attachment_url_to_postid( $url );
+		}
+		if ( $attachment_id ) {
+			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
+			if ( isset( $matters_info['url'] ) ) {
+				$image->setAttribute( 'src', $matters_info['url'] );
+				$image->setAttribute( 'data-asset-id', $matters_info['attachment_id'] );
+			}
+		}
+	}
+	$audios = $dom_document->getElementsByTagName( 'audio' );
+	foreach ( $audios as $audio ) {
+		$url           = $audio->getAttribute( 'src' );
+		$attachment_id = intval( $audio->getAttribute( 'data-attachment-id' ) );
+		$id            = null;
+		$filename      = null;
+
+		if ( ! $attachment_id && $url ) {
+			$attachment_id = attachment_url_to_postid( $url );
+		}
+		if ( $attachment_id ) {
+			$matters_info = get_post_meta( $attachment_id, LC_MATTERS_INFO, true );
+			if ( isset( $matters_info['url'] ) ) {
+					$url = $matters_info['url'];
+					$id  = $matters_info['attachment_id'];
+			}
+			$file_path = get_attached_file( $attachment_id );
+			$filename  = basename( $file_path );
+			$source    = $dom_document->createElement( 'source' );
+			$source->setAttribute( 'src', $url );
+			if ( $id ) {
+				$source->setAttribute( 'data-asset-id', $id );
+			}
+			if ( $filename ) {
+				$audio->setAttribute( 'data-file-name', $filename );
+			}
+			$audio->removeAttribute( 'src' );
+			$audio->appendChild( $source );
+		}
+		$parent = $audio->parentNode;
+		if ( 'figure' === $parent->nodeName ) {
+			$classes = $parent->getAttribute( 'class' );
+			$parent->setAttribute( 'class', $classes . ' audio' );
+		} else {
+			$figure = $dom_document->createElement( 'figure' );
+			$figure->setAttribute( 'class', 'audio' );
+			$audio = $parent->replaceChild( $figure, $audio );
+			$figure->appendChild( $audio );
+			$parent = $figure;
+		}
+		$player = likecoin_generate_matters_player_widget( $filename );
+		$parent->appendChild( $dom_document->importNode( $player, true ) );
+	}
+	$figures = $dom_document->getElementsByTagName( 'figure' );
+	foreach ( $figures as $figure ) {
+		$classes = $figure->getAttribute( 'class' );
+		if ( strpos( $classes, 'gallery' ) !== false ) {
+			$figure->setAttribute( 'class', $classes . ' image' );
+		}
+		$has_caption = false;
+		$captions    = $figure->getElementsByTagName( 'figcaption' );
+		foreach ( $captions as $caption ) {
+			if ( $caption->parentNode === $figure ) {
+				$has_caption = true;
+			}
+		}
+		if ( ! $has_caption ) {
+			$new_caption = $dom_document->createElement( 'figcaption' );
+			$span        = $dom_document->createElement( 'span' );
+			$new_caption->appendChild( $span );
+			$figure->appendChild( $new_caption );
+		}
+	}
+
+	if ( $should_add_footer_link ) {
+		likecoin_append_footer_link_element( $dom_document );
+	}
+
+	$root   = $dom_document->documentElement;
+	$result = '';
+	foreach ( $root->childNodes as $child_node ) {
+			$result .= $dom_document->saveHTML( $child_node );
+	}
+	return $result;
+}
 /**
  * Format a draft url to matters.news.
  *
@@ -185,10 +345,7 @@ function likecoin_get_post_tags_for_matters( $post ) {
  */
 function likecoin_filter_matters_post_content( $post ) {
 	$option = get_option( LC_PUBLISH_OPTION_NAME );
-	$params = array(
-		'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ),
-		'post_id'         => $post->ID,
-	);
+	$params = array( 'add_footer_link' => isset( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ] ) && checked( $option[ LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK ], 1, false ) );
 	add_filter( 'jetpack_photon_skip_image', '__return_true', 10, 3 );
 	$content = apply_filters( 'the_content', $post->post_content );
 	$content = likecoin_replace_matters_attachment_url( $content, $params );
@@ -214,14 +371,13 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
+	$content          = likecoin_filter_matters_post_content( $post );
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
 	$tags             = likecoin_get_post_tags_for_matters( $post );
 
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
-		likecoin_upload_url_image_to_matters( $post_id, $post );
-		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( ! isset( $draft['id'] ) ) {
 			unset( $matters_info['draft_id'] );
 			$matters_draft_id = null;
@@ -233,18 +389,13 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		}
 	}
 	if ( ! $matters_draft_id ) {
-		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->new_draft( $title, $content, $tags );
+		$draft = $api->new_draft( $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		$matters_info['draft_id'] = $draft['id'];
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-		likecoin_upload_url_image_to_matters( $post_id, $post );
-		$content          = likecoin_filter_matters_post_content( $post );
-		$matters_draft_id = $draft['id'];
-		$draft            = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	}
 	return $matters_draft_id;
 }
@@ -266,26 +417,20 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 		return;
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
+	$content          = likecoin_filter_matters_post_content( $post );
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
 	$tags             = likecoin_get_post_tags_for_matters( $post );
 	$api              = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
-		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->new_draft( $title, $content, $tags );
+		$draft = $api->new_draft( $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
 		}
 		$matters_draft_id         = $draft['id'];
 		$matters_info['draft_id'] = $matters_draft_id;
-		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-		likecoin_upload_url_image_to_matters( $post_id, $post );
-		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	} else {
-		likecoin_upload_url_image_to_matters( $post_id, $post );
-		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
@@ -367,67 +512,6 @@ function likecoin_post_attachment_to_matters( $attachment_id ) {
 	return $matters_attachment_id;
 }
 
-/**
- * Upload a file as draft image to matters
- *
- * @param int|     $image_url image url to be uploaded to matters.
- * @param object | $image_infos all images' information of the post.
- */
-function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
-	global $post;
-	$post_id        = $post->ID;
-	$file_path      = $image_url;
-	$headers        = get_headers( $file_path, true );
-	$file_mime_type = $headers['Content-Type'];
-	if ( ! ( substr( $file_mime_type, 0, 5 ) === 'image' ) ) {
-		return $image_infos;
-	}
-	$filename     = basename( $file_path );
-	$parent_post  = $post_id;
-	$matters_info = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
-	if ( ! $matters_info ) {
-		$matters_info = array(
-			'type' => 'post',
-		);
-	}
-	if ( isset( $matters_info['published'] ) && $matters_info['published'] ) {
-		return;
-	}
-	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	if ( ! $matters_draft_id ) {
-		if ( ! likecoin_get_admin_errors() ) {
-			likecoin_handle_matters_api_error( 'Cannot save draft before publishing' );
-		}
-		return;
-	}
-	$attachment_type = 'image';
-	$api             = LikeCoin_Matters_API::get_instance();
-	$res             = $api->post_attachment(
-		array(
-			'path'      => $file_path,
-			'filename'  => $filename,
-			'mime_type' => $file_mime_type,
-			'type'      => $attachment_type,
-		),
-		$matters_draft_id
-	);
-	if ( isset( $res['error'] ) ) {
-		likecoin_handle_matters_api_error( $res['error'] );
-		return;
-	}
-	$matters_attachment_id = $res['id'];
-	if ( empty( $image_infos ) ) { // no picture has been uploaded to matters for this post.
-		$image_infos = new stdClass(); // initiate the empty object to avoid empty string can not add property error.
-	}
-	$image_info              = (object) array(
-		'original_url'          => $image_url,
-		'matters_url'           => $res['path'],
-		'matters_attachment_id' => $res['id'],
-	);
-	$image_infos->$image_url = $image_info;
-	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
-	return $image_infos;
-}
 /**
  * Returns a boolean whether draft options are enabled
  */
