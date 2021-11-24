@@ -5,8 +5,9 @@ import axios from 'axios';
 export const SITE_MATTERS_STORE_NAME = 'likecoin/site_matters';
 
 const getAllMattersDataEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page`;
+const mattersLoginEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/login-to-matters`;
 const postMattersOptionsEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/publish-options`;
-const postMattersUserEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/matters-login`;
+const postMattersUserEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/save-matters-login-data`;
 
 const INITIAL_STATE = {
   DBSiteMattersId: '',
@@ -36,11 +37,20 @@ const actions = {
       errorMsg,
     };
   },
+  * siteMattersLogin(options) {
+    try {
+      const response = yield { type: 'MATTERS_LOGIN', data: options };
+      return response;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  },
   * postSiteMattersOptions(options) {
-    yield { type: 'POST_SITE_MATTERS_OPTIONS_TO_DB', data: options };
+    yield { type: 'POST_MATTERS_LOGIN', data: options };
     yield { type: 'CHANGE_SITE_MATTERS_OPTIONS_GLOBAL_STATE', data: options };
   },
-  * postSiteMattersLogin(user) {
+  * postSiteMattersLoginData(user) {
     yield { type: 'POST_SITE_MATTERS_USER_TO_DB', data: user };
     yield { type: 'CHANGE_SITE_MATTERS_USER_GLOBAL_STATE', data: user };
   },
@@ -53,6 +63,14 @@ const selectors = {
 const controls = {
   GET_SITE_MATTERS_OPTIONS(action) {
     return axios.get(action.path, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-WP-Nonce': window.wpApiSettings.nonce,
+      },
+    });
+  },
+  MATTERS_LOGIN(action) {
+    return axios.post(mattersLoginEndpoint, JSON.stringify(action.data), {
       headers: {
         'Content-Type': 'application/json',
         'X-WP-Nonce': window.wpApiSettings.nonce,
