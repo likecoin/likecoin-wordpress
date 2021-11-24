@@ -133,6 +133,17 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
+				'/publish-setting-page/login-to-matters',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_login_to_matters',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
 				'/publish-setting-page/publish-options',
 				array(
 					'methods'             => 'POST',
@@ -144,10 +155,10 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/publish-setting-page/matters-login',
+				'/publish-setting-page/save-matters-login-data',
 				array(
 					'methods'             => 'POST',
-					'callback'            => 'likecoin_post_site_matters_login_data',
+					'callback'            => 'likecoin_save_site_matters_login_data',
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},
