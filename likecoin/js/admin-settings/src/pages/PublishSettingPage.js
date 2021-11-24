@@ -24,7 +24,7 @@ function PublishSettingPage() {
     DBSiteMattersAddFooterLink,
     DBISCNBadgeStyleOption,
   } = useSelect((select) => select(SITE_MATTERS_STORE_NAME).selectSiteMattersOptions());
-  const { postSiteMattersOptions, postSiteMattersLogin } = useDispatch(
+  const { postSiteMattersOptions, siteMattersLogin, postSiteMattersLoginData } = useDispatch(
     SITE_MATTERS_STORE_NAME,
   );
   const mattersIdRef = useRef();
@@ -57,80 +57,41 @@ function PublishSettingPage() {
   const [mattersLoginError, setMattersLoginError] = useState('');
 
   async function loginToMattersAndSaveDataToWordpress(data) {
-    const getTokenQuery = JSON.stringify({
-      query: `mutation {
-          userLogin(input: {
-              email: "${data.mattersId}",
-              password: "${data.mattersPassword}"
-          }) {
-              auth
-              token
-          } 
-        }`,
-    });
-    const getMattersUserInfoQuery = JSON.stringify({
-      query: 'query { viewer { id userName displayName}}',
-    });
     try {
-      // Get token from matters
-      const getTokenResponse = await axios.post(
-        'https://server-develop.matters.news/graphql', // TODO: change to production server
-        getTokenQuery,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        },
-      );
-      if (!getTokenResponse.data.data || getTokenResponse.data.errors) {
-        throw new Error(getTokenResponse.data.errors[0].message);
+      const mattersLoginResponse = await siteMattersLogin(data);
+      if (!mattersLoginResponse) {
+        throw new Error('Calling Server failed.');
       }
-      const { token } = getTokenResponse.data.data.userLogin;
-      // Get user info from matters
-      const getUserInfoResponse = await axios.post(
-        'https://server-develop.matters.news/graphql', // TODO: change to production server
-        getMattersUserInfoQuery,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            'x-access-token': token,
-          },
-        },
-      );
+      if (mattersLoginResponse.data.errors) {
+        let errorMessage = 'ERROR:';
+        if (mattersLoginResponse.data.errors.length > 0) {
+          mattersLoginResponse.data.errors.forEach((e) => {
+            if (e.message.indexOf('password') > 0) {
+              const passwordIndex = e.message.search('password');
+              errorMessage = errorMessage.concat(
+                e.message.slice(0, passwordIndex).concat('password: "***"}'),
+              );
+            } else {
+              errorMessage = errorMessage.concat(e.message);
+            }
+          });
+        }
+        setMattersLoginError(errorMessage);
+        return;
+      }
       const siteMattersUser = {
-        mattersId: getUserInfoResponse.data.data.viewer.userName, // other props: displayName, id
-        accessToken: token,
+        mattersId: mattersLoginResponse.data.viewer.userName,
+        accessToken: mattersLoginResponse.data.userLogin.token,
       };
 
       // change global state & DB
-      postSiteMattersLogin(siteMattersUser);
-
+      postSiteMattersLoginData(siteMattersUser);
+      setMattersLoginError('');
       // change local state
-      setSiteMattersId(getUserInfoResponse.data.data.viewer.userName);
+      setSiteMattersId(siteMattersUser.mattersId);
       setSavedSuccessful(true);
     } catch (error) {
-      if (error.response) {
-        if (error.response.data) {
-          let errorMessage = 'ERROR:';
-          if (error.response.data.errors.length > 0) {
-            error.response.data.errors.forEach((e) => {
-              if (e.message.indexOf('password') > 0) {
-                const passwordIndex = e.message.search('password');
-                errorMessage = errorMessage.concat(
-                  e.message.slice(0, passwordIndex).concat('password: "***"}'),
-                );
-              } else {
-                errorMessage = errorMessage.concat(e.message);
-              }
-            });
-          }
-          setMattersLoginError(errorMessage);
-        }
-      } else if (error.message) {
-        let errorMessage = 'ERROR:';
-        errorMessage = errorMessage.concat(error.message);
-        setMattersLoginError(errorMessage);
-      }
+      console.error(error);
     }
   }
 
@@ -158,7 +119,7 @@ function PublishSettingPage() {
     };
 
     // change global state & DB
-    postSiteMattersLogin(siteMattersUser);
+    postSiteMattersLoginData(siteMattersUser);
     setSavedSuccessful(true);
   }
   function handleNoticeDismiss(e) {

@@ -138,7 +138,26 @@ function likecoin_post_site_publish_options_data( $request ) {
  *
  * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_post_site_matters_login_data( $request ) {
+function likecoin_login_to_matters( $request ) {
+	$params               = $request->get_json_params();
+	$matters_id           = $params['mattersId'];
+	$matters_password     = $params['mattersPassword'];
+	$results              = LikeCoin_Matters_API::get_instance()->login( $matters_id, $matters_password );
+	$matters_access_token = isset( $results['data']['userLogin']['token'] ) ? $results['data']['userLogin']['token'] : null;
+	$user_info_results    = array();
+	if ( isset( $matters_access_token ) ) {
+		$user_info_results = LikeCoin_Matters_API::get_instance()->query_user_info( $matters_access_token );
+		return rest_ensure_response( array_merge( $results['data'], array( 'viewer' => $user_info_results ) ) );
+	} else {
+		return rest_ensure_response( $results );
+	}
+}
+/**
+ * Post matters login data to WordPress database.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ */
+function likecoin_save_site_matters_login_data( $request ) {
 	$publish_options = get_option( 'lc_publish_options' );
 	$params          = $request->get_json_params();
 	$publish_options['site_matters_user']['matters_id']   = $params['mattersId'];
