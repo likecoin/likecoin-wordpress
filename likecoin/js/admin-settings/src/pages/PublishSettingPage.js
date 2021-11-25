@@ -24,9 +24,11 @@ function PublishSettingPage() {
     DBSiteMattersAddFooterLink,
     DBISCNBadgeStyleOption,
   } = useSelect((select) => select(SITE_MATTERS_STORE_NAME).selectSiteMattersOptions());
-  const { postSiteMattersOptions, siteMattersLogin, postSiteMattersLoginData } = useDispatch(
-    SITE_MATTERS_STORE_NAME,
-  );
+  const {
+    postSiteMattersOptions,
+    siteMattersLogin,
+    siteMattersLogout, postSiteMattersLoginData,
+  } = useDispatch(SITE_MATTERS_STORE_NAME);
   const mattersIdRef = useRef();
   const mattersPasswordRef = useRef();
   const siteMattersAutoSaveDraftRef = useRef();
@@ -58,6 +60,7 @@ function PublishSettingPage() {
 
   async function loginToMattersAndSaveDataToWordpress(data) {
     try {
+      // change DB
       const mattersLoginResponse = await siteMattersLogin(data);
       if (!mattersLoginResponse) {
         throw new Error('Calling Server failed.');
@@ -84,7 +87,7 @@ function PublishSettingPage() {
         accessToken: mattersLoginResponse.data.userLogin.token,
       };
 
-      // change global state & DB
+      // change global state
       postSiteMattersLoginData(siteMattersUser);
       setMattersLoginError('');
       // change local state
@@ -117,8 +120,9 @@ function PublishSettingPage() {
       mattersId: '',
       accessToken: '',
     };
-
-    // change global state & DB
+    // change DB
+    await siteMattersLogout();
+    // change global state
     postSiteMattersLoginData(siteMattersUser);
     setSavedSuccessful(true);
   }

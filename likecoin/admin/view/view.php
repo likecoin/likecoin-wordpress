@@ -146,22 +146,37 @@ function likecoin_login_to_matters( $request ) {
 	$matters_access_token = isset( $results['data']['userLogin']['token'] ) ? $results['data']['userLogin']['token'] : null;
 	$user_info_results    = array();
 	if ( isset( $matters_access_token ) ) {
-		$user_info_results = LikeCoin_Matters_API::get_instance()->query_user_info( $matters_access_token );
+		$user_info_results             = LikeCoin_Matters_API::get_instance()->query_user_info( $matters_access_token );
+		$matters_info                  = array();
+		$matters_info['matters_token'] = $matters_access_token;
+		$testtest                      = $user_info_results['userName'];
+		$matters_info['matters_id']    = $user_info_results['userName'];
+		likecoin_save_site_matters_login_data( $matters_info );
 		return rest_ensure_response( array_merge( $results['data'], array( 'viewer' => $user_info_results ) ) );
 	} else {
 		return rest_ensure_response( $results );
 	}
 }
 /**
- * Post matters login data to WordPress database.
+ * Log out from Matters
  *
  * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_save_site_matters_login_data( $request ) {
-	$publish_options = get_option( 'lc_publish_options' );
-	$params          = $request->get_json_params();
-	$publish_options['site_matters_user']['matters_id']   = $params['mattersId'];
-	$publish_options['site_matters_user']['access_token'] = $params['accessToken'];
+function likecoin_logout_matters( $request ) {
+	likecoin_logout_matters_session();
+	$result['code']    = 200;
+	$result['message'] = 'Successfully POST matters login data!';
+	return rest_ensure_response( $result );
+}
+/**
+ * Post matters login data to WordPress database.
+ *
+ * @param array | $matters_info valid matters login info.
+ */
+function likecoin_save_site_matters_login_data( $matters_info ) {
+	$publish_options                                      = get_option( 'lc_publish_options' );
+	$publish_options['site_matters_user']['matters_id']   = $matters_info['matters_id'];
+	$publish_options['site_matters_user']['access_token'] = $matters_info['matters_token'];
 	update_option( 'lc_publish_options', $publish_options );
 	$publish_options   = get_option( 'lc_publish_options' );
 	$result['code']    = 200;
