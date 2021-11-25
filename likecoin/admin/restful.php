@@ -155,10 +155,10 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/publish-setting-page/save-matters-login-data',
+				'/publish-setting-page/logout-matters',
 				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_save_site_matters_login_data',
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_logout_matters',
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},
