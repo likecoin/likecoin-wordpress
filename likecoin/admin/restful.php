@@ -155,9 +155,9 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/publish-setting-page/logout-matters',
+				'/publish-setting-page/login-to-matters',
 				array(
-					'methods'             => 'GET',
+					'methods'             => 'DELETE',
 					'callback'            => 'likecoin_logout_matters',
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );

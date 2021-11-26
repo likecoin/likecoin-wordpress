@@ -27,7 +27,7 @@ function PublishSettingPage() {
   const {
     postSiteMattersOptions,
     siteMattersLogin,
-    siteMattersLogout, postSiteMattersLoginData,
+    siteMattersLogout, updateSiteMattersLoginGlobalState,
   } = useDispatch(SITE_MATTERS_STORE_NAME);
   const mattersIdRef = useRef();
   const mattersPasswordRef = useRef();
@@ -88,7 +88,7 @@ function PublishSettingPage() {
       };
 
       // change global state
-      postSiteMattersLoginData(siteMattersUser);
+      updateSiteMattersLoginGlobalState(siteMattersUser);
       setMattersLoginError('');
       // change local state
       setSiteMattersId(siteMattersUser.mattersId);
@@ -123,7 +123,7 @@ function PublishSettingPage() {
     // change DB
     await siteMattersLogout();
     // change global state
-    postSiteMattersLoginData(siteMattersUser);
+    updateSiteMattersLoginGlobalState(siteMattersUser);
     setSavedSuccessful(true);
   }
   function handleNoticeDismiss(e) {
