@@ -142,14 +142,14 @@ function likecoin_login_to_matters( $request ) {
 	$params               = $request->get_json_params();
 	$matters_id           = $params['mattersId'];
 	$matters_password     = $params['mattersPassword'];
-	$results              = LikeCoin_Matters_API::get_instance()->login( $matters_id, $matters_password );
+	$api                  = LikeCoin_Matters_API::get_instance();
+	$results              = $api->login( $matters_id, $matters_password );
 	$matters_access_token = isset( $results['data']['userLogin']['token'] ) ? $results['data']['userLogin']['token'] : null;
 	$user_info_results    = array();
 	if ( isset( $matters_access_token ) ) {
-		$user_info_results             = LikeCoin_Matters_API::get_instance()->query_user_info( $matters_access_token );
+		$user_info_results             = $api->query_user_info( $matters_access_token );
 		$matters_info                  = array();
 		$matters_info['matters_token'] = $matters_access_token;
-		$testtest                      = $user_info_results['userName'];
 		$matters_info['matters_id']    = $user_info_results['userName'];
 		likecoin_save_site_matters_login_data( $matters_info );
 		return rest_ensure_response( array_merge( $results['data'], array( 'viewer' => $user_info_results ) ) );
@@ -165,7 +165,7 @@ function likecoin_login_to_matters( $request ) {
 function likecoin_logout_matters( $request ) {
 	likecoin_logout_matters_session();
 	$result['code']    = 200;
-	$result['message'] = 'Successfully POST matters login data!';
+	$result['message'] = 'Successfully logout from matters.';
 	return rest_ensure_response( $result );
 }
 /**

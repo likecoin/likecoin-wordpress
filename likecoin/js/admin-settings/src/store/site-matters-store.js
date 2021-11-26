@@ -6,7 +6,6 @@ export const SITE_MATTERS_STORE_NAME = 'likecoin/site_matters';
 
 const getAllMattersDataEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page`;
 const mattersLoginEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/login-to-matters`;
-const mattersLogoutEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/logout-matters`;
 const postMattersOptionsEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/publish-options`;
 
 const INITIAL_STATE = {
@@ -59,7 +58,7 @@ const actions = {
     yield { type: 'POST_SITE_MATTERS_OPTIONS_TO_DB', data: options };
     yield { type: 'CHANGE_SITE_MATTERS_OPTIONS_GLOBAL_STATE', data: options };
   },
-  * postSiteMattersLoginData(user) {
+  * updateSiteMattersLoginGlobalState(user) {
     yield { type: 'CHANGE_SITE_MATTERS_USER_GLOBAL_STATE', data: user };
   },
 };
@@ -94,7 +93,7 @@ const controls = {
     });
   },
   MATTERS_LOGOUT() {
-    return axios.get(mattersLogoutEndpoint, {
+    return axios.delete(mattersLoginEndpoint, {
       headers: {
         'Content-Type': 'application/json',
         'X-WP-Nonce': window.wpApiSettings.nonce,
