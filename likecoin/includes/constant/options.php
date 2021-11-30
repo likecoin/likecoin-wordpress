@@ -46,6 +46,7 @@ define( 'LC_OPTION_WIDGET_POSITION', 'lc_widget_position' );
 define( 'LC_MATTERS_INFO', 'lc_matters_info' );
 define( 'LC_ISCN_DEV_INFO', 'lc_iscn_dev_info' );
 define( 'LC_ISCN_INFO', 'lc_iscn_info' );
+define( 'LC_ARWEAVE_INFO', 'lc_arweave_info' );
 define( 'LC_MATTERS_IMAGE_INFO', 'lc_matters_image_info' );
 
 define( 'LC_OPTION_SITE_BUTTON_ENABLED', 'site_likecoin_id_enbled' );

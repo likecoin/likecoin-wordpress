@@ -56,30 +56,122 @@ async function onISCNCallback(event) {
   ISCNTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
 }
 
-function onSubmitToISCN(e) {
-  e.preventDefault();
-  const {
-    title,
-    ipfsHash,
-    tags,
-    url,
-  } = lcPostInfo;
-  const { siteurl } = wpApiSettings;
-  if (!ipfsHash) return;
-  const titleString = encodeURIComponent(title);
-  const tagsArray = tags || [];
-  const tagsString = tagsArray.join(',');
-  const urlString = encodeURIComponent(url);
-  const redirectString = encodeURIComponent(siteurl);
-  const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${ipfsHash}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&url=${urlString}&redirect_uri=${redirectString}`;
-  window.open(likeCoISCNWidget, '_blank', 'menubar=no,location=no,width=576,height=768');
-  window.addEventListener('message', onISCNCallback, false);
+async function onLikePayCallbackAndUploadArweave(event) {
+  if (event.origin !== 'https://like.co') { // For development, skip this line.
+    return;
+  }
+  try {
+    const { action, data } = JSON.parse(event.data);
+    if (action !== 'TX_SUBMITTED') return;
+    const { tx_hash: txHash, error, success } = data;
+    if (error || success === false) return;
+    const res = await jQuery.ajax({
+      type: 'POST',
+      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/upload`,
+      dataType: 'json',
+      contentType: 'application/json; charset=UTF-8',
+      data: JSON.stringify({ txHash }), // LIKEpay txHash
+      method: 'POST',
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      },
+    });
+    if (!res.data) {
+      throw new Error('UPLOAD_TO_ARWEAVE_ERROR');
+    }
+    if (res.data.arweaveId && res.data.ipfsHash) {
+      onSubmitToISCN();
+    }
+  } catch (error) {
+    console.error(`Error occurs when uploading to Arweave: ${error}`);
+  }
 }
 
+function onSubmitToISCN(e) {
+  if (e) e.preventDefault();
+  const {
+    title, mattersIPFSHash, arweaveIPFSHash, tags, url, arweaveId,
+  } = lcPostInfo;
+  const { siteurl } = wpApiSettings;
+  try {
+    if (!mattersIPFSHash && !arweaveIPFSHash) {
+      throw new Error('NO_IPFS_HASH_FOUND');
+    }
+    const titleString = encodeURIComponent(title);
+    const tagsArray = tags || [];
+    const tagsString = tagsArray.join(',');
+    const urlString = encodeURIComponent(url);
+    const redirectString = encodeURIComponent(siteurl);
+    let fingerprint = '';
+    if (mattersIPFSHash) {
+      const mattersIPFSHashFingerprint = `ipfs://${mattersIPFSHash}`;
+      if (fingerprint) {
+        fingerprint = fingerprint.concat(`,${mattersIPFSHashFingerprint}`);
+      } else {
+        fingerprint = mattersIPFSHashFingerprint;
+      }
+    }
+    if (arweaveIPFSHash) {
+      const arweaveIPFSHashFingerprint = `ipfs://${arweaveIPFSHash}`;
+      if (fingerprint) {
+        fingerprint = fingerprint.concat(`,${arweaveIPFSHashFingerprint}`);
+      } else {
+        fingerprint = arweaveIPFSHashFingerprint;
+      }
+    }
+    if (arweaveId) {
+      const arweaveFingerprint = `ar://${arweaveId}`;
+      fingerprint = fingerprint.concat(`,${arweaveFingerprint}`);
+    }
+    const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&url=${urlString}&redirect_uri=${redirectString}`;
+    window.open(likeCoISCNWidget, '_blank', 'menubar=no,location=no,width=576,height=768');
+    window.addEventListener('message', onISCNCallback, false);
+  } catch (error) {
+    console.log(`error occured when submitting ISCN: ${error}`);
+  }
+}
+
+async function onEstimateAndUploadArweave(e) {
+  e.preventDefault();
+  try {
+    const res = await jQuery.ajax({
+      type: 'POST',
+      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/estimate`,
+      method: 'POST',
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      },
+    });
+    const {
+      ipfsHash, LIKE, memo, arweaveId,
+    } = res;
+    if (arweaveId && ipfsHash) { // skip Arweave upload flow
+      onSubmitToISCN();
+      return;
+    }
+    const { siteurl } = wpApiSettings;
+    const memoString = encodeURIComponent(memo);
+    const redirectString = encodeURIComponent(siteurl);
+    const likePayWidget = `https://like.co/in/widget/pay?to=like-arweave&amount=${LIKE}&remarks=${memoString}&opener=1&redirect_uri=${redirectString}`;
+    window.open(
+      likePayWidget,
+      '_blank',
+      'menubar=no,location=no,width=576,height=768',
+    );
+    window.addEventListener(
+      'message',
+      onLikePayCallbackAndUploadArweave,
+      false,
+    );
+  } catch (error) {
+    console.log(`error occured when trying to estimate LIKE cost: ${error}`);
+  }
+}
 (() => {
   const submitISCNHash = window.location.hash;
   const refreshBtn = document.getElementById('lcPublishRefreshBtn');
   const submitISCNBtn = document.getElementById('lcISCNPublishBtn');
+  const uploadArweaveBtn = document.getElementById('lcArweaveUploadBtn');
   if (submitISCNHash === '#likecoin_submit_iscn') {
     setTimeout(() => {
       window.scrollTo(0, document.querySelector('#likecoin_submit_iscn').scrollHeight);
@@ -87,4 +179,5 @@ function onSubmitToISCN(e) {
   }
   if (refreshBtn) refreshBtn.addEventListener('click', onRefreshPublishStatus);
   if (submitISCNBtn) submitISCNBtn.addEventListener('click', onSubmitToISCN);
+  if (uploadArweaveBtn) uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
 })();
