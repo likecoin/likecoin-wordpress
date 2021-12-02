@@ -120,11 +120,11 @@ function likecoin_parse_iscn_status( $publish_params ) {
 }
 
 /**
- * Parse arweave status
+ * Get post arweave status
  *
  * @param object| $post WordPress post object.
  */
-function likecoin_parse_arweave_status( $post ) {
+function likecoin_get_post_arweave_status( $post ) {
 	$post_id      = $post->ID;
 	$result       = array();
 	$arweave_info = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
@@ -211,7 +211,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	$iscn_hash      = $publish_params['iscn_hash'];
 	$status         = likecoin_parse_publish_status( $publish_params );
-	$arweave_status = likecoin_parse_arweave_status( $post );
+	$arweave_status = likecoin_get_post_arweave_status( $post );
 	$iscn_status    = likecoin_parse_iscn_status( $publish_params );
 	$content        = likecoin_filter_matters_post_content( $post );
 	if ( isset( $status['error'] ) ) {
@@ -398,10 +398,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 		$arweave_info      = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
 		$arweave_id        = '';
 		$arweave_ipfs_hash = '';
-	if ( ! is_array( $arweave_info ) ) {
-		$arweave_id        = '';
-		$arweave_ipfs_hash = '';
-	} else {
+	if ( is_array( $arweave_info ) ) {
 		$arweave_id        = $arweave_info['arweave_id'];
 		$arweave_ipfs_hash = $arweave_info['ipfs_hash'];
 	}

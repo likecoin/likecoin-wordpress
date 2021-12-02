@@ -60,19 +60,6 @@ function likecoin_get_post_image_url( $post ) {
 
 	// get all images.
 	foreach ( $images as $image ) { // only works after attachment is converted to image by user.
-		// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-		$parent = $image->parentNode;
-		if ( 'figure' === $parent->nodeName ) {
-			// phpcs:enable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
-			$classes = $parent->getAttribute( 'class' );
-			$parent->setAttribute( 'class', $classes . ' image' );
-		} else {
-			$figure = $dom_document->createElement( 'figure' );
-			$figure->setAttribute( 'class', 'image' );
-			$image = $parent->replaceChild( $figure, $image );
-			$figure->appendChild( $image );
-			$parent = $figure;
-		}
 		$url    = $image->getAttribute( 'src' );
 		$urls[] = $url;
 	};
@@ -93,7 +80,7 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$boundary = base64_encode( wp_generate_password( 24 ) );
 	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$body                      = likecoin_transform_content_to_arweave_accepted_form( $boundary, $post );
+	$body                      = likecoin_format_post_to_multipart_formdata( $boundary, $post );
 	$likecoin_api_estimate_url = 'https://api.like.co/api/arweave/estimate';
 	$response                  = wp_remote_post(
 		$likecoin_api_estimate_url,
@@ -131,8 +118,8 @@ function likecoin_rest_post_arweave_estimate( $request ) {
  * @param string| $boundary Random-generated separator.
  * @param object| $post WordPress post object.
  */
-function likecoin_transform_content_to_arweave_accepted_form( $boundary, $post ) {
-	$content        = likecoin_filter_matters_post_content( $post );
+function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
+	$content        = apply_filters( 'the_content', $post->post_content );
 	$urls           = likecoin_get_post_image_url( $post );
 	$content        = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd"><html><body>' . $content . '</body></html>';
@@ -181,7 +168,7 @@ function likecoin_rest_post_arweave_upload( $request ) {
 	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$boundary = base64_encode( wp_generate_password( 24 ) );
 	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$body                    = likecoin_transform_content_to_arweave_accepted_form( $boundary, $post );
+	$body                    = likecoin_format_post_to_multipart_formdata( $boundary, $post );
 	$likecoin_api_upload_url = 'https://api.like.co/api/arweave/upload?txHash=' . $tx_hash; // TODO: change based on test/main net.
 	$response                = wp_remote_post(
 		$likecoin_api_upload_url,
@@ -400,7 +387,7 @@ function likecoin_init_restful_service() {
 						),
 					),
 					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
+						return current_user_can( 'edit_posts' );
 					},
 				)
 			);
@@ -416,7 +403,7 @@ function likecoin_init_restful_service() {
 						),
 					),
 					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
+						return current_user_can( 'edit_posts' );
 					},
 				)
 			);

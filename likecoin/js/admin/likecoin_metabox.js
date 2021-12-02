@@ -79,23 +79,19 @@ async function onLikePayCallbackAndUploadArweave(event) {
     if (!res.data) {
       throw new Error('UPLOAD_TO_ARWEAVE_ERROR');
     }
-    if (res.data.arweaveId && res.data.ipfsHash) {
-      onSubmitToISCN();
-    }
   } catch (error) {
     console.error(`Error occurs when uploading to Arweave: ${error}`);
   }
 }
 
 function onSubmitToISCN(e) {
-  if (e) e.preventDefault();
   const {
     title, mattersIPFSHash, arweaveIPFSHash, tags, url, arweaveId,
   } = lcPostInfo;
   const { siteurl } = wpApiSettings;
   try {
-    if (!mattersIPFSHash && !arweaveIPFSHash) {
-      throw new Error('NO_IPFS_HASH_FOUND');
+    if (!mattersIPFSHash && !arweaveIPFSHash && !arweaveId) {
+      throw new Error('NO_IPFS_HASH_NOR_ARWEAVE_ID_FOUND');
     }
     const titleString = encodeURIComponent(title);
     const tagsArray = tags || [];
@@ -127,7 +123,7 @@ function onSubmitToISCN(e) {
     window.open(likeCoISCNWidget, '_blank', 'menubar=no,location=no,width=576,height=768');
     window.addEventListener('message', onISCNCallback, false);
   } catch (error) {
-    console.log(`error occured when submitting ISCN: ${error}`);
+    console.error(`error occured when submitting ISCN: ${error}`);
   }
 }
 
@@ -146,7 +142,6 @@ async function onEstimateAndUploadArweave(e) {
       ipfsHash, LIKE, memo, arweaveId,
     } = res;
     if (arweaveId && ipfsHash) { // skip Arweave upload flow
-      onSubmitToISCN();
       return;
     }
     const { siteurl } = wpApiSettings;
@@ -163,8 +158,10 @@ async function onEstimateAndUploadArweave(e) {
       onLikePayCallbackAndUploadArweave,
       false,
     );
+    window.removeEventListener('message', onLikePayCallbackAndUploadArweave,
+      false);
   } catch (error) {
-    console.log(`error occured when trying to estimate LIKE cost: ${error}`);
+    console.error(`error occured when trying to estimate LIKE cost: ${error}`);
   }
 }
 (() => {
