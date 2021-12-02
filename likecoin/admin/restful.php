@@ -109,8 +109,7 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 		}
 		return array( 'error' => $response['body'] );
 	}
-	$data = json_decode( $response['body'], true );
-	return new WP_REST_Response( $data, 200 );
+	return new WP_REST_Response( $decoded_response, 200 );
 }
 /**
  * Transform content to arweave-accepted body format.
@@ -240,6 +239,16 @@ function likecoin_rest_update_iscn_hash( $request ) {
  */
 function likecoin_is_numeric( $id ) {
 	return is_numeric( $id );
+}
+
+/**
+ * Get edit single post level permission
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ */
+function likecoin_get_current_user_edit_post_permission( $request ) {
+	$id = $request['id'];
+	return current_user_can( 'edit_post', $id );
 }
 
 /**
@@ -386,9 +395,7 @@ function likecoin_init_restful_service() {
 							'validate_callback' => 'likecoin_is_numeric',
 						),
 					),
-					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
-					},
+					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
 				)
 			);
 			register_rest_route(
@@ -402,9 +409,7 @@ function likecoin_init_restful_service() {
 							'validate_callback' => 'likecoin_is_numeric',
 						),
 					),
-					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
-					},
+					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
 				)
 			);
 			register_rest_route(
