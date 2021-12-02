@@ -129,7 +129,6 @@ async function onLikePayCallback(event) {
   }
   const { action, data } = JSON.parse(event.data);
   if (action !== 'TX_SUBMITTED') return;
-  window.removeEventListener('message', onLikePayCallback, false);
   await uploadToArweave(data);
 }
 async function onEstimateAndUploadArweave(e) {
