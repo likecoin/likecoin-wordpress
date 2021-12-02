@@ -56,13 +56,8 @@ async function onISCNCallback(event) {
   ISCNTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
 }
 
-async function onLikePayCallbackAndUploadArweave(event) {
-  if (event.origin !== 'https://like.co') { // For development, skip this line.
-    return;
-  }
+async function uploadToArweave(data) {
   try {
-    const { action, data } = JSON.parse(event.data);
-    if (action !== 'TX_SUBMITTED') return;
     const { tx_hash: txHash, error, success } = data;
     if (error || success === false) return;
     const res = await jQuery.ajax({
@@ -76,8 +71,8 @@ async function onLikePayCallbackAndUploadArweave(event) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       },
     });
-    if (!res.data) {
-      throw new Error('UPLOAD_TO_ARWEAVE_ERROR');
+    if (!res.data || !res.data.arweaveId) {
+      throw new Error('NO_ARWEAVE_ID_RETURNED'); // Could be insufficient fund or other error.
     }
   } catch (error) {
     console.error(`Error occurs when uploading to Arweave: ${error}`);
@@ -127,6 +122,16 @@ function onSubmitToISCN(e) {
   }
 }
 
+async function onLikePayCallback(event) {
+  event.preventDefault();
+  if (event.origin !== 'https://like.co') { // For development, skip this line.
+    return;
+  }
+  const { action, data } = JSON.parse(event.data);
+  if (action !== 'TX_SUBMITTED') return;
+  window.removeEventListener('message', onLikePayCallback, false);
+  await uploadToArweave(data);
+}
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
   try {
@@ -141,7 +146,7 @@ async function onEstimateAndUploadArweave(e) {
     const {
       ipfsHash, LIKE, memo, arweaveId,
     } = res;
-    if (arweaveId && ipfsHash) { // skip Arweave upload flow
+    if (arweaveId && ipfsHash) { // skip LIKE Pay & Arweave upload flow
       return;
     }
     const { siteurl } = wpApiSettings;
@@ -155,11 +160,9 @@ async function onEstimateAndUploadArweave(e) {
     );
     window.addEventListener(
       'message',
-      onLikePayCallbackAndUploadArweave,
+      onLikePayCallback,
       false,
     );
-    window.removeEventListener('message', onLikePayCallbackAndUploadArweave,
-      false);
   } catch (error) {
     console.error(`error occured when trying to estimate LIKE cost: ${error}`);
   }
