@@ -155,7 +155,7 @@ async function onEstimateAndUploadArweave(e) {
     const likePayWidget = `https://like.co/in/widget/pay?to=like-arweave&amount=${LIKE}&remarks=${memoString}&opener=1&redirect_uri=${redirectString}`;
     window.open(
       likePayWidget,
-      '_blank',
+      'likePayWindow',
       'menubar=no,location=no,width=576,height=768',
     );
     window.addEventListener(
