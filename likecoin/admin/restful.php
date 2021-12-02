@@ -379,9 +379,7 @@ function likecoin_init_restful_service() {
 							'validate_callback' => 'likecoin_is_numeric',
 						),
 					),
-					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
-					},
+					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
 				)
 			);
 			register_rest_route(
@@ -423,9 +421,7 @@ function likecoin_init_restful_service() {
 							'validate_callback' => 'likecoin_is_numeric',
 						),
 					),
-					'permission_callback' => function () {
-						return current_user_can( 'edit_posts' );
-					},
+					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
 				)
 			);
 		}
