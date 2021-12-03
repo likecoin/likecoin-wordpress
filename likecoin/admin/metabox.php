@@ -50,7 +50,7 @@ function likecoin_parse_publish_status( $publish_params ) {
 	if ( ! isset( $publish_params['draft_id'] ) ) {
 		return $result;
 	}
-	if ( empty( $publish_params['published'] ) && isset( $publish_params['arweave_id'] ) && $publish_params['arweave_id'] ) {
+	if ( isset( $publish_params['arweave_id'] ) && $publish_params['arweave_id'] ) {
 		$result['arweave']['status'] = __( 'Published', LC_PLUGIN_SLUG );
 		$result['arweave']['url'] = 'https://arweave.net/' . $publish_params['arweave_id'];
 	}
