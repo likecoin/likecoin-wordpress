@@ -318,7 +318,7 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 							</button>
 						</span>
 					<?php } else { ?>
-						<span id="lcISCNPublish" style="display:<?php echo esc_attr( empty( $status['ipfs']['url'] ) ? 'none' : '' ); ?>">
+						<span id="lcISCNPublish" style="display:<?php echo esc_attr( empty( $status['arweave']['url']) && empty( $status['ipfs']['url'] ) ? 'none' : '' ); ?>">
 							<button id="lcISCNPublishBtn" class="button button-primary">
 								<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
 							</button>
