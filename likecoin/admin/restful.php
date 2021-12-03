@@ -41,8 +41,8 @@ function likecoin_rest_refresh_publish_status( $request ) {
 	if ( ! isset( $post ) ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
-	$matters_info = likecoin_get_meta_box_publish_params( $post, true );
-	$data         = likecoin_parse_publish_status( $matters_info );
+	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
+	$data         = likecoin_parse_publish_status( $publish_params );
 	return new WP_REST_Response( $data, 200 );
 }
 /**

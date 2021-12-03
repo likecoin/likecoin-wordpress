@@ -43,9 +43,16 @@ function likecoin_parse_publish_status( $publish_params ) {
 		'iscn'    => array(
 			'status' => __( '-', LC_PLUGIN_SLUG ),
 		),
+		'arweave' => array(
+			'status' => __( '-', LC_PLUGIN_SLUG),
+		)
 	);
 	if ( ! isset( $publish_params['draft_id'] ) ) {
 		return $result;
+	}
+	if ( empty( $publish_params['published'] ) && isset( $publish_params['arweave_id'] ) && $publish_params['arweave_id'] ) {
+		$result['arweave']['status'] = __( 'Published', LC_PLUGIN_SLUG );
+		$result['arweave']['url'] = 'https://arweave.net/' . $publish_params['arweave_id'];
 	}
 	if ( ! empty( $publish_params['published'] ) ) {
 		if ( ! empty( $publish_params['article_hash'] ) ) {
@@ -131,8 +138,9 @@ function likecoin_get_post_arweave_status( $post ) {
 	if ( ! is_array( $arweave_info ) ) {
 		return $result;
 	}
-	$result['arweave_id'] = $arweave_info['arweave_id'];
-	$result['ipfs_hash']  = $arweave_info['ipfs_hash'];
+	$result['arweave_id']  = $arweave_info['arweave_id'];
+	$result['ipfs_hash']   = $arweave_info['ipfs_hash'];
+	$result['arweave_url'] = 'https://arweave.net/' . $arweave_info['arweave_id'];
 	return $result;
 }
 /**
@@ -180,6 +188,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 	$option       = get_option( LC_PUBLISH_OPTION_NAME );
 	$is_enabled   = ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ] ) || ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ] );
 	$matters_info = likecoin_refresh_post_matters_status( $post, $force );
+	$arweave_info = get_post_meta( $post->ID, LC_ARWEAVE_INFO, true );
 	if ( isset( $matters_info['error'] ) ) {
 		$publish_params = array(
 			'error' => $matters_info['error'],
@@ -198,6 +207,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 			'article_slug' => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
 			'ipfs_hash'    => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
 			'iscn_hash'    => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
+			'arweave_id'   => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
 		);
 	}
 	return $publish_params;
@@ -211,7 +221,6 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	$iscn_hash      = $publish_params['iscn_hash'];
 	$status         = likecoin_parse_publish_status( $publish_params );
-	$arweave_status = likecoin_get_post_arweave_status( $post );
 	$iscn_status    = likecoin_parse_iscn_status( $publish_params );
 	$content        = likecoin_filter_matters_post_content( $post );
 	if ( isset( $status['error'] ) ) {
@@ -246,9 +255,9 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 			<tr id="likecoin_submit_arweave">
 				<th><label><?php esc_html_e( 'Arweave Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcArweaveStatus">
-					<?php if ( ! empty( $arweave_status['arweave_id'] ) ) { ?>
-						<a rel="noopener" target="_blank" href="<?php echo esc_url( $arweave_status['arweave_id'] ); ?>">
-							<?php echo esc_html( $arweave_status['arweave_id'] ); ?>
+					<?php if ( ! empty( $status['arweave']['url'] ) ) { ?>
+						<a rel="noopener" target="_blank" href="<?php echo esc_url( $status['arweave']['url'] ); ?>">
+							<?php echo esc_html( $status['arweave']['status'] ); ?>
 						</a>
 					<?php } else { ?>
 												<span id="lcArweaveUpload">

@@ -3,6 +3,7 @@
 async function onRefreshPublishStatus(e) {
   e.preventDefault();
   const mattersTextField = document.querySelector('#lcMattersStatus');
+  const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
   const res = await jQuery.ajax({
     type: 'POST',
@@ -12,7 +13,11 @@ async function onRefreshPublishStatus(e) {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
     },
   });
-  const { matters, ipfs } = res;
+  const { matters, ipfs, arweave } = res;
+  if (arweave.url) {
+    const { url, status } = arweave;
+    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
+  }
   if (matters.url) {
     const { url, status } = matters;
     mattersTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
