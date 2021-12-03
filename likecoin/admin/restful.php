@@ -118,7 +118,8 @@ function likecoin_rest_post_arweave_estimate( $request ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
-	$content        = apply_filters( 'the_content', $post->post_content );
+	$content        = $post->post_title;
+	$content        = $content . apply_filters( 'the_content', $post->post_content );
 	$urls           = likecoin_get_post_image_url( $post );
 	$content        = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
         "http://www.w3.org/TR/html4/strict.dtd"><html><body>' . $content . '</body></html>';
