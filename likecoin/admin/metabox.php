@@ -219,10 +219,11 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
  * @param WP_Post| $post Post object.
  */
 function likecoin_add_publish_meta_box( $publish_params, $post ) {
-	$iscn_hash      = $publish_params['iscn_hash'];
-	$status         = likecoin_parse_publish_status( $publish_params );
-	$iscn_status    = likecoin_parse_iscn_status( $publish_params );
-	$content        = likecoin_filter_matters_post_content( $post );
+	$iscn_hash      			= $publish_params['iscn_hash'];
+	$status         			= likecoin_parse_publish_status( $publish_params );
+	$iscn_status    			= likecoin_parse_iscn_status( $publish_params );
+	$content        			= likecoin_filter_matters_post_content( $post );
+	$wordpress_publish_status	= get_post_status($post->ID);
 	if ( isset( $status['error'] ) ) {
 		?>
 		<h3><?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
@@ -259,13 +260,15 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 						<a rel="noopener" target="_blank" href="<?php echo esc_url( $status['arweave']['url'] ); ?>">
 							<?php echo esc_html( $status['arweave']['status'] ); ?>
 						</a>
-					<?php } else { ?>
+					<?php } else if ('publish' === $wordpress_publish_status) { ?>
 												<span id="lcArweaveUpload">
 						<button id="lcArweaveUploadBtn" class="button button-primary">
 							<?php esc_html_e( 'Submit to Arweave', LC_PLUGIN_SLUG ); ?>
 						</button>
 					</span>
-					<?php } ?>
+					<?php } else {?>
+						-
+					<?php }?>
 				</td>
 			</tr>
 			<tr>

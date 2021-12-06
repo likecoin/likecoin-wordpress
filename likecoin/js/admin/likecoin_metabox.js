@@ -14,9 +14,14 @@ async function onRefreshPublishStatus(e) {
     },
   });
   const { matters, ipfs, arweave } = res;
+  const wordpressPublished = res.wordpress_published;
   if (arweave.url) {
     const { url, status } = arweave;
     arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
+  } else if (wordpressPublished === 'publish') {
+    arweaveTextField.innerHTML = '<button id="lcArweaveUploadBtn" class="button button-primary">Submit to Arweave</button>';
+    const uploadArweaveBtn = document.getElementById('lcArweaveUploadBtn');
+    if (uploadArweaveBtn) uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
   }
   if (matters.url) {
     const { url, status } = matters;
@@ -77,11 +82,11 @@ async function uploadToArweave(data) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       },
     });
-    const arweaveId = res.data.arweave_id;
-    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
     if (!res.data || !res.data.arweaveId) {
       throw new Error('NO_ARWEAVE_ID_RETURNED'); // Could be insufficient fund or other error.
     }
+    const { arweaveId } = res.data;
+    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
   } catch (error) {
     console.error(`Error occurs when uploading to Arweave: ${error}`);
     arweaveTextField.innerHTML = '<button id="lcArweaveUploadBtn" class="button button-primary">Submit to Arweave</button>';

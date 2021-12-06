@@ -43,6 +43,7 @@ function likecoin_rest_refresh_publish_status( $request ) {
 	}
 	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
 	$data         = likecoin_parse_publish_status( $publish_params );
+	$data['wordpress_published'] = get_post_status($post_id);
 	return new WP_REST_Response( $data, 200 );
 }
 /**
