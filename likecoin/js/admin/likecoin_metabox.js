@@ -5,6 +5,7 @@ async function onRefreshPublishStatus(e) {
   const mattersTextField = document.querySelector('#lcMattersStatus');
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
+  const ISCNTextField = document.querySelector('#lcISCNStatus');
   const res = await jQuery.ajax({
     type: 'POST',
     url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/refresh`,
@@ -18,10 +19,22 @@ async function onRefreshPublishStatus(e) {
   if (arweave.url) {
     const { url, status } = arweave;
     arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
+    // allow ISCN submit button to show
+    const submitISCNBtn = document.createElement('button');
+    submitISCNBtn.innerText = 'Submit to ISCN';
+    submitISCNBtn.setAttribute('id', 'lcISCNPublishBtn');
+    submitISCNBtn.setAttribute('class', 'button button-primary');
+    ISCNTextField.innerHTML = '';
+    ISCNTextField.appendChild(submitISCNBtn);
+    submitISCNBtn.addEventListener('click', onSubmitToISCN);
   } else if (wordpressPublished === 'publish') {
-    arweaveTextField.innerHTML = '<button id="lcArweaveUploadBtn" class="button button-primary">Submit to Arweave</button>';
-    const uploadArweaveBtn = document.getElementById('lcArweaveUploadBtn');
-    if (uploadArweaveBtn) uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
+    const uploadArweaveBtn = document.createElement('button');
+    uploadArweaveBtn.innerText = 'Submit to Arweave';
+    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
+    uploadArweaveBtn.setAttribute('class', 'button button-primary');
+    arweaveTextField.innerHTML = '';
+    arweaveTextField.appendChild(uploadArweaveBtn);
+    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
   }
   if (matters.url) {
     const { url, status } = matters;
@@ -85,11 +98,19 @@ async function uploadToArweave(data) {
     if (!res.data || !res.data.arweaveId) {
       throw new Error('NO_ARWEAVE_ID_RETURNED'); // Could be insufficient fund or other error.
     }
-    const { arweaveId } = res.data;
+    const { arweaveId, ipfsHash } = res.data;
+    localStorage.setItem('arweaveId', arweaveId);
+    localStorage.setItem('arweaveIPFSHash', ipfsHash);
     arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
   } catch (error) {
     console.error(`Error occurs when uploading to Arweave: ${error}`);
-    arweaveTextField.innerHTML = '<button id="lcArweaveUploadBtn" class="button button-primary">Submit to Arweave</button>';
+    const uploadArweaveBtn = document.createElement('button');
+    uploadArweaveBtn.innerText = 'Submit to Arweave';
+    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
+    uploadArweaveBtn.setAttribute('class', 'button button-primary');
+    arweaveTextField.innerHTML = '';
+    arweaveTextField.appendChild(uploadArweaveBtn);
+    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
   }
 }
 
@@ -99,8 +120,11 @@ function onSubmitToISCN(e) {
     title, mattersIPFSHash, arweaveIPFSHash, tags, url, arweaveId,
   } = lcPostInfo;
   const { siteurl } = wpApiSettings;
+  const localArweaveId = localStorage.getItem('arweaveId');
+  const localArweaveIPFSHash = localStorage.getItem('arweaveIPFSHash');
   try {
-    if (!mattersIPFSHash && !arweaveIPFSHash && !arweaveId) {
+    if (!mattersIPFSHash && !arweaveIPFSHash && !arweaveId
+      && !localArweaveId && !localArweaveIPFSHash) {
       throw new Error('NO_IPFS_HASH_NOR_ARWEAVE_ID_FOUND');
     }
     const titleString = encodeURIComponent(title);
@@ -117,16 +141,28 @@ function onSubmitToISCN(e) {
         fingerprint = mattersIPFSHashFingerprint;
       }
     }
-    if (arweaveIPFSHash) {
-      const arweaveIPFSHashFingerprint = `ipfs://${arweaveIPFSHash}`;
+    if (localArweaveIPFSHash || arweaveIPFSHash) {
+      let fingerprintArweaveIPFSHash = '';
+      if (localArweaveIPFSHash) {
+        fingerprintArweaveIPFSHash = localArweaveIPFSHash;
+      } else {
+        fingerprintArweaveIPFSHash = arweaveIPFSHash;
+      }
+      const arweaveIPFSHashFingerprint = `ipfs://${fingerprintArweaveIPFSHash}`;
       if (fingerprint) {
         fingerprint = fingerprint.concat(`,${arweaveIPFSHashFingerprint}`);
       } else {
         fingerprint = arweaveIPFSHashFingerprint;
       }
     }
-    if (arweaveId) {
-      const arweaveFingerprint = `ar://${arweaveId}`;
+    if (localArweaveId || arweaveId) {
+      let fingerprintArweaveId = '';
+      if (localArweaveId) {
+        fingerprintArweaveId = localArweaveId;
+      } else {
+        fingerprintArweaveId = arweaveId;
+      }
+      const arweaveFingerprint = `ar://${fingerprintArweaveId}`;
       fingerprint = fingerprint.concat(`,${arweaveFingerprint}`);
     }
     const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&url=${urlString}&redirect_uri=${redirectString}`;
