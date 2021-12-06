@@ -62,6 +62,7 @@ async function onISCNCallback(event) {
 }
 
 async function uploadToArweave(data) {
+  const arweaveTextField = document.querySelector('#lcArweaveStatus');
   try {
     const { tx_hash: txHash, error, success } = data;
     if (error || success === false) return;
@@ -76,15 +77,19 @@ async function uploadToArweave(data) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       },
     });
+    const arweaveId = res.data.arweave_id;
+    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
     if (!res.data || !res.data.arweaveId) {
       throw new Error('NO_ARWEAVE_ID_RETURNED'); // Could be insufficient fund or other error.
     }
   } catch (error) {
     console.error(`Error occurs when uploading to Arweave: ${error}`);
+    arweaveTextField.innerHTML = '<button id="lcArweaveUploadBtn" class="button button-primary">Submit to Arweave</button>';
   }
 }
 
 function onSubmitToISCN(e) {
+  e.preventDefault();
   const {
     title, mattersIPFSHash, arweaveIPFSHash, tags, url, arweaveId,
   } = lcPostInfo;
@@ -138,6 +143,8 @@ async function onLikePayCallback(event) {
 }
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
+  const arweaveTextField = document.querySelector('#lcArweaveStatus');
+  arweaveTextField.innerHTML = 'loading...';
   try {
     const res = await jQuery.ajax({
       type: 'POST',
@@ -151,6 +158,7 @@ async function onEstimateAndUploadArweave(e) {
       ipfsHash, LIKE, memo, arweaveId,
     } = res;
     if (arweaveId && ipfsHash) { // skip LIKE Pay & Arweave upload flow
+      arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
       return;
     }
     const { siteurl } = wpApiSettings;
