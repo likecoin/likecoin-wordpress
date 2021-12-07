@@ -83,9 +83,9 @@ function likecoin_parse_publish_status( $publish_params ) {
  * Parse the publish params into array of status
  *
  * @param object| $publish_params Params for displaying publish related settings.
+ * @param object| $post WordPress post object.
  */
-function likecoin_parse_iscn_status( $publish_params ) {
-	global $post;
+function likecoin_parse_iscn_status( $publish_params, $post ) {
 	$post_id             = $post->ID;
 	$result              = array();
 	$iscn_testnet_info   = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
@@ -221,7 +221,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	$iscn_hash                = $publish_params['iscn_hash'];
 	$status                   = likecoin_parse_publish_status( $publish_params );
-	$iscn_status              = likecoin_parse_iscn_status( $publish_params );
+	$iscn_status              = likecoin_parse_iscn_status( $publish_params, $post );
 	$wordpress_publish_status = get_post_status( $post->ID );
 	if ( isset( $status['error'] ) ) {
 		?>

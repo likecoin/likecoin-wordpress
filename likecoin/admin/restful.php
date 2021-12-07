@@ -243,7 +243,7 @@ function likecoin_rest_update_iscn_hash( $request ) {
 	// only allow to publish to mainnet going forward.
 	$iscn_mainnet_info['iscn_hash'] = $iscn_hash;
 	update_post_meta( $post_id, LC_ISCN_INFO, $iscn_mainnet_info );
-	$data = likecoin_parse_iscn_status( array( 'iscn_hash' => $iscn_hash ) );
+	$data = likecoin_parse_iscn_status( array( 'iscn_hash' => $iscn_hash ), $post );
 	return new WP_REST_Response( $data, 200 );
 }
 
