@@ -57,6 +57,8 @@ function likecoin_get_post_image_url( $post ) {
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
 	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
 	$images                = $dom_document->getElementsByTagName( 'img' );
 
 	// get all images.
@@ -154,32 +156,14 @@ function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
 	return $body;
 }
 /**
- * Add likecoin arweave upload endpoint.
+ * Add likecoin arweave upload and change wordpress DB endpoint.
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|WP_REST_Response
  */
-function likecoin_rest_post_arweave_upload( $request ) {
+function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
 	$post_id = $request['id'];
-	$post    = get_post( $post_id );
-	$tx_hash = $request['txHash'];
-	if ( ! isset( $post ) ) {
-		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
-	}
-	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$boundary = base64_encode( wp_generate_password( 24 ) );
-	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$body                    = likecoin_format_post_to_multipart_formdata( $boundary, $post );
-	$likecoin_api_upload_url = 'https://api.like.co/api/arweave/upload?txHash=' . $tx_hash; // TODO: change based on test/main net.
-	$response                = wp_remote_post(
-		$likecoin_api_upload_url,
-		array(
-			'headers' => array(
-				'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
-			),
-			'body'    => $body,
-		)
-	);
+	$response = likecoin_upload_to_arweave( $request );
 	if ( is_wp_error( $response ) ) {
 		$err_message = $response->get_error_message();
 		if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
@@ -207,6 +191,35 @@ function likecoin_rest_post_arweave_upload( $request ) {
 	$arweave_info['ipfs_hash']  = $decoded_response['ipfsHash'];
 	update_post_meta( $post_id, LC_ARWEAVE_INFO, $arweave_info );
 	return new WP_REST_Response( array( 'data' => $decoded_response ), 200 );
+}
+/**
+ * Add upload to arweave server function.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_REST_Response
+ */
+function likecoin_upload_to_arweave( $request ) {
+	$post_id = $request['id'];
+	$post    = get_post( $post_id );
+	$tx_hash = $request['txHash'];
+	if ( ! isset( $post ) ) {
+		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
+	}
+	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	$boundary = base64_encode( wp_generate_password( 24 ) );
+	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	$body                    = likecoin_format_post_to_multipart_formdata( $boundary, $post );
+	$likecoin_api_upload_url = 'https://api.like.co/api/arweave/upload?txHash=' . $tx_hash; // TODO: change based on test/main net.
+	$response                = wp_remote_post(
+		$likecoin_api_upload_url,
+		array(
+			'headers' => array(
+				'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
+			),
+			'body'    => $body,
+		)
+	);
+	return $response;
 };
 
 /**
@@ -403,7 +416,7 @@ function likecoin_init_restful_service() {
 				'/posts/(?P<id>\d+)/arweave/upload',
 				array(
 					'methods'             => 'POST',
-					'callback'            => 'likecoin_rest_post_arweave_upload',
+					'callback'            => 'likecoin_rest_arweave_upload_and_update_post_meta',
 					'args'                => array(
 						'id' => array(
 							'validate_callback' => 'likecoin_is_numeric',

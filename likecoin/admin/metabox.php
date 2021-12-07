@@ -222,7 +222,6 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	$iscn_hash      			= $publish_params['iscn_hash'];
 	$status         			= likecoin_parse_publish_status( $publish_params );
 	$iscn_status    			= likecoin_parse_iscn_status( $publish_params );
-	$content        			= likecoin_filter_matters_post_content( $post );
 	$wordpress_publish_status	= get_post_status($post->ID);
 	if ( isset( $status['error'] ) ) {
 		?>
