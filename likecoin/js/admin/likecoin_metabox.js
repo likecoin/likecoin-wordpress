@@ -86,6 +86,7 @@ async function onISCNCallback(event) {
 async function uploadToArweave(data) {
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   try {
+    lcPostInfo.arweaveUploadStatus = 'loading';
     const { tx_hash: txHash, error, success } = data;
     if (error || success === false) return;
     const res = await jQuery.ajax({
@@ -108,7 +109,9 @@ async function uploadToArweave(data) {
     lcPostInfo.arweaveUploadStatus = 'success';
     arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
   } catch (error) {
-    console.error(`Error occurs when uploading to Arweave: ${error}`);
+    console.error('Error occurs when uploading to Arweave:');
+    console.error(error);
+    lcPostInfo.arweaveUploadStatus = 'loading';
     const uploadArweaveBtn = document.createElement('button');
     uploadArweaveBtn.innerText = 'Submit to Arweave';
     uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
@@ -205,6 +208,14 @@ async function onEstimateAndUploadArweave(e) {
   } catch (error) {
     console.error('error occured when trying to estimate LIKE cost: ');
     console.error(error);
+    const uploadArweaveBtn = document.createElement('button');
+    uploadArweaveBtn.innerText = 'Submit to Arweave';
+    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
+    uploadArweaveBtn.setAttribute('class', 'button button-primary');
+    arweaveTextField.textContent = '';
+    arweaveTextField.appendChild(uploadArweaveBtn);
+    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
+    lcPostInfo.arweaveUploadStatus = 'failed';
   }
 }
 (() => {
