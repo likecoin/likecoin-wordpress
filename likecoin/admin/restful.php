@@ -41,9 +41,9 @@ function likecoin_rest_refresh_publish_status( $request ) {
 	if ( ! isset( $post ) ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
-	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
-	$data         = likecoin_parse_publish_status( $publish_params );
-	$data['wordpress_published'] = get_post_status($post_id);
+	$publish_params              = likecoin_get_meta_box_publish_params( $post, true );
+	$data                        = likecoin_parse_publish_status( $publish_params );
+	$data['wordpress_published'] = get_post_status( $post_id );
 	return new WP_REST_Response( $data, 200 );
 }
 /**
@@ -59,7 +59,7 @@ function likecoin_get_post_image_url( $post ) {
 	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 	libxml_clear_errors();
 	libxml_use_internal_errors( $libxml_previous_state );
-	$images                = $dom_document->getElementsByTagName( 'img' );
+	$images = $dom_document->getElementsByTagName( 'img' );
 
 	// get all images.
 	foreach ( $images as $image ) { // only works after attachment is converted to image by user.
@@ -156,13 +156,13 @@ function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
 	return $body;
 }
 /**
- * Add likecoin arweave upload and change wordpress DB endpoint.
+ * Add likecoin arweave upload and change WordPress DB endpoint.
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|WP_REST_Response
  */
 function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
-	$post_id = $request['id'];
+	$post_id  = $request['id'];
 	$response = likecoin_upload_to_arweave( $request );
 	if ( is_wp_error( $response ) ) {
 		$err_message = $response->get_error_message();
