@@ -6,7 +6,7 @@ async function onRefreshPublishStatus(e) {
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
   const ISCNTextField = document.querySelector('#lcISCNStatus');
-  const { iscnHash } = lcPostInfo;
+  const { iscnHash, arweaveUploadStatus } = lcPostInfo;
   const res = await jQuery.ajax({
     type: 'POST',
     url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/refresh`,
@@ -30,7 +30,7 @@ async function onRefreshPublishStatus(e) {
       ISCNTextField.appendChild(submitISCNBtn);
       submitISCNBtn.addEventListener('click', onSubmitToISCN);
     }
-  } else if (wordpressPublished === 'publish') {
+  } else if (wordpressPublished === 'publish' && arweaveUploadStatus !== 'loading') {
     const uploadArweaveBtn = document.createElement('button');
     uploadArweaveBtn.innerText = 'Submit to Arweave';
     uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
@@ -105,6 +105,7 @@ async function uploadToArweave(data) {
     const { arweaveId, ipfsHash } = res.data;
     lcPostInfo.arweaveIPFSHash = ipfsHash;
     lcPostInfo.arweaveId = arweaveId;
+    lcPostInfo.arweaveUploadStatus = 'success';
     arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
   } catch (error) {
     console.error(`Error occurs when uploading to Arweave: ${error}`);
@@ -115,6 +116,7 @@ async function uploadToArweave(data) {
     arweaveTextField.textContent = '';
     arweaveTextField.appendChild(uploadArweaveBtn);
     uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
+    lcPostInfo.arweaveUploadStatus = 'failed';
   }
 }
 
@@ -167,6 +169,7 @@ async function onLikePayCallback(event) {
 }
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
+  lcPostInfo.arweaveUploadStatus = 'loading';
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   arweaveTextField.innerHTML = 'loading...';
   try {
