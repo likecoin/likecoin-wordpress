@@ -91,17 +91,23 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 	$iscn_testnet_info   = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 	$iscn_mainnet_info   = get_post_meta( $post_id, LC_ISCN_INFO, true );
 	$iscn_hash           = $publish_params['iscn_hash'];
+	$iscn_id             = $publish_params['iscn_id'];
 	$iscn_view_page_url  = null;
 	$iscn_badge_endpoint = null;
 	if ( $iscn_mainnet_info ) {
 		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/';
 		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
+		$iscn_card_endpoint  = 'https://app.like.co/view';
 	} elseif ( $iscn_testnet_info ) {
 		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/';
 		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
 	}
 	$result['ipfs_status']      = 'Pending';
 	$result['is_dev_published'] = false;
+	if ( ! empty( $iscn_id ) ) {
+		$result['iscn_id']       = $iscn_id;
+		$result['iscn_card_url'] = $iscn_card_endpoint . $iscn_id;
+	}
 	if ( ! empty( $iscn_hash ) ) {
 		if ( $iscn_mainnet_info ) {
 			$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
@@ -207,6 +213,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 			'article_slug' => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
 			'ipfs_hash'    => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
 			'iscn_hash'    => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
+			'iscn_id'      => isset( $iscn_info['iscn_id'] ) ? $iscn_info['iscn_id'] : '',
 			'arweave_id'   => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
 		);
 	}
@@ -250,19 +257,27 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 			<span class="dashicons dashicons-image-rotate" style="vertical-align:middle"></span>
 		</button>
 	</h3>
+	<div id="likecoin_main_status"><?php if ( ! empty( $iscn_status['iscn_card_url'] ) ) { ?>
+		<h3>LIVE on #DePub</h3>
+		<?php } elseif ( 'publish' === $wordpress_publish_status ) { ?>
+												<h3>READY to #DePub</h3>
+		<?php } else { ?>
+			<h3>Publish Your Post First</h3>
+		<?php } ?>
+	</div>
 	<table class="form-table">
 		<tbody>
 			<tr id="likecoin_submit_arweave">
-				<th><label><?php esc_html_e( 'Arweave Status', LC_PLUGIN_SLUG ); ?></label></th>
+				<th><label><?php esc_html_e( 'ISCN Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcArweaveStatus">
-					<?php if ( ! empty( $status['arweave']['url'] ) ) { ?>
-						<a rel="noopener" target="_blank" href="<?php echo esc_url( $status['arweave']['url'] ); ?>">
-							<?php echo esc_html( $status['arweave']['status'] ); ?>
+					<?php if ( ! empty( $iscn_status['iscn_card_url'] ) ) { ?>
+						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['iscn_card_url'] ); ?>">
+							<?php echo esc_html( $iscn_status['iscn_id'] ); ?>
 						</a>
 					<?php } elseif ( 'publish' === $wordpress_publish_status ) { ?>
 												<span id="lcArweaveUpload">
 						<button id="lcArweaveUploadBtn" class="button button-primary">
-							<?php esc_html_e( 'Submit to Arweave', LC_PLUGIN_SLUG ); ?>
+							<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
 						</button>
 					</span>
 					<?php } else { ?>
@@ -306,28 +321,6 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 					</td>
 				</tr>
 			<?php } ?>
-			<tr id="likecoin_submit_iscn">
-				<th><label><?php esc_html_e( 'ISCN (Main) Status', LC_PLUGIN_SLUG ); ?></label></th>
-				<td id="lcISCNStatus">
-					<?php if ( ! empty( $iscn_hash ) && ! $iscn_status['is_dev_published'] ) { ?>
-						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['url'] ); ?>">
-							<?php echo esc_html( $iscn_status['status'] ); ?>
-						</a>
-					<?php } elseif ( $iscn_status['is_dev_published'] ) { ?>
-						<span id="lcISCNPublish" style="display:<?php echo esc_attr( empty( $status['ipfs']['url'] ) ? 'none' : '' ); ?>">
-							<button id="lcISCNPublishBtn" class="button button-primary">
-								<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
-							</button>
-						</span>
-					<?php } else { ?>
-						<span id="lcISCNPublish" style="display:<?php echo esc_attr( empty( $status['arweave']['url'] ) && empty( $status['ipfs']['url'] ) ? 'none' : '' ); ?>">
-							<button id="lcISCNPublishBtn" class="button button-primary">
-								<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
-							</button>
-						</span>
-					<?php } ?>
-				</td>
-			</tr>
 		</tbody>
 	</table>
 	<?php
@@ -437,14 +430,17 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			'lc_js_metabox',
 			'lcPostInfo',
 			array(
-				'id'              => $post_id,
-				'title'           => $post_title,
-				'mattersIPFSHash' => $matters_ipfs_hash,
-				'arweaveIPFSHash' => $arweave_ipfs_hash,
-				'iscnHash'        => $publish_params['iscn_hash'],
-				'tags'            => $post_tags,
-				'url'             => $post_url,
-				'arweaveId'       => $arweave_id,
+				'id'                         => $post_id,
+				'title'                      => $post_title,
+				'mattersIPFSHash'            => $matters_ipfs_hash,
+				'arweaveIPFSHash'            => $arweave_ipfs_hash,
+				'iscnHash'                   => $publish_params['iscn_hash'],
+				'iscnId'                     => $publish_params['iscn_id'],
+				'tags'                       => $post_tags,
+				'url'                        => $post_url,
+				'arweaveId'                  => $arweave_id,
+				'arweaveAndISCNUploadStatus' => 'initial',
+				'mainStatusTitle'            => 'Publish Your Post First',
 			)
 		);
 }

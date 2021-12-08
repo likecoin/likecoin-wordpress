@@ -1,12 +1,14 @@
 /* global jQuery, wpApiSettings, lcPostInfo */
 
+const mainStatusField = document.querySelector('#likecoin_main_status');
 async function onRefreshPublishStatus(e) {
   e.preventDefault();
   const mattersTextField = document.querySelector('#lcMattersStatus');
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
-  const ISCNTextField = document.querySelector('#lcISCNStatus');
-  const { iscnHash, arweaveUploadStatus } = lcPostInfo;
+  const {
+    iscnHash, arweaveAndISCNUploadStatus, iscnId,
+  } = lcPostInfo;
   const res = await jQuery.ajax({
     type: 'POST',
     url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/refresh`,
@@ -17,27 +19,26 @@ async function onRefreshPublishStatus(e) {
   });
   const { matters, ipfs, arweave } = res;
   const wordpressPublished = res.wordpress_published;
-  if (arweave.url) {
-    const { url, status } = arweave;
-    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
-    // allow ISCN submit button to show
-    if (!iscnHash) {
-      const submitISCNBtn = document.createElement('button');
-      submitISCNBtn.innerText = 'Submit to ISCN';
-      submitISCNBtn.setAttribute('id', 'lcISCNPublishBtn');
-      submitISCNBtn.setAttribute('class', 'button button-primary');
-      ISCNTextField.textContent = '';
-      ISCNTextField.appendChild(submitISCNBtn);
-      submitISCNBtn.addEventListener('click', onSubmitToISCN);
-    }
-  } else if (wordpressPublished === 'publish' && arweaveUploadStatus !== 'loading') {
+  if (iscnHash && iscnId) {
+    lcPostInfo.mainStatusTitle = 'LIVE on #DePub';
+    mainStatusField.textContent = '';
+    mainStatusField.innerHTML = `<h3>${lcPostInfo.mainStatusTitle}</h3>`;
+    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.like.co/view/${iscnId}">${iscnId}</a>`;
+  } else if (wordpressPublished === 'publish' && (arweaveAndISCNUploadStatus === 'initial' || arweaveAndISCNUploadStatus === 'failed')) {
+    lcPostInfo.mainStatusTitle = 'READY to #DePub';
+    mainStatusField.textContent = '';
+    mainStatusField.innerHTML = `<h3>${lcPostInfo.mainStatusTitle}</h3>`;
     const uploadArweaveBtn = document.createElement('button');
-    uploadArweaveBtn.innerText = 'Submit to Arweave';
+    uploadArweaveBtn.innerText = 'Submit to ISCN';
     uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
     uploadArweaveBtn.setAttribute('class', 'button button-primary');
     arweaveTextField.textContent = '';
     arweaveTextField.appendChild(uploadArweaveBtn);
     uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
+  } else if (wordpressPublished !== 'publish') {
+    arweaveTextField.innerHTML = '-';
+  } else { // post published but upload arweave is still in intermediate steps
+    arweaveTextField.innerHTML = `${arweaveAndISCNUploadStatus}`;
   }
   if (matters.url) {
     const { url, status } = matters;
@@ -62,31 +63,52 @@ async function onISCNCallback(event) {
   if (event.origin !== 'https://like.co') {
     return;
   }
+  lcPostInfo.mainStatusTitle = 'READY to #DePub';
+  lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to ISCN...';
+  const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const { action, data } = JSON.parse(event.data);
   if (action !== 'ISCN_SUBMITTED') return;
-  const { tx_hash: txHash, error, success } = data;
+  const {
+    tx_hash: txHash, error, success, iscnId,
+  } = data;
   if (error || success === false) return;
-  const ISCNTextField = document.querySelector('#lcISCNStatus');
-  const res = await jQuery.ajax({
-    type: 'POST',
-    url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/iscn`,
-    dataType: 'json',
-    contentType: 'application/json; charset=UTF-8',
-    data: JSON.stringify({ iscnHash: txHash }),
-    method: 'POST',
-    beforeSend: (xhr) => {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-    },
-  });
-  const { url, status } = res;
-  lcPostInfo.iscnHash = txHash;
-  ISCNTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
+  try {
+    const res = await jQuery.ajax({
+      type: 'POST',
+      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/iscn`,
+      dataType: 'json',
+      contentType: 'application/json; charset=UTF-8',
+      data: JSON.stringify({ iscnHash: txHash, iscnId }),
+      method: 'POST',
+      beforeSend: (xhr) => {
+        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      },
+    });
+    const { url, status } = res;
+    lcPostInfo.iscnHash = txHash;
+    lcPostInfo.iscnId = iscnId;
+    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.like.co/view/${iscnId}">${iscnId}</a>`;
+    lcPostInfo.mainStatusTitle = 'LIVE on #DePub';
+    lcPostInfo.arweaveAndISCNUploadStatus = 'success';
+  } catch (err) {
+    console.error(err);
+    const uploadArweaveBtn = document.createElement('button');
+    uploadArweaveBtn.innerText = 'Submit to ISCN';
+    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
+    uploadArweaveBtn.setAttribute('class', 'button button-primary');
+    arweaveTextField.textContent = '';
+    arweaveTextField.appendChild(uploadArweaveBtn);
+    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
+    lcPostInfo.mainStatusTitle = 'READY to #DePub';
+    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
+  }
 }
 
 async function uploadToArweave(data) {
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   try {
-    lcPostInfo.arweaveUploadStatus = 'loading';
+    lcPostInfo.mainStatusTitle = 'READY to #DePub';
+    lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to Arweave...';
     const { tx_hash: txHash, error, success } = data;
     if (error || success === false) return;
     const res = await jQuery.ajax({
@@ -106,29 +128,30 @@ async function uploadToArweave(data) {
     const { arweaveId, ipfsHash } = res.data;
     lcPostInfo.arweaveIPFSHash = ipfsHash;
     lcPostInfo.arweaveId = arweaveId;
-    lcPostInfo.arweaveUploadStatus = 'success';
-    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
+    lcPostInfo.mainStatusTitle = 'READY to #DePub';
+    lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to ISCN...';
   } catch (error) {
     console.error('Error occurs when uploading to Arweave:');
     console.error(error);
-    lcPostInfo.arweaveUploadStatus = 'loading';
     const uploadArweaveBtn = document.createElement('button');
-    uploadArweaveBtn.innerText = 'Submit to Arweave';
+    uploadArweaveBtn.innerText = 'Submit to ISCN';
     uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
     uploadArweaveBtn.setAttribute('class', 'button button-primary');
     arweaveTextField.textContent = '';
     arweaveTextField.appendChild(uploadArweaveBtn);
     uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
-    lcPostInfo.arweaveUploadStatus = 'failed';
+    lcPostInfo.mainStatusTitle = 'READY to #DePub';
+    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
   }
 }
 
 function onSubmitToISCN(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const {
     title, mattersIPFSHash, arweaveIPFSHash, tags, url, arweaveId,
   } = lcPostInfo;
   const { siteurl } = wpApiSettings;
+  lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to ISCN...';
   try {
     if (!mattersIPFSHash && !arweaveIPFSHash && !arweaveId) {
       throw new Error('NO_IPFS_HASH_NOR_ARWEAVE_ID_FOUND');
@@ -152,12 +175,17 @@ function onSubmitToISCN(e) {
       fingerprints.push(arweaveFingerprint);
     }
     const fingerprint = fingerprints.join(',');
-    const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&url=${urlString}&redirect_uri=${redirectString}`;
-    window.open(likeCoISCNWidget, 'likeCoISCNWindow', 'menubar=no,location=no,width=576,height=768');
+    const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&blocking=1&url=${urlString}&redirect_uri=${redirectString}`;
+    window.open(
+      likeCoISCNWidget,
+      'likeCoISCNWindow',
+      'menubar=no,location=no,width=576,height=768',
+    );
     window.addEventListener('message', onISCNCallback, false);
   } catch (error) {
     console.error('error occured when submitting ISCN:');
     console.error(error);
+    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
   }
 }
 
@@ -167,15 +195,24 @@ async function onLikePayCallback(event) {
     return;
   }
   const { action, data } = JSON.parse(event.data);
-  if (action !== 'TX_SUBMITTED') return;
+  if (action !== 'TX_SUBMITTED') {
+    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
+    return;
+  }
+  lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to Arweave...';
   await uploadToArweave(data);
+  await onSubmitToISCN();
 }
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
-  lcPostInfo.arweaveUploadStatus = 'loading';
+  lcPostInfo.mainStatusTitle = 'READY to #DePub';
+  mainStatusField.textContent = '';
+  mainStatusField.innerHTML = `<h3>${lcPostInfo.mainStatusTitle}</h3>`;
+  lcPostInfo.arweaveAndISCNUploadStatus = 'loading...';
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
-  arweaveTextField.innerHTML = 'loading...';
+  arweaveTextField.innerHTML = lcPostInfo.arweaveAndISCNUploadStatus;
   try {
+    const { iscnHash } = lcPostInfo;
     const res = await jQuery.ajax({
       type: 'POST',
       url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/estimate`,
@@ -187,8 +224,8 @@ async function onEstimateAndUploadArweave(e) {
     const {
       ipfsHash, LIKE, memo, arweaveId,
     } = res;
-    if (arweaveId && ipfsHash) { // skip LIKE Pay & Arweave upload flow
-      arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://arweave.net/${arweaveId}">Published</a>`;
+    if (ipfsHash && arweaveId) { // user could have uploaded Arweave but drop out on register ISCN
+      await onSubmitToISCN();
       return;
     }
     const { siteurl } = wpApiSettings;
@@ -205,17 +242,19 @@ async function onEstimateAndUploadArweave(e) {
       onLikePayCallback,
       false,
     );
+    lcPostInfo.mainStatusTitle = 'Ready to #DePub';
+    lcPostInfo.arweaveAndISCNUploadStatus = 'waiting for LIKE Pay...';
   } catch (error) {
     console.error('error occured when trying to estimate LIKE cost: ');
     console.error(error);
     const uploadArweaveBtn = document.createElement('button');
-    uploadArweaveBtn.innerText = 'Submit to Arweave';
+    uploadArweaveBtn.innerText = 'Submit to ISCN';
     uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
     uploadArweaveBtn.setAttribute('class', 'button button-primary');
     arweaveTextField.textContent = '';
     arweaveTextField.appendChild(uploadArweaveBtn);
     uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
-    lcPostInfo.arweaveUploadStatus = 'failed';
+    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
   }
 }
 (() => {
