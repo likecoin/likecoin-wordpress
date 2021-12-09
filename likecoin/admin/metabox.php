@@ -97,7 +97,7 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 	if ( $iscn_mainnet_info ) {
 		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/';
 		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
-		$iscn_card_endpoint  = 'https://app.like.co/view';
+		$iscn_card_endpoint  = 'https://app.like.co/view/';
 	} elseif ( $iscn_testnet_info ) {
 		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/';
 		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
@@ -106,7 +106,7 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 	$result['is_dev_published'] = false;
 	if ( ! empty( $iscn_id ) ) {
 		$result['iscn_id']       = $iscn_id;
-		$result['iscn_card_url'] = $iscn_card_endpoint . $iscn_id;
+		$result['iscn_card_url'] = $iscn_card_endpoint . rawurlencode( $iscn_id );
 	}
 	if ( ! empty( $iscn_hash ) ) {
 		if ( $iscn_mainnet_info ) {

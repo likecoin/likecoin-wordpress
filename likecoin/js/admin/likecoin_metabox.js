@@ -20,10 +20,11 @@ async function onRefreshPublishStatus(e) {
   const { matters, ipfs, arweave } = res;
   const wordpressPublished = res.wordpress_published;
   if (iscnHash && iscnId) {
+    const iscnIdString = encodeURIComponent(iscnId);
     lcPostInfo.mainStatusTitle = 'LIVE on #DePub';
     mainStatusField.textContent = '';
     mainStatusField.innerHTML = `<h3>${lcPostInfo.mainStatusTitle}</h3>`;
-    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.like.co/view/${iscnId}">${iscnId}</a>`;
+    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.like.co/view/${iscnIdString}">${iscnId}</a>`;
   } else if (wordpressPublished === 'publish' && (arweaveAndISCNUploadStatus === 'initial' || arweaveAndISCNUploadStatus === 'failed')) {
     lcPostInfo.mainStatusTitle = 'READY to #DePub';
     mainStatusField.textContent = '';
@@ -87,7 +88,8 @@ async function onISCNCallback(event) {
     const { url, status } = res;
     lcPostInfo.iscnHash = txHash;
     lcPostInfo.iscnId = iscnId;
-    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.like.co/view/${iscnId}">${iscnId}</a>`;
+    const iscnIdString = encodeURIComponent(iscnId);
+    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.rinkeby.like.co/view/${iscnIdString}">${iscnId}</a>`;
     lcPostInfo.mainStatusTitle = 'LIVE on #DePub';
     lcPostInfo.arweaveAndISCNUploadStatus = 'success';
   } catch (err) {
