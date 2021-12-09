@@ -1,13 +1,36 @@
 /* global jQuery, wpApiSettings, lcPostInfo */
 
-const mainStatusField = document.querySelector('#likecoin_main_status');
+const mainStatusField = document.querySelector('#lcTitleStatus');
+function createElementWithAttrbutes(el, {
+  text, className, id, rel, target, href,
+}) {
+  const element = document.createElement(el);
+  if (text) element.innerText = text;
+  if (id) element.setAttribute('id', id);
+  if (className) element.setAttribute('class', className);
+  if (rel) element.setAttribute('rel', rel);
+  if (target) element.setAttribute('target', target);
+  if (href) element.setAttribute('href', href);
+  return element;
+}
+
 async function onRefreshPublishStatus(e) {
-  e.preventDefault();
+  if (e) e.preventDefault();
   const mattersTextField = document.querySelector('#lcMattersStatus');
+  const ISCNStatusTextField = document.querySelector('#lcISCNStatus');
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
   const {
-    iscnHash, arweaveAndISCNUploadStatus, iscnId,
+    iscnHash,
+    iscnId,
+    isMattersPublished,
+    mainStatusInitial,
+    mainStatusLoading,
+    mainStatusFailed,
+    mainStatusSuccess,
+    mainStatusLIKEPay,
+    mainStatusUploadArweave,
+    mainStatusRegisterISCN,
   } = lcPostInfo;
   const res = await jQuery.ajax({
     type: 'POST',
@@ -18,61 +41,186 @@ async function onRefreshPublishStatus(e) {
     },
   });
   const { matters, ipfs, arweave } = res;
-  const wordpressPublished = res.wordpress_published;
-  if (iscnHash && iscnId) {
+  const isWordpressPublished = res.wordpress_published;
+  lcPostInfo.isMattersPublished = res.matters.status;
+  if (iscnHash && iscnId) { // state done
     const iscnIdString = encodeURIComponent(iscnId);
-    lcPostInfo.mainStatusTitle = 'LIVE on #DePub';
     mainStatusField.textContent = '';
-    mainStatusField.innerHTML = `<h3>${lcPostInfo.mainStatusTitle}</h3>`;
-    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.like.co/view/${iscnIdString}">${iscnId}</a>`;
-  } else if (wordpressPublished === 'publish' && (arweaveAndISCNUploadStatus === 'initial' || arweaveAndISCNUploadStatus === 'failed')) {
-    lcPostInfo.mainStatusTitle = 'READY to #DePub';
+    const statusDot = createElementWithAttrbutes('h1', {
+      text: ' · ',
+      className: 'iscn-status-green',
+    });
+    const statusText = createElementWithAttrbutes('h3', {
+      text: lcPostInfo.mainTitleDone,
+      className: 'iscn-status-text',
+    });
+    mainStatusField.appendChild(statusDot);
+    mainStatusField.appendChild(statusText);
+    const ISCNLink = createElementWithAttrbutes('a', {
+      text: iscnId,
+      rel: 'noopener',
+      target: '_blank',
+      href: `https://app.like.co/view/${iscnIdString}`,
+    });
+    ISCNStatusTextField.textContent = '';
+    ISCNStatusTextField.appendChild(ISCNLink);
+  } else if ( // show button
+    isWordpressPublished === 'publish'
+    && (lcPostInfo.mainStatus === 'initial' || lcPostInfo.mainStatus === 'failed')
+  ) {
     mainStatusField.textContent = '';
-    mainStatusField.innerHTML = `<h3>${lcPostInfo.mainStatusTitle}</h3>`;
-    const uploadArweaveBtn = document.createElement('button');
-    uploadArweaveBtn.innerText = 'Submit to ISCN';
-    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
-    uploadArweaveBtn.setAttribute('class', 'button button-primary');
-    arweaveTextField.textContent = '';
-    arweaveTextField.appendChild(uploadArweaveBtn);
-    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
-  } else if (wordpressPublished !== 'publish') {
-    arweaveTextField.innerHTML = '-';
-  } else { // post published but upload arweave is still in intermediate steps
-    arweaveTextField.innerHTML = `${arweaveAndISCNUploadStatus}`;
-  }
-  if (matters.url) {
-    const { url, status } = matters;
-    mattersTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
+    const statusDot = createElementWithAttrbutes('h1', {
+      text: ' · ',
+      className: 'iscn-status-orange',
+    });
+    const statusText = createElementWithAttrbutes('h3', {
+      text: lcPostInfo.mainTitleIntermediate,
+      className: 'iscn-status-text',
+    });
+    mainStatusField.appendChild(statusDot);
+    mainStatusField.appendChild(statusText);
+    const arweaveISCNBtn = createElementWithAttrbutes('button', {
+      text: 'Submit to ISCN',
+      className: 'button button-primary',
+      id: 'lcArweaveUploadBtn',
+    });
+    ISCNStatusTextField.textContent = '';
+    ISCNStatusTextField.appendChild(arweaveISCNBtn);
+    arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
+  } else if (isWordpressPublished !== 'publish') { // state draft
+    mainStatusField.textContent = '';
+    const statusDot = createElementWithAttrbutes('h1', {
+      text: ' · ',
+      className: 'iscn-status-red',
+    });
+    const statusText = createElementWithAttrbutes('h3', {
+      text: lcPostInfo.mainTitleDraft,
+      className: 'iscn-status-text',
+    });
+    mainStatusField.appendChild(statusDot);
+    mainStatusField.appendChild(statusText);
+    ISCNStatusTextField.textContent = '';
+    const disabledarweaveISCNBtn = createElementWithAttrbutes('button', {
+      text: 'Submit to ISCN',
+      className: 'button button-primary',
+      id: 'lcArweaveUploadBtn',
+    });
+    disabledarweaveISCNBtn.disabled = 'disabled';
+    ISCNStatusTextField.appendChild(disabledarweaveISCNBtn);
   } else {
-    mattersTextField.textContent = matters.status;
+    // state intermediate but show status
+    mainStatusField.textContent = '';
+    const statusDot = createElementWithAttrbutes('h1', {
+      text: ' · ',
+      className: 'iscn-status-orange',
+    });
+    const statusText = createElementWithAttrbutes('h3', {
+      text: lcPostInfo.mainTitleIntermediate,
+      className: 'iscn-status-text',
+    });
+    let mainStatusText;
+    switch (lcPostInfo.mainStatus) {
+      case 'initial':
+        mainStatusText = mainStatusInitial;
+        break;
+      case 'loading':
+        mainStatusText = mainStatusLoading;
+        break;
+      case 'failed':
+        mainStatusText = mainStatusFailed;
+        break;
+      case 'success':
+        mainStatusText = mainStatusSuccess;
+        break;
+      case 'onLIKEPay':
+        mainStatusText = mainStatusLIKEPay;
+        break;
+      case 'onUploadArweave':
+        mainStatusText = mainStatusUploadArweave;
+        break;
+      case 'onRegisterISCN':
+        mainStatusText = mainStatusRegisterISCN;
+        break;
+      default:
+        mainStatusText = mainStatusInitial;
+    }
+    mainStatusField.appendChild(statusDot);
+    mainStatusField.appendChild(statusText);
+    const ISCNStatus = createElementWithAttrbutes('p', {
+      text: mainStatusText,
+    });
+    ISCNStatusTextField.textContent = '';
+    ISCNStatusTextField.appendChild(ISCNStatus);
+  }
+  if (arweave.url) {
+    const { url } = arweave;
+    const arweaveId = arweave.arweave_id;
+    const arweaveLink = createElementWithAttrbutes('a', {
+      text: arweaveId,
+      rel: 'noopener',
+      target: '_blank',
+      href: url,
+    });
+    arweaveTextField.textContent = '';
+    arweaveTextField.appendChild(arweaveLink);
   }
   if (ipfs.url) {
-    const { url, status } = ipfs;
-    ipfsTextField.innerHTML = `<a rel="noopener" target="_blank" href="${url}">${status}</a>`;
-  } else {
-    ipfsTextField.textContent = ipfs.status;
+    const { url, hash } = ipfs;
+    const IPFSLink = createElementWithAttrbutes('a', {
+      text: hash,
+      rel: 'noopener',
+      target: '_blank',
+      href: url,
+    });
+    ipfsTextField.textContent = '';
+    ipfsTextField.appendChild(IPFSLink);
   }
-  if (ipfs.hash) {
-    lcPostInfo.mattersIPFSHash = ipfs.hash;
-    const ISCNPublishSession = document.getElementById('lcISCNPublish');
-    if (ISCNPublishSession) ISCNPublishSession.style.display = '';
+  if (matters.url) {
+    const { url } = matters;
+    const articleId = matters.article_id;
+    let mattersLink;
+    if (isMattersPublished === 'Published') {
+      mattersLink = createElementWithAttrbutes('a', {
+        text: articleId,
+        rel: 'noopener',
+        target: '_blank',
+        href: url,
+      });
+    } else if (articleId.length !== 0) {
+      mattersLink = createElementWithAttrbutes('a', {
+        text: 'Draft',
+        rel: 'noopener',
+        target: '_blank',
+        href: url,
+      });
+    } else {
+      mattersLink = createElementWithAttrbutes('p', {
+        text: '-',
+      });
+    }
+    mattersTextField.textContent = '';
+    mattersTextField.appendChild(mattersLink);
   }
 }
 
 async function onISCNCallback(event) {
   if (event.origin !== 'https://like.co') {
+    lcPostInfo.mainStatus = 'failed';
     return;
   }
-  lcPostInfo.mainStatusTitle = 'READY to #DePub';
-  lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to ISCN...';
-  const arweaveTextField = document.querySelector('#lcArweaveStatus');
+  lcPostInfo.mainStatus = 'onRegisterISCN';
   const { action, data } = JSON.parse(event.data);
-  if (action !== 'ISCN_SUBMITTED') return;
+  if (action !== 'ISCN_SUBMITTED') {
+    lcPostInfo.mainStatus = 'failed';
+    return;
+  }
   const {
     tx_hash: txHash, error, success, iscnId,
   } = data;
-  if (error || success === false) return;
+  if (error || success === false) {
+    lcPostInfo.mainStatus = 'failed';
+    return;
+  }
   try {
     const res = await jQuery.ajax({
       type: 'POST',
@@ -85,34 +233,25 @@ async function onISCNCallback(event) {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       },
     });
-    const { url, status } = res;
     lcPostInfo.iscnHash = txHash;
     lcPostInfo.iscnId = iscnId;
-    const iscnIdString = encodeURIComponent(iscnId);
-    arweaveTextField.innerHTML = `<a rel="noopener" target="_blank" href="https://app.rinkeby.like.co/view/${iscnIdString}">${iscnId}</a>`;
-    lcPostInfo.mainStatusTitle = 'LIVE on #DePub';
-    lcPostInfo.arweaveAndISCNUploadStatus = 'success';
+    onRefreshPublishStatus();
+    lcPostInfo.mainStatus = 'success';
   } catch (err) {
     console.error(err);
-    const uploadArweaveBtn = document.createElement('button');
-    uploadArweaveBtn.innerText = 'Submit to ISCN';
-    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
-    uploadArweaveBtn.setAttribute('class', 'button button-primary');
-    arweaveTextField.textContent = '';
-    arweaveTextField.appendChild(uploadArweaveBtn);
-    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
-    lcPostInfo.mainStatusTitle = 'READY to #DePub';
-    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
+    lcPostInfo.mainStatus = 'failed';
+    onRefreshPublishStatus();
   }
 }
 
 async function uploadToArweave(data) {
-  const arweaveTextField = document.querySelector('#lcArweaveStatus');
   try {
-    lcPostInfo.mainStatusTitle = 'READY to #DePub';
-    lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to Arweave...';
+    lcPostInfo.mainStatus = 'onUploadArweave';
     const { tx_hash: txHash, error, success } = data;
-    if (error || success === false) return;
+    if (error || success === false) {
+      lcPostInfo.mainStatus = 'failed';
+      return;
+    }
     const res = await jQuery.ajax({
       type: 'POST',
       url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/upload`,
@@ -130,20 +269,12 @@ async function uploadToArweave(data) {
     const { arweaveId, ipfsHash } = res.data;
     lcPostInfo.arweaveIPFSHash = ipfsHash;
     lcPostInfo.arweaveId = arweaveId;
-    lcPostInfo.mainStatusTitle = 'READY to #DePub';
-    lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to ISCN...';
+    lcPostInfo.mainStatus = 'onRegisterISCN';
   } catch (error) {
     console.error('Error occurs when uploading to Arweave:');
     console.error(error);
-    const uploadArweaveBtn = document.createElement('button');
-    uploadArweaveBtn.innerText = 'Submit to ISCN';
-    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
-    uploadArweaveBtn.setAttribute('class', 'button button-primary');
-    arweaveTextField.textContent = '';
-    arweaveTextField.appendChild(uploadArweaveBtn);
-    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
-    lcPostInfo.mainStatusTitle = 'READY to #DePub';
-    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
+    lcPostInfo.mainStatus = 'failed';
+    onRefreshPublishStatus();
   }
 }
 
@@ -153,7 +284,7 @@ function onSubmitToISCN(e) {
     title, mattersIPFSHash, arweaveIPFSHash, tags, url, arweaveId,
   } = lcPostInfo;
   const { siteurl } = wpApiSettings;
-  lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to ISCN...';
+  lcPostInfo.mainStatus = 'onRegisterISCN';
   try {
     if (!mattersIPFSHash && !arweaveIPFSHash && !arweaveId) {
       throw new Error('NO_IPFS_HASH_NOR_ARWEAVE_ID_FOUND');
@@ -187,34 +318,30 @@ function onSubmitToISCN(e) {
   } catch (error) {
     console.error('error occured when submitting ISCN:');
     console.error(error);
-    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
+    lcPostInfo.mainStatus = 'failed';
   }
 }
 
 async function onLikePayCallback(event) {
   event.preventDefault();
   if (event.origin !== 'https://like.co') { // For development, skip this line.
+    lcPostInfo.mainStatus = 'failed';
     return;
   }
   const { action, data } = JSON.parse(event.data);
   if (action !== 'TX_SUBMITTED') {
-    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
+    lcPostInfo.mainStatus = 'failed';
     return;
   }
-  lcPostInfo.arweaveAndISCNUploadStatus = 'uploading to Arweave...';
+  lcPostInfo.mainStatus = 'onUploadArweave';
   await uploadToArweave(data);
   await onSubmitToISCN();
 }
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
-  lcPostInfo.mainStatusTitle = 'READY to #DePub';
-  mainStatusField.textContent = '';
-  mainStatusField.innerHTML = `<h3>${lcPostInfo.mainStatusTitle}</h3>`;
-  lcPostInfo.arweaveAndISCNUploadStatus = 'loading...';
-  const arweaveTextField = document.querySelector('#lcArweaveStatus');
-  arweaveTextField.innerHTML = lcPostInfo.arweaveAndISCNUploadStatus;
+  lcPostInfo.mainStatus = 'loading';
+  onRefreshPublishStatus();
   try {
-    const { iscnHash } = lcPostInfo;
     const res = await jQuery.ajax({
       type: 'POST',
       url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/estimate`,
@@ -244,32 +371,16 @@ async function onEstimateAndUploadArweave(e) {
       onLikePayCallback,
       false,
     );
-    lcPostInfo.mainStatusTitle = 'Ready to #DePub';
-    lcPostInfo.arweaveAndISCNUploadStatus = 'waiting for LIKE Pay...';
+    lcPostInfo.mainStatus = 'onLIKEPay';
   } catch (error) {
     console.error('error occured when trying to estimate LIKE cost: ');
     console.error(error);
-    const uploadArweaveBtn = document.createElement('button');
-    uploadArweaveBtn.innerText = 'Submit to ISCN';
-    uploadArweaveBtn.setAttribute('id', 'lcArweaveUploadBtn');
-    uploadArweaveBtn.setAttribute('class', 'button button-primary');
-    arweaveTextField.textContent = '';
-    arweaveTextField.appendChild(uploadArweaveBtn);
-    uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
-    lcPostInfo.arweaveAndISCNUploadStatus = 'failed';
+    lcPostInfo.mainStatus = 'failed';
   }
 }
 (() => {
-  const submitISCNHash = window.location.hash;
   const refreshBtn = document.getElementById('lcPublishRefreshBtn');
-  const submitISCNBtn = document.getElementById('lcISCNPublishBtn');
-  const uploadArweaveBtn = document.getElementById('lcArweaveUploadBtn');
-  if (submitISCNHash === '#likecoin_submit_iscn') {
-    setTimeout(() => {
-      window.scrollTo(0, document.querySelector('#likecoin_submit_iscn').scrollHeight);
-    }, 500);
-  }
+  const arweaveISCNBtn = document.getElementById('lcArweaveISCNBtn');
   if (refreshBtn) refreshBtn.addEventListener('click', onRefreshPublishStatus);
-  if (submitISCNBtn) submitISCNBtn.addEventListener('click', onSubmitToISCN);
-  if (uploadArweaveBtn) uploadArweaveBtn.addEventListener('click', onEstimateAndUploadArweave);
+  if (arweaveISCNBtn) arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
 })();
