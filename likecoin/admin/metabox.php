@@ -268,11 +268,11 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 		</button>
 	</h3>
 	<div id="lcTitleStatus"><?php if ( ! empty( $iscn_status['iscn_card_url'] ) ) { ?>
-		<h1 class="iscn-status-green"> &#183; </h1><h3 class="iscn-status-text">LIVE on #DePub</h3>
+		<h1 class="iscn-status-green"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'LIVE on #DePub', LC_PLUGIN_SLUG ); ?></h3>
 		<?php } elseif ( 'publish' === $wordpress_publish_status ) { ?>
-			<h1 class="iscn-status-orange"> &#183; </h1><h3 class="iscn-status-text">READY to #DePub</h3>
+			<h1 class="iscn-status-orange"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'READY to #DePub', LC_PLUGIN_SLUG ); ?></h3>
 		<?php } else { ?>
-			<h1 class="iscn-status-red"> &#183; </h1><h3 class="iscn-status-text"> Publish Your Post First</h3>
+			<h1 class="iscn-status-red"> &#183; </h1><h3 class="iscn-status-text"> <?php esc_html_e( 'Publish Your Post First', LC_PLUGIN_SLUG ); ?></h3>
 		<?php } ?>
 	</div>
 	<table class="form-table">
@@ -451,24 +451,27 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			'lc_js_metabox',
 			'lcPostInfo',
 			array(
-				'id'                      => $post_id,
-				'title'                   => $post_title,
-				'mattersIPFSHash'         => $matters_ipfs_hash,
-				'isMattersPublished'      => $matters_published_status,
-				'arweaveIPFSHash'         => $arweave_ipfs_hash,
-				'iscnHash'                => $publish_params['iscn_hash'],
-				'iscnId'                  => $publish_params['iscn_id'],
-				'tags'                    => $post_tags,
-				'url'                     => $post_url,
-				'arweaveId'               => $arweave_id,
+				'id'                 => $post_id,
+				'title'              => $post_title,
+				'mattersIPFSHash'    => $matters_ipfs_hash,
+				'isMattersPublished' => $matters_published_status,
+				'arweaveIPFSHash'    => $arweave_ipfs_hash,
+				'iscnHash'           => $publish_params['iscn_hash'],
+				'iscnId'             => $publish_params['iscn_id'],
+				'tags'               => $post_tags,
+				'url'                => $post_url,
+				'arweaveId'          => $arweave_id,
+				'mainStatus'         => 'initial',
+			)
+		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'lcStringInfo',
+			array(
 				'mainTitleDraft'          => __( 'Publish Your Post First', LC_PLUGIN_SLUG ),
 				'mainTitleIntermediate'   => __( 'READY to #DePub', LC_PLUGIN_SLUG ),
 				'mainTitleDone'           => __( 'LIVE on #DePub', LC_PLUGIN_SLUG ),
-				'mainStatus'              => 'initial',
-				'mainStatusInitial'       => 'initial',
 				'mainStatusLoading'       => __( 'loading...', LC_PLUGIN_SLUG ),
-				'mainStatusFailed'        => 'failed',
-				'mainStatusSuccess'       => 'success',
 				'mainStatusLIKEPay'       => __( 'waiting for LIKE Pay...', LC_PLUGIN_SLUG ),
 				'mainStatusUploadArweave' => __( 'uploading to Arweave...', LC_PLUGIN_SLUG ),
 				'mainStatusRegisterISCN'  => __( 'registering ISCN...', LC_PLUGIN_SLUG ),

@@ -1,6 +1,7 @@
-/* global jQuery, wpApiSettings, lcPostInfo */
+/* global jQuery, wpApiSettings, lcPostInfo, lcStringInfo */
 
-const mainStatusField = document.querySelector('#lcTitleStatus');
+const mainTitleField = document.querySelector('#lcTitleStatus');
+const ISCNStatusTextField = document.querySelector('#lcISCNStatus');
 function createElementWithAttrbutes(el, {
   text, className, id, rel, target, href,
 }) {
@@ -13,24 +14,59 @@ function createElementWithAttrbutes(el, {
   if (href) element.setAttribute('href', href);
   return element;
 }
+function refreshMainTitleField(signalCSSClass, text) {
+  mainTitleField.textContent = '';
+  const statusDot = createElementWithAttrbutes('h1', {
+    text: ' · ',
+    className: signalCSSClass,
+  });
+  const statusText = createElementWithAttrbutes('h3', {
+    text,
+    className: 'iscn-status-text',
+  });
+  mainTitleField.appendChild(statusDot);
+  mainTitleField.appendChild(statusText);
+}
+function generateMainStatusText(status) {
+  const {
+    mainStatusLoading,
+    mainStatusLIKEPay,
+    mainStatusUploadArweave,
+    mainStatusRegisterISCN,
+  } = lcStringInfo;
+  let mainStatusText;
+  switch (status) {
+    case 'loading':
+      mainStatusText = mainStatusLoading;
+      break;
+    case 'onLIKEPay':
+      mainStatusText = mainStatusLIKEPay;
+      break;
+    case 'onUploadArweave':
+      mainStatusText = mainStatusUploadArweave;
+      break;
+    case 'onRegisterISCN':
+      mainStatusText = mainStatusRegisterISCN;
+      break;
+    default:
+      mainStatusText = '-';
+  }
+  return mainStatusText;
+}
+function refreshMainStatusField(status) {
+  ISCNStatusTextField.textContent = '';
+  ISCNStatusTextField.appendChild(status);
+}
 
 async function onRefreshPublishStatus(e) {
   if (e) e.preventDefault();
   const mattersTextField = document.querySelector('#lcMattersStatus');
-  const ISCNStatusTextField = document.querySelector('#lcISCNStatus');
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
   const {
     iscnHash,
     iscnId,
     isMattersPublished,
-    mainStatusInitial,
-    mainStatusLoading,
-    mainStatusFailed,
-    mainStatusSuccess,
-    mainStatusLIKEPay,
-    mainStatusUploadArweave,
-    mainStatusRegisterISCN,
   } = lcPostInfo;
   const res = await jQuery.ajax({
     type: 'POST',
@@ -45,112 +81,49 @@ async function onRefreshPublishStatus(e) {
   lcPostInfo.isMattersPublished = res.matters.status;
   if (iscnHash && iscnId) { // state done
     const iscnIdString = encodeURIComponent(iscnId);
-    mainStatusField.textContent = '';
-    const statusDot = createElementWithAttrbutes('h1', {
-      text: ' · ',
-      className: 'iscn-status-green',
-    });
-    const statusText = createElementWithAttrbutes('h3', {
-      text: lcPostInfo.mainTitleDone,
-      className: 'iscn-status-text',
-    });
-    mainStatusField.appendChild(statusDot);
-    mainStatusField.appendChild(statusText);
+    refreshMainTitleField('iscn-status-green', lcStringInfo.mainTitleDone);
     const ISCNLink = createElementWithAttrbutes('a', {
       text: iscnId,
       rel: 'noopener',
       target: '_blank',
       href: `https://app.like.co/view/${iscnIdString}`,
     });
-    ISCNStatusTextField.textContent = '';
-    ISCNStatusTextField.appendChild(ISCNLink);
+    refreshMainStatusField(ISCNLink);
   } else if ( // show button
     isWordpressPublished === 'publish'
     && (lcPostInfo.mainStatus === 'initial' || lcPostInfo.mainStatus === 'failed')
   ) {
-    mainStatusField.textContent = '';
-    const statusDot = createElementWithAttrbutes('h1', {
-      text: ' · ',
-      className: 'iscn-status-orange',
-    });
-    const statusText = createElementWithAttrbutes('h3', {
-      text: lcPostInfo.mainTitleIntermediate,
-      className: 'iscn-status-text',
-    });
-    mainStatusField.appendChild(statusDot);
-    mainStatusField.appendChild(statusText);
+    refreshMainTitleField(
+      'iscn-status-orange',
+      lcStringInfo.mainTitleIntermediate,
+    );
     const arweaveISCNBtn = createElementWithAttrbutes('button', {
       text: 'Submit to ISCN',
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
-    ISCNStatusTextField.textContent = '';
-    ISCNStatusTextField.appendChild(arweaveISCNBtn);
+    refreshMainStatusField(arweaveISCNBtn);
     arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
   } else if (isWordpressPublished !== 'publish') { // state draft
-    mainStatusField.textContent = '';
-    const statusDot = createElementWithAttrbutes('h1', {
-      text: ' · ',
-      className: 'iscn-status-red',
-    });
-    const statusText = createElementWithAttrbutes('h3', {
-      text: lcPostInfo.mainTitleDraft,
-      className: 'iscn-status-text',
-    });
-    mainStatusField.appendChild(statusDot);
-    mainStatusField.appendChild(statusText);
-    ISCNStatusTextField.textContent = '';
+    refreshMainTitleField('iscn-status-red', lcStringInfo.mainTitleDraft);
     const disabledarweaveISCNBtn = createElementWithAttrbutes('button', {
       text: 'Submit to ISCN',
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
     disabledarweaveISCNBtn.disabled = 'disabled';
-    ISCNStatusTextField.appendChild(disabledarweaveISCNBtn);
+    refreshMainStatusField(disabledarweaveISCNBtn);
   } else {
     // state intermediate but show status
-    mainStatusField.textContent = '';
-    const statusDot = createElementWithAttrbutes('h1', {
-      text: ' · ',
-      className: 'iscn-status-orange',
-    });
-    const statusText = createElementWithAttrbutes('h3', {
-      text: lcPostInfo.mainTitleIntermediate,
-      className: 'iscn-status-text',
-    });
-    let mainStatusText;
-    switch (lcPostInfo.mainStatus) {
-      case 'initial':
-        mainStatusText = mainStatusInitial;
-        break;
-      case 'loading':
-        mainStatusText = mainStatusLoading;
-        break;
-      case 'failed':
-        mainStatusText = mainStatusFailed;
-        break;
-      case 'success':
-        mainStatusText = mainStatusSuccess;
-        break;
-      case 'onLIKEPay':
-        mainStatusText = mainStatusLIKEPay;
-        break;
-      case 'onUploadArweave':
-        mainStatusText = mainStatusUploadArweave;
-        break;
-      case 'onRegisterISCN':
-        mainStatusText = mainStatusRegisterISCN;
-        break;
-      default:
-        mainStatusText = mainStatusInitial;
-    }
-    mainStatusField.appendChild(statusDot);
-    mainStatusField.appendChild(statusText);
+    refreshMainTitleField(
+      'iscn-status-orange',
+      lcStringInfo.mainTitleIntermediate,
+    );
+    const text = generateMainStatusText(lcPostInfo.mainStatus);
     const ISCNStatus = createElementWithAttrbutes('p', {
-      text: mainStatusText,
+      text,
     });
-    ISCNStatusTextField.textContent = '';
-    ISCNStatusTextField.appendChild(ISCNStatus);
+    refreshMainStatusField(ISCNStatus);
   }
   if (arweave.url) {
     const { url } = arweave;
@@ -236,7 +209,6 @@ async function onISCNCallback(event) {
     lcPostInfo.iscnHash = txHash;
     lcPostInfo.iscnId = iscnId;
     onRefreshPublishStatus();
-    lcPostInfo.mainStatus = 'success';
   } catch (err) {
     console.error(err);
     lcPostInfo.mainStatus = 'failed';
