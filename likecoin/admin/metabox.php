@@ -284,15 +284,18 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['iscn_card_url'] ); ?>">
 							<?php echo esc_html( $iscn_status['iscn_id'] ); ?>
 						</a>
-					<?php } elseif ( 'publish' === $wordpress_publish_status ) { ?>
-												<span id="lcArweaveUpload">
-						<button id="lcArweaveISCNBtn" class="button button-primary">
-							<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
-						</button>
-					</span>
 					<?php } else { ?>
-						<button id="lcArweaveISCNBtn" class="button button-primary" disabled>
-							<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
+						<button id="lcArweaveISCNBtn" class="button button-primary" 
+							<?php
+							if ( 'publish' !== $wordpress_publish_status ) {
+								?>
+								disabled > 
+								<?php
+							} else {
+								?>
+	>
+						<?php } ?>
+						<?php esc_html_e( 'Submit to ISCN', LC_PLUGIN_SLUG ); ?>
 						</button>
 					<?php } ?>
 				</td>

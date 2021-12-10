@@ -14,7 +14,7 @@ function createElementWithAttrbutes(el, {
   if (href) element.setAttribute('href', href);
   return element;
 }
-function refreshMainTitleField(signalCSSClass, text) {
+function updateMainTitleField(signalCSSClass, text) {
   mainTitleField.textContent = '';
   const statusDot = createElementWithAttrbutes('h1', {
     text: ' · ',
@@ -53,9 +53,9 @@ function generateMainStatusText(status) {
   }
   return mainStatusText;
 }
-function refreshMainStatusField(status) {
-  ISCNStatusTextField.textContent = '';
-  ISCNStatusTextField.appendChild(status);
+function updateMainStatusField(statusField, status) {
+  statusField.textContent = ''; // eslint-disable-line no-param-reassign
+  statusField.appendChild(status);
 }
 
 async function onRefreshPublishStatus(e) {
@@ -81,19 +81,19 @@ async function onRefreshPublishStatus(e) {
   lcPostInfo.isMattersPublished = res.matters.status;
   if (iscnHash && iscnId) { // state done
     const iscnIdString = encodeURIComponent(iscnId);
-    refreshMainTitleField('iscn-status-green', lcStringInfo.mainTitleDone);
+    updateMainTitleField('iscn-status-green', lcStringInfo.mainTitleDone);
     const ISCNLink = createElementWithAttrbutes('a', {
       text: iscnId,
       rel: 'noopener',
       target: '_blank',
       href: `https://app.like.co/view/${iscnIdString}`,
     });
-    refreshMainStatusField(ISCNLink);
+    updateMainStatusField(ISCNStatusTextField, ISCNLink);
   } else if ( // show button
     isWordpressPublished === 'publish'
     && (lcPostInfo.mainStatus === 'initial' || lcPostInfo.mainStatus === 'failed')
   ) {
-    refreshMainTitleField(
+    updateMainTitleField(
       'iscn-status-orange',
       lcStringInfo.mainTitleIntermediate,
     );
@@ -102,20 +102,20 @@ async function onRefreshPublishStatus(e) {
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
-    refreshMainStatusField(arweaveISCNBtn);
+    updateMainStatusField(ISCNStatusTextField, arweaveISCNBtn);
     arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
   } else if (isWordpressPublished !== 'publish') { // state draft
-    refreshMainTitleField('iscn-status-red', lcStringInfo.mainTitleDraft);
+    updateMainTitleField('iscn-status-red', lcStringInfo.mainTitleDraft);
     const disabledarweaveISCNBtn = createElementWithAttrbutes('button', {
       text: 'Submit to ISCN',
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
     disabledarweaveISCNBtn.disabled = 'disabled';
-    refreshMainStatusField(disabledarweaveISCNBtn);
+    updateMainStatusField(ISCNStatusTextField, disabledarweaveISCNBtn);
   } else {
     // state intermediate but show status
-    refreshMainTitleField(
+    updateMainTitleField(
       'iscn-status-orange',
       lcStringInfo.mainTitleIntermediate,
     );
@@ -123,7 +123,7 @@ async function onRefreshPublishStatus(e) {
     const ISCNStatus = createElementWithAttrbutes('p', {
       text,
     });
-    refreshMainStatusField(ISCNStatus);
+    updateMainStatusField(ISCNStatusTextField, ISCNStatus);
   }
   if (arweave.url) {
     const { url } = arweave;
@@ -208,10 +208,10 @@ async function onISCNCallback(event) {
     });
     lcPostInfo.iscnHash = txHash;
     lcPostInfo.iscnId = iscnId;
-    onRefreshPublishStatus();
   } catch (err) {
     console.error(err);
     lcPostInfo.mainStatus = 'failed';
+  } finally {
     onRefreshPublishStatus();
   }
 }
