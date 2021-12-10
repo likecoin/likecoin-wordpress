@@ -128,7 +128,7 @@ function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
   	<head> <title>' . $title . '</title>' .
 		'<meta charset="utf-8" />
 		 <meta name="viewport" content="width=device-width, initial-scale=1" />
-	<head />
+	</head>
 	<body> <h1>' . $title . '</h1>' . $content . '</body></html>';
 	$file_mime_type = 'text/html';
 	$filename       = 'index.html';
