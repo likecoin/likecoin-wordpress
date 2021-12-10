@@ -122,6 +122,10 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 
 == Changelog ==
 
+= 2.4.0 =
+
+- Integrate upload to Arweave + ISCN feature
+
 = 2.3.1 =
 
 - Fix matters CORS issue
