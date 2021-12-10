@@ -121,11 +121,15 @@ function likecoin_rest_post_arweave_estimate( $request ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
-	$content        = $post->post_title;
-	$content        = $content . apply_filters( 'the_content', $post->post_content );
+	$title          = $post->post_title;
+	$content        = apply_filters( 'the_content', $post->post_content );
 	$urls           = likecoin_get_post_image_url( $post );
-	$content        = '<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
-        "http://www.w3.org/TR/html4/strict.dtd"><html><body>' . $content . '</body></html>';
+	$content        = '<!DOCTYPE html><html>
+  	<head> <title>' . $title . '</title>' .
+		'<meta charset="utf-8" />
+		 <meta name="viewport" content="width=device-width, initial-scale=1" />
+	<head />
+	<body> <h1>' . $title . '</h1>' . $content . '</body></html>';
 	$file_mime_type = 'text/html';
 	$filename       = 'index.html';
 	$body           = '';
