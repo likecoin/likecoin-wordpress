@@ -121,7 +121,7 @@ function likecoin_rest_post_arweave_estimate( $request ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
-	$title          = $post->post_title;
+	$title          = apply_filters( 'the_title_rss', $post->post_title );
 	$content        = apply_filters( 'the_content', $post->post_content );
 	$urls           = likecoin_get_post_image_url( $post );
 	$content        = '<!DOCTYPE html><html>

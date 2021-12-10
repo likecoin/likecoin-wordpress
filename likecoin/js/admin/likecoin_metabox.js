@@ -53,7 +53,7 @@ function generateMainStatusText(status) {
   }
   return mainStatusText;
 }
-function updateMainStatusField(statusField, status) {
+function updateFieldStatus(statusField, status) {
   statusField.textContent = ''; // eslint-disable-line no-param-reassign
   statusField.appendChild(status);
 }
@@ -88,7 +88,7 @@ async function onRefreshPublishStatus(e) {
       target: '_blank',
       href: `https://app.like.co/view/${iscnIdString}`,
     });
-    updateMainStatusField(ISCNStatusTextField, ISCNLink);
+    updateFieldStatus(ISCNStatusTextField, ISCNLink);
   } else if ( // show button
     isWordpressPublished === 'publish'
     && (lcPostInfo.mainStatus === 'initial' || lcPostInfo.mainStatus === 'failed')
@@ -102,7 +102,7 @@ async function onRefreshPublishStatus(e) {
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
-    updateMainStatusField(ISCNStatusTextField, arweaveISCNBtn);
+    updateFieldStatus(ISCNStatusTextField, arweaveISCNBtn);
     arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
   } else if (isWordpressPublished !== 'publish') { // state draft
     updateMainTitleField('iscn-status-red', lcStringInfo.mainTitleDraft);
@@ -112,7 +112,7 @@ async function onRefreshPublishStatus(e) {
       id: 'lcArweaveUploadBtn',
     });
     disabledarweaveISCNBtn.disabled = 'disabled';
-    updateMainStatusField(ISCNStatusTextField, disabledarweaveISCNBtn);
+    updateFieldStatus(ISCNStatusTextField, disabledarweaveISCNBtn);
   } else {
     // state intermediate but show status
     updateMainTitleField(
@@ -123,7 +123,7 @@ async function onRefreshPublishStatus(e) {
     const ISCNStatus = createElementWithAttrbutes('p', {
       text,
     });
-    updateMainStatusField(ISCNStatusTextField, ISCNStatus);
+    updateFieldStatus(ISCNStatusTextField, ISCNStatus);
   }
   if (arweave.url) {
     const { url } = arweave;
@@ -134,8 +134,7 @@ async function onRefreshPublishStatus(e) {
       target: '_blank',
       href: url,
     });
-    arweaveTextField.textContent = '';
-    arweaveTextField.appendChild(arweaveLink);
+    updateFieldStatus(arweaveTextField, arweaveLink);
   }
   if (ipfs.url) {
     const { url, hash } = ipfs;
@@ -145,8 +144,7 @@ async function onRefreshPublishStatus(e) {
       target: '_blank',
       href: url,
     });
-    ipfsTextField.textContent = '';
-    ipfsTextField.appendChild(IPFSLink);
+    updateFieldStatus(ipfsTextField, IPFSLink);
   }
   if (matters.url) {
     const { url } = matters;
@@ -171,8 +169,7 @@ async function onRefreshPublishStatus(e) {
         text: '-',
       });
     }
-    mattersTextField.textContent = '';
-    mattersTextField.appendChild(mattersLink);
+    updateFieldStatus(mattersTextField, mattersLink);
   }
 }
 
