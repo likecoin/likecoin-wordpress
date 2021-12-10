@@ -212,7 +212,7 @@ async function onISCNCallback(event) {
     console.error(err);
     lcPostInfo.mainStatus = 'failed';
   } finally {
-    onRefreshPublishStatus();
+    await onRefreshPublishStatus();
   }
 }
 
@@ -246,7 +246,7 @@ async function uploadToArweave(data) {
     console.error('Error occurs when uploading to Arweave:');
     console.error(error);
     lcPostInfo.mainStatus = 'failed';
-    onRefreshPublishStatus();
+    await onRefreshPublishStatus();
   }
 }
 
@@ -312,7 +312,6 @@ async function onLikePayCallback(event) {
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
   lcPostInfo.mainStatus = 'loading';
-  onRefreshPublishStatus();
   try {
     const res = await jQuery.ajax({
       type: 'POST',
