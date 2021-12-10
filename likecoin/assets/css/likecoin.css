@@ -187,3 +187,38 @@
   color: #d0021b;
 }
 
+.iscn-status-red {
+  display:inline;
+
+  vertical-align:baseline;
+
+  color:red;
+
+  font-size:50px;
+}
+
+.iscn-status-orange {
+  display:inline;
+
+  vertical-align:baseline;
+
+  color:orange;
+
+  font-size:50px;
+}
+
+.iscn-status-green {
+  display:inline;
+
+  vertical-align:baseline;
+
+  color:green;
+
+  font-size:50px;
+}
+
+.iscn-status-text {
+  display:inline;
+
+  vertical-align:super;
+}
