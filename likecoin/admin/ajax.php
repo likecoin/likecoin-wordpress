@@ -95,14 +95,18 @@ function likecoin_matters_login() {
  */
 function likecoin_get_admin_errors_restful() {
 	if ( ! current_user_can( 'edit_posts' ) ) {
+		wp_send_json( false );
 		return;
 	}
 	$error = likecoin_get_admin_errors();
 	likecoin_clear_admin_errors();
-	$decode_message = json_decode( $error['message'] );
-	if ( ! $decode_message ) {
-		wp_send_json( $error['message'] );
-		return;
+	$decode_message = false;
+	if ( $error ) {
+		$decode_message = json_decode( $error['message'] );
+		if ( ! $decode_message ) {
+			wp_send_json( $error['message'] );
+			return;
+		}
 	}
 	wp_send_json( $decode_message );
 }
