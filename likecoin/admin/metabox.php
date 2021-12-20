@@ -61,6 +61,7 @@ function likecoin_parse_publish_status( $publish_params ) {
 		if ( ! empty( $publish_params['article_hash'] ) ) {
 			$result['matters']['status']     = __( 'Published', LC_PLUGIN_SLUG );
 			$result['matters']['article_id'] = $publish_params['article_id'];
+			$result['matters']['ipfs_hash']  = $publish_params['ipfs_hash'];
 			$result['matters']['url']        = likecoin_matters_get_article_link(
 				$publish_params['matters_id'],
 				$publish_params['article_hash'],
