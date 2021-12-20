@@ -79,6 +79,7 @@ async function onRefreshPublishStatus(e) {
   const { matters, ipfs, arweave } = res;
   const isWordpressPublished = res.wordpress_published;
   lcPostInfo.isMattersPublished = res.matters.status;
+  lcPostInfo.mattersIPFSHash = res.matters.ipfs_hash;
   if (iscnHash && iscnId) { // state done
     const iscnIdString = encodeURIComponent(iscnId);
     updateMainTitleField('iscn-status-green', lcStringInfo.mainTitleDone);
@@ -264,9 +265,11 @@ function onSubmitToISCN(e) {
     const urlString = encodeURIComponent(url);
     const redirectString = encodeURIComponent(siteurl);
     const fingerprints = [];
+    let publisher = '';
     if (mattersIPFSHash) {
       const mattersIPFSHashFingerprint = `ipfs://${mattersIPFSHash}`;
       fingerprints.push(mattersIPFSHashFingerprint);
+      publisher = 'matters';
     }
     if (arweaveIPFSHash) {
       const arweaveIPFSHashFingerprint = `ipfs://${arweaveIPFSHash}`;
@@ -277,7 +280,7 @@ function onSubmitToISCN(e) {
       fingerprints.push(arweaveFingerprint);
     }
     const fingerprint = fingerprints.join(',');
-    const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=matters&title=${titleString}&tags=${tagsString}&opener=1&blocking=1&url=${urlString}&redirect_uri=${redirectString}`;
+    const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=${publisher}&title=${titleString}&tags=${tagsString}&opener=1&blocking=1&url=${urlString}&redirect_uri=${redirectString}`;
     window.open(
       likeCoISCNWidget,
       'likeCoISCNWindow',
