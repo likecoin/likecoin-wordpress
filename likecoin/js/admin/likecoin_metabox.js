@@ -193,7 +193,7 @@ async function onISCNCallback(event) {
     return;
   }
   try {
-    const res = await jQuery.ajax({
+    await jQuery.ajax({
       type: 'POST',
       url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/iscn`,
       dataType: 'json',
@@ -349,6 +349,9 @@ async function onEstimateAndUploadArweave(e) {
       }
       await onSubmitToISCN();
       return;
+    }
+    if (!LIKE && !memo) {
+      throw new Error('CANNOT_GET_LIKE_ESTIMATE');
     }
     const { siteurl } = wpApiSettings;
     const memoString = encodeURIComponent(memo);
