@@ -324,7 +324,29 @@ async function onEstimateAndUploadArweave(e) {
     const {
       ipfsHash, LIKE, memo, arweaveId,
     } = res;
-    if (ipfsHash && arweaveId) { // user could have uploaded Arweave but drop out on register ISCN
+    if (ipfsHash && arweaveId) { // same content existed in Arweave net
+      lcPostInfo.arweaveIPFSHash = ipfsHash;
+      lcPostInfo.arweaveId = arweaveId;
+      lcPostInfo.mainStatus = 'onRegisterISCN';
+      const data = {
+        arweaveIPFSHash: ipfsHash,
+        arweaveId,
+      };
+      // save to Wordpress DB
+      const response = await jQuery.ajax({
+        type: 'POST',
+        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/save-metadata`,
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(data),
+        method: 'POST',
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        },
+      });
+      if (!response.data) {
+        throw new Error('SERVER_ERROR');
+      }
       await onSubmitToISCN();
       return;
     }
