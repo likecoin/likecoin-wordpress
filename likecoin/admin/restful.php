@@ -202,7 +202,7 @@ function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|WP_REST_Response
  */
-function likecoin_rest_arweave_save_data( $request ) {
+function likecoin_rest_arweave_save_metadata( $request ) {
 	$post_id                    = $request['id'];
 	$arweave_info['ipfs_hash']  = $request['arweaveIPFSHash'];
 	$arweave_info['arweave_id'] = $request['arweaveId'];
@@ -446,10 +446,10 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/arweave/save-data',
+				'/posts/(?P<id>\d+)/arweave/save-metadata',
 				array(
 					'methods'             => 'POST',
-					'callback'            => 'likecoin_rest_arweave_save_data',
+					'callback'            => 'likecoin_rest_arweave_save_metadata',
 					'args'                => array(
 						'id' => array(
 							'validate_callback' => 'likecoin_is_numeric',

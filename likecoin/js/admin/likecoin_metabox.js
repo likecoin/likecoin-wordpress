@@ -335,7 +335,7 @@ async function onEstimateAndUploadArweave(e) {
       // save to Wordpress DB
       const response = await jQuery.ajax({
         type: 'POST',
-        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/save-data`,
+        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/save-metadata`,
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(data),
