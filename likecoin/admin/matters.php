@@ -98,7 +98,10 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 			$figure->appendChild( $image );
 			$parent = $figure;
 		}
-		$url           = $image->getAttribute( 'src' );
+		$url = $image->getAttribute( 'src' );
+		// Remove hashtag and querystring in url.
+		$url           = explode( '#', $url )[0];
+		$url           = explode( '?', $url )[0];
 		$classes       = $image->getAttribute( 'class' );
 		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
 		if ( ! $attachment_id && $classes && preg_match( '/wp-image-([0-9]+)/i', $classes, $class_id ) && absint( $class_id[1] ) ) {
@@ -132,6 +135,8 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 	$audios = $dom_document->getElementsByTagName( 'audio' );
 	foreach ( $audios as $audio ) {
 		$url           = $audio->getAttribute( 'src' );
+		$url           = explode( '#', $url )[0];
+		$url           = explode( '?', $url )[0];
 		$attachment_id = intval( $audio->getAttribute( 'data-attachment-id' ) );
 		$id            = null;
 		$filename      = null;
@@ -399,6 +404,8 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 	foreach ( $images as $image ) {
 		$image_infos              = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
 		$url                      = $image->getAttribute( 'src' );
+		$url                      = explode( '#', $url )[0];
+		$url                      = explode( '?', $url )[0];
 		$current_image_urls->$url = $image;
 		$image_url                = $url;
 		// if it's uploaded image, then skip likecoin_post_url_image_to_matters.

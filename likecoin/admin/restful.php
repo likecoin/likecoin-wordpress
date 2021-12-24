@@ -64,6 +64,8 @@ function likecoin_get_post_image_url( $post ) {
 	// get all images.
 	foreach ( $images as $image ) { // only works after attachment is converted to image by user.
 		$url    = $image->getAttribute( 'src' );
+		$url    = explode( '#', $url )[0];
+		$url    = explode( '?', $url )[0];
 		$urls[] = $url;
 	};
 	return $urls;
@@ -110,7 +112,7 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 			error_log( $response['body'] );
 			// phpcs:enable WordPress.PHP.DevelopmentFunctions
 		}
-		return new WP_REST_Response( array( 'error' => $response['body']), 400 );
+		return new WP_REST_Response( array( 'error' => $response['body'] ), 400 );
 	}
 	return new WP_REST_Response( $decoded_response, 200 );
 }
