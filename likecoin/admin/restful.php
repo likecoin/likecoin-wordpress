@@ -101,7 +101,7 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 			error_log( $response->get_error_message() );
 			// phpcs:enable WordPress.PHP.DevelopmentFunctions
 		}
-		return array( 'error' => $response->get_error_message() );
+		return new WP_REST_Response( array( 'error' => $response->get_error_message() ), 500 );
 	}
 	$decoded_response = json_decode( $response['body'], true );
 	if ( ! $decoded_response ) {
@@ -110,7 +110,7 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 			error_log( $response['body'] );
 			// phpcs:enable WordPress.PHP.DevelopmentFunctions
 		}
-		return array( 'error' => $response['body'] );
+		return new WP_REST_Response( array( 'error' => $response['body']), 400 );
 	}
 	return new WP_REST_Response( $decoded_response, 200 );
 }
@@ -175,7 +175,7 @@ function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
 			error_log( $response->get_error_message() );
 			// phpcs:enable WordPress.PHP.DevelopmentFunctions
 		}
-		return array( 'error' => $response->get_error_message() );
+		return new WP_REST_Response( array( 'error' => $response->get_error_message() ), 500 );
 	}
 	$decoded_response = json_decode( $response['body'], true );
 	if ( ! $decoded_response ) {
@@ -184,7 +184,7 @@ function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
 			error_log( $response['body'] );
 			// phpcs:enable WordPress.PHP.DevelopmentFunctions
 		}
-		return array( 'error' => $response['body'] );
+		return new WP_REST_Response( array( 'error' => $response['body'] ), 400 );
 	}
 	// save arweaveId & ipfsHash to WordPress DB.
 	$arweave_info = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
