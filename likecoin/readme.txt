@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 2.4.1
+Stable tag: 2.4.2
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,12 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.4.2 =
+
+- Fix handling of files already exist Arweave
+- Fix restful API error handling
+- Fix parsing of post image src with querysring
 
 = 2.4.1 =
 
