@@ -201,10 +201,10 @@ function likecoin_get_meta_box_button_params( $post ) {
  * @param boolean| $force Force update status.
  */
 function likecoin_get_meta_box_publish_params( $post, $force = false ) {
-	$option       = get_option( LC_PUBLISH_OPTION_NAME );
-	$is_enabled   = ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ] ) || ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ] );
-	$matters_info = likecoin_refresh_post_matters_status( $post, $force );
-	$arweave_info = get_post_meta( $post->ID, LC_ARWEAVE_INFO, true );
+	$option             = get_option( LC_PUBLISH_OPTION_NAME );
+	$is_matters_enabled = ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ] ) || ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ] );
+	$matters_info       = likecoin_refresh_post_matters_status( $post, $force );
+	$arweave_info       = get_post_meta( $post->ID, LC_ARWEAVE_INFO, true );
 	if ( isset( $matters_info['error'] ) ) {
 		$publish_params = array(
 			'error' => $matters_info['error'],
@@ -214,18 +214,18 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 		$iscn_info      = get_post_meta( $post_id, LC_ISCN_INFO, true ) ? get_post_meta( $post_id, LC_ISCN_INFO, true ) : get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
 		$publish_params = array(
-			'is_enabled'        => $is_enabled,
-			'matters_id'        => isset( $matters_info['article_author'] ) ? $matters_info['article_author'] : $matters_id,
-			'draft_id'          => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
-			'published'         => isset( $matters_info['published'] ) ? $matters_info['published'] : '',
-			'article_id'        => isset( $matters_info['article_id'] ) ? $matters_info['article_id'] : '',
-			'article_hash'      => isset( $matters_info['article_hash'] ) ? $matters_info['article_hash'] : '',
-			'article_slug'      => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
-			'ipfs_hash'         => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
-			'iscn_hash'         => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
-			'iscn_id'           => isset( $iscn_info['iscn_id'] ) ? $iscn_info['iscn_id'] : '',
-			'arweave_id'        => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
-			'arweave_ipfs_hash' => isset( $arweave_info['ipfs_hash'] ) ? $arweave_info['ipfs_hash'] : '',
+			'is_matters_enabled' => $is_matters_enabled,
+			'matters_id'         => isset( $matters_info['article_author'] ) ? $matters_info['article_author'] : $matters_id,
+			'draft_id'           => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
+			'published'          => isset( $matters_info['published'] ) ? $matters_info['published'] : '',
+			'article_id'         => isset( $matters_info['article_id'] ) ? $matters_info['article_id'] : '',
+			'article_hash'       => isset( $matters_info['article_hash'] ) ? $matters_info['article_hash'] : '',
+			'article_slug'       => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
+			'ipfs_hash'          => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
+			'iscn_hash'          => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
+			'iscn_id'            => isset( $iscn_info['iscn_id'] ) ? $iscn_info['iscn_id'] : '',
+			'arweave_id'         => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
+			'arweave_ipfs_hash'  => isset( $arweave_info['ipfs_hash'] ) ? $arweave_info['ipfs_hash'] : '',
 		);
 	}
 	return $publish_params;
@@ -247,17 +247,6 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 		<?php
 		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
 		echo esc_html( $status['error'] );
-		return;
-	}
-	?>
-	<?php
-	if ( ! $publish_params['is_enabled'] ) {
-		?>
-		<h3><?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
-		<a href="<?php echo esc_url( admin_url( 'admin.php?page=likecoin#/' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
-		<?php esc_html_e( 'Please setup publishing settings first.', LC_PLUGIN_SLUG ); ?>
-		</a>
-		<?php
 		return;
 	}
 	?>
@@ -331,8 +320,21 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 			</tr>
 			<tr>
 				<th><label><?php esc_html_e( 'Matters Article ID', LC_PLUGIN_SLUG ); ?></label></th>
-				<td id="lcMattersStatus">
-					<?php if ( 'Published' === $status['matters']['status'] ) { ?>
+				<td id="
+				<?php
+				if ( $publish_params['is_matters_enabled'] ) {
+					echo esc_attr( 'lcMattersStatus' );}
+				?>
+				">
+					<?php
+					if ( ! $publish_params['is_matters_enabled'] ) {
+						?>
+						<a href="<?php echo esc_url( admin_url( 'admin.php?page=likecoin#/' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
+						<?php esc_html_e( 'Please setup matters publishing settings first.', LC_PLUGIN_SLUG ); ?>
+						</a>
+						<?php
+					} elseif ( 'Published' === $status['matters']['status'] ) {
+						?>
 						<a class="lc-components-button is-tertiary" rel="noopener" target="_blank" href="<?php echo esc_url( $status['matters']['url'] ); ?>">
 							<?php echo esc_html( $status['matters']['article_id'] ); ?>
 						</a>
