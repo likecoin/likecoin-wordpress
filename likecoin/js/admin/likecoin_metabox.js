@@ -14,6 +14,20 @@ function createElementWithAttrbutes(el, {
   if (href) element.setAttribute('href', href);
   return element;
 }
+
+const {
+  mainStatusLoading,
+  mainStatusLIKEPay,
+  mainStatusUploadArweave,
+  mainStatusRegisterISCN,
+} = lcStringInfo;
+const MAIN_STATUS_TEXT_MAP = {
+  loading: mainStatusLoading,
+  onLIKEPay: mainStatusLIKEPay,
+  onUploadArweave: mainStatusUploadArweave,
+  onRegisterISCN: mainStatusRegisterISCN,
+};
+
 function updateMainTitleField(signalCSSClass, text) {
   mainTitleField.textContent = '';
   const statusDot = createElementWithAttrbutes('h1', {
@@ -27,36 +41,25 @@ function updateMainTitleField(signalCSSClass, text) {
   mainTitleField.appendChild(statusDot);
   mainTitleField.appendChild(statusText);
 }
-function generateMainStatusText(status) {
-  const {
-    mainStatusLoading,
-    mainStatusLIKEPay,
-    mainStatusUploadArweave,
-    mainStatusRegisterISCN,
-  } = lcStringInfo;
-  let mainStatusText;
-  switch (status) {
-    case 'loading':
-      mainStatusText = mainStatusLoading;
-      break;
-    case 'onLIKEPay':
-      mainStatusText = mainStatusLIKEPay;
-      break;
-    case 'onUploadArweave':
-      mainStatusText = mainStatusUploadArweave;
-      break;
-    case 'onRegisterISCN':
-      mainStatusText = mainStatusRegisterISCN;
-      break;
-    default:
-      mainStatusText = '-';
+
+function getStatusText(status) {
+  if (MAIN_STATUS_TEXT_MAP[status]) {
+    return MAIN_STATUS_TEXT_MAP[status];
   }
-  return mainStatusText;
+  return '-';
 }
-function updateFieldStatus(statusField, status) {
+
+function updateFieldStatusElement(statusField, status) {
   if (!statusField) return;
   statusField.textContent = ''; // eslint-disable-line no-param-reassign
   statusField.appendChild(status);
+}
+
+function updateFieldStatusText(statusField, text) {
+  const p = createElementWithAttrbutes('p', {
+    text,
+  });
+  updateFieldStatusElement(statusField, p);
 }
 
 async function onRefreshPublishStatus(e) {
@@ -90,7 +93,7 @@ async function onRefreshPublishStatus(e) {
       target: '_blank',
       href: `https://app.like.co/view/${iscnIdString}`,
     });
-    updateFieldStatus(ISCNStatusTextField, ISCNLink);
+    updateFieldStatusElement(ISCNStatusTextField, ISCNLink);
   } else if ( // show button
     isWordpressPublished === 'publish'
     && (lcPostInfo.mainStatus === 'initial' || lcPostInfo.mainStatus === 'failed')
@@ -104,7 +107,7 @@ async function onRefreshPublishStatus(e) {
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
-    updateFieldStatus(ISCNStatusTextField, arweaveISCNBtn);
+    updateFieldStatusElement(ISCNStatusTextField, arweaveISCNBtn);
     arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
   } else if (isWordpressPublished !== 'publish') { // state draft
     updateMainTitleField('iscn-status-red', lcStringInfo.mainTitleDraft);
@@ -114,18 +117,14 @@ async function onRefreshPublishStatus(e) {
       id: 'lcArweaveUploadBtn',
     });
     disabledarweaveISCNBtn.disabled = 'disabled';
-    updateFieldStatus(ISCNStatusTextField, disabledarweaveISCNBtn);
+    updateFieldStatusElement(ISCNStatusTextField, disabledarweaveISCNBtn);
   } else {
     // state intermediate but show status
     updateMainTitleField(
       'iscn-status-orange',
       lcStringInfo.mainTitleIntermediate,
     );
-    const text = generateMainStatusText(lcPostInfo.mainStatus);
-    const ISCNStatus = createElementWithAttrbutes('p', {
-      text,
-    });
-    updateFieldStatus(ISCNStatusTextField, ISCNStatus);
+    updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
   }
   if (arweave.url) {
     const { url } = arweave;
@@ -136,7 +135,7 @@ async function onRefreshPublishStatus(e) {
       target: '_blank',
       href: url,
     });
-    updateFieldStatus(arweaveTextField, arweaveLink);
+    updateFieldStatusElement(arweaveTextField, arweaveLink);
   }
   if (ipfs.url) {
     const { url, hash } = ipfs;
@@ -146,7 +145,7 @@ async function onRefreshPublishStatus(e) {
       target: '_blank',
       href: url,
     });
-    updateFieldStatus(ipfsTextField, IPFSLink);
+    updateFieldStatusElement(ipfsTextField, IPFSLink);
   }
   if (matters.url) {
     const { url } = matters;
@@ -171,7 +170,7 @@ async function onRefreshPublishStatus(e) {
         text: '-',
       });
     }
-    updateFieldStatus(mattersTextField, mattersLink);
+    updateFieldStatusElement(mattersTextField, mattersLink);
   }
 }
 
@@ -207,6 +206,7 @@ async function onISCNCallback(event) {
     });
     lcPostInfo.iscnHash = txHash;
     lcPostInfo.iscnId = iscnId;
+    lcPostInfo.mainStatus = 'done';
   } catch (err) {
     console.error(err);
     lcPostInfo.mainStatus = 'failed';
@@ -218,6 +218,7 @@ async function onISCNCallback(event) {
 async function uploadToArweave(data) {
   try {
     lcPostInfo.mainStatus = 'onUploadArweave';
+    updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
     const { tx_hash: txHash, error, success } = data;
     if (error || success === false) {
       lcPostInfo.mainStatus = 'failed';
@@ -240,7 +241,6 @@ async function uploadToArweave(data) {
     const { arweaveId, ipfsHash } = res.data;
     lcPostInfo.arweaveIPFSHash = ipfsHash;
     lcPostInfo.arweaveId = arweaveId;
-    lcPostInfo.mainStatus = 'onRegisterISCN';
   } catch (error) {
     console.error('Error occurs when uploading to Arweave:');
     console.error(error);
@@ -256,6 +256,7 @@ function onSubmitToISCN(e) {
   } = lcPostInfo;
   const { siteurl } = wpApiSettings;
   lcPostInfo.mainStatus = 'onRegisterISCN';
+  updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
   try {
     if (!mattersIPFSHash && !arweaveIPFSHash && !arweaveId) {
       throw new Error('NO_IPFS_HASH_NOR_ARWEAVE_ID_FOUND');
@@ -308,11 +309,13 @@ async function onLikePayCallback(event) {
   }
   lcPostInfo.mainStatus = 'onUploadArweave';
   await uploadToArweave(data);
+  await onRefreshPublishStatus();
   await onSubmitToISCN();
 }
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
   lcPostInfo.mainStatus = 'loading';
+  updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
   try {
     const res = await jQuery.ajax({
       type: 'POST',
@@ -329,6 +332,7 @@ async function onEstimateAndUploadArweave(e) {
       lcPostInfo.arweaveIPFSHash = ipfsHash;
       lcPostInfo.arweaveId = arweaveId;
       lcPostInfo.mainStatus = 'onRegisterISCN';
+      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
       const data = {
         arweaveIPFSHash: ipfsHash,
         arweaveId,
@@ -369,6 +373,7 @@ async function onEstimateAndUploadArweave(e) {
       false,
     );
     lcPostInfo.mainStatus = 'onLIKEPay';
+    updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
   } catch (error) {
     console.error('error occured when trying to estimate LIKE cost: ');
     console.error(error);

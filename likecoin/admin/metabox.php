@@ -477,10 +477,10 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'mainTitleDraft'          => __( 'Publish Your Post First', LC_PLUGIN_SLUG ),
 				'mainTitleIntermediate'   => __( 'READY to #DePub', LC_PLUGIN_SLUG ),
 				'mainTitleDone'           => __( 'LIVE on #DePub', LC_PLUGIN_SLUG ),
-				'mainStatusLoading'       => __( 'loading...', LC_PLUGIN_SLUG ),
-				'mainStatusLIKEPay'       => __( 'waiting for LIKE Pay...', LC_PLUGIN_SLUG ),
-				'mainStatusUploadArweave' => __( 'uploading to Arweave...', LC_PLUGIN_SLUG ),
-				'mainStatusRegisterISCN'  => __( 'registering ISCN...', LC_PLUGIN_SLUG ),
+				'mainStatusLoading'       => __( 'Loading...', LC_PLUGIN_SLUG ),
+				'mainStatusLIKEPay'       => __( 'Waiting for LIKE Pay...', LC_PLUGIN_SLUG ),
+				'mainStatusUploadArweave' => __( 'Uploading to Arweave...', LC_PLUGIN_SLUG ),
+				'mainStatusRegisterISCN'  => __( 'Registering ISCN...', LC_PLUGIN_SLUG ),
 			)
 		);
 }
