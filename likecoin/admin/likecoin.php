@@ -33,16 +33,6 @@ require_once dirname( __FILE__ ) . '/post.php';
 require_once dirname( __FILE__ ) . '/matters.php';
 require_once dirname( __FILE__ ) . '/error.php';
 require_once dirname( __FILE__ ) . '/view/view.php';
-/**
- * Inject web3.js on related admin pages
- *
- * @param string| $hook The current admin page filename.
- */
-function likecoin_load_scripts( $hook ) {
-	if ( 'toplevel_page_' . LC_BUTTON_SITE_OPTIONS_PAGE !== $hook && 'likecoin_page_' . LC_BUTTON_USER_OPTIONS_PAGE !== $hook ) {
-		return;
-	}
-}
 
 /**
  * Adds privacy policy to wp global privacy policy
@@ -80,7 +70,6 @@ function likecoin_admin_init() {
  * Run all admin related WordPress hook
  */
 function likecoin_add_admin_hooks() {
-	add_action( 'admin_enqueue_scripts', 'likecoin_load_scripts' );
 	add_action( 'admin_menu', 'likecoin_display_admin_pages' );
 	add_action( 'add_meta_boxes', 'likecoin_register_meta_boxes' );
 	add_action( 'admin_init', 'likecoin_admin_init' );

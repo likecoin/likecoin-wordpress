@@ -254,7 +254,7 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	if ( ! $publish_params['is_enabled'] ) {
 		?>
 		<h3><?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
-		<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
+		<a href="<?php echo esc_url( admin_url( 'admin.php?page=likecoin#/' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
 		<?php esc_html_e( 'Please setup publishing settings first.', LC_PLUGIN_SLUG ); ?>
 		</a>
 		<?php
@@ -363,13 +363,13 @@ function likecoin_add_button_meta_box( $button_params ) {
 
 	<?php if ( $is_disabled ) { ?>
 		<p>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_BUTTON_SITE_OPTIONS_PAGE ) ); ?>">
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=likecoin#/' . LC_BUTTON_SITE_OPTIONS_PAGE ) ); ?>">
 				<?php esc_html_e( 'LikeCoin button per post setting is disabled by admin.', LC_PLUGIN_SLUG ); ?>
 			</a>
 		</p>
 	<?php } elseif ( $show_no_id_error ) { ?>
 		<p>
-			<a href="<?php echo esc_url( admin_url( 'admin.php?page=' . LC_BUTTON_USER_OPTIONS_PAGE ) ); ?>">
+			<a href="<?php echo esc_url( admin_url( 'admin.php?page=likecoin#/' . LC_BUTTON_USER_OPTIONS_PAGE ) ); ?>">
 				<?php esc_html_e( 'Author has no Liker ID yet.', LC_PLUGIN_SLUG ); ?>
 			</a>
 		</p>
