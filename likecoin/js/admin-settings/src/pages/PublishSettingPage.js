@@ -1,7 +1,6 @@
 import {
   useRef, useState, useEffect,
 } from 'react';
-import axios from 'axios';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import LikecoinHeading from '../components/LikecoinHeading';
@@ -181,14 +180,28 @@ function PublishSettingPage() {
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      <MattersDescription />
+      <hr />
+      <Section title={__('Publish to ISCN', 'likecoin')} />
+      <table className="form-table" role="presentation">
+        <DropDown
+          selected={ISCNBadgeStyleOption}
+          handleSelect={setISCNBadgeStyleOption}
+          title={__('Show ISCN badge in post', 'likecoin')}
+          selectRef={ISCNBadgeStyleOptionRef}
+          options={ISCNStyleOptions}
+        />
+      </table>
+      <SubmitButton />
+      <hr />
       <Section title={__('Login with Matters ID', 'likecoin')} />
+      <MattersDescription />
       <MattersLoginTable
         loginHandler={loginHandler}
         mattersIdRef={mattersIdRef}
         mattersPasswordRef={mattersPasswordRef}
         mattersLoginError={mattersLoginError}
       />
+      <hr />
       <form onSubmit={confirmHandler}>
         <Section title={__('Matters connection status', 'likecoin')} />
         <MattersStatusTable
@@ -221,17 +234,6 @@ function PublishSettingPage() {
             />
           </tbody>
         </table>
-        <Section title={__('Publish to ISCN', 'likecoin')} />
-        <table className="form-table" role="presentation">
-          <DropDown
-            selected={ISCNBadgeStyleOption}
-            handleSelect={setISCNBadgeStyleOption}
-            title={__('Show ISCN badge in post', 'likecoin')}
-            selectRef={ISCNBadgeStyleOptionRef}
-            options={ISCNStyleOptions}
-          />
-        </table>
-        <SubmitButton />
       </form>
     </div>
   );

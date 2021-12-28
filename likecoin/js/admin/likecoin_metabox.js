@@ -54,6 +54,7 @@ function generateMainStatusText(status) {
   return mainStatusText;
 }
 function updateFieldStatus(statusField, status) {
+  if (!statusField) return;
   statusField.textContent = ''; // eslint-disable-line no-param-reassign
   statusField.appendChild(status);
 }
