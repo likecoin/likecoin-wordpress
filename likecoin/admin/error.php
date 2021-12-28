@@ -73,7 +73,7 @@ function likecoin_show_admin_errors() {
 			<p><?php echo esc_html( $title ); ?></p>
 			<p><?php echo esc_html( $error['message'] ); ?></p>
 			<a href="
-			<?php echo esc_url( admin_url( 'options-general.php?page=' . $option_page ) ); ?> "><?php esc_html_e( 'Go to settings', LC_PLUGIN_SLUG ); ?></a>
+			<?php echo esc_url( admin_url( 'options-general.php?page=likecoin#/' . $option_page ) ); ?> "><?php esc_html_e( 'Go to settings', LC_PLUGIN_SLUG ); ?></a>
 		</div>
 		<?php
 		// do not delete since Gutenberg fetch edit post once before restful.
