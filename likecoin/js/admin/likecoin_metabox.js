@@ -124,7 +124,13 @@ async function onRefreshPublishStatus(e) {
       id: 'lcArweaveUploadBtn',
     });
     disabledarweaveISCNBtn.disabled = 'disabled';
-    updateFieldStatusElement(ISCNStatusTextField, disabledarweaveISCNBtn);
+    const draftDescription = createElementWithAttrbutes('p', {
+      text: lcStringInfo.mainTitleDraft,
+    });
+    const element = document.createElement('div');
+    element.appendChild(disabledarweaveISCNBtn);
+    element.appendChild(draftDescription);
+    updateFieldStatusElement(ISCNStatusTextField, element);
   } else {
     // state intermediate but show status
     updateMainTitleField(
