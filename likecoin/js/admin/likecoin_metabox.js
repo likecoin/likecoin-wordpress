@@ -189,23 +189,20 @@ async function onRefreshPublishStatus(e) {
 
 async function onISCNCallback(event) {
   if (event.origin !== 'https://like.co') {
-    lcPostInfo.mainStatus = 'failed';
     return;
   }
   lcPostInfo.mainStatus = 'onRegisterISCN';
-  const { action, data } = JSON.parse(event.data);
-  if (action !== 'ISCN_SUBMITTED') {
-    lcPostInfo.mainStatus = 'failed';
-    return;
-  }
-  const {
-    tx_hash: txHash, error, success, iscnId,
-  } = data;
-  if (error || success === false) {
-    lcPostInfo.mainStatus = 'failed';
-    return;
-  }
   try {
+    const { action, data } = JSON.parse(event.data);
+    if (action !== 'ISCN_SUBMITTED') {
+      return;
+    }
+    const {
+      tx_hash: txHash, error, success, iscnId,
+    } = data;
+    if (error || success === false) {
+      throw new Error('REGISTER_ISCN_SERVER_ERROR');
+    }
     await jQuery.ajax({
       type: 'POST',
       url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/iscn`,
@@ -312,20 +309,23 @@ function onSubmitToISCN(e) {
 async function onLikePayCallback(event) {
   event.preventDefault();
   if (event.origin !== 'https://like.co') { // For development, skip this line.
-    lcPostInfo.mainStatus = 'failed';
     return;
   }
-  const { action, data } = JSON.parse(event.data);
-  if (action !== 'TX_SUBMITTED') {
+  try {
+    const { action, data } = JSON.parse(event.data);
+    if (action !== 'TX_SUBMITTED') {
+      return;
+    }
+    lcPostInfo.mainStatus = 'onUploadArweave';
+    await uploadToArweave(data);
+    await Promise.all([
+      onRefreshPublishStatus().catch((e) => console.error(e)),
+      onSubmitToISCN(),
+    ]);
+  } catch (error) {
+    console.error(error);
     lcPostInfo.mainStatus = 'failed';
-    return;
   }
-  lcPostInfo.mainStatus = 'onUploadArweave';
-  await uploadToArweave(data);
-  await Promise.all([
-    onRefreshPublishStatus().catch((e) => console.error(e)),
-    onSubmitToISCN(),
-  ]);
 }
 
 async function onEstimateAndUploadArweave(e) {
