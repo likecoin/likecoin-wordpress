@@ -195,7 +195,7 @@ async function onISCNCallback(event) {
   try {
     const { action, data } = JSON.parse(event.data);
     if (action !== 'ISCN_SUBMITTED') {
-      throw new Error('REGISTER_ISCN_SERVER_ERROR');
+      return;
     }
     const {
       tx_hash: txHash, error, success, iscnId,
@@ -314,7 +314,6 @@ async function onLikePayCallback(event) {
   try {
     const { action, data } = JSON.parse(event.data);
     if (action !== 'TX_SUBMITTED') {
-      lcPostInfo.mainStatus = 'failed';
       return;
     }
     lcPostInfo.mainStatus = 'onUploadArweave';
