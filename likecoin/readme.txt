@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 2.4.2
+Stable tag: 2.4.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,15 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.4.3 =
+
+- Improved user experience for Arweave and ISCN submission
+- Fix broken admin settings links
+- Fix ISCN button was not available if Matters options are not enabled
+- Fix missing i18n string
+- Added ISCN description
+
 
 = 2.4.2 =
 
