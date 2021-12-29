@@ -9,6 +9,7 @@ import SettingNotice from '../components/SettingNotice';
 import CheckBox from '../components/CheckBox';
 import DropDown from '../components/DropDown';
 import SubmitButton from '../components/SubmitButton';
+import ISCNDescription from '../components/ISCNDescription';
 import MattersDescription from '../components/MattersDescription';
 import MattersLoginTable from '../components/MattersLoginTable';
 import MattersStatusTable from '../components/MattersStatusTable';
@@ -182,16 +183,19 @@ function PublishSettingPage() {
       )}
       <hr />
       <Section title={__('Publish to ISCN', 'likecoin')} />
-      <table className="form-table" role="presentation">
-        <DropDown
-          selected={ISCNBadgeStyleOption}
-          handleSelect={setISCNBadgeStyleOption}
-          title={__('Show ISCN badge in post', 'likecoin')}
-          selectRef={ISCNBadgeStyleOptionRef}
-          options={ISCNStyleOptions}
-        />
-      </table>
-      <SubmitButton />
+      <form onSubmit={confirmHandler}>
+        <ISCNDescription />
+        <table className="form-table" role="presentation">
+          <DropDown
+            selected={ISCNBadgeStyleOption}
+            handleSelect={setISCNBadgeStyleOption}
+            title={__('Show ISCN badge in post', 'likecoin')}
+            selectRef={ISCNBadgeStyleOptionRef}
+            options={ISCNStyleOptions}
+          />
+        </table>
+        <SubmitButton />
+      </form>
       <hr />
       <Section title={__('Login with Matters ID', 'likecoin')} />
       <MattersDescription />
@@ -234,6 +238,7 @@ function PublishSettingPage() {
             />
           </tbody>
         </table>
+        <SubmitButton />
       </form>
     </div>
   );
