@@ -481,6 +481,9 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'mainStatusLIKEPay'       => __( 'Waiting for LIKE Pay...', LC_PLUGIN_SLUG ),
 				'mainStatusUploadArweave' => __( 'Uploading to Arweave...', LC_PLUGIN_SLUG ),
 				'mainStatusRegisterISCN'  => __( 'Registering ISCN...', LC_PLUGIN_SLUG ),
+				'buttonSubmitISCN'				=> __( 'Submit to ISCN', LC_PLUGIN_SLUG ),
+				'buttonRegisterISCN'  		=> __( 'Register ISCN', LC_PLUGIN_SLUG ),
+				'draft'										=> __( 'Draft', LC_PLUGIN_SLUG),
 			)
 		);
 }
