@@ -20,6 +20,9 @@ const {
   mainStatusLIKEPay,
   mainStatusUploadArweave,
   mainStatusRegisterISCN,
+  buttonSubmitISCN,
+  buttonRegisterISCN,
+  draft,
 } = lcStringInfo;
 const MAIN_STATUS_TEXT_MAP = {
   loading: mainStatusLoading,
@@ -103,16 +106,20 @@ async function onRefreshPublishStatus(e) {
       lcStringInfo.mainTitleIntermediate,
     );
     const arweaveISCNBtn = createElementWithAttrbutes('button', {
-      text: 'Submit to ISCN',
+      text: arweave.url ? buttonRegisterISCN : buttonSubmitISCN,
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
     updateFieldStatusElement(ISCNStatusTextField, arweaveISCNBtn);
-    arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
+    if (arweave.url) {
+      arweaveISCNBtn.addEventListener('click', onSubmitToISCN);
+    } else {
+      arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
+    }
   } else if (isWordpressPublished !== 'publish') { // state draft
     updateMainTitleField('iscn-status-red', lcStringInfo.mainTitleDraft);
     const disabledarweaveISCNBtn = createElementWithAttrbutes('button', {
-      text: 'Submit to ISCN',
+      text: buttonSubmitISCN,
       className: 'button button-primary',
       id: 'lcArweaveUploadBtn',
     });
@@ -160,7 +167,7 @@ async function onRefreshPublishStatus(e) {
       });
     } else if (articleId.length !== 0) {
       mattersLink = createElementWithAttrbutes('a', {
-        text: 'Draft',
+        text: draft,
         rel: 'noopener',
         target: '_blank',
         href: url,
@@ -309,9 +316,12 @@ async function onLikePayCallback(event) {
   }
   lcPostInfo.mainStatus = 'onUploadArweave';
   await uploadToArweave(data);
-  await onRefreshPublishStatus();
-  await onSubmitToISCN();
+  await Promise.all([
+    onRefreshPublishStatus().catch((e) => console.error(e)),
+    onSubmitToISCN(),
+  ]);
 }
+
 async function onEstimateAndUploadArweave(e) {
   e.preventDefault();
   lcPostInfo.mainStatus = 'loading';
@@ -382,7 +392,6 @@ async function onEstimateAndUploadArweave(e) {
 }
 (() => {
   const refreshBtn = document.getElementById('lcPublishRefreshBtn');
-  const arweaveISCNBtn = document.getElementById('lcArweaveISCNBtn');
   if (refreshBtn) refreshBtn.addEventListener('click', onRefreshPublishStatus);
-  if (arweaveISCNBtn) arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
+  onRefreshPublishStatus();
 })();
