@@ -304,6 +304,7 @@ function onSubmitToISCN(e) {
       lcPostInfo.mainStatus = 'failedPopup';
       updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
     } else {
+      lcPostInfo.mainStatus = 'initial';
       window.addEventListener('message', onISCNCallback, false);
     }
   } catch (error) {
@@ -392,6 +393,7 @@ async function onEstimateAndUploadArweave(e) {
     );
     if (!likePayWindow || likePayWindow.closed || typeof likePayWindow.closed == 'undefined') {
       lcPostInfo.mainStatus = 'failedPopup';
+      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
     } else {
       window.addEventListener(
         'message',
@@ -399,8 +401,9 @@ async function onEstimateAndUploadArweave(e) {
         false,
       );
       lcPostInfo.mainStatus = 'onLIKEPay';
+      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
+      lcPostInfo.mainStatus = 'initial';
     }
-    updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
   } catch (error) {
     console.error('error occured when trying to estimate LIKE cost: ');
     console.error(error);
