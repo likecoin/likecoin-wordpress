@@ -17,6 +17,7 @@ function createElementWithAttrbutes(el, {
 
 const {
   mainStatusLoading,
+  mainStatusFailedPopUp,
   mainStatusLIKEPay,
   mainStatusUploadArweave,
   mainStatusRegisterISCN,
@@ -26,6 +27,7 @@ const {
 } = lcStringInfo;
 const MAIN_STATUS_TEXT_MAP = {
   loading: mainStatusLoading,
+  failedPopup: mainStatusFailedPopUp,
   onLIKEPay: mainStatusLIKEPay,
   onUploadArweave: mainStatusUploadArweave,
   onRegisterISCN: mainStatusRegisterISCN,
@@ -99,7 +101,7 @@ async function onRefreshPublishStatus(e) {
     updateFieldStatusElement(ISCNStatusTextField, ISCNLink);
   } else if ( // show button
     isWordpressPublished === 'publish'
-    && (lcPostInfo.mainStatus === 'initial' || lcPostInfo.mainStatus === 'failed')
+    && (lcPostInfo.mainStatus === 'initial' || lcPostInfo.mainStatus.includes('failed'))
   ) {
     updateMainTitleField(
       'iscn-status-orange',
@@ -293,12 +295,18 @@ function onSubmitToISCN(e) {
     }
     const fingerprint = fingerprints.join(',');
     const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=${publisher}&title=${titleString}&tags=${tagsString}&opener=1&blocking=1&url=${urlString}&redirect_uri=${redirectString}`;
-    window.open(
+    const ISCNWindow = window.open(
       likeCoISCNWidget,
       'likeCoISCNWindow',
       'menubar=no,location=no,width=576,height=768',
     );
-    window.addEventListener('message', onISCNCallback, false);
+    if (!ISCNWindow || ISCNWindow.closed || typeof ISCNWindow.closed == 'undefined') {
+      lcPostInfo.mainStatus = 'failedPopup';
+      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
+    } else {
+      lcPostInfo.mainStatus = 'initial';
+      window.addEventListener('message', onISCNCallback, false);
+    }
   } catch (error) {
     console.error('error occured when submitting ISCN:');
     console.error(error);
@@ -378,18 +386,24 @@ async function onEstimateAndUploadArweave(e) {
     const memoString = encodeURIComponent(memo);
     const redirectString = encodeURIComponent(siteurl);
     const likePayWidget = `https://like.co/in/widget/pay?to=like-arweave&amount=${LIKE}&remarks=${memoString}&opener=1&redirect_uri=${redirectString}`;
-    window.open(
+    const likePayWindow = window.open(
       likePayWidget,
       'likePayWindow',
       'menubar=no,location=no,width=576,height=768',
     );
-    window.addEventListener(
-      'message',
-      onLikePayCallback,
-      false,
-    );
-    lcPostInfo.mainStatus = 'onLIKEPay';
-    updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
+    if (!likePayWindow || likePayWindow.closed || typeof likePayWindow.closed == 'undefined') {
+      lcPostInfo.mainStatus = 'failedPopup';
+      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
+    } else {
+      window.addEventListener(
+        'message',
+        onLikePayCallback,
+        false,
+      );
+      lcPostInfo.mainStatus = 'onLIKEPay';
+      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
+      lcPostInfo.mainStatus = 'initial';
+    }
   } catch (error) {
     console.error('error occured when trying to estimate LIKE cost: ');
     console.error(error);
