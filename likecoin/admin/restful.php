@@ -77,9 +77,9 @@ function likecoin_get_post_image_url( $post ) {
  */
 function likecoin_get_post_iscn_meta( $post ) {
 	$iscn_related_post_meta = array();
-	$user                    = wp_get_current_user();
-	$user_id                 = $user->ID;
-	$title                   = apply_filters( 'the_title_rss', $post->post_title );
+	$user                   = wp_get_current_user();
+	$user_id                = $user->ID;
+	$title                  = apply_filters( 'the_title_rss', $post->post_title );
 	if ( isset( $title ) ) {
 		$iscn_related_post_meta['title'] = $title;
 	}
