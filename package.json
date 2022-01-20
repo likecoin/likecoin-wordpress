@@ -6,9 +6,10 @@
     "node": ">=14"
   },
   "scripts": {
-    "build": "npm run build:babel && NODE_ENV=production rollup -c && npm run build:admin-settings",
+    "build": "npm run build:babel && NODE_ENV=production rollup -c && npm run build:admin-settings && npm run build:sidebar",
     "build:babel": "cd likecoin/js && BABEL_ENV=production babel admin --out-dir '../assets/js/admin'",
     "build:admin-settings": "cd likecoin/js/admin-settings && npm run build && cd ../../.. && rm -rf likecoin/assets/js/admin-settings && mv likecoin/js/admin-settings/build likecoin/assets/js/admin-settings",
+    "build:sidebar": "cd likecoin/js/sidebar && npm run build && cd ../../.. && rm -rf likecoin/assets/js/sidebar && mv likecoin/js/sidebar/build likecoin/assets/js/sidebar && cd likecoin/assets/js/sidebar && rm index.asset.php",
     "test": "npm run lint && npm run test:admin-settings",
     "test:admin-settings": "cd js/admin-settings && npm run test",
     "lint": "npm run lint:es && npm run lint:style",
@@ -23,6 +24,7 @@
     "@wordpress/element": "^4.0.1",
     "@wordpress/i18n": "^4.2.2",
     "axios": "^0.21.4",
+    "bignumber.js": "^9.0.2",
     "lodash": "^4.17.21",
     "react": "^16.0.2",
     "react-dom": "^16.0.2",
