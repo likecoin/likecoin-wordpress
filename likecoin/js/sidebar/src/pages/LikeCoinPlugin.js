@@ -124,7 +124,9 @@ function LikeCoinPlugin(props) {
         const redirectString = encodeURIComponent(siteurl);
         const titleString = encodeURIComponent(title);
         const fingerprint = fingerprints.join(',');
-        const popUpWidget = `https://like.co/in/widget/iscn-ar?fingerprint=${fingerprint}&publisher=&title=${titleString}&tags=${tagsString}&url=${urlString}&to=like-arweave&amount=0&remarks=${memoString}&opener=1&redirect_uri=${redirectString}`;
+        const authorString = encodeURIComponent(author);
+        const descriptionString = encodeURIComponent(description);
+        const popUpWidget = `https://like.co/in/widget/iscn-ar?fingerprint=${fingerprint}&author=${authorString}&description=${descriptionString}&publisher=&title=${titleString}&tags=${tagsString}&url=${urlString}&to=like-arweave&amount=0&remarks=${memoString}&opener=1&redirect_uri=${redirectString}`;
         setPopUpWindow(
           window.open(
             popUpWidget,
@@ -137,7 +139,7 @@ function LikeCoinPlugin(props) {
     } catch (error) {
       console.error(error);
     }
-  }, [memo, title, fingerprints, tags, url, onISCNCallback]);
+  }, [memo, title, fingerprints, tags, url, author, description, onISCNCallback]);
   const sendISCNReadyMessage = useCallback(() => {
     const startRegisterISCNMessage = JSON.stringify({
       action: 'REGISTER_ISCN',
@@ -148,11 +150,13 @@ function LikeCoinPlugin(props) {
         url,
         type: 'article',
         license: '',
+        author,
+        description,
       },
     });
     popUpWindow.postMessage(startRegisterISCNMessage, 'https://like.co');
     window.addEventListener('message', onISCNCallback, false);
-  }, [fingerprints, title, tags, url, onISCNCallback, popUpWindow]);
+  }, [fingerprints, title, tags, url, author, description, onISCNCallback, popUpWindow]);
 
   useEffect(() => {
     setLIKE(props.DBLIKEPayAmount);
