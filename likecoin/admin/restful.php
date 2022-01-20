@@ -71,6 +71,44 @@ function likecoin_get_post_image_url( $post ) {
 	return $urls;
 }
 /**
+ * Get ISCN register related post metadata.
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_get_post_iscn_meta( $post ) {
+	$iscn_related_post_meta = array();
+	$user                    = wp_get_current_user();
+	$user_id                 = $user->ID;
+	$title                   = apply_filters( 'the_title_rss', $post->post_title );
+	if ( isset( $title ) ) {
+		$iscn_related_post_meta['title'] = $title;
+	}
+	$author = $user->display_name;
+	if ( isset( $author ) ) {
+		$iscn_related_post_meta['author'] = $author;
+	}
+	$description = get_the_author_meta( 'description', $user_id );
+	if ( isset( $description ) ) {
+		$iscn_related_post_meta['description'] = $description;
+	}
+	$url = get_permalink( $post );
+	if ( isset( $url ) ) {
+		$iscn_related_post_meta['url'] = $url;
+	}
+	$tags = likecoin_get_post_tags_for_matters( $post );
+	if ( is_array( $tags ) ) {
+		$iscn_related_post_meta['tags'] = $tags;
+	}
+	$content    = apply_filters( 'the_content', $post->post_content );
+	$content    = wp_strip_all_tags( $content );
+	$word_count = str_word_count( $content );
+	if ( isset( $word_count ) ) {
+		$iscn_related_post_meta['wordCount'] = $word_count;
+	}
+	return $iscn_related_post_meta;
+}
+
+/**
  * Add likecoin arweave estimate endpoint.
  *
  * @param WP_REST_Request $request Full data about the request.
@@ -86,6 +124,9 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 	$boundary = base64_encode( wp_generate_password( 24 ) );
 	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$body                      = likecoin_format_post_to_multipart_formdata( $boundary, $post );
+	$title                     = apply_filters( 'the_title_rss', $post->post_title );
+	$tags                      = likecoin_get_post_tags_for_matters( $post );
+	$url                       = get_permalink( $post );
 	$likecoin_api_estimate_url = 'https://api.like.co/api/arweave/estimate';
 	$response                  = wp_remote_post(
 		$likecoin_api_estimate_url,
@@ -114,6 +155,20 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 		}
 		return new WP_REST_Response( array( 'error' => $response['body'] ), 400 );
 	}
+	$decoded_response['title'] = $title;
+	$publish_params            = likecoin_get_meta_box_publish_params( $post );
+	if ( isset( $publish_params['ipfs_hash'] ) ) {
+		$decoded_response['mattersIPFSHash']    = $publish_params['ipfs_hash'];
+		$decoded_response['mattersId']          = $publish_params['matters_id'];
+		$decoded_response['mattersArticleId']   = $publish_params['article_id'];
+		$decoded_response['mattersArticleSlug'] = $publish_params['article_slug'];
+	}
+	$decoded_response['tags']        = $tags;
+	$decoded_response['url']         = $url;
+	$iscn_related_post_meta          = likecoin_get_post_iscn_meta( $post );
+	$decoded_response['author']      = $iscn_related_post_meta['author'];
+	$decoded_response['description'] = $iscn_related_post_meta['description'];
+	$decoded_response['wordCount']   = $iscn_related_post_meta['wordCount'];
 	return new WP_REST_Response( $decoded_response, 200 );
 }
 /**
@@ -168,6 +223,7 @@ function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
  * @return WP_Error|WP_REST_Response
  */
 function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
+	global $post;
 	$post_id  = $request['id'];
 	$response = likecoin_upload_to_arweave( $request );
 	if ( is_wp_error( $response ) ) {
@@ -196,6 +252,9 @@ function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
 	$arweave_info['arweave_id'] = $decoded_response['arweaveId'];
 	$arweave_info['ipfs_hash']  = $decoded_response['ipfsHash'];
 	update_post_meta( $post_id, LC_ARWEAVE_INFO, $arweave_info );
+	$publish_params                      = likecoin_get_meta_box_publish_params( $post );
+	$decoded_response['mattersIPFSHash'] = $publish_params['ipfsHash'];
+
 	return new WP_REST_Response( array( 'data' => $decoded_response ), 200 );
 }
 /**
@@ -228,7 +287,7 @@ function likecoin_upload_to_arweave( $request ) {
 	$boundary = base64_encode( wp_generate_password( 24 ) );
 	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$body                    = likecoin_format_post_to_multipart_formdata( $boundary, $post );
-	$likecoin_api_upload_url = 'https://api.like.co/api/arweave/upload?txHash=' . $tx_hash; // TODO: change based on test/main net.
+	$likecoin_api_upload_url = 'https://api.like.co/api/arweave/upload?txHash=' . $tx_hash;
 	$response                = wp_remote_post(
 		$likecoin_api_upload_url,
 		array(
@@ -247,25 +306,88 @@ function likecoin_upload_to_arweave( $request ) {
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|WP_REST_Response
  */
-function likecoin_rest_update_iscn_hash( $request ) {
+function likecoin_rest_update_iscn_hash_and_version( $request ) {
 	$post_id = $request['id'];
 	$params  = $request->get_json_params();
 	$post    = get_post( $post_id );
 	if ( ! isset( $post ) ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
-	$iscn_hash         = $params['iscnHash'];
-	$iscn_id           = $params['iscnId'];
 	$iscn_mainnet_info = get_post_meta( $post_id, LC_ISCN_INFO, true );
 	if ( ! is_array( $iscn_mainnet_info ) ) {
 		$iscn_mainnet_info = array();
 	}
+	if ( isset( $params['iscnHash'] ) ) {
+		$iscn_hash                      = $params['iscnHash'];
+		$iscn_mainnet_info['iscn_hash'] = $iscn_hash;
+	}
+	$data = array();
+	if ( isset( $params['iscnId'] ) ) {
+		$iscn_id                      = $params['iscnId'];
+		$iscn_mainnet_info['iscn_id'] = $iscn_id;
+		$data['iscn_id']              = $iscn_id;
+	}
+	if ( isset( $params['iscnVersion'] ) && isset( $params['iscnTimestamp'] ) ) {
+		$iscn_version                         = $params['iscnVersion'];
+		$iscn_timestamp                       = $params['iscnTimestamp'];
+		$iscn_mainnet_info['iscn_version']    = $iscn_version;
+		$iscn_mainnet_info['last_saved_time'] = $iscn_timestamp;
+		$iscn_timestamp_local_time            = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $iscn_timestamp ), 'Y-m-d H:i:s' );
+		$timezone                             = wp_timezone_string();
+		$data['iscnVersion']                  = $iscn_version;
+		$data['timeZone']                     = $timezone;
+		$data['localTime']                    = $iscn_timestamp_local_time;
+	}
 	// only allow to publish to mainnet going forward.
-	$iscn_mainnet_info['iscn_hash'] = $iscn_hash;
-	$iscn_mainnet_info['iscn_id']   = $iscn_id;
 	update_post_meta( $post_id, LC_ISCN_INFO, $iscn_mainnet_info );
-	$data = likecoin_parse_iscn_status( array( 'iscn_hash' => $iscn_hash ), $post );
 	return new WP_REST_Response( $data, 200 );
+}
+
+/**
+ * Add get ISCN related info.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_Error|WP_REST_Response
+ */
+function likecoin_get_iscn_full_info( $request ) {
+	$post_id = $request['id'];
+	$params  = $request->get_json_params();
+	$post    = get_post( $post_id );
+	if ( ! isset( $post ) ) {
+		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
+	}
+	$iscn_full_info = array();
+	$iscn_info      = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	if ( is_array( $iscn_info ) ) {
+		$iscn_full_info['iscnHash'] = $iscn_info['iscn_hash'];
+		$iscn_full_info['iscnId']   = $iscn_info['iscn_id'];
+		$timezone                   = wp_timezone_string();
+		$iscn_timestamp_local_time  = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $iscn_info['last_saved_time'] ), 'Y-m-d H:i:s' );
+		// iscnVersion should be taken from chain API.
+		$iscn_full_info['timeZone']    = $timezone;
+		$iscn_full_info['localTime']   = $iscn_timestamp_local_time;
+		$iscn_full_info['iscnVersion'] = $iscn_info['iscn_version'];
+	}
+	$arweave_info = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
+	if ( is_array( $arweave_info ) ) {
+		$iscn_full_info['arweaveId']       = $arweave_info['arweave_id'];
+		$iscn_full_info['arweaveIPFSHash'] = $arweave_info['ipfs_hash'];
+	}
+	$publish_params = likecoin_get_meta_box_publish_params( $post );
+	if ( is_array( $publish_params ) ) {
+		$iscn_full_info['mattersIPFSHash']    = $publish_params['ipfsHash'];
+		$iscn_full_info['mattersArticleId']   = $publish_params['article_id'];
+		$iscn_full_info['mattersId']          = $publish_params['matters_id'];
+		$iscn_full_info['mattersArticleSlug'] = $publish_params['article_slug'];
+	}
+	$iscn_related_post_meta        = likecoin_get_post_iscn_meta( $post );
+	$iscn_full_info['title']       = $iscn_related_post_meta['title'];
+	$iscn_full_info['author']      = $iscn_related_post_meta['author'];
+	$iscn_full_info['description'] = $iscn_related_post_meta['description'];
+	$iscn_full_info['url']         = $iscn_related_post_meta['url'];
+	$iscn_full_info['tags']        = $iscn_related_post_meta['tags'];
+	$iscn_full_info['wordCount']   = $iscn_related_post_meta['wordCount'];
+	return new WP_REST_Response( $iscn_full_info, 200 );
 }
 
 /**
@@ -465,13 +587,29 @@ function likecoin_init_restful_service() {
 				'/posts/(?P<id>\d+)/publish/iscn',
 				array(
 					'methods'             => 'POST',
-					'callback'            => 'likecoin_rest_update_iscn_hash',
+					'callback'            => 'likecoin_rest_update_iscn_hash_and_version',
 					'args'                => array(
 						'id' => array(
 							'validate_callback' => 'likecoin_is_numeric',
 						),
 					),
 					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/posts/(?P<id>\d+)/iscn/full-info',
+				array(
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_get_iscn_full_info',
+					'args'                => array(
+						'id' => array(
+							'validate_callback' => 'likecoin_is_numeric',
+						),
+					),
+					'permission_callback' => function () {
+						return current_user_can( 'read' );
+					},
 				)
 			);
 		}

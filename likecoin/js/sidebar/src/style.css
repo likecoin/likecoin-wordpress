@@ -1,0 +1,304 @@
+/* style.css */
+.divOuterHolder {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  align-items: center;
+}
+
+.divOuterHolderStatusInfoPanel {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  align-items: center;
+  flex-direction: column;
+  border-bottom: 0px;
+}
+
+.divOuterHolderMainSidebar {
+  display: flex;
+  border-bottom: 1px solid #e0e0e0;
+  align-items: start;
+  flex-direction: column;
+}
+
+.divInnerHolder {
+  padding: 10px;
+  margin: auto;
+}
+
+.dePubDiv {
+  padding: 10px 0 10px 0px;
+}
+
+.dePubMainSidebarDiv {
+  padding: 10px 0 10px 10px;
+}
+
+.dePubStatusRed {
+  size: 14px;
+  margin: auto;
+  color: #1e1e1e;
+  font-weight: 700;
+}
+
+.likeCoinIconOuterDiv {
+  padding: 10px;
+}
+
+.sidebarStatusTitleOuterDiv {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 10px 0 10px;
+  width: 100%;
+}
+
+.sidebarStatusTitleOuterDivPointer {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 10px 0 10px;
+  cursor: pointer;
+  width: 100%;
+}
+
+.sidebarStatusTitleOuterDivMatters {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 10px 0 0px;
+  width: 100%;
+}
+
+.postStatusInfoPanelOuterDiv {
+  display: flex;
+  flex-direction: row;
+  padding: 0 5em;
+  margin: 0 -5em;
+  border-top: 1px solid #e0e0e0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.flexBoxRow {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+}
+
+.flexBoxRowNormalText {
+  font-size: 14px;
+  color: black;
+}
+
+.flexBoxRowCheckDePub {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0px;
+}
+
+.flexBoxColumn {
+  display: flex;
+  flex-direction: column;
+}
+
+.registerISCNBtnOuterDiv {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0px;
+  width: 100%;
+}
+
+.postStatusInfoRowOuterDiv {
+  display: flex;
+  flex-direction: row;
+  padding: 10px 0;
+}
+
+.blueBackgroundWhiteTextBtn {
+  padding: 8px 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  border: 10px;
+  background-color: #007cba;
+  font-size: 14px;
+  border-radius: 4px;
+  min-width: 230px;
+}
+
+.whiteBackgroundBlueTextBtn {
+  padding: 8px 16px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: #007cba;
+  background-color: white;
+  font-size: 14px;
+  border-radius: 4px;
+  border: 1px solid #007cba;
+  width: 16.5em;
+}
+
+.blueBackgroundWhiteTextSmallBtn {
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: white;
+  padding: 10px 0px;
+  margin: 4px;
+  background-color: #007cba;
+  font-size: 12px;
+  border-radius: 4px;
+  flex-basis: 50%;
+}
+
+.whiteBackgroundBlueTextSmallBtn {
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  color: #007cba;
+  padding: 10px 0px;
+  margin: 4px;
+  background-color: white;
+  font-size: 12px;
+  border-radius: 4px;
+  border: 1px solid #007cba;
+  flex-basis: 50%;
+}
+
+.sidebar-main-likecoin {
+  background: yellow;
+  padding-left: 10px;
+}
+
+.redDot {
+  height: 18px;
+  width: 18px;
+  background-color: #E35050;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.greenDot {
+  height: 18px;
+  width: 18px;
+  background-color: #50E3C2;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.interface-pinned-items .components-button {
+  background-color: #D7ECEC;
+}
+
+.interface-pinned-items .components-button.is-pressed {
+  background-color: #28646E;
+}
+
+.interface-pinned-items .components-button.is-pressed:hover:not(:disabled) {
+  background-color: #28646E;
+}
+
+.sidebarPopUpRowTitle {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.postStatusRow {
+  margin-right: -4em;
+  margin-left: 1em;
+}
+
+.postStatusDiv {
+  margin-left: 5px;
+}
+
+.showMoreOuterDiv {
+  margin-left: 10.6em;
+  padding: 10px 0px;
+  cursor: pointer;
+}
+
+.marginLeftAuto {
+  margin-left: auto;
+}
+
+.SideBarStatusRowTitle {
+  flex-basis: 52%;
+}
+
+.SideBarStatusRowTitle p {
+  font-weight: bold;
+}
+
+.SideBarStatusRowDetails {
+  width: 48%;
+}
+
+.longLink {
+  line-break: anywhere;
+}
+
+.TagOuterDiv {
+  border-radius: 16px;
+  background-color: #EBEBEB;
+  padding: 2px 12px;
+  display: flex;
+  margin: 2px 5px;
+}
+
+.TagOuterDiv p {
+  margin: auto;
+}
+
+.crossIconOuterDiv {
+  margin: auto;
+}
+
+.lineThroughText {
+  text-decoration: line-through;
+  color: #9B9B9B;
+  font-size: 14px;
+  margin-bottom: 17px;
+}
+
+.greyText {
+  font-size: 14px;
+  color: #9B9B9B;
+}
+
+.popUpWrapper {
+  background-color: #FFFFFF;
+  border-radius: 8px;
+  box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.25);
+  position: fixed;
+  width: 600px;
+  height: fit-content;
+  top: 100px;
+  right: 302px;
+  z-Index: 100000;
+  display: flex;
+  flex-direction: column;
+  padding: 5px 0px 20px 0px;
+}
+
+.popUpMainTitleDiv {
+  padding: 10px;
+  border-bottom: solid 1px #e6e6e6;
+  display: flex;
+  flex-direction: row;
+}
+
+.popUpCrossIconWrapper {
+  margin-left: auto;
+}
+
+.popUpMainContentWrapper {
+  overflow-Y: auto;
+  max-height: 500px;
+}
+
+.popUpMainContentRow {
+  padding: 10px;
+}
+
+.settingLink {
+  text-decoration: none;
+}

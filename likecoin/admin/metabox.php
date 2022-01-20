@@ -443,6 +443,16 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			LC_PLUGIN_VERSION,
 			true
 		);
+		// Add sidebar.
+		wp_enqueue_script(
+			'lc-plugin-sidebar-js',
+			LC_URI . 'assets/js/sidebar/index.js',
+			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-i18n' ),
+			LC_PLUGIN_VERSION,
+			true
+		);
+		wp_register_style( 'lc_plugin_sidebar_css', LC_URI . 'assets/js/sidebar/style-index.css', false, LC_PLUGIN_VERSION );
+		wp_enqueue_style( 'lc_plugin_sidebar_css' );
 		wp_localize_script(
 			'lc_js_metabox',
 			'wpApiSettings',
