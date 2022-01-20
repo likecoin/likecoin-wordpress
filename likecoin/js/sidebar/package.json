@@ -9,8 +9,5 @@
   },
   "keywords": [],
   "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@wordpress/scripts": "^19.2.2"
-  }
+  "license": "ISC"
 }

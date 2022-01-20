@@ -32,7 +32,7 @@ jobs:
   eslint:
     working_directory: ~/likecoin-wordpress
     docker:
-      - image: node:10
+      - image: node:14
     steps:
       - checkout
       - restore_cache:
