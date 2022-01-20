@@ -380,7 +380,7 @@ function likecoin_enqueue_admin_js() {
 	}
 	// create a window.likecoinReactAppData which can be accessed by JavaScript.
 	wp_localize_script(
-		'likecoin-admin-settings-0',
+		'likecoin-admin-settings-1',
 		'likecoinReactAppData',
 		array( 'appSelector' => '#wpbody #wpbody-content' )
 	);
