@@ -443,60 +443,6 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			LC_PLUGIN_VERSION,
 			true
 		);
-		// Add sidebar.
-		wp_enqueue_script(
-			'lc-plugin-sidebar-js',
-			LC_URI . 'assets/js/sidebar/index.js',
-			array( 'wp-plugins', 'wp-edit-post', 'wp-element', 'wp-i18n' ),
-			LC_PLUGIN_VERSION,
-			true
-		);
-		wp_register_style( 'lc_plugin_sidebar_css', LC_URI . 'assets/js/sidebar/style-index.css', false, LC_PLUGIN_VERSION );
-		wp_enqueue_style( 'lc_plugin_sidebar_css' );
-		wp_localize_script(
-			'lc_js_metabox',
-			'wpApiSettings',
-			array(
-				'root'    => esc_url_raw( rest_url() ),
-				'siteurl' => get_site_url(),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'postId'  => $post_id,
-			)
-		);
-		wp_localize_script(
-			'lc_js_metabox',
-			'lcPostInfo',
-			array(
-				'id'                 => $post_id,
-				'title'              => $post_title,
-				'mattersIPFSHash'    => $matters_ipfs_hash,
-				'isMattersPublished' => $matters_published_status,
-				'arweaveIPFSHash'    => $arweave_ipfs_hash,
-				'iscnHash'           => $publish_params['iscn_hash'],
-				'iscnId'             => $publish_params['iscn_id'],
-				'tags'               => $post_tags,
-				'url'                => $post_url,
-				'arweaveId'          => $arweave_id,
-				'mainStatus'         => 'initial',
-			)
-		);
-		wp_localize_script(
-			'lc_js_metabox',
-			'lcStringInfo',
-			array(
-				'mainTitleDraft'          => __( 'Publish Your Post First', LC_PLUGIN_SLUG ),
-				'mainTitleIntermediate'   => __( 'READY to #DePub', LC_PLUGIN_SLUG ),
-				'mainTitleDone'           => __( 'LIVE on #DePub', LC_PLUGIN_SLUG ),
-				'mainStatusLoading'       => __( 'Loading...', LC_PLUGIN_SLUG ),
-				'mainStatusFailedPopUp'   => __( 'Failed to open like.co widget. Please allow popup in your browser and retry.', LC_PLUGIN_SLUG ),
-				'mainStatusLIKEPay'       => __( 'Waiting for LIKE Pay...', LC_PLUGIN_SLUG ),
-				'mainStatusUploadArweave' => __( 'Uploading to Arweave...', LC_PLUGIN_SLUG ),
-				'mainStatusRegisterISCN'  => __( 'Registering ISCN...', LC_PLUGIN_SLUG ),
-				'buttonSubmitISCN'        => __( 'Submit to ISCN', LC_PLUGIN_SLUG ),
-				'buttonRegisterISCN'      => __( 'Register ISCN', LC_PLUGIN_SLUG ),
-				'draft'                   => __( 'Draft', LC_PLUGIN_SLUG ),
-			)
-		);
 }
 
 /**
@@ -508,11 +454,4 @@ function likecoin_display_meta_box( $post ) {
 	$button_params  = likecoin_get_meta_box_button_params( $post );
 	$publish_params = likecoin_get_meta_box_publish_params( $post );
 	likecoin_add_meta_box( $post, $button_params, $publish_params );
-}
-
-/**
- * Register our metabox
- */
-function likecoin_register_meta_boxes() {
-	add_meta_box( 'like-coin', __( 'LikeCoin Plugin', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
 }
