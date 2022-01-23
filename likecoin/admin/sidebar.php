@@ -109,7 +109,7 @@ function likecoin_display_sidebar( $post ) {
 /**
  * Register sidebar
  *
- * @param int|    $post Current post object.
+ * @param int| $post Current post object.
  */
 function likecoin_register_sidebar( $post ) {
 	likecoin_display_sidebar( $post );
