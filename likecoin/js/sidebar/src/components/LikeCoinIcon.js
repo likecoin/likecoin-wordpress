@@ -1,6 +1,8 @@
 function LikeCoinIcon(props) {
   return (
-    <div onClick={props.onClick}>
+    <div onClick={props.onClick}
+      style={props.paddingLeft ? { paddingLeft: props.paddingLeft } : {} }
+    >
       <svg
         xmlns='http://www.w3.org/2000/svg'
         width='17.89'

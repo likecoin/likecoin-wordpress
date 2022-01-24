@@ -69,10 +69,6 @@
 .postStatusInfoPanelOuterDiv {
   display: flex;
   flex-direction: row;
-  padding: 0 5em;
-  margin: 0 -5em;
-  border-top: 1px solid #e0e0e0;
-  border-bottom: 1px solid #e0e0e0;
 }
 
 .flexBoxRow {
@@ -182,18 +178,6 @@
   background-color: #50E3C2;
   border-radius: 50%;
   display: inline-block;
-}
-
-.interface-pinned-items .components-button {
-  background-color: #D7ECEC;
-}
-
-.interface-pinned-items .components-button.is-pressed {
-  background-color: #28646E;
-}
-
-.interface-pinned-items .components-button.is-pressed:hover:not(:disabled) {
-  background-color: #28646E;
 }
 
 .sidebarPopUpRowTitle {

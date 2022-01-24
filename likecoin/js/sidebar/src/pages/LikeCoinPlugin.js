@@ -1,7 +1,7 @@
 import '../style.css';
 import { useState, useEffect, useCallback } from 'react';
 import LikeCoinPluginPrePublishPanel from './LikeCoinPluginPrePublishPanel';
-import LikeCoinPluginPostStatusInfo from './LikeCoinPluginPostStatusInfo';
+import LikeCoinPluginDocumentSettingPanel from './LikeCoinPluginDocumentSettingPanel';
 import LikeCoinPluginSideBar from './LikeCoinPluginSideBar';
 import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
 
@@ -300,7 +300,7 @@ function LikeCoinPlugin(props) {
         wordCount={wordCount}
       />
       <LikeCoinPluginPrePublishPanel />
-      <LikeCoinPluginPostStatusInfo
+      <LikeCoinPluginDocumentSettingPanel
         handleRegisterISCN={handleRegisterISCN}
         ISCNId={ISCNId}
         arweaveId={arweaveId}
