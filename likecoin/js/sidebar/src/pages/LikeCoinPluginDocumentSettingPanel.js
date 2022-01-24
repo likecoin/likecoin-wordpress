@@ -1,24 +1,16 @@
-import { useState, useEffect } from 'react';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import LikeCoinIcon from '../components/LikeCoinIcon';
-import PostStatusRow from '../components/PostStatusRow';
 import PublishStatus from '../components/PublishStatus';
+import StatusTitle from '../components/StatusTitle';
 import settingPageEndpoint from '../store/constant';
 
 const { siteurl } = window.wpApiSettings;
 
 function LikeCoinPluginDocumentSettingPanel(props) {
-  const [numberOfMedia, setNumberOfMedia] = useState(0);
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
-
-  useEffect(() => {
-    if (props.mattersId) {
-      setNumberOfMedia(1);
-    }
-  }, [props.mattersId]);
   return (
     <PluginDocumentSettingPanel
       name='depub-panel'
@@ -34,54 +26,95 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                 isCurrentPostPublished={isCurrentPostPublished}
                 ISCNId={props.ISCNId}
               />
-              {!props.ISCNId && (
-                <PostStatusRow
-                  title={__('Distribution', 'likecoin')}
-                  status={__(`Will distribute to ${numberOfMedia}`, 'likecoin')}
-                />
+              {!props.ISCNId && !props.mattersId && (
+                <div className='flexBoxRow'>
+                  <StatusTitle title={__('Distribution', 'likecoin')} />
+                  <div>
+                    <a
+                      rel='noopener noreferrer'
+                      target='_blank'
+                      className='icon'
+                      href={`${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`}
+                    >
+                      -
+                    </a>
+                  </div>
+                </div>
               )}
-              {props.ISCNId && (
-                <PostStatusRow
-                  title={__('Distribution', 'likecoin')}
-                  status={numberOfMedia}
-                />
+              {!props.ISCNId && props.mattersId && (
+                <div className='flexBoxRow'>
+                  <StatusTitle title={__('Distribution', 'likecoin')} />
+                  <div>
+                    <a
+                      rel='noopener noreferrer'
+                      target='_blank'
+                      className='icon'
+                      href={`${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`}
+                    >
+                      Matters
+                    </a>
+                  </div>
+                </div>
+              )}
+              {props.ISCNId && props.mattersArticleId && (
+                <div className='flexBoxRow'>
+                  <StatusTitle title={__('Distribution', 'likecoin')} />
+                  <div>
+                    <a
+                      rel='noopener noreferrer'
+                      target='_blank'
+                      className='icon'
+                      href={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersArticleId}`}
+                    >
+                      Matters
+                    </a>
+                  </div>
+                </div>
               )}
               <div className='postStatusInfoRowOuterDiv'>
-                {!isCurrentPostPublished && <button
-                  className='blueBackgroundWhiteTextBtn'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    document
-                      .getElementsByClassName(
-                        'editor-post-publish-button__button',
-                      )[0]
-                      .click();
-                  }}
-                >
-                {__('Publish your post first', 'likecoin')}
-                </button>
-                }
-                {isCurrentPostPublished && !props.ISCNId && <button
-                  className='blueBackgroundWhiteTextBtn'
-                  onClick={props.handleRegisterISCN}
-                >
-                {__('DePub', 'likecoin')}
-                </button>
-                }
-              </div>
-              <div className='postStatusInfoRowOuterDiv'>
-                <button
-                  className='whiteBackgroundBlueTextBtn'
-                  onClick={(e) => {
-                    e.preventDefault();
-                    window.open(
-                      `${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`,
-                      '_blank',
-                    );
-                  }}
-                >
-                  {__('Check #DePub Settings', 'likecoin')}
-                </button>
+                {!isCurrentPostPublished && (
+                  <button
+                    className='blueBackgroundWhiteTextBtn'
+                    style={{ minWidth: '0', width: '100%' }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .getElementsByClassName(
+                          'editor-post-publish-button__button',
+                        )[0]
+                        .click();
+                    }}
+                  >
+                    {__('Publish your post first', 'likecoin')}
+                  </button>
+                )}
+                {isCurrentPostPublished && !props.ISCNId && (
+                  <div
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'row',
+                      width: '100%',
+                    }}
+                  >
+                    <button
+                      className='blueBackgroundWhiteTextSmallBtn'
+                      onClick={props.handleRegisterISCN}
+                    >
+                      {__('DePub', 'likecoin')}
+                    </button>
+                    <button
+                      className='whiteBackgroundBlueTextSmallBtn'
+                      onClick={(e) => {
+                        e.preventDefault();
+                        document
+                          .querySelector('[aria-label="LikeCoin Plugin"]')
+                          .click();
+                      }}
+                    >
+                      {__('Check #DePub', 'likecoin')}
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           </div>

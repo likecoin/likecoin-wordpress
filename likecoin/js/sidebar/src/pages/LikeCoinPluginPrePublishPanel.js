@@ -49,10 +49,9 @@ function LikeCoinPluginPrePublishPanel(props) {
                 className='whiteBackgroundBlueTextBtn'
                 onClick={(e) => {
                   e.preventDefault();
-                  window.open(
-                    `${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`,
-                    '_blank',
-                  );
+                  document
+                    .getElementsByClassName('components-button is-secondary')[0]
+                    .click();
                 }}
               >
                 {__('Check #DePub', 'likecoin')}

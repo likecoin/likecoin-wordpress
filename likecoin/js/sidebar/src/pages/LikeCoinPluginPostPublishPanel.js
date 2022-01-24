@@ -44,16 +44,13 @@ function LikeCoinPluginPostPublishPanel(props) {
                 className='blueBackgroundWhiteTextSmallBtn'
                 onClick={props.handleRegisterISCN}
               >
-                {__('Register ISCN', 'likecoin')}
+                {__('DePub', 'likecoin')}
               </button>
               <button
                 className='whiteBackgroundBlueTextSmallBtn'
                 onClick={(e) => {
                   e.preventDefault();
-                  window.open(
-                    `${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`,
-                    '_blank',
-                  );
+                  document.querySelector('[aria-label="Close panel"]').click();
                 }}
               >
                 {__('Check #DePub', 'likecoin')}
