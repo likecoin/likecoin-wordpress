@@ -102,7 +102,7 @@ function likecoin_add_sidebar( $post, $publish_params ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_display_sidebar( $post ) {
-	$publish_params = likecoin_get_meta_box_publish_params( $post );
+	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
 	likecoin_add_sidebar( $post, $publish_params );
 }
 

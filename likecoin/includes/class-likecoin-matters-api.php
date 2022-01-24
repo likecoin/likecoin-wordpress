@@ -232,8 +232,15 @@ class LikeCoin_Matters_API {
 	 * @param string| $title Draft title.
 	 * @param string| $html_content Draft HTML content.
 	 * @param array|  $tags Array of tag strings.
+	 * @param boolean| $show_error Determine if show likecoin error message.
 	 */
-	public function new_draft( $title, $html_content, $tags ) {
+	public function new_draft( $title, $html_content, $tags, $show_error = false ) {
+		if ( ( false === $show_error || ! $show_error ) && ! $html_content ) {
+			return;
+		}
+		if ( true === $show_error && ! $html_content ) {
+			return array( 'error' => 'EMPTY_CONTENT' );
+		}
 		$payload  = 'mutation {
       putDraft(input: {
         title: ' . wp_json_encode( $title ) . ',

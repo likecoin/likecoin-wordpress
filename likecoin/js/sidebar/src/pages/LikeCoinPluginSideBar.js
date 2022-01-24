@@ -21,6 +21,10 @@ const { siteurl } = window.wpApiSettings;
 function LikeCoinPluginSideBar(props) {
   const [showMore, setShowMore] = useState(true);
   const [showMetaData, setShowMetaData] = useState(false);
+  const [showBlankMattersTickBox, setShowBlankMattersTickBox] = useState(true);
+  const [showFilledMattersTickBox, setShowFilledMattersTickBox] = useState(false);
+  const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
+  const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
   const [pinBarIconColor, setPinBarIconColor] = useState('#28646E');
   const [distributeToMatters, setDistributeToMatters] = useState(true);
   const isPluginSidebarOpened = useSelect((select) => select('core/edit-post')
@@ -40,6 +44,16 @@ function LikeCoinPluginSideBar(props) {
     // TODO: Allow user to decide in next sidebar version.
   }
   useEffect(() => {
+    setShowBlankMattersTickBox(!props.mattersId);
+    setShowFilledMattersTickBox(
+      props.mattersId && !props.mattersDraftId && !props.mattersArticleId,
+    );
+    setShowMattersDraftLink(
+      !isCurrentPostPublished && props.mattersDraftId && !props.mattersArticleId,
+    );
+    setShowMattersArticleLink(isCurrentPostPublished && props.mattersArticleId);
+  }, [isCurrentPostPublished, props]);
+  useEffect(() => {
     if (isPluginSidebarOpened) {
       setPinBarIconColor('#50E3C2');
     } else {
@@ -47,9 +61,7 @@ function LikeCoinPluginSideBar(props) {
     }
   }, [isPluginSidebarOpened, setPinBarIconColor]);
   useEffect(() => {
-    if (!props.mattersId) {
-      setDistributeToMatters(false);
-    }
+    setDistributeToMatters(!!props.mattersId);
   }, [props.mattersId]);
 
   return (
@@ -108,7 +120,9 @@ function LikeCoinPluginSideBar(props) {
           status={props.ISCNId ? props.ISCNId : '-'}
           link={
             props.ISCNId
-              ? `https://app.like.co/view/${encodeURIComponent(props.ISCNId)}`
+              ? `https://app.like.co/view/${encodeURIComponent(
+                props.ISCNId,
+              )}`
               : ''
           }
         />
@@ -203,31 +217,51 @@ function LikeCoinPluginSideBar(props) {
                   : 'sidebarStatusTitleOuterDiv'
               }
             >
-              {!props.mattersArticleId && (
-                <span className='components-checkbox-control__input-container'>
-                  <input
-                    type='checkbox'
-                    checked={distributeToMatters}
-                    onChange={handleDistributeToMatters}
-                    ref={props.checkRef}
-                    id='inspector-checkbox-control-999'
-                    className='components-checkbox-control__input'
-                    style={{ margin: '0 10px 10px 0' }}
-                  />
-                  <CheckMark />
-                </span>
+              {showBlankMattersTickBox && (
+                <>
+                  <span className='components-checkbox-control__input-container'>
+                    <input
+                      type='checkbox'
+                      checked={distributeToMatters}
+                      onChange={handleDistributeToMatters}
+                      ref={props.checkRef}
+                      id='inspector-checkbox-control-999'
+                      className='components-checkbox-control__input'
+                      style={{ margin: '0 10px 10px 0' }}
+                    />
+                  </span>
+                  <div> Matters </div>
+                </>
               )}
-              {!props.mattersArticleId && <div> Matters </div>}
-
-              {props.mattersArticleId && (
+              {showFilledMattersTickBox && (
+                <>
+                  <span className='components-checkbox-control__input-container'>
+                    <input
+                      type='checkbox'
+                      checked={distributeToMatters}
+                      onChange={handleDistributeToMatters}
+                      ref={props.checkRef}
+                      id='inspector-checkbox-control-999'
+                      className='components-checkbox-control__input'
+                      style={{ margin: '0 10px 10px 0' }}
+                    />
+                    <CheckMark />
+                  </span>
+                  <div> Matters </div>
+                </>
+              )}
+              {showMattersDraftLink && (
                 <SideBarStatusRow
                   title='Matters'
-                  status={props.mattersArticleId ? props.mattersArticleId : '-'}
-                  link={
-                    props.mattersArticleId
-                      ? `https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersArticleId}`
-                      : ''
-                  }
+                  status={props.mattersDraftId}
+                  link={`https://matters.news/me/drafts/${props.mattersDraftId}`}
+                />
+              )}
+              {showMattersArticleLink && (
+                <SideBarStatusRow
+                  title='Matters'
+                  status={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
+                  link={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
                 />
               )}
             </div>
