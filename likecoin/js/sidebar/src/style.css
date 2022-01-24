@@ -18,6 +18,7 @@
   border-bottom: 1px solid #e0e0e0;
   align-items: start;
   flex-direction: column;
+  padding: 10px;
 }
 
 .divInnerHolder {
@@ -47,14 +48,14 @@
 .sidebarStatusTitleOuterDiv {
   display: flex;
   flex-direction: row;
-  padding: 10px 10px 0 10px;
+  padding: 0px 10px 10px 0;
   width: 100%;
 }
 
 .sidebarStatusTitleOuterDivPointer {
   display: flex;
   flex-direction: row;
-  padding: 10px 10px 0 10px;
+  padding: 0px 10px 0 0;
   cursor: pointer;
   width: 100%;
 }
@@ -103,7 +104,7 @@
 .postStatusInfoRowOuterDiv {
   display: flex;
   flex-direction: row;
-  padding: 10px 0;
+  padding-top: 10px;
 }
 
 .blueBackgroundWhiteTextBtn {
@@ -180,14 +181,17 @@
   display: inline-block;
 }
 
+.greyDot {
+  height: 18px;
+  width: 18px;
+  background-color: #9B9B9B;
+  border-radius: 50%;
+  display: inline-block;
+}
+
 .sidebarPopUpRowTitle {
   font-weight: bold;
   margin-bottom: 5px;
-}
-
-.postStatusRow {
-  margin-right: -4em;
-  margin-left: 1em;
 }
 
 .postStatusDiv {
