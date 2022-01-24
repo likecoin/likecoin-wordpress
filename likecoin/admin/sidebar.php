@@ -51,7 +51,7 @@ function likecoin_add_sidebar( $post, $publish_params ) {
 	wp_register_style( 'lc_plugin_sidebar_css', LC_URI . 'assets/js/sidebar/style-index.css', false, LC_PLUGIN_VERSION );
 	wp_enqueue_style( 'lc_plugin_sidebar_css' );
 	wp_localize_script(
-		'lc_js_metabox',
+		'lc-plugin-sidebar-js',
 		'wpApiSettings',
 		array(
 			'root'    => esc_url_raw( rest_url() ),
@@ -61,7 +61,7 @@ function likecoin_add_sidebar( $post, $publish_params ) {
 		)
 	);
 	wp_localize_script(
-		'lc_js_metabox',
+		'lc-plugin-sidebar-js',
 		'lcPostInfo',
 		array(
 			'id'                 => $post_id,
@@ -78,7 +78,7 @@ function likecoin_add_sidebar( $post, $publish_params ) {
 		)
 	);
 	wp_localize_script(
-		'lc_js_metabox',
+		'lc-plugin-sidebar-js',
 		'lcStringInfo',
 		array(
 			'mainTitleDraft'          => __( 'Publish Your Post First', LC_PLUGIN_SLUG ),
