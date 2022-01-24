@@ -234,7 +234,7 @@ function LikeCoinPluginSideBar(props) {
             </div>
             <div className='popUpMainContentRow'>
               <a
-                href={`${siteurl}/wp-admin/admin.php?page=likecoi${settingPageEndpoint}`}
+                href={`${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`}
                 target='_blank'
                 rel='noreferrer'
                 className='settingLink'
