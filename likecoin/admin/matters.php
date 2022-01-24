@@ -476,7 +476,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	}
 	if ( ! $matters_draft_id ) {
 		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->new_draft( $title, $content, $tags );
+		$draft   = $api->new_draft( $title, $content, $tags, false );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
@@ -513,7 +513,7 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	$api              = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
 		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->new_draft( $title, $content, $tags );
+		$draft   = $api->new_draft( $title, $content, $tags, true );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
@@ -698,7 +698,7 @@ function likecoin_check_should_hook_matters_publish() {
 /**
  * Setup Matters related post hooks according to config
  */
-function likecoin_add_matters_admin_hook() {
+function likecoin_add_matters_hook() {
 	if ( likecoin_check_should_hook_matters_draft() ) {
 		add_action( 'save_post_post', 'likecoin_save_to_matters', 10, 3 );
 		add_action( 'save_post_page', 'likecoin_save_to_matters', 10, 3 );

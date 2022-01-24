@@ -27,6 +27,7 @@
  */
 require_once dirname( __FILE__ ) . '/matters.php';
 require_once dirname( __FILE__ ) . '/metabox.php';
+require_once dirname( __FILE__ ) . '/post.php';
 require_once dirname( __FILE__ ) . '/view/view.php';
 
 /**
@@ -108,6 +109,7 @@ function likecoin_get_post_iscn_meta( $post ) {
 	return $iscn_related_post_meta;
 }
 
+
 /**
  * Add likecoin arweave estimate endpoint.
  *
@@ -156,12 +158,13 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 		return new WP_REST_Response( array( 'error' => $response['body'] ), 400 );
 	}
 	$decoded_response['title'] = $title;
-	$publish_params            = likecoin_get_meta_box_publish_params( $post );
+	$publish_params            = likecoin_get_meta_box_publish_params( $post, true );
 	if ( isset( $publish_params['ipfs_hash'] ) ) {
-		$decoded_response['mattersIPFSHash']    = $publish_params['ipfs_hash'];
-		$decoded_response['mattersId']          = $publish_params['matters_id'];
-		$decoded_response['mattersArticleId']   = $publish_params['article_id'];
-		$decoded_response['mattersArticleSlug'] = $publish_params['article_slug'];
+		$decoded_response['mattersIPFSHash']             = $publish_params['ipfs_hash'];
+		$decoded_response['mattersId']                   = $publish_params['matters_id'];
+		$decoded_response['mattersPublishedArticleHash'] = $publish_params['article_hash'];
+		$decoded_response['mattersArticleId']            = $publish_params['article_id'];
+		$decoded_response['mattersArticleSlug']          = $publish_params['article_slug'];
 	}
 	$decoded_response['tags']        = $tags;
 	$decoded_response['url']         = $url;
@@ -252,7 +255,7 @@ function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
 	$arweave_info['arweave_id'] = $decoded_response['arweaveId'];
 	$arweave_info['ipfs_hash']  = $decoded_response['ipfsHash'];
 	update_post_meta( $post_id, LC_ARWEAVE_INFO, $arweave_info );
-	$publish_params                      = likecoin_get_meta_box_publish_params( $post );
+	$publish_params                      = likecoin_get_meta_box_publish_params( $post, true );
 	$decoded_response['mattersIPFSHash'] = $publish_params['ipfsHash'];
 
 	return new WP_REST_Response( array( 'data' => $decoded_response ), 200 );
@@ -373,12 +376,13 @@ function likecoin_get_iscn_full_info( $request ) {
 		$iscn_full_info['arweaveId']       = $arweave_info['arweave_id'];
 		$iscn_full_info['arweaveIPFSHash'] = $arweave_info['ipfs_hash'];
 	}
-	$publish_params = likecoin_get_meta_box_publish_params( $post );
+	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
 	if ( is_array( $publish_params ) ) {
-		$iscn_full_info['mattersIPFSHash']    = $publish_params['ipfsHash'];
-		$iscn_full_info['mattersArticleId']   = $publish_params['article_id'];
-		$iscn_full_info['mattersId']          = $publish_params['matters_id'];
-		$iscn_full_info['mattersArticleSlug'] = $publish_params['article_slug'];
+		$iscn_full_info['mattersIPFSHash']             = $publish_params['ipfs_hash'];
+		$iscn_full_info['mattersArticleId']            = $publish_params['article_id'];
+		$iscn_full_info['mattersPublishedArticleHash'] = $publish_params['article_hash'];
+		$iscn_full_info['mattersId']                   = $publish_params['matters_id'];
+		$iscn_full_info['mattersArticleSlug']          = $publish_params['article_slug'];
 	}
 	$iscn_related_post_meta        = likecoin_get_post_iscn_meta( $post );
 	$iscn_full_info['title']       = $iscn_related_post_meta['title'];

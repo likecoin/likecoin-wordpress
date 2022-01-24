@@ -110,5 +110,4 @@ function likecoin_add_admin_hooks() {
 	add_action( 'manage_posts_columns', 'likecoin_add_posts_columns', 10, 2 );
 	add_action( 'manage_posts_custom_column', 'likecoin_populate_posts_columns', 10, 2 );
 	add_action( 'admin_enqueue_scripts', 'likecoin_show_plugin' );
-	likecoin_add_matters_admin_hook();
 }

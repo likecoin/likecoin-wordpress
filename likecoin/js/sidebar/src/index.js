@@ -18,7 +18,9 @@ function LikeCoinSideBar() {
     DBArweaveId,
     DBArweaveIPFSHash,
     DBMattersIPFSHash,
+    DBMattersPublishedArticleHash,
     DBISCNVersion,
+    DBMattersDraftId,
     DBMattersArticleId,
     DBMattersId,
     DBMattersArticleSlug,
@@ -42,7 +44,9 @@ function LikeCoinSideBar() {
       DBArweaveId={DBArweaveId}
       DBArweaveIPFSHash={DBArweaveIPFSHash}
       DBMattersIPFSHash={DBMattersIPFSHash}
+      DBMattersPublishedArticleHash={DBMattersPublishedArticleHash}
       DBISCNVersion={DBISCNVersion}
+      DBMattersDraftId={DBMattersDraftId}
       DBMattersArticleId={DBMattersArticleId}
       DBMattersId={DBMattersId}
       DBMattersArticleSlug={DBMattersArticleSlug}

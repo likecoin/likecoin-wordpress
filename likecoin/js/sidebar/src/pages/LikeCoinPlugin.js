@@ -21,17 +21,15 @@ function LikeCoinPlugin(props) {
   const [arweaveIPFSHash, setArweaveIPFSHash] = useState(
     props.DBArweaveIPFSHash,
   );
-  const [mattersIPFSHash, setMattersIPFSHash] = useState(
-    props.DBMattersIPFSHash,
+  const [mattersIPFSHash, setMattersIPFSHash] = useState(props.DBMattersIPFSHash);
+  const [mattersPublishedArticleHash, setMattersPublishedArticleHash] = useState(
+    props.DBMattersPublishedArticleHash,
   );
   const [ISCNVersion, setISCNVersion] = useState(props.DBISCNVersion);
-  const [mattersArticleId, setMattersArticleId] = useState(
-    props.DBMattersArticleId,
-  );
+  const [mattersDraftId, setMattersDraftId] = useState(props.DBMattersDraftId);
+  const [mattersArticleId, setMattersArticleId] = useState(props.DBMattersArticleId);
   const [mattersId, setMattersId] = useState(props.DBMattersId);
-  const [mattersArticleSlug, setMattersArticleSlug] = useState(
-    props.DBMattersArticleSlug,
-  );
+  const [mattersArticleSlug, setMattersArticleSlug] = useState(props.DBMattersArticleSlug);
   const [fingerprints, setFingerprints] = useState([]);
   const [shouldStartProcess, setShouldStartProcess] = useState(false);
   const [shouldUploadArweave, setShouldUploadArweave] = useState(false);
@@ -181,9 +179,11 @@ function LikeCoinPlugin(props) {
     setTags(props.DBArticleTags);
     setISCNId(props.DBISCNId);
     setISCNVersion(props.DBISCNVersion);
+    setMattersDraftId(props.DBMattersDraftId);
     setMattersArticleId(props.DBMattersArticleId);
     setMattersId(props.DBMattersId);
     setMattersArticleSlug(props.DBMattersArticleSlug);
+    setMattersPublishedArticleHash(props.DBMattersPublishedArticleHash);
   }, [
     props.DBLIKEPayAmount,
     props.DBMemo,
@@ -195,9 +195,11 @@ function LikeCoinPlugin(props) {
     props.DBArticleTags,
     props.DBISCNId,
     props.DBISCNVersion,
+    props.DBMattersDraftId,
     props.DBMattersArticleId,
     props.DBMattersId,
     props.DBMattersArticleSlug,
+    props.DBMattersPublishedArticleHash,
   ]);
   useEffect(() => {
     setArweaveId(props.DBArweaveId);
@@ -288,10 +290,12 @@ function LikeCoinPlugin(props) {
         ISCNId={ISCNId}
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
+        mattersDraftId={mattersDraftId}
         mattersArticleId={mattersArticleId}
         mattersId={mattersId}
         mattersArticleSlug={mattersArticleSlug}
         mattersIPFSHash={mattersIPFSHash}
+        mattersPublishedArticleHash={mattersPublishedArticleHash}
         title={title}
         description={description}
         author={author}
@@ -305,10 +309,12 @@ function LikeCoinPlugin(props) {
         ISCNId={ISCNId}
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
+        mattersDraftId={mattersDraftId}
         mattersArticleId={mattersArticleId}
         mattersId={mattersId}
         mattersArticleSlug={mattersArticleSlug}
         mattersIPFSHash={mattersIPFSHash}
+        mattersPublishedArticleHash={mattersPublishedArticleHash}
       />
       <LikeCoinPluginPostPublishPanel handleRegisterISCN={handleRegisterISCN} />
     </>

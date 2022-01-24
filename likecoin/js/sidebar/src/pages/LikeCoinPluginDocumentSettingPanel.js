@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
@@ -9,8 +10,17 @@ import settingPageEndpoint from '../store/constant';
 const { siteurl } = window.wpApiSettings;
 
 function LikeCoinPluginDocumentSettingPanel(props) {
+  const [showDashLink, setShowDashLink] = useState(true);
+  const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
+  const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
+  useEffect(() => {
+    setShowDashLink((!isCurrentPostPublished && !props.mattersDraftId)
+      || (isCurrentPostPublished && !props.mattersArticleId));
+    setShowMattersDraftLink(!isCurrentPostPublished && props.mattersDraftId);
+    setShowMattersArticleLink(isCurrentPostPublished && props.mattersArticleId);
+  }, [isCurrentPostPublished, props]);
   return (
     <PluginDocumentSettingPanel
       name='depub-panel'
@@ -26,7 +36,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                 isCurrentPostPublished={isCurrentPostPublished}
                 ISCNId={props.ISCNId}
               />
-              {!props.ISCNId && !props.mattersId && (
+              {showDashLink && (
                 <div className='flexBoxRow'>
                   <StatusTitle title={__('Distribution', 'likecoin')} />
                   <div>
@@ -41,7 +51,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                   </div>
                 </div>
               )}
-              {!props.ISCNId && props.mattersId && (
+              {showMattersDraftLink && (
                 <div className='flexBoxRow'>
                   <StatusTitle title={__('Distribution', 'likecoin')} />
                   <div>
@@ -49,14 +59,14 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                       rel='noopener noreferrer'
                       target='_blank'
                       className='icon'
-                      href={`${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`}
+                      href={`https://matters.news/me/drafts/${props.mattersDraftId}`}
                     >
                       Matters
                     </a>
                   </div>
                 </div>
               )}
-              {props.ISCNId && props.mattersArticleId && (
+              {showMattersArticleLink && (
                 <div className='flexBoxRow'>
                   <StatusTitle title={__('Distribution', 'likecoin')} />
                   <div>
@@ -64,7 +74,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                       rel='noopener noreferrer'
                       target='_blank'
                       className='icon'
-                      href={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersArticleId}`}
+                      href={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
                     >
                       Matters
                     </a>

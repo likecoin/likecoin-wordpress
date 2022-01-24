@@ -21,6 +21,11 @@
  */
 
 /**
+ * Inclue required files.
+ */
+require_once dirname( __FILE__ ) . '/../../includes/constant/options.php';
+
+/**
  * Get translation scripts
  */
 function likecoin_set_script_translations() {

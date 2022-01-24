@@ -103,6 +103,7 @@ function likecoin_add_all_hooks() {
 		likecoin_add_admin_hooks();
 	}
 	likecoin_hook_restful_hook();
+	likecoin_add_matters_hook();
 	likecoin_add_public_hooks();
 	register_activation_hook( __FILE__, 'likecoin_handle_init_and_upgrade' );
 	add_action( 'upgrader_process_complete', 'likecoin_handle_init_and_upgrade' );

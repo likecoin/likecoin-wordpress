@@ -28,6 +28,8 @@ const INITIAL_STATE = {
   DBISCNVersion: '',
   DBArweaveIPFSHash: '',
   DBMattersIPFSHash: '',
+  DBMattersPublishedArticleHash: '',
+  DBMattersDraftId: '',
   DBMattersArticleId: '',
   DBMattersId: '',
   DBMattersArticleSlug: '',
@@ -71,7 +73,7 @@ const actions = {
       throw new Error('NO_ISCN_INFO_RETURNED');
     }
     const { iscnVersion, timeZone, localTime } = response.data;
-    const iscnVersionString = iscnVersion.toString().concat(' (', localTime, ' ', timeZone, ')');
+    const iscnVersionString = iscnVersion ? iscnVersion.toString().concat(' (', localTime, ' ', timeZone, ')') : '';
     yield { type: 'UPDATE_ISCN_ID_GLOBAL_STATE', data: { iscnId: response.data.iscn_id, iscnVersion: iscnVersionString } };
   },
 };
@@ -121,11 +123,12 @@ const resolvers = {
         arweaveId,
         arweaveIPFSHash,
         mattersIPFSHash,
+        mattersPublishedArticleHash,
         mattersArticleId,
         mattersId,
         mattersArticleSlug,
       } = response.data;
-      const iscnVersionString = iscnVersion.toString().concat(' (', localTime, ' ', timeZone, ')');
+      const iscnVersionString = iscnVersion ? iscnVersion.toString().concat(' (', localTime, ' ', timeZone, ')') : '';
       return actions.setISCNInfo({
         iscnId,
         iscnVersion: iscnVersionString,
@@ -138,6 +141,7 @@ const resolvers = {
         arweaveId,
         arweaveIPFSHash,
         mattersIPFSHash,
+        mattersPublishedArticleHash,
         mattersArticleId,
         mattersId,
         mattersArticleSlug,
@@ -163,6 +167,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBArweaveId: action.data.arweaveId,
         DBArweaveIPFSHash: action.data.arweaveIPFSHash,
         DBMattersIPFSHash: action.data.mattersIPFSHash,
+        DBMattersPublishedArticleHash: action.data.mattersPublishedArticleHash,
         DBMattersArticleId: action.data.mattersArticleId,
         DBMattersId: action.data.mattersId,
         DBMattersArticleSlug: action.data.mattersArticleSlug,
@@ -183,6 +188,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBArweaveId: action.data.arweaveId,
         DBArweaveIPFSHash: action.data.ipfsHash,
         DBMattersIPFSHash: action.data.mattersIPFSHash,
+        DBMattersPublishedArticleHash: action.data.mattersPublishedArticleHash,
         DBMattersId: action.data.mattersId,
         DBMattersArticleId: action.data.mattersArticleId,
         DBMattersArticleSlug: action.data.mattersArticleSlug,
