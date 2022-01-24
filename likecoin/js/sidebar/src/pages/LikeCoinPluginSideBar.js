@@ -14,6 +14,7 @@ import MetaPopUpStatusTitle from '../components/MetaPopUpStatusTitle';
 import MetaPopUpStatusDetails from '../components/MetaPopUpStatusDetails';
 import Tag from '../components/Tag';
 import settingPageEndpoint from '../store/constant';
+import PublishStatus from '../components/PublishStatus';
 
 const { siteurl } = window.wpApiSettings;
 
@@ -65,6 +66,25 @@ function LikeCoinPluginSideBar(props) {
           <LikeCoinIcon color='#9B9B9B' />
         </div>
       </div>
+      {!isCurrentPostPublished && (
+        <div className='divOuterHolder'>
+          <div className='divInnerHolder'>
+            <button
+              className='blueBackgroundWhiteTextBtn'
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementsByClassName(
+                    'editor-post-publish-button__button',
+                  )[0]
+                  .click();
+              }}
+            >
+              {__('Publish your post first', 'likecoin')}
+            </button>
+          </div>
+        </div>
+      )}
       {isCurrentPostPublished && !props.ISCNId && (
         <div className='divOuterHolder'>
           <div className='divInnerHolder'>
@@ -72,37 +92,16 @@ function LikeCoinPluginSideBar(props) {
               className='blueBackgroundWhiteTextBtn'
               onClick={props.handleRegisterISCN}
             >
-              {__('Register ISCN with Arweave', 'likecoin')}
-            </button>
-          </div>
-        </div>
-      )}
-      {isCurrentPostPublished && props.ISCNId && (
-        <div className='divOuterHolder'>
-          <div className='divInnerHolder'>
-            <button
-              className='blueBackgroundWhiteTextBtn'
-              onClick={props.handleRegisterISCN}
-            >
-              {__('Update ISCN', 'likecoin')}
+              {__('DePub', 'likecoin')}
             </button>
           </div>
         </div>
       )}
       <div className='divOuterHolderMainSidebar'>
         <SideBarStatusRow title={__('#DePub State', 'likecoin')} status='' />
-        <SideBarStatusRow
-          title={__('State', 'likecoin')}
-          status={
-            <div className='flexBoxRow'>
-              <div className={props.ISCNId ? 'greenDot' : 'redDot'}></div>{' '}
-              <div className='postStatusDiv'>
-                {props.ISCNId
-                  ? `${__('Registered', 'likecoin')}`
-                  : `${__('None', 'likecoin')}`}
-              </div>
-            </div>
-          }
+        <PublishStatus
+          isCurrentPostPublished={isCurrentPostPublished}
+          ISCNId={props.ISCNId}
         />
         <SideBarStatusRow
           title={__('ISCN ID', 'likecoin')}
@@ -232,7 +231,7 @@ function LikeCoinPluginSideBar(props) {
                 />
               )}
             </div>
-            <div className='popUpMainContentRow'>
+            <div style={{ paddingTop: '10px' }}>
               <a
                 href={`${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`}
                 target='_blank'

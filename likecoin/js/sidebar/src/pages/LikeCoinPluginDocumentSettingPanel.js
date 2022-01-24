@@ -1,14 +1,18 @@
+import { useState, useEffect } from 'react';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { __ } from '@wordpress/i18n';
-import { useState, useEffect } from 'react';
+import { useSelect } from '@wordpress/data';
 import LikeCoinIcon from '../components/LikeCoinIcon';
 import PostStatusRow from '../components/PostStatusRow';
+import PublishStatus from '../components/PublishStatus';
 import settingPageEndpoint from '../store/constant';
 
 const { siteurl } = window.wpApiSettings;
 
 function LikeCoinPluginDocumentSettingPanel(props) {
   const [numberOfMedia, setNumberOfMedia] = useState(0);
+  const isCurrentPostPublished = useSelect((select) => select('core/editor')
+    .isCurrentPostPublished());
 
   useEffect(() => {
     if (props.mattersId) {
@@ -26,18 +30,9 @@ function LikeCoinPluginDocumentSettingPanel(props) {
         <div className='flexBoxRow'>
           <div className='divOuterHolderStatusInfoPanel'>
             <>
-              <PostStatusRow
-                title={__('State', 'likecoin')}
-                status={
-                  <div className='flexBoxRow'>
-                    <div className={props.ISCNId ? 'greenDot' : 'redDot'}></div>{' '}
-                    <div className='postStatusDiv'>
-                      {props.ISCNId
-                        ? `${__('Registered', 'likecoin')}`
-                        : `${__('None', 'likecoin')}`}
-                    </div>
-                  </div>
-                }
+              <PublishStatus
+                isCurrentPostPublished={isCurrentPostPublished}
+                ISCNId={props.ISCNId}
               />
               {!props.ISCNId && (
                 <PostStatusRow
@@ -51,6 +46,29 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                   status={numberOfMedia}
                 />
               )}
+              <div className='postStatusInfoRowOuterDiv'>
+                {!isCurrentPostPublished && <button
+                  className='blueBackgroundWhiteTextBtn'
+                  onClick={(e) => {
+                    e.preventDefault();
+                    document
+                      .getElementsByClassName(
+                        'editor-post-publish-button__button',
+                      )[0]
+                      .click();
+                  }}
+                >
+                {__('Publish your post first', 'likecoin')}
+                </button>
+                }
+                {isCurrentPostPublished && !props.ISCNId && <button
+                  className='blueBackgroundWhiteTextBtn'
+                  onClick={props.handleRegisterISCN}
+                >
+                {__('DePub', 'likecoin')}
+                </button>
+                }
+              </div>
               <div className='postStatusInfoRowOuterDiv'>
                 <button
                   className='whiteBackgroundBlueTextBtn'

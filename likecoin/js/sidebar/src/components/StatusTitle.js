@@ -1,7 +1,7 @@
 function StatusTitle(props) {
   return (
     <div className='SideBarStatusRowTitle'>
-      <p> {props.title} </p>
+      <p style={{ marginBottom: '0px' }}> {props.title} </p>
     </div>
   );
 }

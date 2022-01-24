@@ -4,7 +4,7 @@ function PostStatusRow(props) {
   return (
     <div className='flexBoxRow'>
       <StatusTitle title={props.title} />
-      <div className='postStatusRow'>{props.status}</div>
+      <div>{props.status}</div>
     </div>
   );
 }
