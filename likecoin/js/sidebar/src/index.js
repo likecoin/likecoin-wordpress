@@ -11,7 +11,6 @@ function LikeCoinSideBar() {
     DBArticleTitle,
     DBAuthorDescription,
     DBAuthor,
-    DBwordCount,
     DBArticleURL,
     DBArticleTags,
     DBISCNId,
@@ -37,7 +36,6 @@ function LikeCoinSideBar() {
       DBArticleTitle={DBArticleTitle}
       DBAuthorDescription={DBAuthorDescription}
       DBAuthor={DBAuthor}
-      DBwordCount={DBwordCount}
       DBArticleURL={DBArticleURL}
       DBArticleTags={DBArticleTags}
       DBISCNId={DBISCNId}

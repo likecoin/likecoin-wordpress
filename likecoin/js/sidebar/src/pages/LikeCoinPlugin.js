@@ -13,7 +13,6 @@ function LikeCoinPlugin(props) {
   const [title, setTitle] = useState(props.DBArticleTitle);
   const [description, setDescription] = useState(props.DBAuthorDescription);
   const [author, setAuthor] = useState(props.DBAuthor);
-  const [wordCount, setWordCount] = useState(props.DBwordCount);
   const [url, setUrl] = useState(props.DBArticleURL);
   const [tags, setTags] = useState(props.DBArticleTags);
   const [ISCNId, setISCNId] = useState(props.DBISCNId);
@@ -174,7 +173,6 @@ function LikeCoinPlugin(props) {
       }
     }
     setAuthor(props.DBAuthor);
-    setWordCount(props.DBwordCount);
     setUrl(props.DBArticleURL);
     setTags(props.DBArticleTags);
     setISCNId(props.DBISCNId);
@@ -191,7 +189,6 @@ function LikeCoinPlugin(props) {
     props.DBAuthorDescription,
     props.DBAuthor,
     props.DBArticleURL,
-    props.DBwordCount,
     props.DBArticleTags,
     props.DBISCNId,
     props.DBISCNVersion,
@@ -301,7 +298,6 @@ function LikeCoinPlugin(props) {
         author={author}
         tags={tags}
         url={url}
-        wordCount={wordCount}
       />
       <LikeCoinPluginPrePublishPanel />
       <LikeCoinPluginDocumentSettingPanel

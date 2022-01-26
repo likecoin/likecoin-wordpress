@@ -2,6 +2,7 @@ import { PluginSidebar } from '@wordpress/edit-post';
 import { useState, useEffect } from 'react';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
+import { count as wordCount } from '@wordpress/wordcount';
 import LikeCoinIcon from '../components/LikeCoinIcon';
 import ShowMoreIcon from '../components/ShowMoreIcon';
 import ShowLessIcon from '../components/ShowLessIcon';
@@ -20,6 +21,8 @@ import LikeCoinIconPinbar from '../components/LikeCoinIconPinbar';
 const { siteurl } = window.wpApiSettings;
 
 function LikeCoinPluginSideBar(props) {
+  const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));
+  const numberOfWords = wordCount(content, 'words', {});
   const [showMore, setShowMore] = useState(true);
   const [showMetaData, setShowMetaData] = useState(false);
   const [showBlankMattersTickBox, setShowBlankMattersTickBox] = useState(true);
@@ -182,7 +185,7 @@ function LikeCoinPluginSideBar(props) {
               </div>
               <div className='popUpMainContentRow'>
                 <StatusTitle title={__('Word count', 'likecoin')} />
-                <MetaPopUpStatusDetails details={props.wordCount} />
+                <MetaPopUpStatusDetails details={numberOfWords} />
               </div>
             </div>
           </div>

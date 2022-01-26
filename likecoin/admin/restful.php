@@ -100,12 +100,6 @@ function likecoin_get_post_iscn_meta( $post ) {
 	if ( is_array( $tags ) ) {
 		$iscn_related_post_meta['tags'] = $tags;
 	}
-	$content    = apply_filters( 'the_content', $post->post_content );
-	$content    = wp_strip_all_tags( $content );
-	$word_count = str_word_count( $content );
-	if ( isset( $word_count ) ) {
-		$iscn_related_post_meta['wordCount'] = $word_count;
-	}
 	return $iscn_related_post_meta;
 }
 
@@ -171,7 +165,6 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 	$iscn_related_post_meta          = likecoin_get_post_iscn_meta( $post );
 	$decoded_response['author']      = $iscn_related_post_meta['author'];
 	$decoded_response['description'] = $iscn_related_post_meta['description'];
-	$decoded_response['wordCount']   = $iscn_related_post_meta['wordCount'];
 	return new WP_REST_Response( $decoded_response, 200 );
 }
 /**
@@ -390,7 +383,6 @@ function likecoin_get_iscn_full_info( $request ) {
 	$iscn_full_info['description'] = $iscn_related_post_meta['description'];
 	$iscn_full_info['url']         = $iscn_related_post_meta['url'];
 	$iscn_full_info['tags']        = $iscn_related_post_meta['tags'];
-	$iscn_full_info['wordCount']   = $iscn_related_post_meta['wordCount'];
 	return new WP_REST_Response( $iscn_full_info, 200 );
 }
 
