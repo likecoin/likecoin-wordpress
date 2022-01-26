@@ -15,6 +15,7 @@ import MetaPopUpStatusDetails from '../components/MetaPopUpStatusDetails';
 import Tag from '../components/Tag';
 import settingPageEndpoint from '../store/constant';
 import PublishStatus from '../components/PublishStatus';
+import LikeCoinIconPinbar from '../components/LikeCoinIconPinbar';
 
 const { siteurl } = window.wpApiSettings;
 
@@ -55,7 +56,7 @@ function LikeCoinPluginSideBar(props) {
   }, [isCurrentPostPublished, props]);
   useEffect(() => {
     if (isPluginSidebarOpened) {
-      setPinBarIconColor('#50E3C2');
+      setPinBarIconColor('white');
     } else {
       setPinBarIconColor('#28646E');
     }
@@ -68,7 +69,7 @@ function LikeCoinPluginSideBar(props) {
     <PluginSidebar
       name='likecoin-sidebar'
       title={__('LikeCoin Plugin', 'likecoin')}
-      icon={<LikeCoinIcon color={pinBarIconColor} />}
+      icon={<LikeCoinIconPinbar color={pinBarIconColor} />}
     >
       <div className='divOuterHolder'>
         <div className='dePubMainSidebarDiv'>

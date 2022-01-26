@@ -229,9 +229,9 @@ class LikeCoin_Matters_API {
 	/**
 	 * Post new draft mutation.
 	 *
-	 * @param string| $title Draft title.
-	 * @param string| $html_content Draft HTML content.
-	 * @param array|  $tags Array of tag strings.
+	 * @param string|  $title Draft title.
+	 * @param string|  $html_content Draft HTML content.
+	 * @param array|   $tags Array of tag strings.
 	 * @param boolean| $show_error Determine if show likecoin error message.
 	 */
 	public function new_draft( $title, $html_content, $tags, $show_error = false ) {
