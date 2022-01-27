@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js';
 import '../style.css';
 import { useState, useEffect, useCallback } from 'react';
 import LikeCoinPluginPrePublishPanel from './LikeCoinPluginPrePublishPanel';
@@ -276,7 +277,8 @@ function LikeCoinPlugin(props) {
   async function handleRegisterISCN(e) {
     e.preventDefault();
     setShouldStartProcess(true);
-    props.postArweaveEstimateData();
+    setLIKE(BigNumber('-1.0'));
+    await props.postArweaveEstimateData();
   }
   return (
     <>
