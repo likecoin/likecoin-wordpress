@@ -165,7 +165,7 @@ function LikeCoinPluginSideBar(props) {
               </div>
               <div className='popUpMainContentRow'>
                 <MetaPopUpStatusTitle title={__('Description', 'likecoin')} />
-                <MetaPopUpStatusDetails details={props.description} />
+                <MetaPopUpStatusDetails details={props.ISCNDescription} />
               </div>
               <div className='popUpMainContentRow'>
                 <MetaPopUpStatusTitle title={__('Author', 'likecoin')} />
