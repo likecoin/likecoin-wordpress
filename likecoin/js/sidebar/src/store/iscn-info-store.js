@@ -190,12 +190,11 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
     case 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE': {
-      const { arweaveId, ipfsHash: arweaveIPFSHash, mattersIPFSHash } = action.data;
+      const { arweaveId, ipfsHash: arweaveIPFSHash } = action.data;
       return {
         ...state,
         DBArweaveId: arweaveId,
         DBArweaveIPFSHash: arweaveIPFSHash,
-        DBMattersIPFSHash: mattersIPFSHash,
       };
     }
     case 'UPDATE_ISCN_ID_GLOBAL_STATE': {
