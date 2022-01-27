@@ -12,7 +12,8 @@ function LikeCoinPlugin(props) {
   const [LIKE, setLIKE] = useState(props.DBLIKEPayAmount);
   const [memo, setMemo] = useState(props.DBMemo);
   const [title, setTitle] = useState(props.DBArticleTitle);
-  const [description, setDescription] = useState(props.DBAuthorDescription);
+  const [authorDescription, setAuthorDescription] = useState(props.DBAuthorDescription);
+  const [ISCNDescription, setISCNDescription] = useState(props.DBISCNDescription);
   const [author, setAuthor] = useState(props.DBAuthor);
   const [url, setUrl] = useState(props.DBArticleURL);
   const [tags, setTags] = useState(props.DBArticleTags);
@@ -121,8 +122,9 @@ function LikeCoinPlugin(props) {
         const titleString = encodeURIComponent(title);
         const fingerprint = fingerprints.join(',');
         const authorString = encodeURIComponent(author);
-        const descriptionString = encodeURIComponent(description);
-        const popUpWidget = `https://like.co/in/widget/iscn-ar?fingerprint=${fingerprint}&author=${authorString}&description=${descriptionString}&publisher=&title=${titleString}&tags=${tagsString}&url=${urlString}&to=like-arweave&amount=0&opener=1&redirect_uri=${redirectString}`;
+        const authorDescriptionString = encodeURIComponent(authorDescription);
+        const ISCNDescriptionString = encodeURIComponent(ISCNDescription);
+        const popUpWidget = `https://like.co/in/widget/iscn-ar?fingerprint=${fingerprint}&author=${authorString}&author_description=${authorDescriptionString}&ISCN_description=${ISCNDescriptionString}&publisher=&title=${titleString}&tags=${tagsString}&url=${urlString}&to=like-arweave&amount=0&opener=1&redirect_uri=${redirectString}`;
         setPopUpWindow(
           window.open(
             popUpWidget,
@@ -135,7 +137,8 @@ function LikeCoinPlugin(props) {
     } catch (error) {
       console.error(error);
     }
-  }, [memo, title, fingerprints, tags, url, author, description, onISCNCallback]);
+  }, [memo, title, fingerprints, tags, url, author,
+    authorDescription, ISCNDescription, onISCNCallback]);
   const sendISCNReadyMessage = useCallback(() => {
     const startRegisterISCNMessage = JSON.stringify({
       action: 'REGISTER_ISCN',
@@ -147,12 +150,14 @@ function LikeCoinPlugin(props) {
         type: 'article',
         license: '',
         author,
-        description,
+        authorDescription,
+        ISCNDescription,
       },
     });
     popUpWindow.postMessage(startRegisterISCNMessage, 'https://like.co');
     window.addEventListener('message', onISCNCallback, false);
-  }, [fingerprints, title, tags, url, author, description, onISCNCallback, popUpWindow]);
+  }, [fingerprints, title, tags, url, author, authorDescription, ISCNDescription,
+    onISCNCallback, popUpWindow]);
 
   useEffect(() => {
     setLIKE(props.DBLIKEPayAmount);
@@ -166,10 +171,14 @@ function LikeCoinPlugin(props) {
           .join(' ')
           .concat('...')
           .concat(props.DBAuthorDescription.split(' ')[length - 1]);
-        setDescription(cutDescription);
+        setAuthorDescription(cutDescription);
       } else {
-        setDescription(props.DBAuthorDescription);
+        setAuthorDescription(props.DBAuthorDescription);
       }
+    }
+    // default length for excerpt is 55. Hence, no need 197 length guard.
+    if (props.DBISCNDescription) {
+      setISCNDescription(props.DBISCNDescription);
     }
     setAuthor(props.DBAuthor);
     setUrl(props.DBArticleURL);
@@ -186,6 +195,7 @@ function LikeCoinPlugin(props) {
     props.DBMemo,
     props.DBArticleTitle,
     props.DBAuthorDescription,
+    props.DBISCNDescription,
     props.DBAuthor,
     props.DBArticleURL,
     props.DBArticleTags,
@@ -294,7 +304,8 @@ function LikeCoinPlugin(props) {
         mattersIPFSHash={mattersIPFSHash}
         mattersPublishedArticleHash={mattersPublishedArticleHash}
         title={title}
-        description={description}
+        authorDescription={authorDescription}
+        ISCNDescription={ISCNDescription}
         author={author}
         tags={tags}
         url={url}

@@ -10,6 +10,7 @@ function LikeCoinSideBar() {
     DBMemo,
     DBArticleTitle,
     DBAuthorDescription,
+    DBISCNDescription,
     DBAuthor,
     DBArticleURL,
     DBArticleTags,
@@ -35,6 +36,7 @@ function LikeCoinSideBar() {
       DBMemo={DBMemo}
       DBArticleTitle={DBArticleTitle}
       DBAuthorDescription={DBAuthorDescription}
+      DBISCNDescription={DBISCNDescription}
       DBAuthor={DBAuthor}
       DBArticleURL={DBArticleURL}
       DBArticleTags={DBArticleTags}
