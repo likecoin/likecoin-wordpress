@@ -120,14 +120,14 @@ function likecoin_get_user_data( $request ) {
  * @param WP_REST_Request $request Full data about the request.
  */
 function likecoin_post_site_publish_options_data( $request ) {
-	$publish_options = get_option( 'LC_PUBLISH_OPTION_NAME' );
+	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
 	$params          = $request->get_json_params();
 	$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
 	$publish_options['site_matters_auto_publish']    = $params['siteMattersAutoPublish'];
 	$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
 	$publish_options['iscn_badge_style_option']      = $params['ISCNBadgeStyleOption'];
-	update_option( 'LC_PUBLISH_OPTION_NAME', $publish_options );
-	$publish_options   = get_option( 'LC_PUBLISH_OPTION_NAME' );
+	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
+	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
 	$result['code']    = 200;
 	$result['data']    = $publish_options;
 	$result['message'] = 'Successfully POST matters login data!';
@@ -174,11 +174,11 @@ function likecoin_logout_matters( $request ) {
  * @param array | $matters_info valid matters login info.
  */
 function likecoin_save_site_matters_login_data( $matters_info ) {
-	$publish_options                                      = get_option( 'LC_PUBLISH_OPTION_NAME' );
+	$publish_options                                      = get_option( LC_PUBLISH_OPTION_NAME );
 	$publish_options['site_matters_user']['matters_id']   = $matters_info['matters_id'];
 	$publish_options['site_matters_user']['access_token'] = $matters_info['matters_token'];
-	update_option( 'LC_PUBLISH_OPTION_NAME', $publish_options );
-	$publish_options   = get_option( 'LC_PUBLISH_OPTION_NAME' );
+	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
+	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
 	$result['code']    = 200;
 	$result['data']    = $publish_options;
 	$result['message'] = 'Successfully POST matters login data!';
@@ -190,12 +190,12 @@ function likecoin_save_site_matters_login_data( $matters_info ) {
  * @param WP_REST_Request $request Full data about the request.
  */
 function likecoin_get_site_matters_data( $request ) {
-	$publish_options = get_option( 'LC_PUBLISH_OPTION_NAME' );
+	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
 	// incl. login and publish data.
 	if ( ! $publish_options ) {
 		return;
 	}
-	$publish_options   = get_option( 'LC_PUBLISH_OPTION_NAME' );
+	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
 	$result['code']    = 200;
 	$result['data']    = $publish_options;
 	$result['message'] = 'Successfully GET matters data!';
