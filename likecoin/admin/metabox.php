@@ -443,6 +443,50 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			LC_PLUGIN_VERSION,
 			true
 		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'wpApiSettings',
+			array(
+				'root'    => esc_url_raw( rest_url() ),
+				'siteurl' => get_site_url(),
+				'nonce'   => wp_create_nonce( 'wp_rest' ),
+				'postId'  => $post_id,
+			)
+		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'lcPostInfo',
+			array(
+				'id'                 => $post_id,
+				'title'              => $post_title,
+				'mattersIPFSHash'    => $matters_ipfs_hash,
+				'isMattersPublished' => $matters_published_status,
+				'arweaveIPFSHash'    => $arweave_ipfs_hash,
+				'iscnHash'           => $publish_params['iscn_hash'],
+				'iscnId'             => $publish_params['iscn_id'],
+				'tags'               => $post_tags,
+				'url'                => $post_url,
+				'arweaveId'          => $arweave_id,
+				'mainStatus'         => 'initial',
+			)
+		);
+		wp_localize_script(
+			'lc_js_metabox',
+			'lcStringInfo',
+			array(
+				'mainTitleDraft'          => __( 'Publish Your Post First', LC_PLUGIN_SLUG ),
+				'mainTitleIntermediate'   => __( 'READY to #DePub', LC_PLUGIN_SLUG ),
+				'mainTitleDone'           => __( 'LIVE on #DePub', LC_PLUGIN_SLUG ),
+				'mainStatusLoading'       => __( 'Loading...', LC_PLUGIN_SLUG ),
+				'mainStatusFailedPopUp'   => __( 'Failed to open like.co widget. Please allow popup in your browser and retry.', LC_PLUGIN_SLUG ),
+				'mainStatusLIKEPay'       => __( 'Waiting for LIKE Pay...', LC_PLUGIN_SLUG ),
+				'mainStatusUploadArweave' => __( 'Uploading to Arweave...', LC_PLUGIN_SLUG ),
+				'mainStatusRegisterISCN'  => __( 'Registering ISCN...', LC_PLUGIN_SLUG ),
+				'buttonSubmitISCN'        => __( 'Submit to ISCN', LC_PLUGIN_SLUG ),
+				'buttonRegisterISCN'      => __( 'Register ISCN', LC_PLUGIN_SLUG ),
+				'draft'                   => __( 'Draft', LC_PLUGIN_SLUG ),
+			)
+		);
 }
 
 /**

@@ -109,5 +109,5 @@ function likecoin_add_admin_hooks() {
 	add_action( 'admin_notices', 'likecoin_show_admin_errors' );
 	add_action( 'manage_posts_columns', 'likecoin_add_posts_columns', 10, 2 );
 	add_action( 'manage_posts_custom_column', 'likecoin_populate_posts_columns', 10, 2 );
-	add_action( 'admin_enqueue_scripts', 'likecoin_show_plugin' );
+	add_action( 'add_meta_boxes', 'likecoin_show_plugin' ); // show sidebar or metaboxes.
 }
