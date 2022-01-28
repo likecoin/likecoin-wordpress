@@ -201,21 +201,28 @@ function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
 	$body          .= "\r\n";
 	$body          .= $content . "\r\n";
 	$body          .= "\r\n";
+	$site_url       = get_site_url();
+	$site_url       = explode( '//', $site_url )[1];
+	$site_url       = explode( ':', $site_url )[0];
 	foreach ( $urls as $url ) {
-		$file_info  = new finfo( FILEINFO_MIME_TYPE );
-		$image_path = substr( $url, 22 );
-		// phpcs:disable WordPress.WP.AlternativeFunctions
-		$img_body = file_get_contents( $image_path );
-		// phpcs:enable WordPress.WP.AlternativeFunctions
-		$mime_type = $file_info->buffer( $img_body );
-		$filename  = basename( $url );
-		$body     .= '--' . $boundary . "\r\n";
-		$body     .= 'Content-Disposition: form-data; name="' . $filename . '"; filename="' . $filename . "\"\r\n";
-		$body     .= 'Content-Type: ' . $mime_type . "\r\n";
-		$body     .= "Content-Transfer-Encoding: binary\r\n";
-		$body     .= "\r\n";
-		$body     .= $img_body . "\r\n";
-		$body     .= "\r\n";
+		$file_info = new finfo( FILEINFO_MIME_TYPE );
+		$parse     = wp_parse_url( $url );
+		$host      = $parse['host'];
+		if ( $host === $site_url ) { // uploaded image.
+			$image_path = substr( $url, 22 );
+			// phpcs:disable WordPress.WP.AlternativeFunctions
+			$img_body = file_get_contents( $image_path );
+			// phpcs:enable WordPress.WP.AlternativeFunctions
+			$mime_type = $file_info->buffer( $img_body );
+			$filename  = basename( $url );
+			$body     .= '--' . $boundary . "\r\n";
+			$body     .= 'Content-Disposition: form-data; name="' . $filename . '"; filename="' . $filename . "\"\r\n";
+			$body     .= 'Content-Type: ' . $mime_type . "\r\n";
+			$body     .= "Content-Transfer-Encoding: binary\r\n";
+			$body     .= "\r\n";
+			$body     .= $img_body . "\r\n";
+			$body     .= "\r\n";
+		}
 	}
 	$body .= '--' . $boundary . '--';
 	return $body;
