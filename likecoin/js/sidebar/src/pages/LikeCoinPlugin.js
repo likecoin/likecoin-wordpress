@@ -13,7 +13,7 @@ function LikeCoinPlugin(props) {
   const [memo, setMemo] = useState(props.DBMemo);
   const [title, setTitle] = useState(props.DBArticleTitle);
   const [authorDescription, setAuthorDescription] = useState(props.DBAuthorDescription);
-  const [ISCNDescription, setISCNDescription] = useState(props.DBISCNDescription);
+  const [description, setDescription] = useState(props.DBDescription);
   const [author, setAuthor] = useState(props.DBAuthor);
   const [url, setUrl] = useState(props.DBArticleURL);
   const [tags, setTags] = useState(props.DBArticleTags);
@@ -123,8 +123,8 @@ function LikeCoinPlugin(props) {
         const fingerprint = fingerprints.join(',');
         const authorString = encodeURIComponent(author);
         const authorDescriptionString = encodeURIComponent(authorDescription);
-        const ISCNDescriptionString = encodeURIComponent(ISCNDescription);
-        const popUpWidget = `https://like.co/in/widget/iscn-ar?fingerprint=${fingerprint}&author=${authorString}&author_description=${authorDescriptionString}&ISCN_description=${ISCNDescriptionString}&publisher=&title=${titleString}&tags=${tagsString}&url=${urlString}&to=like-arweave&amount=0&opener=1&redirect_uri=${redirectString}`;
+        const descriptionString = encodeURIComponent(description);
+        const popUpWidget = `https://like.co/in/widget/iscn-ar?fingerprint=${fingerprint}&author=${authorString}&author_description=${authorDescriptionString}&description=${descriptionString}&publisher=&title=${titleString}&tags=${tagsString}&url=${urlString}&to=like-arweave&amount=0&opener=1&redirect_uri=${redirectString}`;
         setPopUpWindow(
           window.open(
             popUpWidget,
@@ -138,7 +138,7 @@ function LikeCoinPlugin(props) {
       console.error(error);
     }
   }, [memo, title, fingerprints, tags, url, author,
-    authorDescription, ISCNDescription, onISCNCallback]);
+    authorDescription, description, onISCNCallback]);
   const sendISCNReadyMessage = useCallback(() => {
     const startRegisterISCNMessage = JSON.stringify({
       action: 'REGISTER_ISCN',
@@ -151,12 +151,12 @@ function LikeCoinPlugin(props) {
         license: '',
         author,
         authorDescription,
-        ISCNDescription,
+        description,
       },
     });
     popUpWindow.postMessage(startRegisterISCNMessage, 'https://like.co');
     window.addEventListener('message', onISCNCallback, false);
-  }, [fingerprints, title, tags, url, author, authorDescription, ISCNDescription,
+  }, [fingerprints, title, tags, url, author, authorDescription, description,
     onISCNCallback, popUpWindow]);
 
   useEffect(() => {
@@ -177,8 +177,8 @@ function LikeCoinPlugin(props) {
       }
     }
     // default length for excerpt is 55. Hence, no need 197 length guard.
-    if (props.DBISCNDescription) {
-      setISCNDescription(props.DBISCNDescription);
+    if (props.DBDescription) {
+      setDescription(props.DBDescription);
     }
     setAuthor(props.DBAuthor);
     setUrl(props.DBArticleURL);
@@ -195,7 +195,7 @@ function LikeCoinPlugin(props) {
     props.DBMemo,
     props.DBArticleTitle,
     props.DBAuthorDescription,
-    props.DBISCNDescription,
+    props.DBDescription,
     props.DBAuthor,
     props.DBArticleURL,
     props.DBArticleTags,
@@ -305,7 +305,7 @@ function LikeCoinPlugin(props) {
         mattersPublishedArticleHash={mattersPublishedArticleHash}
         title={title}
         authorDescription={authorDescription}
-        ISCNDescription={ISCNDescription}
+        description={description}
         author={author}
         tags={tags}
         url={url}

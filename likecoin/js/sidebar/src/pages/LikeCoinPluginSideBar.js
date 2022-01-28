@@ -165,7 +165,7 @@ function LikeCoinPluginSideBar(props) {
               </div>
               <div className='popUpMainContentRow'>
                 <MetaPopUpStatusTitle title={__('Description', 'likecoin')} />
-                <MetaPopUpStatusDetails details={props.ISCNDescription} />
+                <MetaPopUpStatusDetails details={props.description} />
               </div>
               <div className='popUpMainContentRow'>
                 <MetaPopUpStatusTitle title={__('Author', 'likecoin')} />
@@ -258,14 +258,14 @@ function LikeCoinPluginSideBar(props) {
                 <SideBarStatusRow
                   title='Matters'
                   status={props.mattersDraftId}
-                  link={`https://matters.news/me/drafts/${props.mattersDraftId}`}
+                  link={`https://web-develop.matters.news/me/drafts/${props.mattersDraftId}`}
                 />
               )}
               {showMattersArticleLink && (
                 <SideBarStatusRow
                   title='Matters'
-                  status={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
-                  link={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
+                  status={`https://web-develop.matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
+                  link={`https://web-develop.matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
                 />
               )}
             </div>

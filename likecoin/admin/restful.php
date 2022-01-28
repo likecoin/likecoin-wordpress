@@ -92,12 +92,12 @@ function likecoin_get_post_iscn_meta( $post ) {
 	if ( isset( $author_description ) ) {
 		$iscn_related_post_meta['author_description'] = $author_description;
 	}
-	$excerpt_length   = apply_filters( 'excerpt_length', 55 );
-	$content          = apply_filters( 'the_content', $post->post_content );
-	$content          = wp_trim_words( $content, $excerpt_length, '...' );
-	$iscn_description = apply_filters( 'get_the_excerpt', $content );
-	if ( isset( $iscn_description ) ) {
-		$iscn_related_post_meta['iscn_description'] = $iscn_description;
+	$excerpt_length = apply_filters( 'excerpt_length', 55 );
+	$content        = apply_filters( 'the_content', $post->post_content );
+	$content        = wp_trim_words( $content, $excerpt_length, '...' );
+	$description    = apply_filters( 'get_the_excerpt', $content );
+	if ( isset( $description ) ) {
+		$iscn_related_post_meta['description'] = $description;
 	}
 	$url = get_permalink( $post );
 	if ( isset( $url ) ) {
@@ -172,7 +172,7 @@ function likecoin_rest_post_arweave_estimate( $request ) {
 	$iscn_related_post_meta                = likecoin_get_post_iscn_meta( $post );
 	$decoded_response['author']            = $iscn_related_post_meta['author'];
 	$decoded_response['authorDescription'] = $iscn_related_post_meta['author_description'];
-	$decoded_response['ISCNDescription']   = $iscn_related_post_meta['iscn_description'];
+	$decoded_response['description']       = $iscn_related_post_meta['description'];
 	return new WP_REST_Response( $decoded_response, 200 );
 }
 /**
@@ -389,7 +389,7 @@ function likecoin_get_iscn_full_info( $request ) {
 	$iscn_full_info['title']             = $iscn_related_post_meta['title'];
 	$iscn_full_info['author']            = $iscn_related_post_meta['author'];
 	$iscn_full_info['authorDescription'] = $iscn_related_post_meta['author_description'];
-	$iscn_full_info['ISCNDescription']   = $iscn_related_post_meta['iscn_description'];
+	$iscn_full_info['description']       = $iscn_related_post_meta['description'];
 	$iscn_full_info['url']               = $iscn_related_post_meta['url'];
 	$iscn_full_info['tags']              = $iscn_related_post_meta['tags'];
 	return new WP_REST_Response( $iscn_full_info, 200 );
