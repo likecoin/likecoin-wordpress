@@ -235,11 +235,11 @@ class LikeCoin_Matters_API {
 	 * @param boolean| $show_error Determine if show likecoin error message.
 	 */
 	public function new_draft( $title, $html_content, $tags, $show_error = false ) {
-		if ( ( false === $show_error || ! $show_error ) && ! $html_content ) {
+		if ( ! $html_content ) {
+			if ( true === $show_error ) {
+				return array( 'error' => 'EMPTY_CONTENT' );
+			}
 			return;
-		}
-		if ( true === $show_error && ! $html_content ) {
-			return array( 'error' => 'EMPTY_CONTENT' );
 		}
 		$payload  = 'mutation {
       putDraft(input: {

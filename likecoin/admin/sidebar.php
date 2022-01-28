@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin admin post metabox
+ * LikeCoin admin post sidebar
  *
- * Define metabox functions used for post editor pages
+ * Define sidebar functions used for post editor pages
  *
  * @package   LikeCoin
  *

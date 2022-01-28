@@ -50,6 +50,7 @@ function LikeCoinPluginPrePublishPanel(props) {
                 onClick={(e) => {
                   e.preventDefault();
                   document
+                    .getElementsByClassName('editor-post-publish-panel__header-cancel-button')[0]
                     .getElementsByClassName('components-button is-secondary')[0]
                     .click();
                 }}
