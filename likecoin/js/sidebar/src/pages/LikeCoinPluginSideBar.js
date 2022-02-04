@@ -258,14 +258,14 @@ function LikeCoinPluginSideBar(props) {
                 <SideBarStatusRow
                   title='Matters'
                   status={props.mattersDraftId}
-                  link={`https://web-develop.matters.news/me/drafts/${props.mattersDraftId}`}
+                  link={`https://matters.news/me/drafts/${props.mattersDraftId}`}
                 />
               )}
               {showMattersArticleLink && (
                 <SideBarStatusRow
                   title='Matters'
-                  status={`https://web-develop.matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
-                  link={`https://web-develop.matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
+                  status={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
+                  link={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
                 />
               )}
             </div>
