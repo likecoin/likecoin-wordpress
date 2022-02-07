@@ -122,6 +122,11 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 
 == Changelog ==
 
+= 2.5.0 =
+
+- Revamp post editor interface and publishing flow
+- Add Gutenberg siderbar for DePub.
+
 = 2.4.5 =
 
 - Fix matters publish settings does not work
