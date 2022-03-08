@@ -15,15 +15,15 @@ if (appAnchorElement) {
     </Router>,
     appAnchorElement,
   );
+} else {
+  const root = document.querySelector('#root');
+  window.wpApiSettings = window.wpApiSettings || {};
+  if (root) {
+    ReactDOM.render(
+      <Router>
+        <App />
+      </Router>,
+      root,
+    );
+  }
 }
-
-// for npm run start development
-// const root = document.querySelector('#root');
-// if (root) {
-//   ReactDOM.render(
-//     <Router>
-//       <App />
-//     </Router>,
-//     root
-//   );
-// }
