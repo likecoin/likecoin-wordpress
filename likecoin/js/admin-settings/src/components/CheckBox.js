@@ -13,7 +13,6 @@ function CheckBox(props) {
           checked={props.checked}
           onChange={handleCheck}
           ref={props.checkRef}
-          optionDetails
         />
         <label className="optionDetails">{props.details}</label>
       </td>
