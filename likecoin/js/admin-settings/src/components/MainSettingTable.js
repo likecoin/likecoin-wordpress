@@ -169,6 +169,7 @@ function MainSettingTable(props) {
       )}
       <form onSubmit={confirmHandler}>
         <Section title={__('Site Liker ID', 'likecoin')} />
+        <tbody>
           <CheckBox
             checked={siteLikerIdEnabled}
             handleCheck={setSiteLikerIdEnabled}
@@ -196,9 +197,11 @@ function MainSettingTable(props) {
             showDisconnectButton={false}
           />
         )}
+        </tbody>
         <Section
           title={__('Site LikeCoin button display setting', 'likecoin')}
         />
+        <tbody>
           <DropDown
             selected={displayOptionSelected}
             handleSelect={setDisplayOptionSelected}
@@ -216,6 +219,7 @@ function MainSettingTable(props) {
             )}
             checkRef={perPostOptionEnabledRef}
           />
+        </tbody>
         <SubmitButton />
       </form>
     </div>
