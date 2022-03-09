@@ -14,7 +14,7 @@ const INITIAL_STATE = {
   DBSiteMattersAutoSaveDraft: false,
   DBSiteMattersAutoPublish: false,
   DBSiteMattersAddFooterLink: false,
-  DBISCNBadgeStyleOption: 'None',
+  DBISCNBadgeStyleOption: 'none',
 };
 
 const actions = {
@@ -128,6 +128,9 @@ const resolvers = {
       siteMattersOptions.site_matters_auto_save_draft = DBSiteMattersAutoSaveDraft;
       siteMattersOptions.site_matters_auto_publish = DBSiteMattersAutoPublish;
       siteMattersOptions.site_matters_add_footer_link = DBSiteMattersAddFooterLink;
+      if (!siteMattersOptions.iscn_badge_style_option) {
+        siteMattersOptions.iscn_badge_style_option = INITIAL_STATE.DBISCNBadgeStyleOption;
+      }
       return actions.setSiteMattersOptions(siteMattersOptions);
     } catch (error) {
       return actions.setHTTPErrors(error.message);
