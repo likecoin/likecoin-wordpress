@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.8
 Requires PHP: 5.4
-Stable tag: 2.4.5
+Stable tag: 2.4.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -126,6 +126,10 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 
 - Revamp post editor interface and publishing flow
 - Add Gutenberg siderbar for DePub.
+
+= 2.4.6 =
+
+- Fix confusing default select in LikeCoin button and ISCN badge display settings
 
 = 2.4.5 =
 

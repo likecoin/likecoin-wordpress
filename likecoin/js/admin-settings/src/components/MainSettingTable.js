@@ -42,6 +42,7 @@ function MainSettingTable(props) {
   const [isLoading, setIsLoading] = useState(false);
 
   const [savedSuccessful, setSavedSuccessful] = useState(false);
+  const [submitResponse, setSubmitResponse] = useState(false);
   const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
   function handleLikerIdInputChange(e) {
     e.preventDefault();
@@ -107,7 +108,8 @@ function MainSettingTable(props) {
     setIsChangingTypingLiker(true);
   }
 
-  function confirmHandler(e) {
+  async function confirmHandler(e) {
+    setSubmitResponse(null);
     setSavedSuccessful(false);
     e.preventDefault();
     const isSiteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
@@ -131,48 +133,53 @@ function MainSettingTable(props) {
     };
     try {
       // change global state & DB
-      props.onSubmit(data);
+      const res = await props.onSubmit(data);
+      setSubmitResponse(res.message);
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
       setIsChangingTypingLiker(false);
     } catch (error) {
-      console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console
+      console.error(error);
+      setSubmitResponse(error.message.toString());
+      setSavedSuccessful(false);
       setIsChangingTypingLiker(false);
     }
   }
   function handleNoticeDismiss(e) {
     e.preventDefault();
     setSavedSuccessful(false);
+    setSubmitResponse(null);
   }
   const handleDisconnect = () => {};
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
-      {savedSuccessful && likerDisplayName !== '-' && (
+      {submitResponse && !savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      {savedSuccessful && likerDisplayName === '-' && (
+      {submitResponse && savedSuccessful && (
         <SettingNotice
-          text={__('Site Liker ID is missing', 'likecoin')}
+          text={submitResponse}
           className="notice-error"
         />
       )}
       <form onSubmit={confirmHandler}>
         <Section title={__('Site Liker ID', 'likecoin')} />
-        <CheckBox
-          checked={siteLikerIdEnabled}
-          handleCheck={setSiteLikerIdEnabled}
-          title={__('Enable site Liker ID', 'likecoin')}
-          details={__(
-            'Override all LikeCoin button with site Liker ID',
-            'likecoin',
-          )}
-          checkRef={siteLikerIdEnabledRef}
-        />
+        <tbody>
+          <CheckBox
+            checked={siteLikerIdEnabled}
+            handleCheck={setSiteLikerIdEnabled}
+            title={__('Enable site Liker ID', 'likecoin')}
+            details={__(
+              'Override all LikeCoin button with site Liker ID',
+              'likecoin',
+            )}
+            checkRef={siteLikerIdEnabledRef}
+          />
         {siteLikerIdEnabled && (
           <LikecoinInfoTable
             likerIdValue={likerIdValue}
@@ -190,26 +197,29 @@ function MainSettingTable(props) {
             showDisconnectButton={false}
           />
         )}
+        </tbody>
         <Section
           title={__('Site LikeCoin button display setting', 'likecoin')}
         />
-        <DropDown
-          selected={displayOptionSelected}
-          handleSelect={setDisplayOptionSelected}
-          title={__('Display option', 'likecoin')}
-          selectRef={displayOptionRef}
-          options={pluginSettingOptions}
-        />
-        <CheckBox
-          checked={perPostOptionEnabled}
-          handleCheck={setPerPostOptionEnabled}
-          title={__('Allow per Post option', 'likecoin')}
-          details={__(
-            'Allow editors to customize display setting per post',
-            'likecoin',
-          )}
-          checkRef={perPostOptionEnabledRef}
-        />
+        <tbody>
+          <DropDown
+            selected={displayOptionSelected}
+            handleSelect={setDisplayOptionSelected}
+            title={__('Display option', 'likecoin')}
+            selectRef={displayOptionRef}
+            options={pluginSettingOptions}
+          />
+          <CheckBox
+            checked={perPostOptionEnabled}
+            handleCheck={setPerPostOptionEnabled}
+            title={__('Allow per Post option', 'likecoin')}
+            details={__(
+              'Allow editors to customize display setting per post',
+              'likecoin',
+            )}
+            checkRef={perPostOptionEnabledRef}
+          />
+        </tbody>
         <SubmitButton />
       </form>
     </div>

@@ -4,16 +4,9 @@ import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 
 function MainSettingPage() {
   const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
-  async function postMainOptionDataToWordpress(data) {
-    try {
-      postSiteLikerInfo(data);
-    } catch (error) {
-      console.error(error); // eslint-disable-line no-console
-    }
-  }
   return (
     <div>
-      <MainSettingTable onSubmit={postMainOptionDataToWordpress} />
+      <MainSettingTable onSubmit={postSiteLikerInfo} />
     </div>
   );
 }

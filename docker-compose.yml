@@ -16,7 +16,7 @@ services:
       - ./likecoin:/var/www/html/wp-content/plugins/likecoin
 
   mysql:
-    image: mysql:5
+    image: mariadb:10.7
     ports:
       - "3306:3306"
     volumes:

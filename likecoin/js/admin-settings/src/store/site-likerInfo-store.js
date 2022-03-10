@@ -12,7 +12,7 @@ const INITIAL_STATE = {
   DBSiteLikerDisplayName: '',
   DBSiteLikerWallet: '',
   DBSiteLikerIdEnabled: false,
-  DBDisplayOptionSelected: 'None',
+  DBDisplayOptionSelected: 'none',
   DBPerPostOptionEnabled: false,
 };
 
@@ -68,18 +68,21 @@ const resolvers = {
   * selectSiteLikerInfo() {
     try {
       const response = yield actions.getSiteLikerInfo(endPoint);
-      const siteLikersInfo = response.data.data;
+      const siteLikerInfo = response.data.data;
       const DBSiteLikerIdEnabled = !!(
-        siteLikersInfo.site_likecoin_id_enbled === '1'
-        || siteLikersInfo.site_likecoin_id_enbled === true
+        siteLikerInfo.site_likecoin_id_enbled === '1'
+        || siteLikerInfo.site_likecoin_id_enbled === true
       );
       const DBPerPostOptionEnabled = !!(
-        siteLikersInfo.button_display_author_override === '1'
-        || siteLikersInfo.button_display_author_override === true
+        siteLikerInfo.button_display_author_override === '1'
+        || siteLikerInfo.button_display_author_override === true
       );
-      siteLikersInfo.site_likecoin_id_enbled = DBSiteLikerIdEnabled;
-      siteLikersInfo.button_display_author_override = DBPerPostOptionEnabled;
-      return actions.setSiteLikerInfo(siteLikersInfo);
+      siteLikerInfo.site_likecoin_id_enbled = DBSiteLikerIdEnabled;
+      siteLikerInfo.button_display_author_override = DBPerPostOptionEnabled;
+      if (!siteLikerInfo.button_display_option) {
+        siteLikerInfo.button_display_option = INITIAL_STATE.DBDisplayOptionSelected;
+      }
+      return actions.setSiteLikerInfo(siteLikerInfo);
     } catch (error) {
       return actions.setHTTPErrors(error.message);
     }
