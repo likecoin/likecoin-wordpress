@@ -112,76 +112,49 @@ function likecoin_get_post_iscn_meta( $post ) {
 
 
 /**
- * Add likecoin arweave estimate endpoint.
+ * Get post data and metadata as json
  *
  * @param WP_REST_Request $request Full data about the request.
  * @return WP_Error|WP_REST_Response
  */
-function likecoin_rest_post_arweave_estimate( $request ) {
+function likecoin_rest_prepare_post_iscn_register_data( $request ) {
 	$post_id = $request['id'];
 	$post    = get_post( $post_id );
 	if ( ! isset( $post ) ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
-	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$boundary = base64_encode( wp_generate_password( 24 ) );
-	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$body                      = likecoin_format_post_to_multipart_formdata( $boundary, $post );
-	$title                     = apply_filters( 'the_title_rss', $post->post_title );
-	$tags                      = likecoin_get_post_tags_for_matters( $post );
-	$url                       = get_permalink( $post );
-	$likecoin_api_estimate_url = 'https://api.like.co/api/arweave/estimate';
-	$response                  = wp_remote_post(
-		$likecoin_api_estimate_url,
-		array(
-			'headers' => array(
-				'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
-			),
-			'body'    => $body,
-		)
+	$files          = likecoin_format_post_to_json_data( $post );
+	$title          = apply_filters( 'the_title_rss', $post->post_title );
+	$tags           = likecoin_get_post_tags_for_matters( $post );
+	$url            = get_permalink( $post );
+	$response       = array(
+		'files' => $files,
+		'title' => $title,
+		'tags'  => $tags,
+		'url'   => $url,
 	);
-	if ( is_wp_error( $response ) ) {
-		$err_message = $response->get_error_message();
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
-			// phpcs:disable WordPress.PHP.DevelopmentFunctions
-			error_log( $response->get_error_message() );
-			// phpcs:enable WordPress.PHP.DevelopmentFunctions
-		}
-		return new WP_REST_Response( array( 'error' => $response->get_error_message() ), 500 );
-	}
-	$decoded_response = json_decode( $response['body'], true );
-	if ( ! $decoded_response ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
-			// phpcs:disable WordPress.PHP.DevelopmentFunctions
-			error_log( $response['body'] );
-			// phpcs:enable WordPress.PHP.DevelopmentFunctions
-		}
-		return new WP_REST_Response( array( 'error' => $response['body'] ), 400 );
-	}
-	$decoded_response['title'] = $title;
-	$publish_params            = likecoin_get_meta_box_publish_params( $post, true );
+	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
 	if ( isset( $publish_params['ipfs_hash'] ) ) {
-		$decoded_response['mattersIPFSHash']             = $publish_params['ipfs_hash'];
-		$decoded_response['mattersId']                   = $publish_params['matters_id'];
-		$decoded_response['mattersPublishedArticleHash'] = $publish_params['article_hash'];
-		$decoded_response['mattersArticleId']            = $publish_params['article_id'];
-		$decoded_response['mattersArticleSlug']          = $publish_params['article_slug'];
+		$response['mattersIPFSHash']             = $publish_params['ipfs_hash'];
+		$response['mattersId']                   = $publish_params['matters_id'];
+		$response['mattersPublishedArticleHash'] = $publish_params['article_hash'];
+		$response['mattersArticleId']            = $publish_params['article_id'];
+		$response['mattersArticleSlug']          = $publish_params['article_slug'];
 	}
-	$decoded_response['tags']              = $tags;
-	$decoded_response['url']               = $url;
-	$iscn_related_post_meta                = likecoin_get_post_iscn_meta( $post );
-	$decoded_response['author']            = $iscn_related_post_meta['author'];
-	$decoded_response['authorDescription'] = $iscn_related_post_meta['author_description'];
-	$decoded_response['description']       = $iscn_related_post_meta['description'];
-	return new WP_REST_Response( $decoded_response, 200 );
+	$iscn_related_post_meta        = likecoin_get_post_iscn_meta( $post );
+	$response['author']            = $iscn_related_post_meta['author'];
+	$response['authorDescription'] = $iscn_related_post_meta['author_description'];
+	$response['description']       = $iscn_related_post_meta['description'];
+	return new WP_REST_Response( $response, 200 );
 }
+
 /**
- * Transform content to arweave-accepted body format.
+ * Transform content to json base64 encoded format.
  *
- * @param string| $boundary Random-generated separator.
  * @param object| $post WordPress post object.
  */
-function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
+function likecoin_format_post_to_json_data( $post ) {
+	$files          = array();
 	$title          = apply_filters( 'the_title_rss', $post->post_title );
 	$content        = apply_filters( 'the_content', $post->post_content );
 	$urls           = likecoin_get_post_image_url( $post );
@@ -193,17 +166,16 @@ function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
 	<body> <h1>' . $title . '</h1>' . $content . '</body></html>';
 	$file_mime_type = 'text/html';
 	$filename       = 'index.html';
-	$body           = '';
-	$body          .= '--' . $boundary . "\r\n";
-	$body          .= 'Content-Disposition: form-data; name="index.html"; filename="' . $filename . "\"\r\n";
-	$body          .= 'Content-Type: ' . $file_mime_type . "\r\n";
-	$body          .= "Content-Transfer-Encoding: binary\r\n";
-	$body          .= "\r\n";
-	$body          .= $content . "\r\n";
-	$body          .= "\r\n";
-	$site_url       = get_site_url();
-	$site_url       = explode( '//', $site_url )[1];
-	$site_url       = explode( ':', $site_url )[0];
+	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	$files[] = array(
+		'filename' => $filename,
+		'mimeType' => $file_mime_type,
+		'data'     => base64_encode( $content ),
+	);
+
+	$site_url = get_site_url();
+	$site_url = explode( '//', $site_url )[1];
+	$site_url = explode( ':', $site_url )[0];
 	foreach ( $urls as $url ) {
 		$file_info = new finfo( FILEINFO_MIME_TYPE );
 		$parse     = wp_parse_url( $url );
@@ -215,59 +187,17 @@ function likecoin_format_post_to_multipart_formdata( $boundary, $post ) {
 			// phpcs:enable WordPress.WP.AlternativeFunctions
 			$mime_type = $file_info->buffer( $img_body );
 			$filename  = basename( $url );
-			$body     .= '--' . $boundary . "\r\n";
-			$body     .= 'Content-Disposition: form-data; name="' . $filename . '"; filename="' . $filename . "\"\r\n";
-			$body     .= 'Content-Type: ' . $mime_type . "\r\n";
-			$body     .= "Content-Transfer-Encoding: binary\r\n";
-			$body     .= "\r\n";
-			$body     .= $img_body . "\r\n";
-			$body     .= "\r\n";
+			$files[]   = array(
+				'filename' => $filename,
+				'mimeType' => $mime_type,
+				'data'     => base64_encode( $img_body ),
+			);
 		}
 	}
-	$body .= '--' . $boundary . '--';
-	return $body;
+	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
+	return $files;
 }
-/**
- * Add likecoin arweave upload and change WordPress DB endpoint.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|WP_REST_Response
- */
-function likecoin_rest_arweave_upload_and_update_post_meta( $request ) {
-	global $post;
-	$post_id  = $request['id'];
-	$response = likecoin_upload_to_arweave( $request );
-	if ( is_wp_error( $response ) ) {
-		$err_message = $response->get_error_message();
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
-			// phpcs:disable WordPress.PHP.DevelopmentFunctions
-			error_log( $response->get_error_message() );
-			// phpcs:enable WordPress.PHP.DevelopmentFunctions
-		}
-		return new WP_REST_Response( array( 'error' => $response->get_error_message() ), 500 );
-	}
-	$decoded_response = json_decode( $response['body'], true );
-	if ( ! $decoded_response ) {
-		if ( defined( 'WP_DEBUG' ) && WP_DEBUG === true ) {
-			// phpcs:disable WordPress.PHP.DevelopmentFunctions
-			error_log( $response['body'] );
-			// phpcs:enable WordPress.PHP.DevelopmentFunctions
-		}
-		return new WP_REST_Response( array( 'error' => $response['body'] ), 400 );
-	}
-	// save arweaveId & ipfsHash to WordPress DB.
-	$arweave_info = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
-	if ( ! is_array( $arweave_info ) ) {
-		$arweave_info = array();
-	}
-	$arweave_info['arweave_id'] = $decoded_response['arweaveId'];
-	$arweave_info['ipfs_hash']  = $decoded_response['ipfsHash'];
-	update_post_meta( $post_id, LC_ARWEAVE_INFO, $arweave_info );
-	$publish_params                      = likecoin_get_meta_box_publish_params( $post, true );
-	$decoded_response['mattersIPFSHash'] = $publish_params['ipfsHash'];
 
-	return new WP_REST_Response( array( 'data' => $decoded_response ), 200 );
-}
 /**
  * Add likecoin arweave Id and IPFS data saving endpoint.
  *
@@ -281,35 +211,6 @@ function likecoin_rest_arweave_save_metadata( $request ) {
 	update_post_meta( $post_id, LC_ARWEAVE_INFO, $arweave_info );
 	return new WP_REST_Response( array( 'data' => $arweave_info ), 200 );
 }
-/**
- * Add upload to arweave server function.
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_REST_Response
- */
-function likecoin_upload_to_arweave( $request ) {
-	$post_id = $request['id'];
-	$post    = get_post( $post_id );
-	$tx_hash = $request['txHash'];
-	if ( ! isset( $post ) ) {
-		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
-	}
-	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$boundary = base64_encode( wp_generate_password( 24 ) );
-	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$body                    = likecoin_format_post_to_multipart_formdata( $boundary, $post );
-	$likecoin_api_upload_url = 'https://api.like.co/api/arweave/upload?txHash=' . $tx_hash;
-	$response                = wp_remote_post(
-		$likecoin_api_upload_url,
-		array(
-			'headers' => array(
-				'Content-Type' => 'multipart/form-data; boundary=' . $boundary,
-			),
-			'body'    => $body,
-		)
-	);
-	return $response;
-};
 
 /**
  * Add submit iscn hash endpoint
@@ -554,24 +455,10 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/arweave/estimate',
+				'/posts/(?P<id>\d+)/arweave/register-data',
 				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_rest_post_arweave_estimate',
-					'args'                => array(
-						'id' => array(
-							'validate_callback' => 'likecoin_is_numeric',
-						),
-					),
-					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
-				'/posts/(?P<id>\d+)/arweave/upload',
-				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_rest_arweave_upload_and_update_post_meta',
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_rest_prepare_post_iscn_register_data',
 					'args'                => array(
 						'id' => array(
 							'validate_callback' => 'likecoin_is_numeric',
