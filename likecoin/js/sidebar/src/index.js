@@ -26,8 +26,8 @@ function LikeCoinSideBar() {
     DBMattersArticleSlug,
   } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectISCNInfo());
   const {
-    postArweaveEstimateData,
-    postArweaveUploadAndIPFSData,
+    fetchISCNRegisterData,
+    postArweaveInfoData,
     postISCNInfoData,
   } = useDispatch(ISCN_INFO_STORE_NAME);
   return (
@@ -50,8 +50,8 @@ function LikeCoinSideBar() {
       DBMattersArticleId={DBMattersArticleId}
       DBMattersId={DBMattersId}
       DBMattersArticleSlug={DBMattersArticleSlug}
-      postArweaveEstimateData={postArweaveEstimateData}
-      postArweaveUploadAndIPFSData={postArweaveUploadAndIPFSData}
+      fetchISCNRegisterData={fetchISCNRegisterData}
+      postArweaveInfoData={postArweaveInfoData}
       postISCNInfoData={postISCNInfoData}
     />
   );

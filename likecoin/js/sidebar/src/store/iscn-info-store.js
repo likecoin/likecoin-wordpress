@@ -1,4 +1,3 @@
-import BigNumber from 'bignumber.js';
 import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
 
@@ -6,8 +5,8 @@ import axios from 'axios';
 export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
 
 const getISCNInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/full-info`;
-const arweaveEstimateEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/arweave/estimate`;
-const arweaveUploadEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/arweave/upload`;
+const getISCNRegisterDataEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/arweave/register-data`;
+const saveArweaveInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/arweave/save-metadata`;
 const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/publish/iscn`;
 
 if (window.wpApiSettings.nonce) {
@@ -15,8 +14,6 @@ if (window.wpApiSettings.nonce) {
 }
 
 const INITIAL_STATE = {
-  DBLIKEPayAmount: BigNumber(0),
-  DBMemo: '',
   DBArticleTitle: '',
   DBAuthorDescription: '',
   DBDescription: '',
@@ -53,19 +50,24 @@ const actions = {
       errorMsg,
     };
   },
-  * postArweaveEstimateData(data) {
-    const response = yield { type: 'POST_ARWEAVE_ESTIMATE_DATA', data };
-    yield { type: 'CHANGE_ARWEAVE_ESTIMATE_GLOBAL_STATE', data: response.data };
-  },
-  * postArweaveUploadAndIPFSData(data) {
-    const response = yield { type: 'POST_ARWEAVE_UPLOAD_AND_IPFS_DATA', data };
+  * fetchISCNRegisterData() {
+    const response = yield { type: 'GET_ISCN_REGISTER_DATA' };
     if (!response.data) {
-      throw new Error('NO_RESPONASE_RETURNED');
+      throw new Error('NO_ISCN_REGISTER_DATA_RETURNED');
     }
-    if (!response.data.data || !response.data.data.arweaveId) {
-      throw new Error('NO_ARWEAVE_ID_RETURNED');
+    return response;
+  },
+  * postArweaveInfoData(data) {
+    const response = yield { type: 'POST_ARWEAVE_INFO_DATA', data };
+    if (!response.data) {
+      throw new Error('NO_ARWEAVE_INFO_RETURNED');
     }
-    yield { type: 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE', data: response.data.data };
+    yield {
+      type: 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE',
+      data: {
+        arweaveId: response.data.arweave_id, ipfsHash: response.data.ipfs_hash,
+      },
+    };
   },
   * postISCNInfoData(data) {
     const response = yield { type: 'POST_ISCN_INFO_DATA', data };
@@ -86,11 +88,17 @@ const controls = {
   GET_ISCN_INFO(action) {
     return axios.get(action.path);
   },
-  POST_ARWEAVE_ESTIMATE_DATA(action) {
-    return axios.post(arweaveEstimateEndPoint, null);
+  GET_ISCN_REGISTER_DATA() {
+    return axios.get(getISCNRegisterDataEndPoint);
   },
-  POST_ARWEAVE_UPLOAD_AND_IPFS_DATA(action) {
-    return axios.post(arweaveUploadEndPoint, { txHash: action.data.txHash });
+  POST_ARWEAVE_INFO_DATA(action) {
+    return axios.post(
+      saveArweaveInfoEndpoint,
+      {
+        arweaveIPFSHash: action.data.ipfsHash,
+        arweaveId: action.data.arweaveId,
+      },
+    );
   },
   POST_ISCN_INFO_DATA(action) {
     return axios.post(
@@ -170,27 +178,6 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBMattersPublishedArticleHash: action.data.mattersPublishedArticleHash,
         DBMattersArticleId: action.data.mattersArticleId,
         DBMattersId: action.data.mattersId,
-        DBMattersArticleSlug: action.data.mattersArticleSlug,
-      };
-    }
-    case 'CHANGE_ARWEAVE_ESTIMATE_GLOBAL_STATE': {
-      const LIKE = BigNumber(action.data.LIKE);
-      return {
-        ...state,
-        DBLIKEPayAmount: LIKE,
-        DBMemo: action.data.memo,
-        DBArticleTitle: action.data.title,
-        DBAuthorDescription: action.data.authorDescription,
-        DBDescription: action.data.description,
-        DBAuthor: action.data.author,
-        DBArticleURL: action.data.url,
-        DBArticleTags: action.data.tags,
-        DBArweaveId: action.data.arweaveId,
-        DBArweaveIPFSHash: action.data.ipfsHash,
-        DBMattersIPFSHash: action.data.mattersIPFSHash,
-        DBMattersPublishedArticleHash: action.data.mattersPublishedArticleHash,
-        DBMattersId: action.data.mattersId,
-        DBMattersArticleId: action.data.mattersArticleId,
         DBMattersArticleSlug: action.data.mattersArticleSlug,
       };
     }
