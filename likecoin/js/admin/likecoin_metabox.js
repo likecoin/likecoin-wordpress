@@ -193,7 +193,9 @@ async function onPostMessage(event) {
   }
   try {
     const { action, data } = JSON.parse(event.data);
-    if (action === 'ARWEAVE_SUBMITTED') {
+    if (action === 'ISCN_WIDGET_READY') {
+      onISCNWidgetReady();
+    } else if (action === 'ARWEAVE_SUBMITTED') {
       onAweaveIdCallback(data);
     } else if (action === 'ISCN_SUBMITTED') {
       onISCNCallback(data);
@@ -289,8 +291,14 @@ async function onSubmitToISCN(e) {
     updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
     return;
   }
+  lcPostInfo.ISCNWindow = ISCNWindow;
   lcPostInfo.mainStatus = 'initial';
   window.addEventListener('message', onPostMessage, false);
+}
+
+async function onISCNWidgetReady() {
+  const { ISCNWindow } = lcPostInfo;
+  if (!ISCNWindow) throw new Error('POPUP_WINDOW_NOT_FOUND');
   ISCNWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
   try {
     const res = await jQuery.ajax({

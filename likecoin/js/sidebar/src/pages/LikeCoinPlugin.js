@@ -57,47 +57,8 @@ function LikeCoinPlugin(props) {
     },
     [props],
   );
-  const onPostMessageCallback = useCallback(
-    async (event) => {
-      if (event && event.data && event.origin === ISCN_WIDGET_ORIGIN && typeof event.data === 'string') {
-        try {
-          const { action, data } = JSON.parse(event.data);
-          if (action === 'ARWEAVE_SUBMITTED') {
-            onArweaveCallback(data);
-          } else if (action === 'ISCN_SUBMITTED') {
-            onISCNCallback(data);
-          } else {
-            console.log(`Unknown event: ${action}`);
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    },
-    [onArweaveCallback, onISCNCallback],
-  );
-  const openISCNWidget = useCallback(() => {
-    const redirectString = encodeURIComponent(siteurl);
-    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&redirect_uri=${redirectString}`;
-    try {
-      const popupWindow = window.open(
-        popUpWidget,
-        'likePayWindow',
-        'menubar=no,location=no,width=576,height=768',
-      );
-      setPopUpWindow(popupWindow);
-      if (!popupWindow || popupWindow.closed || typeof popupWindow.closed == 'undefined') {
-        // TODO: show error in UI
-        console.error('POPUP_BLOCKED');
-        return;
-      }
-      window.addEventListener('message', onPostMessageCallback, false);
-      popupWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [onPostMessageCallback]);
   const sendISCNRegisterData = useCallback(async () => {
+    popUpWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
     const res = await props.fetchISCNRegisterData();
     const {
       files,
@@ -108,7 +69,7 @@ function LikeCoinPlugin(props) {
       // author,
       // authorDescription,
       // description,
-    } = res;
+    } = res.data;
     const payload = JSON.stringify({
       action: 'SUBMIT_ISCN_DATA',
       data: {
@@ -129,6 +90,47 @@ function LikeCoinPlugin(props) {
     popUpWindow.postMessage(payload, ISCN_WIDGET_ORIGIN);
   }, [props, fingerprints, title, tags, url, author, authorDescription, description, popUpWindow]);
 
+  const onPostMessageCallback = useCallback(
+    async (event) => {
+      if (event && event.data && event.origin === ISCN_WIDGET_ORIGIN && typeof event.data === 'string') {
+        try {
+          const { action, data } = JSON.parse(event.data);
+          if (action === 'ISCN_WIDGET_READY') {
+            setShouldSendISCNRegisterData(true);
+          } else if (action === 'ARWEAVE_SUBMITTED') {
+            onArweaveCallback(data);
+          } else if (action === 'ISCN_SUBMITTED') {
+            onISCNCallback(data);
+          } else {
+            console.log(`Unknown event: ${action}`);
+          }
+        } catch (err) {
+          console.error(err);
+        }
+      }
+    },
+    [onArweaveCallback, onISCNCallback],
+  );
+  const openISCNWidget = useCallback(() => {
+    const redirectString = encodeURIComponent(siteurl);
+    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&redirect_uri=${redirectString}`;
+    try {
+      const popUp = window.open(
+        popUpWidget,
+        'likePayWindow',
+        'menubar=no,location=no,width=576,height=768',
+      );
+      if (!popUp || popUp.closed || typeof popUp.closed == 'undefined') {
+        // TODO: show error in UI
+        console.error('POPUP_BLOCKED');
+        return;
+      }
+      setPopUpWindow(popUp);
+      window.addEventListener('message', onPostMessageCallback, false);
+    } catch (error) {
+      console.error(error);
+    }
+  }, [onPostMessageCallback]);
   useEffect(() => {
     setTitle(props.DBArticleTitle);
     if (props.DBAuthorDescription) {
@@ -190,7 +192,6 @@ function LikeCoinPlugin(props) {
     if (shouldStartProcess) {
       openISCNWidget();
       setShouldStartProcess(false);
-      setShouldSendISCNRegisterData(true);
     }
     if (shouldSendISCNRegisterData) {
       sendISCNRegisterData();
