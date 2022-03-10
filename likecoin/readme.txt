@@ -4,9 +4,9 @@ Contributors: likecoin,williamchong007,ckxpress
 Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Cosmos, blogger, Like Rewards
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
-Tested up to: 5.8
+Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 2.4.6
+Stable tag: 2.5.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,17 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.5.1 =
+
+- Revamp ISCN publising flow with new iscn-ar widget
+- Improve publishing UX and performance for metabox and sidebar
+- Fix issue with Matters draft saving and auto image uploading
+- Improve Matters auto draft/publish performance
+- Allow user with post editing right to set their own LikeCoin button LikerID
+- Update ISCN badge link to app.like.co ISCN viewer
+- Known issue: Distribution subpanel in post editor sidebar does not reflect actual Matters auto-publish settings
+- Known issue: LikeCoin button per post setting does not work in post editor sidebar
 
 = 2.5.0 =
 
