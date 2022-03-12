@@ -7,6 +7,8 @@ export const SITE_LIKER_INFO_STORE_NAME = 'likecoin/site_liker_info';
 const endPoint = `${window.wpApiSettings.root}likecoin/v1/main-setting-page`;
 
 const INITIAL_STATE = {
+  DBIsForbidden: false,
+  DBErrorMessage: '',
   DBSiteLikerId: '',
   DBSiteLikerAvatar: '',
   DBSiteLikerDisplayName: '',
@@ -29,7 +31,14 @@ const actions = {
       info,
     };
   },
-  setHTTPErrors(errorMsg) {
+  setHTTPError(error) {
+    const errorMsg = error.response.data || error.message;
+    if (error.response.status === 403) {
+      return {
+        type: 'SET_FORBIDDEN_ERROR',
+        errorMsg,
+      };
+    }
     return {
       type: 'SET_ERROR_MESSAGE',
       errorMsg,
@@ -46,8 +55,8 @@ const selectors = {
 };
 
 const controls = {
-  GET_SITE_LIKER_INFO(action) {
-    return axios.get(action.path, {
+  GET_SITE_LIKER_INFO() {
+    return axios.get(endPoint, {
       headers: {
         'Content-Type': 'application/json',
         'X-WP-Nonce': window.wpApiSettings.nonce,
@@ -67,7 +76,7 @@ const controls = {
 const resolvers = {
   * selectSiteLikerInfo() {
     try {
-      const response = yield actions.getSiteLikerInfo(endPoint);
+      const response = yield actions.getSiteLikerInfo();
       const siteLikerInfo = response.data.data;
       const DBSiteLikerIdEnabled = !!(
         siteLikerInfo.site_likecoin_id_enbled === '1'
@@ -84,7 +93,7 @@ const resolvers = {
       }
       return actions.setSiteLikerInfo(siteLikerInfo);
     } catch (error) {
-      return actions.setHTTPErrors(error.message);
+      return actions.setHTTPError(error);
     }
   },
 };
@@ -111,6 +120,17 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBSiteLikerIdEnabled: action.data.siteLikerIdEnabled,
         DBDisplayOptionSelected: action.data.displayOption,
         DBPerPostOptionEnabled: action.data.perPostOptionEnabled,
+      };
+    }
+    case 'SET_FORBIDDEN_ERROR': {
+      return {
+        DBIsForbidden: true,
+        DBErrorMessage: action.errorMsg,
+      };
+    }
+    case 'SET_ERROR_MESSAGE': {
+      return {
+        DBErrorMessage: action.errorMsg,
       };
     }
     default: {
