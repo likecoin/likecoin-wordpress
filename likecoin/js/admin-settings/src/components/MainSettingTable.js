@@ -20,6 +20,7 @@ function MainSettingTable(props) {
   const displayOptionRef = useRef();
   const perPostOptionEnabledRef = useRef();
   const {
+    DBIsForbidden,
     DBSiteLikerId,
     DBSiteLikerAvatar,
     DBSiteLikerDisplayName,
@@ -151,6 +152,17 @@ function MainSettingTable(props) {
     setSubmitResponse(null);
   }
   const handleDisconnect = () => {};
+
+  const forbiddenString = __('Sorry, you are not allowed to access this page.', 'likecoin');
+
+  if (DBIsForbidden) {
+    return (
+      <div className="wrap likecoin">
+        <LikecoinHeading />
+        <p>{forbiddenString}</p>
+      </div>
+    );
+  }
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
