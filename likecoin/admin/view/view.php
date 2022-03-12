@@ -242,7 +242,7 @@ function likecoin_display_admin_pages() {
 	$likecoin_admin_main_page = add_menu_page(
 		__( 'LikeCoin', 'likecoin' ),
 		__( 'LikeCoin', 'likecoin' ),
-		'manage_options',
+		'edit_posts',
 		'likecoin',
 		'likecoin_show_likecoin_admin_main_page_content',
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
@@ -257,7 +257,7 @@ function likecoin_display_admin_pages() {
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
 		__( 'Plugin Setting', 'likecoin' ),
-		'manage_options',
+		'edit_posts',
 		'likecoin',
 		'likecoin_load_admin_js'
 	);
@@ -268,7 +268,7 @@ function likecoin_display_admin_pages() {
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
 		__( 'Your LikeCoin Button', 'likecoin' ),
-		'manage_options',
+		'edit_posts',
 		'/likecoin#/likecoin-button',
 		'likecoin_load_admin_js'
 	);
@@ -301,7 +301,7 @@ function likecoin_display_admin_pages() {
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
 		__( 'Sponsor Likecoin', 'likecoin' ),
-		'manage_options',
+		'edit_posts',
 		'/likecoin#/sponsor-likecoin',
 		'likecoin_load_admin_js'
 	);
@@ -312,7 +312,7 @@ function likecoin_display_admin_pages() {
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
 		__( 'Become a Civic Liker', 'likecoin' ),
-		'manage_options',
+		'edit_posts',
 		'https://liker.land/civic?utm_source=wp-plugin'
 	);
 }

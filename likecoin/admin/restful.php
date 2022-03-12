@@ -323,7 +323,7 @@ function likecoin_init_restful_service() {
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_post_user_data',
 					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
+						return current_user_can( 'edit_posts' );
 					},
 				)
 			);
@@ -334,7 +334,7 @@ function likecoin_init_restful_service() {
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_user_data',
 					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
+						return current_user_can( 'edit_posts' );
 					},
 				)
 			);
