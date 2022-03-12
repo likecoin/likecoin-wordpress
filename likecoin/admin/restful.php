@@ -20,7 +20,7 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain, WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
 
 /**
  * Require Matters files
@@ -47,6 +47,44 @@ function likecoin_rest_refresh_publish_status( $request ) {
 	$data['wordpress_published'] = get_post_status( $post_id );
 	return new WP_REST_Response( $data, 200 );
 }
+
+/**
+ * Add refresh publish status endpoint
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_get_post_content_with_relative_image_url( $post ) {
+	$content               = apply_filters( 'the_content', $post->post_content );
+	$dom_document          = new DOMDocument();
+	$libxml_previous_state = libxml_use_internal_errors( true );
+	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
+	libxml_clear_errors();
+	libxml_use_internal_errors( $libxml_previous_state );
+	if ( false === $dom_content ) {
+		return $content;
+	}
+	$images          = $dom_document->getElementsByTagName( 'img' );
+	$site_url_parsed = wp_parse_url( get_site_url() );
+	$site_host       = $site_url_parsed['host'];
+	foreach ( $images as $image ) {
+		$url    = $image->getAttribute( 'src' );
+		$url    = explode( '#', $url )[0];
+		$url    = explode( '?', $url )[0];
+		$parsed = wp_parse_url( $url );
+		$host   = $parsed['host'];
+		if ( $host === $site_host ) {
+			$image->setAttribute( 'src', '.' . $parsed['path'] );
+			$image->removeAttribute( 'srcset' );
+		}
+	}
+	$root   = $dom_document->documentElement;
+	$result = '';
+	foreach ( $root->childNodes as $child_node ) {
+			$result .= $dom_document->saveHTML( $child_node );
+	}
+	return $result;
+}
+
 /**
  * Add refresh publish status endpoint
  *
@@ -156,7 +194,7 @@ function likecoin_rest_prepare_post_iscn_register_data( $request ) {
 function likecoin_format_post_to_json_data( $post ) {
 	$files          = array();
 	$title          = apply_filters( 'the_title_rss', $post->post_title );
-	$content        = apply_filters( 'the_content', $post->post_content );
+	$content        = likecoin_get_post_content_with_relative_image_url( $post );
 	$urls           = likecoin_get_post_image_url( $post );
 	$content        = '<!DOCTYPE html><html>
   	<head> <title>' . $title . '</title>' .
@@ -173,14 +211,13 @@ function likecoin_format_post_to_json_data( $post ) {
 		'data'     => base64_encode( $content ),
 	);
 
-	$site_url = get_site_url();
-	$site_url = explode( '//', $site_url )[1];
-	$site_url = explode( ':', $site_url )[0];
+	$site_url_parsed = wp_parse_url( get_site_url() );
+	$site_host       = $site_url_parsed['host'];
 	foreach ( $urls as $url ) {
 		$file_info = new finfo( FILEINFO_MIME_TYPE );
 		$parse     = wp_parse_url( $url );
 		$host      = $parse['host'];
-		if ( $host === $site_url ) { // uploaded image.
+		if ( $host === $site_host ) {
 			$relative_path = ltrim( $parse['path'], '/' );
 			$image_path    = ABSPATH . $relative_path;
 			// phpcs:disable WordPress.WP.AlternativeFunctions
