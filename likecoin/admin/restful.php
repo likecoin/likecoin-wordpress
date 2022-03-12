@@ -181,14 +181,14 @@ function likecoin_format_post_to_json_data( $post ) {
 		$parse     = wp_parse_url( $url );
 		$host      = $parse['host'];
 		if ( $host === $site_url ) { // uploaded image.
-			$image_path = substr( $url, 22 );
+			$relative_path = ltrim( $parse['path'], '/' );
+			$image_path    = ABSPATH . $relative_path;
 			// phpcs:disable WordPress.WP.AlternativeFunctions
 			$img_body = file_get_contents( $image_path );
 			// phpcs:enable WordPress.WP.AlternativeFunctions
 			$mime_type = $file_info->buffer( $img_body );
-			$filename  = basename( $url );
 			$files[]   = array(
-				'filename' => $filename,
+				'filename' => $relative_path,
 				'mimeType' => $mime_type,
 				'data'     => base64_encode( $img_body ),
 			);
