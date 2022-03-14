@@ -476,7 +476,10 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	}
 	if ( ! $matters_draft_id ) {
 		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->new_draft( $title, $content, $tags, false );
+		if ( ! $content ) {
+			$content = __( '(Empty)', LC_PLUGIN_SLUG );
+		}
+		$draft = $api->new_draft( $title, $content, $tags, false );
 		if ( isset( $draft['error'] ) ) {
 			likecoin_handle_matters_api_error( $draft['error'] );
 			return;
