@@ -97,7 +97,6 @@ function likecoin_post_user_data( $request ) {
 	$result['code']                  = 200;
 	$result['data']['likecoin_user'] = $likecoin_user;
 	$result['data']['likecoin_id']   = $likecoin_id;
-	$result['message']               = 'Successfully POST to likecoin user!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -116,7 +115,6 @@ function likecoin_get_user_data( $request ) {
 	$result['code']                  = 200;
 	$result['data']['likecoin_user'] = $likecoin_user;
 	$result['data']['likecoin_id']   = $likecoin_id;
-	$result['message']               = 'Successfully GET user data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -135,7 +133,6 @@ function likecoin_post_site_publish_options_data( $request ) {
 	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
 	$result['code']    = 200;
 	$result['data']    = $publish_options;
-	$result['message'] = 'Successfully POST matters login data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -170,7 +167,6 @@ function likecoin_login_to_matters( $request ) {
 function likecoin_logout_matters( $request ) {
 	likecoin_logout_matters_session();
 	$result['code']    = 200;
-	$result['message'] = 'Successfully logout from matters.';
 	return rest_ensure_response( $result );
 }
 /**
@@ -186,7 +182,6 @@ function likecoin_save_site_matters_login_data( $matters_info ) {
 	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
 	$result['code']    = 200;
 	$result['data']    = $publish_options;
-	$result['message'] = 'Successfully POST matters login data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -203,7 +198,6 @@ function likecoin_get_site_matters_data( $request ) {
 	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
 	$result['code']    = 200;
 	$result['data']    = $publish_options;
-	$result['message'] = 'Successfully GET matters data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -219,7 +213,6 @@ function likecoin_post_web_monetization_data( $request ) {
 	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
 	$result['code']       = 200;
 	$result['data']       = $monetization_options;
-	$result['message']    = 'Successfully POST web monetization data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -234,7 +227,6 @@ function likecoin_get_web_monetization_data( $request ) {
 	}
 	$result['code']    = 200;
 	$result['data']    = $monetization_options;
-	$result['message'] = 'Successfully GET web monetization data!';
 	return rest_ensure_response( $result );
 
 }
