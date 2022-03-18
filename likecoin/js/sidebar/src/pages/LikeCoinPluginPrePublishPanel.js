@@ -34,7 +34,7 @@ function LikeCoinPluginPrePublishPanel(props) {
         </div>
         {showMore && (
           <>
-            <div className='flexBoxRow'>
+            {/* <div className='flexBoxRow'>
               <div className='crossIconOuterDiv'>
                 <CrossIcon />
               </div>
@@ -43,7 +43,7 @@ function LikeCoinPluginPrePublishPanel(props) {
                   {__('Start register ISCN automatically', 'likecoin')}
                 </p>
               </div>
-            </div>
+            </div> */}
             <div className='flexBoxRowCheckDePub'>
               <button
                 className='whiteBackgroundBlueTextBtn'
