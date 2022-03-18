@@ -466,7 +466,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	if ( $update && $matters_draft_id ) {
 		likecoin_upload_url_image_to_matters( $matters_draft_id, $post );
 		$content = likecoin_filter_matters_post_content( $post );
-		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( ! isset( $draft['id'] ) ) {
 			unset( $matters_info['draft_id'] );
 			$matters_draft_id = null;
