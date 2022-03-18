@@ -76,6 +76,7 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 	if ( ! $content ) {
 		return $content;
 	}
+	$image_infos            = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
 	$should_add_footer_link = $params['add_footer_link'];
 	$dom_document           = new DOMDocument();
 	$libxml_previous_state  = libxml_use_internal_errors( true );
@@ -110,16 +111,11 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 		if ( ! $attachment_id && $url ) {
 			$attachment_id = attachment_url_to_postid( $url );
 			// if its url image.
-			$image_infos = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
-			if ( ! empty( $image_infos ) && isset( $image_infos->$url ) ) {
-				if ( isset( $image_infos->$url ) ) {
-					$image_info = $image_infos->$url;
-					if ( is_object( $image_info ) ) {
-						if ( $image_info->original_url === $url ) {
-							$image->setAttribute( 'src', $image_info->matters_url );
-							$image->setAttribute( 'data-asset-id', $image_info->matters_attachment_id );
-						}
-					}
+			if ( isset( $image_infos ) && isset( $image_infos[ $url ] ) ) {
+				$image_info = $image_infos[ $url ];
+				if ( isset( $image_info['original_url'] ) && isset( $image_info['matters_url'] ) ) {
+					$image->setAttribute( 'src', $image_info['matters_url'] );
+					$image->setAttribute( 'data-asset-id', $image_info['matters_attachment_id'] );
 				}
 			}
 		}
@@ -404,13 +400,16 @@ function likecoin_upload_url_image_to_matters( $matters_draft_id, $post ) {
 	$image_infos        = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
 	if ( ! isset( $image_infos ) ) {
 		$image_infos = array();
+	} elseif ( ! is_array( $image_infos ) ) {
+		// convert stdClass to associative array
+		$image_infos = json_decode( json_encode( $image_infos ), true );
 	}
 	foreach ( $images as $image ) {
-		$url                      = $image->getAttribute( 'src' );
-		$url                      = explode( '#', $url )[0];
-		$url                      = explode( '?', $url )[0];
-		$current_image_urls->$url = $image;
-		$image_url                = $url;
+		$url                        = $image->getAttribute( 'src' );
+		$url                        = explode( '#', $url )[0];
+		$url                        = explode( '?', $url )[0];
+		$current_image_urls[ $url ] = $image;
+		$image_url                  = $url;
 		// if it's uploaded image, then skip likecoin_post_url_image_to_matters.
 		$classes       = $image->getAttribute( 'class' );
 		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
@@ -421,21 +420,21 @@ function likecoin_upload_url_image_to_matters( $matters_draft_id, $post ) {
 			continue;
 		}
 		// check if $image_url already existed in the post.
-		if ( isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
-			$image_info = $image_infos->$image_url;
-			if ( $image_info->original_url === $image_url ) {
+		if ( isset( $image_infos[ $image_url ] ) ) { // if existed in matters, don't need to upload to matters.
+			$image_info = $image_infos[ $image_url ];
+			if ( $image_info['original_url'] === $image_url ) {
 				continue;
 			}
 		}
-		$new_image_info          = likecoin_post_url_image_to_matters( $matters_draft_id, $image_url );
-		$image_infos->$image_url = $new_image_info;
+		$new_image_info            = likecoin_post_url_image_to_matters( $matters_draft_id, $image_url );
+		$image_infos[ $image_url ] = $new_image_info;
 	}
 	// delete image_info in image_infos collection if the image is deleted from the draft.
 	if ( ! empty( $image_infos ) ) {
 		foreach ( $image_infos as $key => $value ) {
-			if ( ! isset( $current_image_urls->$key ) ) {
+			if ( ! isset( $current_image_urls[ $key ] ) ) {
 				// remove the image from WordPress.
-				unset( $image_infos->$key );
+				unset( $image_infos[ $key ] );
 			}
 		}
 	}
@@ -467,7 +466,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	if ( $update && $matters_draft_id ) {
 		likecoin_upload_url_image_to_matters( $matters_draft_id, $post );
 		$content = likecoin_filter_matters_post_content( $post );
-		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
+		$draft = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( ! isset( $draft['id'] ) ) {
 			unset( $matters_info['draft_id'] );
 			$matters_draft_id = null;
@@ -557,8 +556,6 @@ function likecoin_publish_to_matters( $post_id, $post ) {
  * @param string | $image_url image url to be uploaded to matters.
  */
 function likecoin_post_url_image_to_matters( $matters_draft_id, $image_url ) {
-	global $post;
-	$post_id        = $post->ID;
 	$file_path      = $image_url;
 	$headers        = get_headers( $file_path, true );
 	$file_mime_type = $headers['Content-Type'];
