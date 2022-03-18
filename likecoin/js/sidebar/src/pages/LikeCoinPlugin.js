@@ -17,8 +17,7 @@ function LikeCoinPlugin(props) {
   const [url, setUrl] = useState(props.DBArticleURL);
   const [tags, setTags] = useState(props.DBArticleTags);
   const [ISCNId, setISCNId] = useState(props.DBISCNId);
-  const [arweaveId] = useState(props.DBArweaveId);
-  const [arweaveIPFSHash] = useState(props.DBArweaveIPFSHash);
+  const [arweaveId, setArweaveId] = useState(props.DBArweaveId);
   const [mattersIPFSHash, setMattersIPFSHash] = useState(props.DBMattersIPFSHash);
   const [mattersPublishedArticleHash, setMattersPublishedArticleHash] = useState(
     props.DBMattersPublishedArticleHash,
@@ -160,6 +159,7 @@ function LikeCoinPlugin(props) {
     setMattersId(props.DBMattersId);
     setMattersArticleSlug(props.DBMattersArticleSlug);
     setMattersPublishedArticleHash(props.DBMattersPublishedArticleHash);
+    setArweaveId(props.DBArweaveId);
   }, [
     props.DBLIKEPayAmount,
     props.DBMemo,
@@ -176,6 +176,7 @@ function LikeCoinPlugin(props) {
     props.DBMattersId,
     props.DBMattersArticleSlug,
     props.DBMattersPublishedArticleHash,
+    props.DBArweaveId,
   ]);
   useEffect(() => {
     setMattersIPFSHash(props.DBMattersIPFSHash);
@@ -187,7 +188,7 @@ function LikeCoinPlugin(props) {
     if (fingerprintsArr.length > 1) {
       setFingerprints(fingerprintsArr);
     }
-  }, [props.DBArweaveId, props.DBArweaveIPFSHash, props.DBMattersIPFSHash]);
+  }, [props.DBMattersIPFSHash]);
   useEffect(() => {
     if (shouldStartProcess) {
       openISCNWidget();
@@ -198,17 +199,8 @@ function LikeCoinPlugin(props) {
       setShouldSendISCNRegisterData(false);
     }
   }, [
-    arweaveIPFSHash,
-    arweaveId,
-    fingerprints,
-    tags,
-    title,
-    url,
-    popUpWindow,
-    props,
     shouldStartProcess,
     shouldSendISCNRegisterData,
-    onISCNCallback,
     openISCNWidget,
     sendISCNRegisterData,
   ]);
