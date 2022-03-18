@@ -379,13 +379,14 @@ function likecoin_filter_matters_post_content( $post ) {
 /**
  * Parse and modify post HTML to replace Matters asset url and div/class standard
  *
- * @param string|  $post_id raw post HTML content.
+ * @param string|  $matters_draft_id ID of matters article draft.
  * @param WP_Post| $post Post object.
  */
-function likecoin_upload_url_image_to_matters( $post_id, $post ) {
-	if ( ! $post ) {
+function likecoin_upload_url_image_to_matters( $matters_draft_id, $post ) {
+	if ( ! $post || ! $matters_draft_id ) {
 		return;
 	}
+	$post_id = $post->ID;
 	$content = $post->post_content;
 	if ( ! $content ) {
 		return $content;
@@ -399,10 +400,12 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 		return $content;
 	}
 	$images             = $dom_document->getElementsByTagName( 'img' );
-	$current_image_urls = new stdClass();
+	$current_image_urls = array();
 	$image_infos        = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
+	if ( ! isset( $image_infos ) ) {
+		$image_infos = array();
+	}
 	foreach ( $images as $image ) {
-		$image_infos              = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
 		$url                      = $image->getAttribute( 'src' );
 		$url                      = explode( '#', $url )[0];
 		$url                      = explode( '?', $url )[0];
@@ -418,13 +421,14 @@ function likecoin_upload_url_image_to_matters( $post_id, $post ) {
 			continue;
 		}
 		// check if $image_url already existed in the post.
-		if ( ! empty( $image_infos ) && isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
+		if ( isset( $image_infos->$image_url ) ) { // if existed in matters, don't need to upload to matters.
 			$image_info = $image_infos->$image_url;
-			if ( is_object( $image_info ) && $image_info->original_url === $image_url ) {
+			if ( $image_info->original_url === $image_url ) {
 				continue;
 			}
 		}
-		$image_infos = likecoin_post_url_image_to_matters( $image_url, $image_infos ); // not in matters, need to upload to matters.
+		$new_image_info          = likecoin_post_url_image_to_matters( $matters_draft_id, $image_url );
+		$image_infos->$image_url = $new_image_info;
 	}
 	// delete image_info in image_infos collection if the image is deleted from the draft.
 	if ( ! empty( $image_infos ) ) {
@@ -461,7 +465,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
-		likecoin_upload_url_image_to_matters( $post_id, $post );
+		likecoin_upload_url_image_to_matters( $matters_draft_id, $post );
 		$content = likecoin_filter_matters_post_content( $post );
 		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( ! isset( $draft['id'] ) ) {
@@ -486,7 +490,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 		}
 		$matters_info['draft_id'] = $draft['id'];
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-		likecoin_upload_url_image_to_matters( $post_id, $post );
+		likecoin_upload_url_image_to_matters( $matters_draft_id, $post );
 		$content          = likecoin_filter_matters_post_content( $post );
 		$matters_draft_id = $draft['id'];
 		$draft            = $api->update_draft( $matters_draft_id, $title, $content, $tags );
@@ -524,11 +528,11 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 		$matters_draft_id         = $draft['id'];
 		$matters_info['draft_id'] = $matters_draft_id;
 		update_post_meta( $post_id, LC_MATTERS_INFO, $matters_info );
-		likecoin_upload_url_image_to_matters( $post_id, $post );
+		likecoin_upload_url_image_to_matters( $matters_draft_id, $post );
 		$content = likecoin_filter_matters_post_content( $post );
 		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 	} else {
-		likecoin_upload_url_image_to_matters( $post_id, $post );
+		likecoin_upload_url_image_to_matters( $matters_draft_id, $post );
 		$content = likecoin_filter_matters_post_content( $post );
 		$draft   = $api->update_draft( $matters_draft_id, $title, $content, $tags );
 		if ( isset( $draft['error'] ) ) {
@@ -549,36 +553,19 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 /**
  * Upload a file as draft image to matters
  *
- * @param int|     $image_url image url to be uploaded to matters.
- * @param object | $image_infos all images' information of the post.
+ * @param string | $matters_draft_id ID of matters article draft.
+ * @param string | $image_url image url to be uploaded to matters.
  */
-function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
+function likecoin_post_url_image_to_matters( $matters_draft_id, $image_url ) {
 	global $post;
 	$post_id        = $post->ID;
 	$file_path      = $image_url;
 	$headers        = get_headers( $file_path, true );
 	$file_mime_type = $headers['Content-Type'];
 	if ( ! ( substr( $file_mime_type, 0, 5 ) === 'image' ) ) {
-		return $image_infos;
-	}
-	$filename     = basename( $file_path );
-	$parent_post  = $post_id;
-	$matters_info = get_post_meta( $parent_post, LC_MATTERS_INFO, true );
-	if ( ! $matters_info ) {
-		$matters_info = array(
-			'type' => 'post',
-		);
-	}
-	if ( isset( $matters_info['published'] ) && $matters_info['published'] ) {
 		return;
 	}
-	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
-	if ( ! $matters_draft_id ) {
-		if ( ! likecoin_get_admin_errors() ) {
-			likecoin_handle_matters_api_error( 'Cannot save draft before publishing' );
-		}
-		return;
-	}
+	$filename        = basename( $file_path );
 	$attachment_type = 'image';
 	$api             = LikeCoin_Matters_API::get_instance();
 	$res             = $api->post_attachment(
@@ -595,17 +582,12 @@ function likecoin_post_url_image_to_matters( $image_url, $image_infos ) {
 		return;
 	}
 	$matters_attachment_id = $res['id'];
-	if ( empty( $image_infos ) ) { // no picture has been uploaded to matters for this post.
-		$image_infos = new stdClass(); // initiate the empty object to avoid empty string can not add property error.
-	}
-	$image_info              = (object) array(
+	$image_info            = array(
 		'original_url'          => $image_url,
 		'matters_url'           => $res['path'],
 		'matters_attachment_id' => $res['id'],
 	);
-	$image_infos->$image_url = $image_info;
-	update_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, $image_infos );
-	return $image_infos;
+	return $image_info;
 }
 /**
  * Upload a file as draft attachment to matters
