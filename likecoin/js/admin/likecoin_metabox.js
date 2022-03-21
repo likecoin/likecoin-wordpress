@@ -33,6 +33,8 @@ const MAIN_STATUS_TEXT_MAP = {
   onRegisterISCN: mainStatusRegisterISCN,
 };
 
+const ISCN_WIDGET_ORIGIN = 'https://like.co';
+
 function updateMainTitleField(signalCSSClass, text) {
   mainTitleField.textContent = '';
   const statusDot = createElementWithAttrbutes('h1', {
@@ -113,11 +115,7 @@ async function onRefreshPublishStatus(e) {
       id: 'lcArweaveUploadBtn',
     });
     updateFieldStatusElement(ISCNStatusTextField, arweaveISCNBtn);
-    if (arweave.url) {
-      arweaveISCNBtn.addEventListener('click', onSubmitToISCN);
-    } else {
-      arweaveISCNBtn.addEventListener('click', onEstimateAndUploadArweave);
-    }
+    arweaveISCNBtn.addEventListener('click', onSubmitToISCN);
   } else if (isWordpressPublished !== 'publish') { // state draft
     updateMainTitleField('iscn-status-red', lcStringInfo.mainTitleDraft);
     const disabledarweaveISCNBtn = createElementWithAttrbutes('button', {
@@ -189,16 +187,65 @@ async function onRefreshPublishStatus(e) {
   }
 }
 
-async function onISCNCallback(event) {
-  if (event.origin !== 'https://like.co') {
+async function onPostMessage(event) {
+  if (event.origin !== ISCN_WIDGET_ORIGIN) {
     return;
   }
-  lcPostInfo.mainStatus = 'onRegisterISCN';
   try {
     const { action, data } = JSON.parse(event.data);
-    if (action !== 'ISCN_SUBMITTED') {
-      return;
+    if (action === 'ISCN_WIDGET_READY') {
+      onISCNWidgetReady();
+    } else if (action === 'ARWEAVE_SUBMITTED') {
+      onArweaveIdCallback(data);
+    } else if (action === 'ISCN_SUBMITTED') {
+      onISCNCallback(data);
+    } else {
+      console.log(`Unknown event: ${action}`);
     }
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+async function onArweaveIdCallback(data) {
+  const {
+    ipfsHash, arweaveId,
+  } = data;
+  if (ipfsHash && arweaveId) {
+    lcPostInfo.arweaveIPFSHash = ipfsHash;
+    lcPostInfo.arweaveId = arweaveId;
+    updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
+    const payload = {
+      arweaveIPFSHash: ipfsHash,
+      arweaveId,
+    };
+    // save to Wordpress DB
+    try {
+      const response = await jQuery.ajax({
+        type: 'POST',
+        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/save-metadata`,
+        dataType: 'json',
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(payload),
+        method: 'POST',
+        beforeSend: (xhr) => {
+          xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        },
+      });
+      if (!response.data) {
+        throw new Error('SERVER_ERROR');
+      }
+    } catch (err) {
+      console.error(err);
+    } finally {
+      await onRefreshPublishStatus();
+    }
+  }
+}
+
+async function onISCNCallback(data) {
+  lcPostInfo.mainStatus = 'onRegisterISCN';
+  try {
     const {
       tx_hash: txHash, error, success, iscnId,
     } = data;
@@ -227,86 +274,74 @@ async function onISCNCallback(event) {
   }
 }
 
-async function uploadToArweave(data) {
-  try {
-    lcPostInfo.mainStatus = 'onUploadArweave';
+async function onSubmitToISCN(e) {
+  if (e) e.preventDefault();
+  const { siteurl } = wpApiSettings;
+  lcPostInfo.mainStatus = 'onRegisterISCN';
+  updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
+  const redirectString = encodeURIComponent(siteurl);
+  const likeCoISCNWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&blocking=1&redirect_uri=${redirectString}`;
+  const ISCNWindow = window.open(
+    likeCoISCNWidget,
+    'likeCoISCNWindow',
+    'menubar=no,location=no,width=576,height=768',
+  );
+  if (!ISCNWindow || ISCNWindow.closed || typeof ISCNWindow.closed == 'undefined') {
+    lcPostInfo.mainStatus = 'failedPopup';
     updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
-    const { tx_hash: txHash, error, success } = data;
-    if (error || success === false) {
-      lcPostInfo.mainStatus = 'failed';
-      return;
-    }
+    return;
+  }
+  lcPostInfo.ISCNWindow = ISCNWindow;
+  lcPostInfo.mainStatus = 'initial';
+  window.addEventListener('message', onPostMessage, false);
+}
+
+async function onISCNWidgetReady() {
+  const { ISCNWindow } = lcPostInfo;
+  if (!ISCNWindow) throw new Error('POPUP_WINDOW_NOT_FOUND');
+  ISCNWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
+  try {
     const res = await jQuery.ajax({
-      type: 'POST',
-      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/upload`,
+      type: 'GET',
+      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/register-data`,
       dataType: 'json',
-      contentType: 'application/json; charset=UTF-8',
-      data: JSON.stringify({ txHash }), // LIKEpay txHash
-      method: 'POST',
+      method: 'GET',
       beforeSend: (xhr) => {
         xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
       },
     });
-    if (!res.data || !res.data.arweaveId) {
-      throw new Error('NO_ARWEAVE_ID_RETURNED'); // Could be insufficient fund or other error.
-    }
-    const { arweaveId, ipfsHash } = res.data;
-    lcPostInfo.arweaveIPFSHash = ipfsHash;
-    lcPostInfo.arweaveId = arweaveId;
-  } catch (error) {
-    console.error('Error occurs when uploading to Arweave:');
-    console.error(error);
-    lcPostInfo.mainStatus = 'failed';
-    await onRefreshPublishStatus();
-  }
-}
-
-function onSubmitToISCN(e) {
-  if (e) e.preventDefault();
-  const {
-    title, mattersIPFSHash, arweaveIPFSHash, tags, url, arweaveId,
-  } = lcPostInfo;
-  const { siteurl } = wpApiSettings;
-  lcPostInfo.mainStatus = 'onRegisterISCN';
-  updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
-  try {
-    if (!mattersIPFSHash && !arweaveIPFSHash && !arweaveId) {
-      throw new Error('NO_IPFS_HASH_NOR_ARWEAVE_ID_FOUND');
-    }
-    const titleString = encodeURIComponent(title);
-    const tagsArray = tags || [];
-    const tagsString = tagsArray.join(',');
-    const urlString = encodeURIComponent(url);
-    const redirectString = encodeURIComponent(siteurl);
-    const fingerprints = [];
+    const {
+      files,
+      title,
+      tags,
+      url,
+      author,
+      authorDescription,
+      description,
+      mattersIPFSHash,
+    } = res.data;
     let publisher = '';
+    const fingerprints = [];
     if (mattersIPFSHash) {
       const mattersIPFSHashFingerprint = `ipfs://${mattersIPFSHash}`;
       fingerprints.push(mattersIPFSHashFingerprint);
       publisher = 'matters';
     }
-    if (arweaveIPFSHash) {
-      const arweaveIPFSHashFingerprint = `ipfs://${arweaveIPFSHash}`;
-      fingerprints.push(arweaveIPFSHashFingerprint);
-    }
-    if (arweaveId) {
-      const arweaveFingerprint = `ar://${arweaveId}`;
-      fingerprints.push(arweaveFingerprint);
-    }
-    const fingerprint = fingerprints.join(',');
-    const likeCoISCNWidget = `https://like.co/in/widget/iscn?fingerprint=${fingerprint}&publisher=${publisher}&title=${titleString}&tags=${tagsString}&opener=1&blocking=1&url=${urlString}&redirect_uri=${redirectString}`;
-    const ISCNWindow = window.open(
-      likeCoISCNWidget,
-      'likeCoISCNWindow',
-      'menubar=no,location=no,width=576,height=768',
-    );
-    if (!ISCNWindow || ISCNWindow.closed || typeof ISCNWindow.closed == 'undefined') {
-      lcPostInfo.mainStatus = 'failedPopup';
-      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
-    } else {
-      lcPostInfo.mainStatus = 'initial';
-      window.addEventListener('message', onISCNCallback, false);
-    }
+    ISCNWindow.postMessage(JSON.stringify({
+      action: 'SUBMIT_ISCN_DATA',
+      data: {
+        files,
+        metadata: {
+          name: title,
+          tags,
+          url,
+          author,
+          authorDescription,
+          description,
+          publisher,
+        },
+      },
+    }), ISCN_WIDGET_ORIGIN);
   } catch (error) {
     console.error('error occured when submitting ISCN:');
     console.error(error);
@@ -314,102 +349,6 @@ function onSubmitToISCN(e) {
   }
 }
 
-async function onLikePayCallback(event) {
-  event.preventDefault();
-  if (event.origin !== 'https://like.co') { // For development, skip this line.
-    return;
-  }
-  try {
-    const { action, data } = JSON.parse(event.data);
-    if (action !== 'TX_SUBMITTED') {
-      return;
-    }
-    lcPostInfo.mainStatus = 'onUploadArweave';
-    await uploadToArweave(data);
-    await Promise.all([
-      onRefreshPublishStatus().catch((e) => console.error(e)),
-      onSubmitToISCN(),
-    ]);
-  } catch (error) {
-    console.error(error);
-    lcPostInfo.mainStatus = 'failed';
-  }
-}
-
-async function onEstimateAndUploadArweave(e) {
-  e.preventDefault();
-  lcPostInfo.mainStatus = 'loading';
-  updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
-  try {
-    const res = await jQuery.ajax({
-      type: 'POST',
-      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/estimate`,
-      method: 'POST',
-      beforeSend: (xhr) => {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-      },
-    });
-    const {
-      ipfsHash, LIKE, memo, arweaveId,
-    } = res;
-    if (ipfsHash && arweaveId) { // same content existed in Arweave net
-      lcPostInfo.arweaveIPFSHash = ipfsHash;
-      lcPostInfo.arweaveId = arweaveId;
-      lcPostInfo.mainStatus = 'onRegisterISCN';
-      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
-      const data = {
-        arweaveIPFSHash: ipfsHash,
-        arweaveId,
-      };
-      // save to Wordpress DB
-      const response = await jQuery.ajax({
-        type: 'POST',
-        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/save-metadata`,
-        dataType: 'json',
-        contentType: 'application/json; charset=UTF-8',
-        data: JSON.stringify(data),
-        method: 'POST',
-        beforeSend: (xhr) => {
-          xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
-        },
-      });
-      if (!response.data) {
-        throw new Error('SERVER_ERROR');
-      }
-      await onSubmitToISCN();
-      return;
-    }
-    if (!LIKE && !memo) {
-      throw new Error('CANNOT_GET_LIKE_ESTIMATE');
-    }
-    const { siteurl } = wpApiSettings;
-    const memoString = encodeURIComponent(memo);
-    const redirectString = encodeURIComponent(siteurl);
-    const likePayWidget = `https://like.co/in/widget/pay?to=like-arweave&amount=${LIKE}&remarks=${memoString}&opener=1&redirect_uri=${redirectString}`;
-    const likePayWindow = window.open(
-      likePayWidget,
-      'likePayWindow',
-      'menubar=no,location=no,width=576,height=768',
-    );
-    if (!likePayWindow || likePayWindow.closed || typeof likePayWindow.closed == 'undefined') {
-      lcPostInfo.mainStatus = 'failedPopup';
-      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
-    } else {
-      window.addEventListener(
-        'message',
-        onLikePayCallback,
-        false,
-      );
-      lcPostInfo.mainStatus = 'onLIKEPay';
-      updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
-      lcPostInfo.mainStatus = 'initial';
-    }
-  } catch (error) {
-    console.error('error occured when trying to estimate LIKE cost: ');
-    console.error(error);
-    lcPostInfo.mainStatus = 'failed';
-  }
-}
 (() => {
   const refreshBtn = document.getElementById('lcPublishRefreshBtn');
   if (refreshBtn) refreshBtn.addEventListener('click', onRefreshPublishStatus);

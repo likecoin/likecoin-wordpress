@@ -82,15 +82,8 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 	switch ( $column ) {
 		case 'matters':
 		case 'ipfs':
-			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
-			if ( ! is_array( $matters_info ) ) {
-				$matters_info = array();
-			} else {
-				$option                     = get_option( LC_PUBLISH_OPTION_NAME );
-				$matters_id                 = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
-				$matters_info['matters_id'] = $matters_id;
-			}
-			$status = likecoin_parse_publish_status( $matters_info );
+			$publish_params = likecoin_get_meta_box_publish_params( $post );
+			$status         = likecoin_parse_publish_status( $publish_params );
 			if ( ! empty( $status[ $column ]['url'] ) ) {
 				?>
 					<a rel="noopener" target="_blank" href="
@@ -106,46 +99,29 @@ function likecoin_populate_posts_columns( $column, $post_id ) {
 			}
 			break;
 		case 'iscn':
-			// get latest matters info to prevent time lag on matters & ipfs status.
-			$matters_info = get_post_meta( $post_id, LC_MATTERS_INFO, true );
-			if ( ! is_array( $matters_info ) ) {
-				$matters_info = array();
-			} else {
-				$option                     = get_option( LC_PUBLISH_OPTION_NAME );
-				$matters_id                 = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
-				$matters_info['matters_id'] = $matters_id;
-			}
-			$status = likecoin_parse_publish_status( $matters_info );
-
 			// get iscn related info status.
 			$publish_params = likecoin_get_meta_box_publish_params( $post );
 			$iscn_status    = likecoin_parse_iscn_status( $publish_params, $post );
-
-			if ( 'Published' === $status['ipfs']['status'] ) {
-				if ( ! empty( $iscn_status['url'] ) ) {
-					?>
-						<a rel="noopener" target="_blank" href="
+			if ( ! empty( $iscn_status['url'] ) ) {
+				?>
+					<a rel="noopener" target="_blank" href="
+				<?php
+				echo esc_url( $iscn_status['url'] );
+				?>
+					">
+				<?php echo esc_html( $iscn_status['status'] ); ?> 
+					</a>
 					<?php
-					echo esc_url( $iscn_status['url'] );
-					?>
-						">
-					<?php echo esc_html( $iscn_status['status'] ); ?> 
-						</a>
-						<?php
-				} elseif ( ! empty( $iscn_status['redirect_url'] ) ) {
-					?>
-						<a rel="noopener" target="_blank" href="
+			} elseif ( ! empty( $iscn_status['redirect_url'] ) ) {
+				?>
+					<a rel="noopener" target="_blank" href="
+				<?php
+				echo esc_url( $iscn_status['redirect_url'] );
+				?>
+					">
+				<?php echo esc_html( $iscn_status['status'] ); ?> 
+					</a>
 					<?php
-					echo esc_url( $iscn_status['redirect_url'] );
-					?>
-						">
-					<?php echo esc_html( $iscn_status['status'] ); ?> 
-						</a>
-						<?php
-				}
-			} else {
-				$iscn_status['status'] = '-'; // replace '(IPFS is required)'.
-				echo esc_html( $iscn_status['status'] );
 			}
 			break;
 

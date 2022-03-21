@@ -21,11 +21,29 @@
  */
 
 /**
+ * Inclue required files.
+ */
+require_once dirname( __FILE__ ) . '/../../includes/constant/options.php';
+
+/**
  * Get translation scripts
  */
 function likecoin_set_script_translations() {
 	wp_set_script_translations( 'react-plugin-0', 'likecoin' );
 }
+
+/**
+ * Remove matters access token from publisb option
+ */
+function likecoin_get_publish_option_for_restful() {
+	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
+	// Don't give access token to frontend, not useful and security risk.
+	if ( isset( $publish_options['site_matters_user']['access_token'] ) ) {
+		unset( $publish_options['site_matters_user']['access_token'] );
+	}
+	return $publish_options;
+}
+
 /**
  * Post options data to WordPress database.
  *
@@ -92,7 +110,6 @@ function likecoin_post_user_data( $request ) {
 	$result['code']                  = 200;
 	$result['data']['likecoin_user'] = $likecoin_user;
 	$result['data']['likecoin_id']   = $likecoin_id;
-	$result['message']               = 'Successfully POST to likecoin user!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -111,7 +128,6 @@ function likecoin_get_user_data( $request ) {
 	$result['code']                  = 200;
 	$result['data']['likecoin_user'] = $likecoin_user;
 	$result['data']['likecoin_id']   = $likecoin_id;
-	$result['message']               = 'Successfully GET user data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -127,10 +143,9 @@ function likecoin_post_site_publish_options_data( $request ) {
 	$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
 	$publish_options['iscn_badge_style_option']      = $params['ISCNBadgeStyleOption'];
 	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
-	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
-	$result['code']    = 200;
-	$result['data']    = $publish_options;
-	$result['message'] = 'Successfully POST matters login data!';
+	$return_payload = likecoin_get_publish_option_for_restful();
+	$result['code'] = 200;
+	$result['data'] = $return_payload;
 	return rest_ensure_response( $result );
 }
 /**
@@ -164,8 +179,7 @@ function likecoin_login_to_matters( $request ) {
  */
 function likecoin_logout_matters( $request ) {
 	likecoin_logout_matters_session();
-	$result['code']    = 200;
-	$result['message'] = 'Successfully logout from matters.';
+	$result['code'] = 200;
 	return rest_ensure_response( $result );
 }
 /**
@@ -178,10 +192,9 @@ function likecoin_save_site_matters_login_data( $matters_info ) {
 	$publish_options['site_matters_user']['matters_id']   = $matters_info['matters_id'];
 	$publish_options['site_matters_user']['access_token'] = $matters_info['matters_token'];
 	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
-	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
-	$result['code']    = 200;
-	$result['data']    = $publish_options;
-	$result['message'] = 'Successfully POST matters login data!';
+	$return_payload = likecoin_get_publish_option_for_restful();
+	$result['code'] = 200;
+	$result['data'] = $return_payload;
 	return rest_ensure_response( $result );
 }
 /**
@@ -190,15 +203,13 @@ function likecoin_save_site_matters_login_data( $matters_info ) {
  * @param WP_REST_Request $request Full data about the request.
  */
 function likecoin_get_site_matters_data( $request ) {
-	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
+	$return_payload = likecoin_get_publish_option_for_restful();
 	// incl. login and publish data.
-	if ( ! $publish_options ) {
-		return;
+	if ( ! $return_payload ) {
+		$return_payload = array();
 	}
-	$publish_options   = get_option( LC_PUBLISH_OPTION_NAME );
-	$result['code']    = 200;
-	$result['data']    = $publish_options;
-	$result['message'] = 'Successfully GET matters data!';
+	$result['code'] = 200;
+	$result['data'] = $return_payload;
 	return rest_ensure_response( $result );
 }
 /**
@@ -214,7 +225,6 @@ function likecoin_post_web_monetization_data( $request ) {
 	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
 	$result['code']       = 200;
 	$result['data']       = $monetization_options;
-	$result['message']    = 'Successfully POST web monetization data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -225,11 +235,10 @@ function likecoin_post_web_monetization_data( $request ) {
 function likecoin_get_web_monetization_data( $request ) {
 	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
 	if ( ! $monetization_options ) {
-		return;
+		$monetization_options = array();
 	}
-	$result['code']    = 200;
-	$result['data']    = $monetization_options;
-	$result['message'] = 'Successfully GET web monetization data!';
+	$result['code'] = 200;
+	$result['data'] = $monetization_options;
 	return rest_ensure_response( $result );
 
 }
@@ -380,7 +389,7 @@ function likecoin_enqueue_admin_js() {
 	}
 	// create a window.likecoinReactAppData which can be accessed by JavaScript.
 	wp_localize_script(
-		'likecoin-admin-settings-0',
+		'likecoin-admin-settings-1',
 		'likecoinReactAppData',
 		array( 'appSelector' => '#wpbody #wpbody-content' )
 	);

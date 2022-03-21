@@ -31,22 +31,8 @@ require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
  * @param WP_Post| $post Post object.
  */
 function likecoin_add_iscn_badge( $post ) {
-	$post_id             = $post->ID;
-	$iscn_testnet_info   = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	$iscn_mainnet_info   = get_post_meta( $post_id, LC_ISCN_INFO, true );
-	$iscn_hash           = null;
-	$iscn_view_page_url  = null;
-	$iscn_badge_endpoint = null;
-	if ( $iscn_mainnet_info ) {
-		$iscn_hash           = $iscn_mainnet_info['iscn_hash'];
-		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/';
-		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
-	} elseif ( $iscn_testnet_info ) {
-		$iscn_hash           = $iscn_testnet_info['iscn_hash'];
-		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/';
-		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
-	}
-	$option = get_option( LC_PUBLISH_OPTION_NAME );
+	$post_id = $post->ID;
+	$option  = get_option( LC_PUBLISH_OPTION_NAME );
 
 	$is_dark_badge   = 0; // default is showing light badge.
 	$show_iscn_badge = false;
@@ -66,12 +52,30 @@ function likecoin_add_iscn_badge( $post ) {
 		}
 	}
 
-	if ( strlen( $iscn_hash ) > 0 && $show_iscn_badge ) {
-		$widget_code = '<figure class="likecoin-iscn-badge">' .
-		'<a href="' . $iscn_view_page_url . $iscn_hash . '" target="_blank" rel="noopener">' .
-		'<img ' .
-		'src="' . $iscn_badge_endpoint . $iscn_hash . '.svg?dark=' . $is_dark_badge . '"' .
-		'width="164" height="36"></a></figure>';
+	if ( $show_iscn_badge ) {
+
+		$iscn_testnet_info   = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+		$iscn_mainnet_info   = get_post_meta( $post_id, LC_ISCN_INFO, true );
+		$iscn_hash           = null;
+		$iscn_view_page_url  = null;
+		$iscn_badge_endpoint = null;
+		if ( $iscn_mainnet_info ) {
+			$iscn_hash           = $iscn_mainnet_info['iscn_hash'];
+			$iscn_id             = $iscn_mainnet_info['iscn_id'];
+			$iscn_view_page_url  = 'https://app.like.co/view/' . rawurlencode( $iscn_id );
+			$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
+		} elseif ( $iscn_testnet_info ) {
+			$iscn_hash           = $iscn_testnet_info['iscn_hash'];
+			$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
+			$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
+		}
+		if ( strlen( $iscn_hash ) > 0 ) {
+			$widget_code = '<figure class="likecoin-iscn-badge">' .
+			'<a href="' . $iscn_view_page_url . '" target="_blank" rel="noopener">' .
+			'<img ' .
+			'src="' . $iscn_badge_endpoint . $iscn_hash . '.svg?dark=' . $is_dark_badge . '"' .
+			'width="164" height="36"></a></figure>';
+		}
 		return $widget_code;
 	}
 	return '';

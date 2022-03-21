@@ -100,6 +100,7 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 	$result              = array();
 	$iscn_testnet_info   = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 	$iscn_mainnet_info   = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	$post_status         = get_post_status( $post );
 	$iscn_hash           = $publish_params['iscn_hash'];
 	$iscn_id             = $publish_params['iscn_id'];
 	$iscn_view_page_url  = null;
@@ -129,9 +130,7 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 		}
 		$result['ipfs_status'] = 'Published';
 		$result['hash']        = $iscn_hash;
-	} elseif ( empty( $publish_params['ipfs_hash'] ) ) {
-		$result['status'] = __( '(IPFS is required)', LC_PLUGIN_SLUG );
-	} elseif ( ! empty( $publish_params['ipfs_hash'] ) ) {
+	} elseif ( 'publish' === $post_status ) {
 		$result['status']       = __( 'Click to submit to ISCN', LC_PLUGIN_SLUG );
 		$result['ipfs_status']  = 'Published';
 		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit#likecoin_submit_iscn';
@@ -211,7 +210,8 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 		);
 	} else {
 		$post_id        = $post->ID;
-		$iscn_info      = get_post_meta( $post_id, LC_ISCN_INFO, true ) ? get_post_meta( $post_id, LC_ISCN_INFO, true ) : get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+		$iscn_main_info = get_post_meta( $post_id, LC_ISCN_INFO, true );
+		$iscn_info      = $iscn_main_info ? $iscn_main_info : get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
 		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
 		$publish_params = array(
 			'is_matters_enabled' => $is_matters_enabled,
@@ -498,11 +498,4 @@ function likecoin_display_meta_box( $post ) {
 	$button_params  = likecoin_get_meta_box_button_params( $post );
 	$publish_params = likecoin_get_meta_box_publish_params( $post );
 	likecoin_add_meta_box( $post, $button_params, $publish_params );
-}
-
-/**
- * Register our metabox
- */
-function likecoin_register_meta_boxes() {
-	add_meta_box( 'like-coin', __( 'LikeCoin Plugin', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
 }
