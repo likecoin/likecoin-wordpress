@@ -74,7 +74,7 @@ function LikeCoinPlugin(props) {
       data: {
         metadata: {
           fingerprints,
-          title,
+          name: title,
           tags,
           url,
           type: 'article',
