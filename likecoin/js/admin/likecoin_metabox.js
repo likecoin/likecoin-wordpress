@@ -196,7 +196,7 @@ async function onPostMessage(event) {
     if (action === 'ISCN_WIDGET_READY') {
       onISCNWidgetReady();
     } else if (action === 'ARWEAVE_SUBMITTED') {
-      onAweaveIdCallback(data);
+      onArweaveIdCallback(data);
     } else if (action === 'ISCN_SUBMITTED') {
       onISCNCallback(data);
     } else {
@@ -207,7 +207,7 @@ async function onPostMessage(event) {
   }
 }
 
-async function onAweaveIdCallback(data) {
+async function onArweaveIdCallback(data) {
   const {
     ipfsHash, arweaveId,
   } = data;
