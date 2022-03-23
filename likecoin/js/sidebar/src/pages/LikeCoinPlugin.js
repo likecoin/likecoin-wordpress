@@ -61,33 +61,38 @@ function LikeCoinPlugin(props) {
     const res = await props.fetchISCNRegisterData();
     const {
       files,
-      /* TODO: fix duplicate info from api and local state */
-      // title,
-      // tags,
-      // url,
-      // author,
-      // authorDescription,
-      // description,
+      title: refreshedTitle,
+      tags: refreshedTags,
+      url: refreshedUrl,
+      author: refreshedAuthor,
+      authorDescription: refreshedAuthorDescription,
+      description: refreshedDescription,
     } = res.data;
+    setTitle(refreshedTitle);
+    setTags(refreshedTags);
+    setUrl(refreshedUrl);
+    setAuthor(refreshedAuthor);
+    setAuthorDescription(refreshedAuthorDescription);
+    setDescription(refreshedDescription);
     const payload = JSON.stringify({
       action: 'SUBMIT_ISCN_DATA',
       data: {
         metadata: {
           fingerprints,
-          name: title,
-          tags,
-          url,
+          name: refreshedTitle,
+          tags: refreshedTags,
+          url: refreshedUrl,
+          author: refreshedAuthor,
+          authorDescription: refreshedAuthorDescription,
+          description: refreshedDescription,
           type: 'article',
           license: '',
-          author,
-          authorDescription,
-          description,
         },
         files,
       },
     });
     popUpWindow.postMessage(payload, ISCN_WIDGET_ORIGIN);
-  }, [props, fingerprints, title, tags, url, author, authorDescription, description, popUpWindow]);
+  }, [props, fingerprints, popUpWindow]);
 
   const onPostMessageCallback = useCallback(
     async (event) => {
