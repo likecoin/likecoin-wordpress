@@ -1,4 +1,4 @@
-=== LikeCoin - Decentralized Publishing ===
+=== LikeCoin - DePub on blockchain, ready for NFT, be web3 native ===
 
 Contributors: likecoin,williamchong007,ckxpress
 Tags: LikeCoin, LikeButton, like button, likebtn, civic liker, CivicLiker, LikeChain, blockchain, Cosmos, blogger, Like Rewards
