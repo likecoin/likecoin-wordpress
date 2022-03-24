@@ -221,7 +221,7 @@ async function onArweaveIdCallback(data) {
     };
     // save to Wordpress DB
     try {
-      const response = await jQuery.ajax({
+      await jQuery.ajax({
         type: 'POST',
         url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/save-metadata`,
         dataType: 'json',
@@ -232,9 +232,6 @@ async function onArweaveIdCallback(data) {
           xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
         },
       });
-      if (!response.data) {
-        throw new Error('SERVER_ERROR');
-      }
     } catch (err) {
       console.error(err);
     } finally {
@@ -319,13 +316,11 @@ async function onISCNWidgetReady() {
       authorDescription,
       description,
       mattersIPFSHash,
-    } = res.data;
-    let publisher = '';
+    } = res;
     const fingerprints = [];
     if (mattersIPFSHash) {
       const mattersIPFSHashFingerprint = `ipfs://${mattersIPFSHash}`;
       fingerprints.push(mattersIPFSHashFingerprint);
-      publisher = 'matters';
     }
     ISCNWindow.postMessage(JSON.stringify({
       action: 'SUBMIT_ISCN_DATA',
@@ -338,7 +333,9 @@ async function onISCNWidgetReady() {
           author,
           authorDescription,
           description,
-          publisher,
+          fingerprints,
+          type: 'article',
+          license: '',
         },
       },
     }), ISCN_WIDGET_ORIGIN);
