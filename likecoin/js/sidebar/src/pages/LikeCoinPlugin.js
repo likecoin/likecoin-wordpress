@@ -36,11 +36,12 @@ function LikeCoinPlugin(props) {
       const {
         ipfsHash, arweaveId: newArweaveId,
       } = data;
+      setArweaveId(newArweaveId);
       props.postArweaveInfoData({
         ipfsHash, arweaveId: newArweaveId,
       });
     },
-    [props],
+    [setArweaveId, props],
   );
   const onISCNCallback = useCallback(
     (data) => {
