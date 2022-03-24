@@ -115,14 +115,11 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 	}
 	$result['ipfs_status']      = 'Pending';
 	$result['is_dev_published'] = false;
-	if ( ! empty( $iscn_id ) ) {
-		$result['iscn_id']       = $iscn_id;
-		$result['iscn_card_url'] = $iscn_card_endpoint . rawurlencode( $iscn_id );
-	}
 	if ( ! empty( $iscn_hash ) ) {
 		if ( $iscn_mainnet_info ) {
-			$result['status'] = __( 'Published', LC_PLUGIN_SLUG );
-			$result['url']    = $iscn_view_page_url . $iscn_hash;
+			$result['iscn_id'] = $iscn_id;
+			$result['status']  = __( 'Published', LC_PLUGIN_SLUG );
+			$result['url']     = $iscn_card_endpoint . rawurlencode( $iscn_id );
 		} else {
 			$result['is_dev_published'] = true;
 			$result['status']           = __( 'Published (testnet)', LC_PLUGIN_SLUG );
@@ -257,7 +254,7 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 			<span class="dashicons dashicons-image-rotate" style="vertical-align:middle"></span>
 		</button>
 	</h3>
-	<div id="lcTitleStatus"><?php if ( ! empty( $iscn_status['iscn_card_url'] ) ) { ?>
+	<div id="lcTitleStatus"><?php if ( ! empty( $iscn_status['url'] ) ) { ?>
 		<h1 class="iscn-status-green"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'LIVE on #DePub', LC_PLUGIN_SLUG ); ?></h3>
 		<?php } elseif ( 'publish' === $wordpress_publish_status ) { ?>
 			<h1 class="iscn-status-orange"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'READY to #DePub', LC_PLUGIN_SLUG ); ?></h3>
@@ -270,8 +267,8 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 			<tr id="likecoin_submit_arweave">
 				<th><label><?php esc_html_e( 'ISCN Status', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcISCNStatus">
-					<?php if ( ! empty( $iscn_status['iscn_card_url'] ) ) { ?>
-						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['iscn_card_url'] ); ?>">
+					<?php if ( ! empty( $iscn_status['url'] ) ) { ?>
+						<a rel="noopener" target="_blank" href="<?php echo esc_url( $iscn_status['url'] ); ?>">
 							<?php echo esc_html( $iscn_status['iscn_id'] ); ?>
 						</a>
 					<?php } else { ?>
