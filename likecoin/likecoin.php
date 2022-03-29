@@ -5,16 +5,16 @@
  * Plugin for embbeding LikeCoin functionalities into WordPress.
  *
  * @package   LikeCoin
- * @author    LikeCoin Foundation <team@like.co>
+ * @author    LikeCoin <team@like.co>
  * @license   GPLv3
  * @link      https://github.com/likecoin/likecoin-wordpress
- * @copyright 2018 LikeCoin Foundation
+ * @copyright 2018 LikerLand
 
  * Plugin Name:  LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
  * Description:  Integrate your Liker ID, add LikeCoin Button and decentralized publishing to WordPress.
  * Version:      2.5.2
- * Author:       LikeCoin Foundation
+ * Author:       LikeCoin
  * Author URI:   https://like.co/
  * License:      GPLv3
  * License URI:  https://www.gnu.org/licenses/gpl-3.0.html
