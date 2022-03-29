@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 2.5.2
+Stable tag: 2.5.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,13 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.5.3 =
+
+- Fix metabox DePub does not work
+- Fix Arweave ID not updated after submission
+- Use app.like.co for all ISCN popup
+- Add featured image into DePub post
 
 = 2.5.2 =
 
