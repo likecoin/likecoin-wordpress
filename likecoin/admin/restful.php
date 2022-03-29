@@ -49,7 +49,30 @@ function likecoin_rest_refresh_publish_status( $request ) {
 }
 
 /**
- * Add refresh publish status endpoint
+ * Get post feature image = with relative img src
+ *
+ * @param object| $post WordPress post object.
+ */
+function likecoin_get_post_thumbnail_with_relative_image_url( $post ) {
+	$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
+	$feature_img_div   = '';
+	if ( ! empty( $post_thumbnail_id ) ) {
+		$url = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
+		if ( $url ) {
+			$site_url_parsed = wp_parse_url( get_site_url() );
+			$site_host       = $site_url_parsed['host'];
+			$parsed          = wp_parse_url( $url );
+			$host            = $parsed['host'];
+			if ( $host === $site_host ) {
+				$feature_img_div = '<figure><img src=".' . esc_url( $parsed['path'] ) . '"></figure>';
+			}
+		}
+	}
+	return $feature_img_div;
+}
+
+/**
+ * Get post content with relative img src
  *
  * @param object| $post WordPress post object.
  */
@@ -107,6 +130,14 @@ function likecoin_get_post_image_url( $post ) {
 		$url    = explode( '?', $url )[0];
 		$urls[] = $url;
 	};
+	// get featured image.
+	$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
+	if ( ! empty( $post_thumbnail_id ) ) {
+		$url = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
+		if ( $url ) {
+			$urls[] = $url;
+		}
+	}
 	return $urls;
 }
 /**
@@ -192,18 +223,20 @@ function likecoin_rest_prepare_post_iscn_register_data( $request ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_format_post_to_json_data( $post ) {
-	$files          = array();
-	$title          = apply_filters( 'the_title_rss', $post->post_title );
-	$content        = likecoin_get_post_content_with_relative_image_url( $post );
-	$urls           = likecoin_get_post_image_url( $post );
-	$content        = '<!DOCTYPE html><html>
+	$files           = array();
+	$title           = apply_filters( 'the_title_rss', $post->post_title );
+	$content         = likecoin_get_post_content_with_relative_image_url( $post );
+	$urls            = likecoin_get_post_image_url( $post );
+	$feature_img_div = likecoin_get_post_thumbnail_with_relative_image_url( $post );
+	$content         = '<!DOCTYPE html><html>
   	<head> <title>' . $title . '</title>' .
 		'<meta charset="utf-8" />
 		 <meta name="viewport" content="width=device-width, initial-scale=1" />
 	</head>
-	<body> <h1>' . $title . '</h1>' . $content . '</body></html>';
-	$file_mime_type = 'text/html';
-	$filename       = 'index.html';
+	<body><header><h1>' . $title . '</h1>' . $feature_img_div . '</header>' . $content . '
+	</body></html>';
+	$file_mime_type  = 'text/html';
+	$filename        = 'index.html';
 	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$files[] = array(
 		'filename' => $filename,
