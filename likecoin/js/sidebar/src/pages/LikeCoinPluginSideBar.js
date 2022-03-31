@@ -113,6 +113,18 @@ function LikeCoinPluginSideBar(props) {
           </div>
         </div>
       )}
+      {isCurrentPostPublished && props.ISCNId && (
+        <div className='divOuterHolder'>
+          <div className='divInnerHolder'>
+            <button
+              className='blueBackgroundWhiteTextBtn'
+              onClick={props.handleRegisterISCN}
+            >
+              {__('Update ISCN', 'likecoin')}
+            </button>
+          </div>
+        </div>
+      )}
       <div className='divOuterHolderMainSidebar'>
         <SideBarStatusRow title={__('#DePub State', 'likecoin')} status='' />
         <PublishStatus

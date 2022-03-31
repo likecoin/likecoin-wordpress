@@ -117,8 +117,9 @@ function LikeCoinPlugin(props) {
     [onArweaveCallback, onISCNCallback],
   );
   const openISCNWidget = useCallback(() => {
+    const iscnId = encodeURIComponent(ISCNId || '');
     const redirectString = encodeURIComponent(siteurl);
-    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&redirect_uri=${redirectString}`;
+    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&redirect_uri=${redirectString}&iscn_id=${iscnId}`;
     try {
       const popUp = window.open(
         popUpWidget,
@@ -135,7 +136,7 @@ function LikeCoinPlugin(props) {
     } catch (error) {
       console.error(error);
     }
-  }, [onPostMessageCallback]);
+  }, [ISCNId, onPostMessageCallback]);
   useEffect(() => {
     setTitle(props.DBArticleTitle);
     if (props.DBAuthorDescription) {

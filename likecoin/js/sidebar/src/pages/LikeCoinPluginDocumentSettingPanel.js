@@ -125,6 +125,20 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                     </button>
                   </div>
                 )}
+                {isCurrentPostPublished && props.ISCNId && (
+                  <button
+                    className='blueBackgroundWhiteTextBtn'
+                    style={{ minWidth: '0', width: '100%' }}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      document
+                        .querySelector('[aria-label="LikeCoin Plugin"]')
+                        .click();
+                    }}
+                  >
+                    {__('Check #DePub', 'likecoin')}
+                  </button>
+                )}
               </div>
             </>
           </div>
