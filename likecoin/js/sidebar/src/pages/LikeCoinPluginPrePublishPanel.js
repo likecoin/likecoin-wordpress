@@ -3,13 +3,9 @@ import {
 } from '@wordpress/edit-post';
 import { __ } from '@wordpress/i18n';
 import { useState } from 'react';
-import CrossIcon from '../components/CrossIcon';
 import LikeCoinIcon from '../components/LikeCoinIcon';
 import ShowLessIcon from '../components/ShowLessIcon';
 import ShowMoreIcon from '../components/ShowMoreIcon';
-import settingPageEndpoint from '../store/constant';
-
-const { siteurl } = window.wpApiSettings;
 
 function LikeCoinPluginPrePublishPanel(props) {
   const [showMore, setShowMore] = useState(true);
