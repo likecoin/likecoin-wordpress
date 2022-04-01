@@ -20,6 +20,7 @@ function LikeCoinSideBar() {
     DBMattersIPFSHash,
     DBMattersPublishedArticleHash,
     DBISCNVersion,
+    DBISCNTimestamp,
     DBMattersDraftId,
     DBMattersArticleId,
     DBMattersId,
@@ -46,6 +47,7 @@ function LikeCoinSideBar() {
       DBMattersIPFSHash={DBMattersIPFSHash}
       DBMattersPublishedArticleHash={DBMattersPublishedArticleHash}
       DBISCNVersion={DBISCNVersion}
+      DBISCNTimestamp={DBISCNTimestamp}
       DBMattersDraftId={DBMattersDraftId}
       DBMattersArticleId={DBMattersArticleId}
       DBMattersId={DBMattersId}

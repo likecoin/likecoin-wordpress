@@ -200,7 +200,7 @@ async function onPostMessage(event) {
     } else if (action === 'ISCN_SUBMITTED') {
       onISCNCallback(data);
     } else {
-      console.log(`Unknown event: ${action}`);
+      console.warn(`Unknown event: ${action}`);
     }
   } catch (err) {
     console.error(err);

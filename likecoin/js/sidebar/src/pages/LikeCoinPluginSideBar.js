@@ -29,12 +29,24 @@ function LikeCoinPluginSideBar(props) {
   const [showFilledMattersTickBox, setShowFilledMattersTickBox] = useState(false);
   const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
   const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
+  const [ISCNVersionString, setISCNVersionString] = useState(true);
+  const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const [pinBarIconColor, setPinBarIconColor] = useState('#28646E');
   const [distributeToMatters, setDistributeToMatters] = useState(true);
   const isPluginSidebarOpened = useSelect((select) => select('core/edit-post')
     .isPluginSidebarOpened());
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
+  const postDate = useSelect((select) => select('core/editor').getCurrentPostAttribute('modified'));
+  useEffect(() => {
+    setShowUpdateISCNButton(isCurrentPostPublished
+      && props.ISCNTimestamp
+      && Date.parse(postDate) > props.ISCNTimestamp);
+  }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
+  useEffect(() => {
+    const iscnVersionString = props.ISCNVersion ? `${props.ISCNVersion} (${(new Date(props.ISCNTimestamp)).toGMTString()})` : '-';
+    setISCNVersionString(iscnVersionString);
+  }, [props.ISCNVersion, props.ISCNTimestamp]);
   function handleShowMore(e) {
     e.preventDefault();
     setShowMore(!showMore);
@@ -113,14 +125,14 @@ function LikeCoinPluginSideBar(props) {
           </div>
         </div>
       )}
-      {isCurrentPostPublished && props.ISCNId && (
+      {showUpdateISCNButton && (
         <div className='divOuterHolder'>
           <div className='divInnerHolder'>
             <button
               className='blueBackgroundWhiteTextBtn'
               onClick={props.handleRegisterISCN}
             >
-              {__('Update ISCN', 'likecoin')}
+              {__('Update Depub', 'likecoin')}
             </button>
           </div>
         </div>
@@ -149,7 +161,7 @@ function LikeCoinPluginSideBar(props) {
         />
         <SideBarStatusRow
           title={__('Version', 'likecoin')}
-          status={props.ISCNVersion ? props.ISCNVersion : '-'}
+          status={ISCNVersionString}
         />
       </div>
       <div className='divOuterHolderMainSidebar'>
