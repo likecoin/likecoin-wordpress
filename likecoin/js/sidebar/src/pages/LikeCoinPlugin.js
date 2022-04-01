@@ -23,6 +23,7 @@ function LikeCoinPlugin(props) {
     props.DBMattersPublishedArticleHash,
   );
   const [ISCNVersion, setISCNVersion] = useState(props.DBISCNVersion);
+  const [ISCNTimestamp, setISCNTimestamp] = useState(props.DBISCNTimestamp);
   const [mattersDraftId, setMattersDraftId] = useState(props.DBMattersDraftId);
   const [mattersArticleId, setMattersArticleId] = useState(props.DBMattersArticleId);
   const [mattersId, setMattersId] = useState(props.DBMattersId);
@@ -107,7 +108,7 @@ function LikeCoinPlugin(props) {
           } else if (action === 'ISCN_SUBMITTED') {
             onISCNCallback(data);
           } else {
-            console.log(`Unknown event: ${action}`);
+            console.warn(`Unknown event: ${action}`);
           }
         } catch (err) {
           console.error(err);
@@ -161,6 +162,7 @@ function LikeCoinPlugin(props) {
     setTags(props.DBArticleTags);
     setISCNId(props.DBISCNId);
     setISCNVersion(props.DBISCNVersion);
+    setISCNTimestamp(props.DBISCNTimestamp);
     setMattersDraftId(props.DBMattersDraftId);
     setMattersArticleId(props.DBMattersArticleId);
     setMattersId(props.DBMattersId);
@@ -178,6 +180,7 @@ function LikeCoinPlugin(props) {
     props.DBArticleTags,
     props.DBISCNId,
     props.DBISCNVersion,
+    props.DBISCNTimestamp,
     props.DBMattersDraftId,
     props.DBMattersArticleId,
     props.DBMattersId,
@@ -223,6 +226,7 @@ function LikeCoinPlugin(props) {
         ISCNId={ISCNId}
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
+        ISCNTimestamp={ISCNTimestamp}
         mattersDraftId={mattersDraftId}
         mattersArticleId={mattersArticleId}
         mattersId={mattersId}
@@ -242,6 +246,7 @@ function LikeCoinPlugin(props) {
         ISCNId={ISCNId}
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
+        ISCNTimestamp={ISCNTimestamp}
         mattersDraftId={mattersDraftId}
         mattersArticleId={mattersArticleId}
         mattersId={mattersId}

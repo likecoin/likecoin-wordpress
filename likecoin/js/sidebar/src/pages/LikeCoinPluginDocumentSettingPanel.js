@@ -13,8 +13,15 @@ function LikeCoinPluginDocumentSettingPanel(props) {
   const [showDashLink, setShowDashLink] = useState(true);
   const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
   const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
+  const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
+  const postDate = useSelect((select) => select('core/editor').getCurrentPostAttribute('modified'));
+  useEffect(() => {
+    setShowUpdateISCNButton(isCurrentPostPublished
+      && props.ISCNTimestamp
+      && Date.parse(postDate) > props.ISCNTimestamp);
+  }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
   useEffect(() => {
     setShowDashLink((!isCurrentPostPublished && !props.mattersDraftId)
       || (isCurrentPostPublished && !props.mattersArticleId));
@@ -125,18 +132,12 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                     </button>
                   </div>
                 )}
-                {isCurrentPostPublished && props.ISCNId && (
+                {showUpdateISCNButton && (
                   <button
-                    className='blueBackgroundWhiteTextBtn'
-                    style={{ minWidth: '0', width: '100%' }}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      document
-                        .querySelector('[aria-label="LikeCoin Plugin"]')
-                        .click();
-                    }}
+                    className='blueBackgroundWhiteTextSmallBtn'
+                    onClick={props.handleRegisterISCN}
                   >
-                    {__('Check #DePub', 'likecoin')}
+                    {__('Update DePub', 'likecoin')}
                   </button>
                 )}
               </div>

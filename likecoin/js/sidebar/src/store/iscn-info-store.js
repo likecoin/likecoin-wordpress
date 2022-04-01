@@ -22,7 +22,8 @@ const INITIAL_STATE = {
   DBArticleTags: [],
   DBISCNId: '',
   DBArweaveId: '',
-  DBISCNVersion: '',
+  DBISCNVersion: 0,
+  DBISCNTimestamp: 0,
   DBArweaveIPFSHash: '',
   DBMattersIPFSHash: '',
   DBMattersPublishedArticleHash: '',
@@ -74,9 +75,15 @@ const actions = {
     if (!response.data) {
       throw new Error('NO_ISCN_INFO_RETURNED');
     }
-    const { iscnVersion, timeZone, localTime } = response.data;
-    const iscnVersionString = iscnVersion ? iscnVersion.toString().concat(' (', localTime, ' ', timeZone, ')') : '';
-    yield { type: 'UPDATE_ISCN_ID_GLOBAL_STATE', data: { iscnId: response.data.iscn_id, iscnVersion: iscnVersionString } };
+    const { iscnVersion, iscnTimestamp } = response.data;
+    yield {
+      type: 'UPDATE_ISCN_ID_GLOBAL_STATE',
+      data: {
+        iscnId: response.data.iscn_id,
+        iscnTimestamp,
+        iscnVersion,
+      },
+    };
   },
 };
 
@@ -120,8 +127,7 @@ const resolvers = {
       const {
         iscnId,
         iscnVersion,
-        timeZone,
-        localTime,
+        iscnTimestamp,
         title,
         authorDescription,
         description,
@@ -136,10 +142,10 @@ const resolvers = {
         mattersId,
         mattersArticleSlug,
       } = response.data;
-      const iscnVersionString = iscnVersion ? iscnVersion.toString().concat(' (', localTime, ' ', timeZone, ')') : '';
       return actions.setISCNInfo({
         iscnId,
-        iscnVersion: iscnVersionString,
+        iscnVersion,
+        iscnTimestamp: iscnTimestamp * 1000,
         title,
         authorDescription,
         description,
@@ -166,6 +172,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         DBISCNId: action.data.iscnId,
         DBISCNVersion: action.data.iscnVersion,
+        DBISCNTimestamp: action.data.iscnTimestamp,
         DBArticleTitle: action.data.title,
         DBAuthorDescription: action.data.authorDescription,
         DBDescription: action.data.description,
@@ -194,6 +201,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         ...state,
         DBISCNId: action.data.iscnId,
         DBISCNVersion: action.data.iscnVersion,
+        DBISCNTimestamp: action.data.iscnTimestamp * 1000,
       };
     }
     default: {
