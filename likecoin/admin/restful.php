@@ -149,7 +149,7 @@ function likecoin_get_post_iscn_meta( $post ) {
 	$iscn_related_post_meta = array();
 	$user                   = wp_get_current_user();
 	$user_id                = $user->ID;
-	$title                  = apply_filters( 'the_title_rss', $post->post_title );
+	$title                  = html_entity_decode( apply_filters( 'the_title_rss', $post->post_title ) );
 	if ( isset( $title ) ) {
 		$iscn_related_post_meta['title'] = $title;
 	}
@@ -193,7 +193,7 @@ function likecoin_rest_prepare_post_iscn_register_data( $request ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
 	$files          = likecoin_format_post_to_json_data( $post );
-	$title          = apply_filters( 'the_title_rss', $post->post_title );
+	$title          = html_entity_decode( apply_filters( 'the_title_rss', $post->post_title ) );
 	$tags           = likecoin_get_post_tags_for_matters( $post );
 	$url            = get_permalink( $post );
 	$response       = array(
