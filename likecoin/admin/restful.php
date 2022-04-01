@@ -314,11 +314,8 @@ function likecoin_rest_update_iscn_hash_and_version( $request ) {
 		$iscn_timestamp                       = $params['iscnTimestamp'];
 		$iscn_mainnet_info['iscn_version']    = $iscn_version;
 		$iscn_mainnet_info['last_saved_time'] = $iscn_timestamp;
-		$iscn_timestamp_local_time            = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $iscn_timestamp ), 'Y-m-d H:i:s' );
-		$timezone                             = wp_timezone_string();
 		$data['iscnVersion']                  = $iscn_version;
-		$data['timeZone']                     = $timezone;
-		$data['localTime']                    = $iscn_timestamp_local_time;
+		$data['iscnTimestamp']                = $iscn_timestamp;
 	}
 	// only allow to publish to mainnet going forward.
 	update_post_meta( $post_id, LC_ISCN_INFO, $iscn_mainnet_info );
@@ -343,12 +340,10 @@ function likecoin_get_iscn_full_info( $request ) {
 	if ( is_array( $iscn_info ) ) {
 		$iscn_full_info['iscnHash'] = $iscn_info['iscn_hash'];
 		$iscn_full_info['iscnId']   = $iscn_info['iscn_id'];
-		$timezone                   = wp_timezone_string();
-		$iscn_timestamp_local_time  = get_date_from_gmt( gmdate( 'Y-m-d H:i:s', $iscn_info['last_saved_time'] ), 'Y-m-d H:i:s' );
 		// iscnVersion should be taken from chain API.
-		$iscn_full_info['timeZone']    = $timezone;
-		$iscn_full_info['localTime']   = $iscn_timestamp_local_time;
-		$iscn_full_info['iscnVersion'] = $iscn_info['iscn_version'];
+		$iscn_full_info['timeZone']      = $timezone;
+		$iscn_full_info['iscnTimestamp'] = $iscn_info['last_saved_time'];
+		$iscn_full_info['iscnVersion']   = $iscn_info['iscn_version'];
 	}
 	$arweave_info = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
 	if ( is_array( $arweave_info ) ) {
