@@ -50,13 +50,17 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		return '';
 	}
 
-	$post_type_query = '';
+	$post_type_query = ''; // empty query means any type.
+	$widget_position = 'bottom'; // default to bottom.
 
-	// follow post meta if option is not set yet.
-	if ( ! isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) || $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
-		$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
-		$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
-	} else {
+	// follow post meta only if per post option is set.
+	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
+		$widget_option = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
+		// default to 'bottom' if nothing is set, since liker id is set.
+		if ( isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ) {
+			$widget_position = $widget_option[ LC_OPTION_WIDGET_POSITION ];
+		}
+	} else { // follow site setting.
 		$widget_option = get_option( LC_BUTTON_OPTION_NAME );
 		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
 			$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
@@ -65,10 +69,10 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 					$post_type_query = 'post';
 					// fall through to set position.
 				case 'always':
-					// empty query means any type.
 					$widget_position = 'bottom';
 					break;
 				case 'none':
+					$widget_position = 'none';
 					break;
 			}
 		}
