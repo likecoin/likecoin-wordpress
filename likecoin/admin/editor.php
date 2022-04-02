@@ -48,10 +48,10 @@ function likecoin_load_editor_scripts() {
  * @param string| $title Title of post column.
  */
 function likecoin_format_post_column_icon( $svg, $title ) {
-	return '<img width=20 heigth=20 src="'
+	return '<span><img width=20 heigth=20 src="'
 		. esc_attr( $svg ) . '" title="'
 		. esc_attr( $title ) . '" alt="'
-		. esc_attr( $title ) . '" />';
+		. esc_attr( $title ) . '" /><span class="screen-reader-text">' . esc_html( $title ) . '</span></span>';
 }
 
 /**
