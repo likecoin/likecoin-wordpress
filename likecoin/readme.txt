@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 2.5.3
+Stable tag: 2.5.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,13 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.5.4 =
+
+- Add update function to DePub, you can now update metadata in ISCN after a post is updated.
+- Fix ISCN title might contain esacpe string when using DePub
+- Fix LikeCoin button default display behaviour. Now after setting a LikerID and without explicitly disable LikeCoin button, it will default to display.
+- Fix unable to see Matters and ISCN column name when using filtering in admin post list page
 
 = 2.5.3 =
 
