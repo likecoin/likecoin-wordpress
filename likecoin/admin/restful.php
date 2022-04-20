@@ -164,7 +164,7 @@ function likecoin_get_post_iscn_meta( $post ) {
 	$excerpt_length = apply_filters( 'excerpt_length', 55 );
 	$content        = apply_filters( 'the_content', $post->post_content );
 	$content        = wp_trim_words( $content, $excerpt_length, '...' );
-	$description    = apply_filters( 'get_the_excerpt', $content );
+	$description    = html_entity_decode( apply_filters( 'get_the_excerpt', $content ) );
 	if ( isset( $description ) ) {
 		$iscn_related_post_meta['description'] = $description;
 	}
@@ -193,14 +193,8 @@ function likecoin_rest_prepare_post_iscn_register_data( $request ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
 	$files          = likecoin_format_post_to_json_data( $post );
-	$title          = html_entity_decode( apply_filters( 'the_title_rss', $post->post_title ) );
-	$tags           = likecoin_get_post_tags_for_matters( $post );
-	$url            = get_permalink( $post );
 	$response       = array(
 		'files' => $files,
-		'title' => $title,
-		'tags'  => $tags,
-		'url'   => $url,
 	);
 	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
 	if ( isset( $publish_params['ipfs_hash'] ) ) {
@@ -210,10 +204,13 @@ function likecoin_rest_prepare_post_iscn_register_data( $request ) {
 		$response['mattersArticleId']            = $publish_params['article_id'];
 		$response['mattersArticleSlug']          = $publish_params['article_slug'];
 	}
-	$iscn_related_post_meta        = likecoin_get_post_iscn_meta( $post );
-	$response['author']            = $iscn_related_post_meta['author'];
-	$response['authorDescription'] = $iscn_related_post_meta['author_description'];
-	$response['description']       = $iscn_related_post_meta['description'];
+	$iscn_related_post_meta              = likecoin_get_post_iscn_meta( $post );
+	$iscn_full_info['title']             = $iscn_related_post_meta['title'];
+	$iscn_full_info['author']            = $iscn_related_post_meta['author'];
+	$iscn_full_info['authorDescription'] = $iscn_related_post_meta['author_description'];
+	$iscn_full_info['description']       = $iscn_related_post_meta['description'];
+	$iscn_full_info['url']               = $iscn_related_post_meta['url'];
+	$iscn_full_info['tags']              = $iscn_related_post_meta['tags'];
 	return new WP_REST_Response( $response, 200 );
 }
 
