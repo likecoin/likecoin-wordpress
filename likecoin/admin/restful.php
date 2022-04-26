@@ -161,10 +161,15 @@ function likecoin_get_post_iscn_meta( $post ) {
 	if ( isset( $author_description ) ) {
 		$iscn_related_post_meta['author_description'] = $author_description;
 	}
-	$excerpt_length = apply_filters( 'excerpt_length', 55 );
-	$content        = apply_filters( 'the_content', $post->post_content );
-	$content        = wp_trim_words( $content, $excerpt_length, '...' );
-	$description    = html_entity_decode( apply_filters( 'get_the_excerpt', $content ) );
+	$post_id = $post->ID;
+	$content = '';
+	if ( has_excerpt( $post_id ) ) {
+		$content = get_the_excerpt( $post_id );
+	} else {
+		$content = apply_filters( 'the_content', $post->post_content );
+		$content = wp_trim_words( $content, $excerpt_length, '...' );
+	}
+	$description = html_entity_decode( apply_filters( 'get_the_excerpt', $content ) );
 	if ( isset( $description ) ) {
 		$iscn_related_post_meta['description'] = $description;
 	}
