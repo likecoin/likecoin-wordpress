@@ -204,13 +204,13 @@ function likecoin_rest_prepare_post_iscn_register_data( $request ) {
 		$response['mattersArticleId']            = $publish_params['article_id'];
 		$response['mattersArticleSlug']          = $publish_params['article_slug'];
 	}
-	$iscn_related_post_meta              = likecoin_get_post_iscn_meta( $post );
-	$iscn_full_info['title']             = $iscn_related_post_meta['title'];
-	$iscn_full_info['author']            = $iscn_related_post_meta['author'];
-	$iscn_full_info['authorDescription'] = $iscn_related_post_meta['author_description'];
-	$iscn_full_info['description']       = $iscn_related_post_meta['description'];
-	$iscn_full_info['url']               = $iscn_related_post_meta['url'];
-	$iscn_full_info['tags']              = $iscn_related_post_meta['tags'];
+	$iscn_related_post_meta        = likecoin_get_post_iscn_meta( $post );
+	$response['title']             = $iscn_related_post_meta['title'];
+	$response['author']            = $iscn_related_post_meta['author'];
+	$response['authorDescription'] = $iscn_related_post_meta['author_description'];
+	$response['description']       = $iscn_related_post_meta['description'];
+	$response['url']               = $iscn_related_post_meta['url'];
+	$response['tags']              = $iscn_related_post_meta['tags'];
 	return new WP_REST_Response( $response, 200 );
 }
 
