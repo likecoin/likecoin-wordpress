@@ -18,9 +18,9 @@ function LikeCoinPluginDocumentSettingPanel(props) {
     .isCurrentPostPublished());
   const postDate = useSelect((select) => select('core/editor').getEditedPostAttribute('modified_gmt'));
   useEffect(() => {
-    setShowUpdateISCNButton(isCurrentPostPublished
+    setShowUpdateISCNButton(!!(isCurrentPostPublished
       && props.ISCNTimestamp
-      && Date.parse(`${postDate}Z`) > props.ISCNTimestamp); // force parsing as gmt;
+      && Date.parse(`${postDate}Z`) > props.ISCNTimestamp)); // force parsing as gmt;
   }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
   useEffect(() => {
     setShowDashLink((!isCurrentPostPublished && !props.mattersDraftId)
