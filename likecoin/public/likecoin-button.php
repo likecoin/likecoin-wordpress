@@ -53,14 +53,18 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 	$post_type_query = ''; // empty query means any type.
 	$widget_position = 'bottom'; // default to bottom.
 
+	$per_post_widget_position = '';
 	// follow post meta only if per post option is set.
 	if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) {
 		$widget_option = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
 		// default to 'bottom' if nothing is set, since liker id is set.
 		if ( isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ) {
-			$widget_position = $widget_option[ LC_OPTION_WIDGET_POSITION ];
+			$per_post_widget_position = $widget_option[ LC_OPTION_WIDGET_POSITION ];
 		}
-	} else { // follow site setting.
+	}
+	if ( isset( $per_post_widget_position ) && ! empty( $per_post_widget_position ) ) {
+		$widget_position = $per_post_widget_position;
+	} elseif ( $widget_position ) { // follow site setting.
 		$widget_option = get_option( LC_BUTTON_OPTION_NAME );
 		if ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
 			$type = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
