@@ -193,23 +193,21 @@ function MainSettingTable(props) {
             checkRef={siteLikerIdEnabledRef}
           />
         {siteLikerIdEnabled && (
-          <tr>
-            <LikecoinInfoTable
-              likerIdValue={likerIdValue}
-              likerDisplayName={likerDisplayName}
-              likerWalletAddress={likerWalletAddress}
-              likerAvatar={likerAvatar}
-              isLoading={isLoading}
-              isChangingTypingLiker={isChangingTypingLiker}
-              handleClickOnChange={handleClickOnChange}
-              handleLikerIdInputChange={handleLikerIdInputChange}
-              handleDisconnect={handleDisconnect}
-              editable={true}
-              isMainSettingPage={true}
-              showChangeButton={true}
-              showDisconnectButton={false}
-            />
-          </tr>
+          <LikecoinInfoTable
+            likerIdValue={likerIdValue}
+            likerDisplayName={likerDisplayName}
+            likerWalletAddress={likerWalletAddress}
+            likerAvatar={likerAvatar}
+            isLoading={isLoading}
+            isChangingTypingLiker={isChangingTypingLiker}
+            handleClickOnChange={handleClickOnChange}
+            handleLikerIdInputChange={handleLikerIdInputChange}
+            handleDisconnect={handleDisconnect}
+            editable={true}
+            isMainSettingPage={true}
+            showChangeButton={true}
+            showDisconnectButton={false}
+          />
         )}
         </tbody>
         <Section
