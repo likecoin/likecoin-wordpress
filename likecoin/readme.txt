@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.9
 Requires PHP: 5.4
-Stable tag: 2.5.4
+Stable tag: 2.5.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -121,6 +121,16 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.5.5 =
+
+- Use custom excerpt as description if available
+- Fix ISCN information was not passed correctly to widget
+- Fix ISCN description might contain HTML escape code
+- Fix strange NaN/0 in sidebar UI
+- Fix site LikeCoin button display setting was not respect if per post setting is enabled
+- Fix broken layout in LikeCoin button setting
+- Add plugin information in iscn record note
 
 = 2.5.4 =
 
