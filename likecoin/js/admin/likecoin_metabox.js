@@ -1,5 +1,7 @@
 /* global jQuery, wpApiSettings, lcPostInfo, lcStringInfo */
 
+const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
+
 const mainTitleField = document.querySelector('#lcTitleStatus');
 const ISCNStatusTextField = document.querySelector('#lcISCNStatus');
 function createElementWithAttrbutes(el, {
@@ -336,6 +338,8 @@ async function onISCNWidgetReady() {
           fingerprints,
           type: 'article',
           license: '',
+          recordNotes: ISCN_RECORD_NOTE,
+          memo: ISCN_RECORD_NOTE,
         },
       },
     }), ISCN_WIDGET_ORIGIN);

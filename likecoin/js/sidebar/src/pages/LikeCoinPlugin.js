@@ -8,6 +8,7 @@ import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
 const { siteurl } = window.wpApiSettings;
 
 const ISCN_WIDGET_ORIGIN = 'https://like.co';
+const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
 
 function LikeCoinPlugin(props) {
   const [title, setTitle] = useState(props.DBArticleTitle);
@@ -89,6 +90,8 @@ function LikeCoinPlugin(props) {
           description: refreshedDescription,
           type: 'article',
           license: '',
+          recordNotes: ISCN_RECORD_NOTE,
+          memo: ISCN_RECORD_NOTE,
         },
         files,
       },
