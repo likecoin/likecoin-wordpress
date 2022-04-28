@@ -69,6 +69,7 @@ function likecoin_add_iscn_badge( $post ) {
 			$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/' . $iscn_hash;
 			$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
 		}
+		$widget_code = '';
 		if ( strlen( $iscn_hash ) > 0 ) {
 			$widget_code = '<figure class="likecoin-iscn-badge">' .
 			'<a href="' . $iscn_view_page_url . '" target="_blank" rel="noopener">' .
