@@ -83,7 +83,7 @@ async function onRefreshPublishStatus(e) {
   } = lcPostInfo;
   const res = await jQuery.ajax({
     type: 'POST',
-    url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/refresh`,
+    url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/refresh`,
     method: 'POST',
     beforeSend: (xhr) => {
       xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
@@ -225,7 +225,7 @@ async function onArweaveIdCallback(data) {
     try {
       await jQuery.ajax({
         type: 'POST',
-        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/save-metadata`,
+        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/arweave`,
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(payload),
@@ -253,7 +253,7 @@ async function onISCNCallback(data) {
     }
     await jQuery.ajax({
       type: 'POST',
-      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/publish/iscn`,
+      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/metadata`,
       dataType: 'json',
       contentType: 'application/json; charset=UTF-8',
       data: JSON.stringify({ iscnHash: txHash, iscnId }),
@@ -302,7 +302,7 @@ async function onISCNWidgetReady() {
   try {
     const res = await jQuery.ajax({
       type: 'GET',
-      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/arweave/register-data`,
+      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/arweave/upload`,
       dataType: 'json',
       method: 'GET',
       beforeSend: (xhr) => {

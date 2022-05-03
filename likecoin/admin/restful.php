@@ -56,7 +56,7 @@ function likecoin_init_restful_service() {
 		function () {
 			register_rest_route(
 				'likecoin/v1',
-				'/main-setting-page',
+				'/options/button',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_post_main_plugin_options',
@@ -67,7 +67,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/main-setting-page',
+				'/options/button',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_main_plugin_options',
@@ -78,7 +78,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/likecoin-button-page',
+				'/options/button/user',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_post_user_data',
@@ -89,7 +89,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/likecoin-button-page',
+				'/options/button/user',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_user_data',
@@ -100,10 +100,10 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/publish-setting-page/login-to-matters',
+				'/option/publish/settings/matters',
 				array(
 					'methods'             => 'POST',
-					'callback'            => 'likecoin_login_to_matters',
+					'callback'            => 'likecoin_login_matters',
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},
@@ -111,18 +111,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/publish-setting-page/publish-options',
-				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_post_site_publish_options_data',
-					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
-					},
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
-				'/publish-setting-page/login-to-matters',
+				'/option/publish/settings/matters',
 				array(
 					'methods'             => 'DELETE',
 					'callback'            => 'likecoin_logout_matters',
@@ -133,7 +122,18 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/publish-setting-page',
+				'/option/publish',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_post_site_publish_options_data',
+					'permission_callback' => function () {
+						return current_user_can( 'manage_options' );
+					},
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/option/publish',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_site_matters_data',
@@ -144,7 +144,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/web-monetization-page',
+				'/option/web-monetization',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_post_web_monetization_data',
@@ -155,7 +155,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/web-monetization-page',
+				'/option/web-monetization',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_web_monetization_data',
@@ -166,7 +166,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/publish/refresh',
+				'/posts/(?P<id>\d+)/iscn/refresh',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_rest_refresh_publish_status',
@@ -180,7 +180,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/arweave/register-data',
+				'/posts/(?P<id>\d+)/iscn/arweave/upload',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_rest_prepare_post_iscn_register_data',
@@ -194,7 +194,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/arweave/save-metadata',
+				'/posts/(?P<id>\d+)/iscn/arweave',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_rest_arweave_save_metadata',
@@ -208,7 +208,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/publish/iscn',
+				'/posts/(?P<id>\d+)/iscn/metadata',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_rest_update_iscn_hash_and_version',
@@ -222,7 +222,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/iscn/full-info',
+				'/posts/(?P<id>\d+)/iscn/metadata',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_iscn_full_info',
