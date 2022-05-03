@@ -1,7 +1,7 @@
 === LikeCoin - DePub on blockchain, ready for NFT, be web3 native ===
 
 Contributors: likecoin,williamchong007,ckxpress
-Tags: web3, NFT, depub, LikeCoin, blockchain
+Tags: web3, NFT, depub, LikeCoin, blockchain, web 3
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 5.9
