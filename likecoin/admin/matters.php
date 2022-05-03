@@ -336,23 +336,6 @@ function likecoin_handle_matters_api_error( $error ) {
 	}
 }
 
-/**
- * Get all tags names in a post
- *
- * @param WP_Post| $post Post object.
- */
-function likecoin_get_post_tags_for_matters( $post ) {
-	$post_id   = $post->ID;
-	$func      = function( $terms ) {
-		return htmlspecialchars_decode( $terms->name );
-	};
-	$post_tags = get_the_tags( $post_id );
-
-	if ( ! $post_tags ) {
-		$post_tags = array();
-	}
-	return array_map( $func, $post_tags );
-}
 
 /**
  * Apply post filter for matters
@@ -460,7 +443,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
-	$tags             = likecoin_get_post_tags_for_matters( $post );
+	$tags             = likecoin_get_post_tags( $post );
 
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
@@ -515,7 +498,7 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
-	$tags             = likecoin_get_post_tags_for_matters( $post );
+	$tags             = likecoin_get_post_tags( $post );
 	$api              = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
 		$content = likecoin_filter_matters_post_content( $post );

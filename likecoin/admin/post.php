@@ -21,6 +21,24 @@
  */
 
 /**
+ * Get all tags names in a post
+ *
+ * @param WP_Post| $post Post object.
+ */
+function likecoin_get_post_tags( $post ) {
+	$post_id   = $post->ID;
+	$func      = function( $terms ) {
+		return htmlspecialchars_decode( $terms->name );
+	};
+	$post_tags = get_the_tags( $post_id );
+
+	if ( ! $post_tags ) {
+		$post_tags = array();
+	}
+	return array_map( $func, $post_tags );
+}
+
+/**
  * Transform content to json base64 encoded format.
  *
  * @param object| $post WordPress post object.

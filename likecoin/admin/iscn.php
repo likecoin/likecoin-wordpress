@@ -21,6 +21,11 @@
  */
 
 /**
+ * Require files
+ */
+require_once dirname( __FILE__ ) . '/post.php';
+
+/**
  * Get ISCN register related post metadata.
  *
  * @param object| $post WordPress post object.
@@ -57,7 +62,7 @@ function likecoin_get_post_iscn_meta( $post ) {
 	if ( isset( $url ) ) {
 		$iscn_related_post_meta['url'] = $url;
 	}
-	$tags = likecoin_get_post_tags_for_matters( $post );
+	$tags = likecoin_get_post_tags( $post );
 	if ( is_array( $tags ) ) {
 		$iscn_related_post_meta['tags'] = $tags;
 	}
