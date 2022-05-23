@@ -298,9 +298,9 @@ function likecoin_display_admin_pages() {
 	$web_monetization_page = add_submenu_page(
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
-		__( 'Web Monetization (beta)', 'likecoin' ),
+		__( 'Other Settings', 'likecoin' ),
 		'manage_options',
-		'/likecoin#/web-monetization',
+		'/likecoin#/other',
 		'likecoin_load_admin_js'
 	);
 	add_action( 'load-' . $web_monetization_page, 'likecoin_load_admin_js' );
