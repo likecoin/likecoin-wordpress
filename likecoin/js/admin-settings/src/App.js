@@ -19,7 +19,7 @@ function App() {
         <Route path="/publish-setting" exact>
           <PublishSettingPage />
         </Route>
-        <Route path="/web-monetization" exact>
+        <Route path="/other" exact>
           <WebMonetizationPage />
         </Route>
         <Route path="/sponsor-likecoin" exact>
