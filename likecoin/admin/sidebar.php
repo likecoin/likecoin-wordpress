@@ -34,7 +34,7 @@ require_once dirname( __FILE__ ) . '/metabox.php';
 function likecoin_add_sidebar( $post, $publish_params ) {
 	$post_id                  = $post->ID;
 	$post_title               = $post->post_title;
-	$post_tags                = likecoin_get_post_tags_for_matters( $post );
+	$post_tags                = likecoin_get_post_tags( $post );
 	$post_url                 = get_permalink( $post );
 	$matters_ipfs_hash        = $publish_params['ipfs_hash'];
 	$matters_published_status = $publish_params['published'];

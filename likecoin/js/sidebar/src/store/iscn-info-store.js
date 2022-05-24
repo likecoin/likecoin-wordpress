@@ -4,10 +4,10 @@ import axios from 'axios';
 // eslint-disable-next-line import/prefer-default-export
 export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
 
-const getISCNInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/full-info`;
-const getISCNRegisterDataEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/arweave/register-data`;
-const saveArweaveInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/arweave/save-metadata`;
-const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/publish/iscn`;
+const getISCNRegisterDataEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave/upload`;
+const saveArweaveInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave`;
+const getISCNInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
+const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
 
 if (window.wpApiSettings.nonce) {
   axios.defaults.headers.common['X-WP-Nonce'] = window.wpApiSettings.nonce;

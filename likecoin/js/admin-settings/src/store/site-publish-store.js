@@ -2,11 +2,11 @@ import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
 
 // eslint-disable-next-line import/prefer-default-export
-export const SITE_MATTERS_STORE_NAME = 'likecoin/site_matters';
+export const SITE_PUBLISH_STORE_NAME = 'likecoin/site_publish';
 
-const getAllMattersDataEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page`;
-const mattersLoginEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/login-to-matters`;
-const postMattersOptionsEndpoint = `${window.wpApiSettings.root}likecoin/v1/publish-setting-page/publish-options`;
+const mattersLoginEndpoint = `${window.wpApiSettings.root}likecoin/v1/option/publish/settings/matters`;
+const getAllMattersDataEndpoint = `${window.wpApiSettings.root}likecoin/v1/option/publish`;
+const postMattersOptionsEndpoint = `${window.wpApiSettings.root}likecoin/v1/option/publish`;
 
 const INITIAL_STATE = {
   DBSiteMattersId: '',
@@ -18,15 +18,15 @@ const INITIAL_STATE = {
 };
 
 const actions = {
-  getSiteMattersOptions(path) {
+  getSitePublishOptions(path) {
     return {
-      type: 'GET_SITE_MATTERS_OPTIONS',
+      type: 'GET_SITE_PUBLISH_OPTIONS',
       path,
     };
   },
-  setSiteMattersOptions(options) {
+  setSitePublishOptions(options) {
     return {
-      type: 'SET_SITE_MATTERS_OPTIONS',
+      type: 'SET_SITE_PUBLISH_OPTIONS',
       options,
     };
   },
@@ -54,9 +54,9 @@ const actions = {
       return error;
     }
   },
-  * postSiteMattersOptions(options) {
-    yield { type: 'POST_SITE_MATTERS_OPTIONS_TO_DB', data: options };
-    yield { type: 'CHANGE_SITE_MATTERS_OPTIONS_GLOBAL_STATE', data: options };
+  * postSitePublishOptions(options) {
+    yield { type: 'POST_SITE_PUBLISH_OPTIONS_TO_DB', data: options };
+    yield { type: 'CHANGE_SITE_PUBLISH_OPTIONS_GLOBAL_STATE', data: options };
   },
   * updateSiteMattersLoginGlobalState(user) {
     yield { type: 'CHANGE_SITE_MATTERS_USER_GLOBAL_STATE', data: user };
@@ -64,11 +64,11 @@ const actions = {
 };
 
 const selectors = {
-  selectSiteMattersOptions: (state) => state,
+  selectSitePublishOptions: (state) => state,
 };
 
 const controls = {
-  GET_SITE_MATTERS_OPTIONS(action) {
+  GET_SITE_PUBLISH_OPTIONS(action) {
     return axios.get(action.path, {
       headers: {
         'Content-Type': 'application/json',
@@ -84,7 +84,7 @@ const controls = {
       },
     });
   },
-  POST_SITE_MATTERS_OPTIONS_TO_DB(action) {
+  POST_SITE_PUBLISH_OPTIONS_TO_DB(action) {
     return axios.post(postMattersOptionsEndpoint, JSON.stringify(action.data), {
       headers: {
         'Content-Type': 'application/json',
@@ -103,35 +103,35 @@ const controls = {
 };
 
 const resolvers = {
-  * selectSiteMattersOptions() {
+  * selectSitePublishOptions() {
     try {
-      const response = yield actions.getSiteMattersOptions(getAllMattersDataEndpoint);
-      const siteMattersOptions = response.data.data;
+      const response = yield actions.getSitePublishOptions(getAllMattersDataEndpoint);
+      const sitePublishOptions = response.data.data;
       const DBMattersId = response.data.data.site_matters_user ? response.data.data.site_matters_user.matters_id : '';
       const DBAccessToken = response.data.data.site_matters_user
         ? response.data.data.site_matters_user.access_token
         : '';
       const DBSiteMattersAutoSaveDraft = !!(
-        siteMattersOptions.site_matters_auto_save_draft === '1'
-        || siteMattersOptions.site_matters_auto_save_draft === true
+        sitePublishOptions.site_matters_auto_save_draft === '1'
+        || sitePublishOptions.site_matters_auto_save_draft === true
       );
       const DBSiteMattersAutoPublish = !!(
-        siteMattersOptions.site_matters_auto_publish === '1'
-        || siteMattersOptions.site_matters_auto_publish === true
+        sitePublishOptions.site_matters_auto_publish === '1'
+        || sitePublishOptions.site_matters_auto_publish === true
       );
       const DBSiteMattersAddFooterLink = !!(
-        siteMattersOptions.site_matters_add_footer_link === '1'
-        || siteMattersOptions.site_matters_add_footer_link === true
+        sitePublishOptions.site_matters_add_footer_link === '1'
+        || sitePublishOptions.site_matters_add_footer_link === true
       );
-      siteMattersOptions.matters_id = DBMattersId;
-      siteMattersOptions.access_token = DBAccessToken;
-      siteMattersOptions.site_matters_auto_save_draft = DBSiteMattersAutoSaveDraft;
-      siteMattersOptions.site_matters_auto_publish = DBSiteMattersAutoPublish;
-      siteMattersOptions.site_matters_add_footer_link = DBSiteMattersAddFooterLink;
-      if (!siteMattersOptions.iscn_badge_style_option) {
-        siteMattersOptions.iscn_badge_style_option = INITIAL_STATE.DBISCNBadgeStyleOption;
+      sitePublishOptions.matters_id = DBMattersId;
+      sitePublishOptions.access_token = DBAccessToken;
+      sitePublishOptions.site_matters_auto_save_draft = DBSiteMattersAutoSaveDraft;
+      sitePublishOptions.site_matters_auto_publish = DBSiteMattersAutoPublish;
+      sitePublishOptions.site_matters_add_footer_link = DBSiteMattersAddFooterLink;
+      if (!sitePublishOptions.iscn_badge_style_option) {
+        sitePublishOptions.iscn_badge_style_option = INITIAL_STATE.DBISCNBadgeStyleOption;
       }
-      return actions.setSiteMattersOptions(siteMattersOptions);
+      return actions.setSitePublishOptions(sitePublishOptions);
     } catch (error) {
       return actions.setHTTPErrors(error.message);
     }
@@ -140,7 +140,7 @@ const resolvers = {
 
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
-    case 'SET_SITE_MATTERS_OPTIONS': {
+    case 'SET_SITE_PUBLISH_OPTIONS': {
       return {
         DBSiteMattersId: action.options.matters_id,
         DBSiteMattersToken: action.options.access_token,
@@ -150,7 +150,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBISCNBadgeStyleOption: action.options.iscn_badge_style_option,
       };
     }
-    case 'CHANGE_SITE_MATTERS_OPTIONS_GLOBAL_STATE': {
+    case 'CHANGE_SITE_PUBLISH_OPTIONS_GLOBAL_STATE': {
       return {
         ...state,
         DBSiteMattersAutoSaveDraft: action.data.siteMattersAutoSaveDraft,
@@ -181,7 +181,7 @@ const storeConfig = {
 };
 
 const siteMattersStore = createReduxStore(
-  SITE_MATTERS_STORE_NAME,
+  SITE_PUBLISH_STORE_NAME,
   storeConfig,
 );
 

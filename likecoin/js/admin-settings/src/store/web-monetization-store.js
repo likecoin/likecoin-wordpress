@@ -4,7 +4,7 @@ import axios from 'axios';
 // eslint-disable-next-line import/prefer-default-export
 export const WEB_MONETIZATION_STORE_NAME = 'likecoin/web_monetization';
 
-const endpoint = `${window.wpApiSettings.root}likecoin/v1/web-monetization-page`;
+const endpoint = `${window.wpApiSettings.root}likecoin/v1/option/web-monetization`;
 const INITIAL_STATE = {
   DBPaymentPointer: '',
 };

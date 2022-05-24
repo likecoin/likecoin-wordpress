@@ -4,7 +4,7 @@ import axios from 'axios';
 // eslint-disable-next-line import/prefer-default-export
 export const USER_LIKER_INFO_STORE_NAME = 'likecoin/user_liker_info';
 
-const endPoint = `${window.wpApiSettings.root}likecoin/v1/likecoin-button-page`;
+const endPoint = `${window.wpApiSettings.root}likecoin/v1/options/button/user`;
 
 const INITIAL_STATE = {
   DBUserLikerId: '',

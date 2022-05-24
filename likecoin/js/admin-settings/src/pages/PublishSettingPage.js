@@ -13,7 +13,7 @@ import ISCNDescription from '../components/ISCNDescription';
 import MattersDescription from '../components/MattersDescription';
 import MattersLoginTable from '../components/MattersLoginTable';
 import MattersStatusTable from '../components/MattersStatusTable';
-import { SITE_MATTERS_STORE_NAME } from '../store/site-matters-store';
+import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 
 function PublishSettingPage() {
   // eslint-disable-next-line arrow-body-style
@@ -23,12 +23,12 @@ function PublishSettingPage() {
     DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink,
     DBISCNBadgeStyleOption,
-  } = useSelect((select) => select(SITE_MATTERS_STORE_NAME).selectSiteMattersOptions());
+  } = useSelect((select) => select(SITE_PUBLISH_STORE_NAME).selectSitePublishOptions());
   const {
-    postSiteMattersOptions,
+    postSitePublishOptions,
     siteMattersLogin,
     siteMattersLogout, updateSiteMattersLoginGlobalState,
-  } = useDispatch(SITE_MATTERS_STORE_NAME);
+  } = useDispatch(SITE_PUBLISH_STORE_NAME);
   const mattersIdRef = useRef();
   const mattersPasswordRef = useRef();
   const siteMattersAutoSaveDraftRef = useRef();
@@ -149,7 +149,7 @@ function PublishSettingPage() {
     // save to Wordpress DB.
     try {
       // Change global state & DB
-      postSiteMattersOptions(data);
+      postSitePublishOptions(data);
       setSavedSuccessful(true);
     } catch (error) {
       console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console

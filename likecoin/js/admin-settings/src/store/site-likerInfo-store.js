@@ -4,7 +4,7 @@ import axios from 'axios';
 // eslint-disable-next-line import/prefer-default-export
 export const SITE_LIKER_INFO_STORE_NAME = 'likecoin/site_liker_info';
 
-const endPoint = `${window.wpApiSettings.root}likecoin/v1/main-setting-page`;
+const endPoint = `${window.wpApiSettings.root}likecoin/v1/options/button`;
 
 const INITIAL_STATE = {
   DBIsForbidden: false,
