@@ -80,17 +80,43 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 					break;
 			}
 		}
+	};
+
+	$iscn_mainnet_info = get_post_meta( $post->ID, LC_ISCN_INFO, true );
+	$iscn_id           = '';
+	if ( $iscn_mainnet_info ) {
+		$iscn_id = $iscn_mainnet_info['iscn_id'];
+	}
+	if ( strlen( $iscn_id ) > 0 ) {
+		// override Liker ID with ISCN.
+		$likecoin_id = 'iscn';
+	} elseif ( strlen( $likecoin_id ) <= 0 ) {
+		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && ! empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ) {
+			$likecoin_id = $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
+		} elseif ( $post ) {
+			$likecoin_id = likecoin_get_author_likecoin_id( $post );
+		}
+	}
+	if ( empty( $likecoin_id ) ) {
+		return '';
 	}
 
 	$likecoin_button_widget = '';
 	$widget_is_enabled      = ! empty( $widget_position ) && 'none' !== $widget_position;
 	if ( $widget_is_enabled && is_singular( $post_type_query ) ) {
-		$referrer               = is_preview() ? '' : '&referrer=' . rawurlencode( get_permalink( $post ) );
+		$like_target = '';
+		if ( ! is_preview() ) {
+			if ( strlen( $iscn_id ) > 0 ) {
+				$like_target = '&iscn_id=' . rawurlencode( $iscn_id );
+			} else {
+				$like_target = '&referrer=' . rawurlencode( get_permalink( $post ) );
+			}
+		}
 		$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
 		$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
 		'style="height: 212px; width: 100%;" ' .
 		'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
-		'?type=wp&integration=wordpress_plugin' . $referrer . '"></iframe></figure>';
+		'?type=wp&integration=wordpress_plugin' . $like_target . '"></iframe></figure>';
 		$likecoin_button_widget = $widget_code;
 	}
 
