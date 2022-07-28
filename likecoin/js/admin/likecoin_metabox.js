@@ -279,7 +279,7 @@ async function onSubmitToISCN(e) {
   lcPostInfo.mainStatus = 'onRegisterISCN';
   updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
   const redirectString = encodeURIComponent(siteurl);
-  const likeCoISCNWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&blocking=1&redirect_uri=${redirectString}`;
+  const likeCoISCNWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&blocking=1&mint=1&redirect_uri=${redirectString}`;
   const ISCNWindow = window.open(
     likeCoISCNWidget,
     'likeCoISCNWindow',
