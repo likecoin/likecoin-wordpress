@@ -123,7 +123,7 @@ function LikeCoinPlugin(props) {
   const openISCNWidget = useCallback(() => {
     const iscnId = encodeURIComponent(ISCNId || '');
     const redirectString = encodeURIComponent(siteurl);
-    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&redirect_uri=${redirectString}&iscn_id=${iscnId}`;
+    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&mint=1&redirect_uri=${redirectString}&iscn_id=${iscnId}`;
     try {
       const popUp = window.open(
         popUpWidget,
