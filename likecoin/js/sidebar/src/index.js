@@ -27,6 +27,9 @@ function LikeCoinSideBar() {
     DBMattersArticleSlug,
   } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectISCNInfo());
   const {
+    DBNFTClassId,
+  } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectNFTInfo(DBISCNId));
+  const {
     fetchISCNRegisterData,
     postArweaveInfoData,
     postISCNInfoData,
@@ -48,6 +51,7 @@ function LikeCoinSideBar() {
       DBMattersPublishedArticleHash={DBMattersPublishedArticleHash}
       DBISCNVersion={DBISCNVersion}
       DBISCNTimestamp={DBISCNTimestamp}
+      DBNFTClassId={DBNFTClassId}
       DBMattersDraftId={DBMattersDraftId}
       DBMattersArticleId={DBMattersArticleId}
       DBMattersId={DBMattersId}
