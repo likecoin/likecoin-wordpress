@@ -7,7 +7,8 @@ export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
 const getISCNRegisterDataEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave/upload`;
 const saveArweaveInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave`;
 const getISCNInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
-const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
+const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`
+const getNFTMintInfoEndpoint = 'https://api.like.co/likernft/mint?iscn_id=';
 
 if (window.wpApiSettings.nonce) {
   axios.defaults.headers.common['X-WP-Nonce'] = window.wpApiSettings.nonce;
@@ -25,6 +26,7 @@ const INITIAL_STATE = {
   DBISCNVersion: 0,
   DBISCNTimestamp: 0,
   DBArweaveIPFSHash: '',
+  DBNFTClassId: '',
   DBMattersIPFSHash: '',
   DBMattersPublishedArticleHash: '',
   DBMattersDraftId: '',
@@ -33,15 +35,26 @@ const INITIAL_STATE = {
   DBMattersArticleSlug: '',
 };
 const actions = {
-  getISCNInfo(path) {
+  getISCNInfo() {
     return {
       type: 'GET_ISCN_INFO',
-      path,
     };
   },
   setISCNInfo(data) {
     return {
       type: 'SET_ISCN_INFO',
+      data,
+    };
+  },
+  getNFTInfo(iscnId) {
+    return {
+      type: 'GET_NFT_INFO',
+      iscnId,
+    };
+  },
+  setNFTInfo(data) {
+    return {
+      type: 'SET_NFT_INFO',
       data,
     };
   },
@@ -89,11 +102,15 @@ const actions = {
 
 const selectors = {
   selectISCNInfo: (state) => state,
+  selectNFTInfo: (state) => state,
 };
 
 const controls = {
-  GET_ISCN_INFO(action) {
-    return axios.get(action.path);
+  GET_ISCN_INFO() {
+    return axios.get(getISCNInfoEndpoint);
+  },
+  GET_NFT_INFO(action) {
+    return axios.get(`${getNFTMintInfoEndpoint}${encodeURIComponent(action.iscnId)}`);
   },
   GET_ISCN_REGISTER_DATA() {
     return axios.get(getISCNRegisterDataEndPoint);
@@ -123,7 +140,7 @@ const controls = {
 const resolvers = {
   * selectISCNInfo() {
     try {
-      const response = yield actions.getISCNInfo(getISCNInfoEndpoint);
+      const response = yield actions.getISCNInfo();
       const {
         iscnId,
         iscnVersion,
@@ -164,6 +181,24 @@ const resolvers = {
       return actions.setHTTPErrors(error.message);
     }
   },
+  * selectNFTInfo(iscnId) {
+    if (!iscnId) return {};
+    try {
+      const response = yield actions.getNFTInfo(iscnId);
+      const {
+        classId,
+        currentPrice,
+      } = response.data;
+      return actions.setNFTInfo({
+        classId,
+        currentPrice,
+      });
+    } catch (error) {
+      // eslint-disable-next-line no-console
+      console.error(error);
+      return {};
+    }
+  },
 };
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
@@ -173,6 +208,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBISCNId: action.data.iscnId,
         DBISCNVersion: action.data.iscnVersion,
         DBISCNTimestamp: action.data.iscnTimestamp,
+        DBNFTClassId: action.data.nftClassId,
         DBArticleTitle: action.data.title,
         DBAuthorDescription: action.data.authorDescription,
         DBDescription: action.data.description,
@@ -186,6 +222,12 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBMattersArticleId: action.data.mattersArticleId,
         DBMattersId: action.data.mattersId,
         DBMattersArticleSlug: action.data.mattersArticleSlug,
+      };
+    }
+    case 'SET_NFT_INFO': {
+      return {
+        ...state,
+        DBNFTClassId: action.data.classId,
       };
     }
     case 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE': {

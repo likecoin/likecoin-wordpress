@@ -18,6 +18,7 @@ function LikeCoinPlugin(props) {
   const [url, setUrl] = useState(props.DBArticleURL);
   const [tags, setTags] = useState(props.DBArticleTags);
   const [ISCNId, setISCNId] = useState(props.DBISCNId);
+  const [NFTClassId, setNFTClassId] = useState(props.DBNFTClassId);
   const [arweaveId, setArweaveId] = useState(props.DBArweaveId);
   const [mattersIPFSHash, setMattersIPFSHash] = useState(props.DBMattersIPFSHash);
   const [mattersPublishedArticleHash, setMattersPublishedArticleHash] = useState(
@@ -164,6 +165,7 @@ function LikeCoinPlugin(props) {
     setUrl(props.DBArticleURL);
     setTags(props.DBArticleTags);
     setISCNId(props.DBISCNId);
+    setNFTClassId(props.DBNFTClassId);
     setISCNVersion(props.DBISCNVersion);
     setISCNTimestamp(props.DBISCNTimestamp);
     setMattersDraftId(props.DBMattersDraftId);
@@ -184,6 +186,7 @@ function LikeCoinPlugin(props) {
     props.DBISCNId,
     props.DBISCNVersion,
     props.DBISCNTimestamp,
+    props.DBNFTClassId,
     props.DBMattersDraftId,
     props.DBMattersArticleId,
     props.DBMattersId,
@@ -230,6 +233,7 @@ function LikeCoinPlugin(props) {
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
         ISCNTimestamp={ISCNTimestamp}
+        NFTClassId={NFTClassId}
         mattersDraftId={mattersDraftId}
         mattersArticleId={mattersArticleId}
         mattersId={mattersId}
@@ -250,6 +254,7 @@ function LikeCoinPlugin(props) {
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
         ISCNTimestamp={ISCNTimestamp}
+        NFTClassId={NFTClassId}
         mattersDraftId={mattersDraftId}
         mattersArticleId={mattersArticleId}
         mattersId={mattersId}

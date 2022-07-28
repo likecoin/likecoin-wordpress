@@ -154,6 +154,21 @@ function LikeCoinPluginSideBar(props) {
               : ''
           }
         />
+        {props.ISCNId && (
+          <SideBarStatusRow
+            title={__('NFT', 'likecoin')}
+            status={props.NFTClassId ? props.NFTClassId : __('Mint Now', 'likecoin')}
+            link={
+              props.NFTClassId
+                ? `https://liker.land/nft/class/${encodeURIComponent(
+                  props.NFTClassId,
+                )}`
+                : `https://app.like.co/nft/iscn/${encodeURIComponent(
+                  props.ISCNId,
+                )}`
+            }
+          />
+        )}
         <SideBarStatusRow
           title={__('Arweave', 'likecoin')}
           status={props.arweaveId ? props.arweaveId : '-'}
