@@ -225,10 +225,20 @@ function LikeCoinPlugin(props) {
     e.preventDefault();
     setShouldStartProcess(true);
   }
+
+  async function handleNFTAction(e) {
+    e.preventDefault();
+    if (!ISCNId) return;
+    const nftUrl = props.NFTClassId ? `https://liker.land/nft/class/${encodeURIComponent(
+      props.NFTClassId,
+    )}` : `https://app.like.co/nft/iscn/${encodeURIComponent(ISCNId)}`;
+    window.open(nftUrl, '_blank', 'noopener');
+  }
   return (
     <>
       <LikeCoinPluginSideBar
         handleRegisterISCN={handleRegisterISCN}
+        handleNFTAction={handleNFTAction}
         ISCNId={ISCNId}
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
@@ -250,6 +260,7 @@ function LikeCoinPlugin(props) {
       <LikeCoinPluginPrePublishPanel />
       <LikeCoinPluginDocumentSettingPanel
         handleRegisterISCN={handleRegisterISCN}
+        handleNFTAction={handleNFTAction}
         ISCNId={ISCNId}
         arweaveId={arweaveId}
         ISCNVersion={ISCNVersion}
