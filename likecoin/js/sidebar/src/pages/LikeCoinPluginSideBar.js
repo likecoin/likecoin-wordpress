@@ -31,6 +31,7 @@ function LikeCoinPluginSideBar(props) {
   const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
   const [ISCNVersionString, setISCNVersionString] = useState(true);
   const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
+  const [showNFTButton, setShowNFTButton] = useState(true);
   const [pinBarIconColor, setPinBarIconColor] = useState('#28646E');
   const [distributeToMatters, setDistributeToMatters] = useState(true);
   const isPluginSidebarOpened = useSelect((select) => select('core/edit-post')
@@ -43,6 +44,7 @@ function LikeCoinPluginSideBar(props) {
       && props.ISCNTimestamp
       && Date.parse(`${postDate}Z`) > props.ISCNTimestamp)); // force parsing as gmt
   }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
+  useEffect(() => setShowNFTButton(!!props.ISCNId), [props.ISCNId]);
   useEffect(() => {
     const iscnVersionString = props.ISCNVersion ? `${props.ISCNVersion} (${(new Date(props.ISCNTimestamp)).toGMTString()})` : '-';
     setISCNVersionString(iscnVersionString);
@@ -133,6 +135,18 @@ function LikeCoinPluginSideBar(props) {
               onClick={props.handleRegisterISCN}
             >
               {__('Update Depub', 'likecoin')}
+            </button>
+          </div>
+        </div>
+      )}
+      {showNFTButton && (
+        <div className='divOuterHolder'>
+          <div className='divInnerHolder'>
+            <button
+              className='blueBackgroundWhiteTextBtn'
+              onClick={props.handleNFTAction}
+            >
+              { props.NFTClassID ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
             </button>
           </div>
         </div>

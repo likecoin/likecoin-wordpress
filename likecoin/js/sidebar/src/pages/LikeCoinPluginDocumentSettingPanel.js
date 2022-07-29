@@ -14,6 +14,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
   const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
   const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
   const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
+  const [showNFTButton, setShowNFTButton] = useState(true);
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
   const postDate = useSelect((select) => select('core/editor').getEditedPostAttribute('modified_gmt'));
@@ -22,6 +23,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
       && props.ISCNTimestamp
       && Date.parse(`${postDate}Z`) > props.ISCNTimestamp)); // force parsing as gmt;
   }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
+  useEffect(() => setShowNFTButton(!!props.ISCNId), [props.ISCNId]);
   useEffect(() => {
     setShowDashLink((!isCurrentPostPublished && !props.mattersDraftId)
       || (isCurrentPostPublished && !props.mattersArticleId));
@@ -138,6 +140,14 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                     onClick={props.handleRegisterISCN}
                   >
                     {__('Update DePub', 'likecoin')}
+                  </button>
+                )}
+                {showNFTButton && (
+                  <button
+                    className='blueBackgroundWhiteTextSmallBtn'
+                    onClick={props.handleNFTAction}
+                  >
+                    { props.NFTClassID ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
                   </button>
                 )}
               </div>
