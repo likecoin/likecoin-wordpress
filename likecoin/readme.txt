@@ -4,7 +4,7 @@ Contributors: likecoin,williamchong007,ckxpress
 Tags: web3, NFT, depub, LikeCoin, blockchain, web 3
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
-Tested up to: 5.9
+Tested up to: 6.0
 Requires PHP: 5.4
 Stable tag: 2.5.5
 License: GPLv3
@@ -139,6 +139,13 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 3. LikeCoin Plugin Metabox
 
 == Changelog ==
+
+= 2.5.6 =
+
+- Refactor restful API
+- Use ISCN ID as key for LikeCoin button if exists
+- Fix ISCN description would be missing if excerpt is not set
+- Move Web Monetization into Other Settings
 
 = 2.5.5 =
 
