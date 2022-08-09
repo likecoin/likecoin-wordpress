@@ -8,6 +8,7 @@ import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
 const { siteurl } = window.wpApiSettings;
 
 const ISCN_WIDGET_ORIGIN = 'https://like.co';
+const NFT_WIDGET_ORIGIN = 'https://app.like.co';
 const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
 
 function LikeCoinPlugin(props) {
@@ -226,14 +227,32 @@ function LikeCoinPlugin(props) {
     setShouldStartProcess(true);
   }
 
-  async function handleNFTAction(e) {
+  const onNFTPostMessageCallback = async (event) => {
+    if (event && event.data && event.origin === NFT_WIDGET_ORIGIN && typeof event.data === 'string') {
+      try {
+        const { action, data } = JSON.parse(event.data);
+        if (action === 'NFT_MINT_DATA') {
+          if (data.classId) setNFTClassId(data.classId);
+        } else {
+          console.warn(`Unknown event: ${action}`);
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+  };
+  const handleNFTAction = useCallback((e) => {
     e.preventDefault();
     if (!ISCNId) return;
-    const nftUrl = props.NFTClassId ? `https://liker.land/nft/class/${encodeURIComponent(
-      props.NFTClassId,
-    )}` : `https://app.like.co/nft/iscn/${encodeURIComponent(ISCNId)}`;
-    window.open(nftUrl, '_blank', 'noopener');
-  }
+    const redirectString = encodeURIComponent(siteurl);
+    const nftUrl = NFTClassId ? `https://liker.land/nft/class/${encodeURIComponent(
+      NFTClassId,
+    )}` : `${NFT_WIDGET_ORIGIN}/nft/iscn/${encodeURIComponent(ISCNId)}?opener=1&redirect_uri=${redirectString}`;
+    const nftWindow = window.open(nftUrl, '_blank');
+    if (nftWindow && !NFTClassId) {
+      window.addEventListener('message', onNFTPostMessageCallback, false);
+    }
+  }, [ISCNId, NFTClassId]);
   return (
     <>
       <LikeCoinPluginSideBar

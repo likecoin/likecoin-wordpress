@@ -146,7 +146,7 @@ function LikeCoinPluginSideBar(props) {
               className='blueBackgroundWhiteTextBtn'
               onClick={props.handleNFTAction}
             >
-              { props.NFTClassID ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
+              { props.NFTClassId ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
             </button>
           </div>
         </div>
@@ -171,15 +171,13 @@ function LikeCoinPluginSideBar(props) {
         {props.ISCNId && (
           <SideBarStatusRow
             title={__('NFT', 'likecoin')}
-            status={props.NFTClassId ? props.NFTClassId : __('Mint Now', 'likecoin')}
+            status={props.NFTClassId ? props.NFTClassId : '-'}
             link={
               props.NFTClassId
                 ? `https://liker.land/nft/class/${encodeURIComponent(
                   props.NFTClassId,
                 )}`
-                : `https://app.like.co/nft/iscn/${encodeURIComponent(
-                  props.ISCNId,
-                )}`
+                : ''
             }
           />
         )}
