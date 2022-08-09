@@ -147,7 +147,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                     className='blueBackgroundWhiteTextSmallBtn'
                     onClick={props.handleNFTAction}
                   >
-                    { props.NFTClassID ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
+                    { props.NFTClassId ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
                   </button>
                 )}
               </div>

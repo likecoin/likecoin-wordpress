@@ -7,7 +7,7 @@ export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
 const getISCNRegisterDataEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave/upload`;
 const saveArweaveInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave`;
 const getISCNInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
-const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`
+const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
 const getNFTMintInfoEndpoint = 'https://api.like.co/likernft/mint?iscn_id=';
 
 if (window.wpApiSettings.nonce) {
