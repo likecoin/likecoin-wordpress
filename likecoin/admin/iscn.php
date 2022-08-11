@@ -57,6 +57,9 @@ function likecoin_get_post_iscn_meta( $post ) {
 	if ( ! empty( $content ) ) {
 		$excerpt_length = apply_filters( 'excerpt_length', 55 );
 		$content        = wp_trim_words( $content, $excerpt_length, '...' );
+		if ( strlen( $content ) > 200 ) {
+			$content = substr( $content, 0, 200 ) . '...';
+		}
 	}
 	$description = html_entity_decode( apply_filters( 'get_the_excerpt', $content ) );
 	if ( isset( $description ) ) {
