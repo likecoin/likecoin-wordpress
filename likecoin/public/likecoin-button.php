@@ -114,7 +114,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		}
 		$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
 		$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
-		'style="height: 212px; width: 100%;" ' .
+		'style="height: 452px; width: 360px;" ' .
 		'src="https://button.like.co/in/embed/' . $likecoin_id . '/button' .
 		'?type=wp&integration=wordpress_plugin' . $like_target . '"></iframe></figure>';
 		$likecoin_button_widget = $widget_code;

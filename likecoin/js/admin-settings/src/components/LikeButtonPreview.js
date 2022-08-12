@@ -7,8 +7,8 @@ function LikeButtonPreview(props) {
     : '';
   const iframeStyle = {
     pointerEvents: 'none',
-    height: '212px',
-    width: '500px',
+    height: '452px',
+    width: '360px',
   };
   return (
     <section className="likecoin optionsSection">
