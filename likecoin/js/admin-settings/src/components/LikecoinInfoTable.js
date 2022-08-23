@@ -7,7 +7,7 @@ function LikecoinInfoTable(props) {
   return (
     <tr>
       {props.isMainSettingPage && (
-        <th className="optionTitle">{__('Site Liker ID', 'likecoin')}</th>
+        <th className="optionTitle">{__('Site Default Liker ID', 'likecoin')}</th>
       )}
       <td>
         <table className="form-table likecoinTable">

@@ -42,7 +42,7 @@ function PureLikecoinButtonPage(props) {
         );
         setLikerIdValue(response.data.user);
         setLikerDisplayName(response.data.displayName);
-        setLikerWalletAddress(response.data.cosmosWallet);
+        setLikerWalletAddress(response.data.likeWallet);
         setLikerAvatar(response.data.avatar);
         setIsLoading(false);
         setHasValidLikecoinId(true);
@@ -190,7 +190,7 @@ function LikecoinButtonPage() {
   const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
 
   const defaultLikerId = useMemo(
-    () => (DBSiteLikerIdEnabled ? DBSiteLikerId : DBUserLikerId),
+    () => (DBSiteLikerIdEnabled ? DBSiteLikerId : (DBUserLikerId || DBSiteLikerId)),
     [DBSiteLikerIdEnabled, DBSiteLikerId, DBUserLikerId],
   );
   const defaultLikerDisplayName = useMemo(
