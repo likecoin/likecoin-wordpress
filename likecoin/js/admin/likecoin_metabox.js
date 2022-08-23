@@ -35,7 +35,7 @@ const MAIN_STATUS_TEXT_MAP = {
   onRegisterISCN: mainStatusRegisterISCN,
 };
 
-const ISCN_WIDGET_ORIGIN = 'https://like.co';
+const ISCN_WIDGET_ORIGIN = `https://${window.wpApiSettings.likecoHost}`;
 
 function updateMainTitleField(signalCSSClass, text) {
   mainTitleField.textContent = '';
@@ -100,7 +100,7 @@ async function onRefreshPublishStatus(e) {
       text: iscnId,
       rel: 'noopener',
       target: '_blank',
-      href: `https://app.like.co/view/${iscnIdString}`,
+      href: `https://app.${window.wpApiSettings.likecoHost}/view/${iscnIdString}`,
     });
     updateFieldStatusElement(ISCNStatusTextField, ISCNLink);
   } else if ( // show button

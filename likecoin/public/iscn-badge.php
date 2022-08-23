@@ -62,7 +62,7 @@ function likecoin_add_iscn_badge( $post ) {
 		if ( $iscn_mainnet_info ) {
 			$iscn_hash           = $iscn_mainnet_info['iscn_hash'];
 			$iscn_id             = $iscn_mainnet_info['iscn_id'];
-			$iscn_view_page_url  = 'https://app.like.co/view/' . rawurlencode( $iscn_id );
+			$iscn_view_page_url  = 'https://app.' . LC_LIKE_CO_HOST . '/view/' . rawurlencode( $iscn_id );
 			$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
 		} elseif ( $iscn_testnet_info ) {
 			$iscn_hash           = $iscn_testnet_info['iscn_hash'];

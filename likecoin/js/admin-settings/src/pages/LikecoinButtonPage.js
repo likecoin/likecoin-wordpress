@@ -14,6 +14,8 @@ import LikecoinHeading from '../components/LikecoinHeading';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
+const { likecoHost } = window.likecoinReactAppData;
+
 function PureLikecoinButtonPage(props) {
   const [siteLikerIdEnabled] = useState(props.DBSiteLikerIdEnabled);
   const [likerIdValue, setLikerIdValue] = useState(props.defaultLikerId);
@@ -38,7 +40,7 @@ function PureLikecoinButtonPage(props) {
       if (!likerId) return;
       try {
         const response = await axios.get(
-          `https://api.like.co/users/id/${likerId}/min`,
+          `https://api.${likecoHost}/users/id/${likerId}/min`,
         );
         setLikerIdValue(response.data.user);
         setLikerDisplayName(response.data.displayName);
@@ -144,6 +146,7 @@ function PureLikecoinButtonPage(props) {
       <Section title={__('Your Liker ID', 'likecoin')} />
       <form onSubmit={confirmHandler}>
         <LikecoinInfoTable
+          likecoHost={likecoHost}
           likerIdValue={likerIdValue}
           likerDisplayName={likerDisplayName}
           likerWalletAddress={likerWalletAddress}
@@ -164,6 +167,7 @@ function PureLikecoinButtonPage(props) {
           <LikeButtonPreview
             userLikerId={likerIdValue}
             hasValidLikecoinId={hasValidLikecoinId}
+            likecoHost={likecoHost}
           />
         )}
         <SubmitButton />

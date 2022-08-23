@@ -58,6 +58,8 @@ function likecoin_add_sidebar( $post, $publish_params ) {
 			'siteurl' => get_site_url(),
 			'nonce'   => wp_create_nonce( 'wp_rest' ),
 			'postId'  => $post_id,
+			'likecoHost' => LC_LIKE_CO_HOST,
+			'likerlandHost' => LC_LIKER_LAND_HOST,
 		)
 	);
 	wp_localize_script(

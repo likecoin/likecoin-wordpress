@@ -63,7 +63,7 @@ function MainSettingTable(props) {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `https://api.like.co/users/id/${likerId}/min`,
+          `https://api.${props.likecoHost}/users/id/${likerId}/min`,
         );
         setLikerIdValue(response.data.user);
         setLikerDisplayName(response.data.displayName);
@@ -206,6 +206,7 @@ function MainSettingTable(props) {
         <Section title={__('Site Default Liker ID', 'likecoin')} />
         <tbody>
           <LikecoinInfoTable
+            likecoHost={props.likecoHost}
             likerIdValue={likerIdValue}
             likerDisplayName={likerDisplayName}
             likerWalletAddress={likerWalletAddress}

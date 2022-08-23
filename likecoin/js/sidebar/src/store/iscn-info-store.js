@@ -1,16 +1,20 @@
 import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
 
+const {
+  root, nonce, postId, likecoHost,
+} = window.wpApiSettings;
+
 // eslint-disable-next-line import/prefer-default-export
 export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
 
-const getISCNRegisterDataEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave/upload`;
-const saveArweaveInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/arweave`;
-const getISCNInfoEndpoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
-const saveISCNInfoEndPoint = `${window.wpApiSettings.root}likecoin/v1/posts/${window.wpApiSettings.postId}/iscn/metadata`;
-const getNFTMintInfoEndpoint = 'https://api.like.co/likernft/mint?iscn_id=';
+const getISCNRegisterDataEndPoint = `${root}likecoin/v1/posts/${postId}/iscn/arweave/upload`;
+const saveArweaveInfoEndpoint = `${root}likecoin/v1/posts/${postId}/iscn/arweave`;
+const getISCNInfoEndpoint = `${root}likecoin/v1/posts/${postId}/iscn/metadata`;
+const saveISCNInfoEndPoint = `${root}likecoin/v1/posts/${postId}/iscn/metadata`;
+const getNFTMintInfoEndpoint = `https://api.${likecoHost}/likernft/mint?iscn_id=`;
 
-if (window.wpApiSettings.nonce) {
+if (nonce) {
   axios.defaults.headers.common['X-WP-Nonce'] = window.wpApiSettings.nonce;
 }
 

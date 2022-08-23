@@ -37,7 +37,7 @@ function LikecoinInfoTable(props) {
                         id="likecoinId"
                         rel="noopener noreferrer"
                         target="_blank"
-                        href={`https://like.co/${props.likerIdValue}`}
+                        href={`https://${props.likecoHost}/${props.likerIdValue}`}
                         className="likecoin likecoinId"
                       >
                         {props.likerIdValue}
@@ -59,7 +59,7 @@ function LikecoinInfoTable(props) {
                           className="likecoinInputLabel"
                           target="blacnk"
                           rel="noopener"
-                          href="https://like.co/in"
+                          href={`https://${props.likecoHost}/in`}
                         >
                           {__('Sign Up / Find my Liker ID', 'likecoin')}
                         </a>
