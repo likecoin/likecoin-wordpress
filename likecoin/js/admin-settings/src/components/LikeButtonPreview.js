@@ -7,7 +7,7 @@ function LikeButtonPreview(props) {
     : '';
   const iframeStyle = {
     pointerEvents: 'none',
-    height: '452px',
+    height: '480px',
     width: '360px',
   };
   return (
