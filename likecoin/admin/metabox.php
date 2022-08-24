@@ -444,11 +444,11 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			'lc_js_metabox',
 			'wpApiSettings',
 			array(
-				'root'    => esc_url_raw( rest_url() ),
-				'siteurl' => get_site_url(),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'postId'  => $post_id,
-				'likecoHost' => LC_LIKE_CO_HOST,
+				'root'          => esc_url_raw( rest_url() ),
+				'siteurl'       => get_site_url(),
+				'nonce'         => wp_create_nonce( 'wp_rest' ),
+				'postId'        => $post_id,
+				'likecoHost'    => LC_LIKE_CO_HOST,
 				'likerlandHost' => LC_LIKER_LAND_HOST,
 			)
 		);

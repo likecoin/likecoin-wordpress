@@ -181,8 +181,8 @@ function likecoin_enqueue_admin_js() {
 		'likecoin-admin-settings-1',
 		'likecoinReactAppData',
 		array(
-			'appSelector' => '#wpbody #wpbody-content',
-			'likecoHost' => LC_LIKE_CO_HOST,
+			'appSelector'   => '#wpbody #wpbody-content',
+			'likecoHost'    => LC_LIKE_CO_HOST,
 			'likerlandHost' => LC_LIKER_LAND_HOST,
 		)
 	);

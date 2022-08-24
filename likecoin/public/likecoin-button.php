@@ -49,7 +49,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		}
 	}
 
-	// check widget is enabled in site setting
+	// check widget is enabled in site setting.
 	$widget_position = 'bottom'; // default to bottom.
 	$post_type_query = ''; // empty query means any type.
 	if ( isset( $per_post_widget_position ) && ! empty( $per_post_widget_position ) ) {
@@ -71,8 +71,8 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 			}
 		}
 	};
-	$widget_is_enabled      = ! empty( $widget_position ) && 'none' !== $widget_position;
-	if (! $widget_is_enabled) {
+	$widget_is_enabled = ! empty( $widget_position ) && 'none' !== $widget_position;
+	if ( ! $widget_is_enabled ) {
 		return '';
 	}
 
@@ -86,13 +86,15 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		// override Liker ID with ISCN.
 		$likecoin_id = 'iscn';
 	} else {
-		// check site id override
-		$site_liker_id = empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ? '' : $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ;
-		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && $site_liker_id) {
+		// check site id override.
+		$site_liker_id = empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ? '' : $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
+		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && $site_liker_id ) {
 			$likecoin_id = $site_liker_id;
 		} elseif ( $post ) {
 			$likecoin_id = likecoin_get_author_likecoin_id( $post );
-			if (empty($likecoin_id)) $likecoin_id = $site_liker_id;
+			if ( empty( $likecoin_id ) ) {
+				$likecoin_id = $site_liker_id;
+			}
 		}
 	}
 	if ( empty( $likecoin_id ) ) {
@@ -100,7 +102,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 	}
 
 	$likecoin_button_widget = '';
-	if (is_singular( $post_type_query ) ) {
+	if ( is_singular( $post_type_query ) ) {
 		$like_target = '';
 		if ( ! is_preview() ) {
 			if ( strlen( $iscn_id ) > 0 ) {
@@ -111,8 +113,8 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		}
 		$sandbox_attr           = function_exists( 'is_amp_endpoint' ) && is_amp_endpoint() ? 'sandbox="allow-scripts allow-same-origin allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation allow-storage-access-by-user-activation" ' : '';
 		$widget_code            = '<figure class="likecoin-embed likecoin-button"><iframe scrolling="no" frameborder="0" ' . $sandbox_attr .
-		'style="height:' . ($is_iscn_button ? '480px' : '212px') . ';width: 360px;" ' .
-		'src="https://button.'. LC_LIKE_CO_HOST . '/in/embed/' . $likecoin_id . '/button' .
+		'style="height:' . ( $is_iscn_button ? '480px' : '212px' ) . ';width: 360px;" ' .
+		'src="https://button.' . LC_LIKE_CO_HOST . '/in/embed/' . $likecoin_id . '/button' .
 		'?type=wp&integration=wordpress_plugin' . $like_target . '"></iframe></figure>';
 		$likecoin_button_widget = $widget_code;
 	}
