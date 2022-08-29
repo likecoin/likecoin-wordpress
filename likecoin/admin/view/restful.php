@@ -151,7 +151,7 @@ function likecoin_post_site_publish_options_data( $request ) {
  *
  * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_login_to_matters( $request ) {
+function likecoin_login_matters( $request ) {
 	$params               = $request->get_json_params();
 	$matters_id           = $params['mattersId'];
 	$matters_password     = $params['mattersPassword'];
