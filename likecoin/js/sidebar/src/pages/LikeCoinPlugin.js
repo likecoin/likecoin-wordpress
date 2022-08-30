@@ -5,10 +5,10 @@ import LikeCoinPluginDocumentSettingPanel from './LikeCoinPluginDocumentSettingP
 import LikeCoinPluginSideBar from './LikeCoinPluginSideBar';
 import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
 
-const { siteurl } = window.wpApiSettings;
+const { siteurl, likecoHost, likerlandHost } = window.wpApiSettings;
 
-const ISCN_WIDGET_ORIGIN = 'https://like.co';
-const NFT_WIDGET_ORIGIN = 'https://app.like.co';
+const ISCN_WIDGET_ORIGIN = `https://${likecoHost}`;
+const NFT_WIDGET_ORIGIN = `https://app.${likecoHost}`;
 const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
 
 function LikeCoinPlugin(props) {
@@ -245,7 +245,7 @@ function LikeCoinPlugin(props) {
     e.preventDefault();
     if (!ISCNId) return;
     const redirectString = encodeURIComponent(siteurl);
-    const nftUrl = NFTClassId ? `https://liker.land/nft/class/${encodeURIComponent(
+    const nftUrl = NFTClassId ? `https://${likerlandHost}/nft/class/${encodeURIComponent(
       NFTClassId,
     )}` : `${NFT_WIDGET_ORIGIN}/nft/iscn/${encodeURIComponent(ISCNId)}?opener=1&redirect_uri=${redirectString}`;
     const nftWindow = window.open(nftUrl, '_blank');

@@ -63,11 +63,11 @@ function MainSettingTable(props) {
       setIsLoading(true);
       try {
         const response = await axios.get(
-          `https://api.like.co/users/id/${likerId}/min`,
+          `https://api.${props.likecoHost}/users/id/${likerId}/min`,
         );
         setLikerIdValue(response.data.user);
         setLikerDisplayName(response.data.displayName);
-        setLikerWalletAddress(response.data.cosmosWallet);
+        setLikerWalletAddress(response.data.likeWallet);
         setLikerAvatar(response.data.avatar);
       } catch (error) {
         console.error(error); // eslint-disable-line no-console
@@ -121,15 +121,10 @@ function MainSettingTable(props) {
       displayOption,
       perPostOptionEnabled: isPerPostOptionEnabled,
       siteLikerInfos: {
-        likecoin_id:
-          likerDisplayName === '-' ? DBSiteLikerId : likerIdValue,
-        display_name:
-          likerDisplayName === '-'
-            ? DBSiteLikerDisplayName
-            : likerDisplayName,
-        wallet:
-          likerDisplayName === '-' ? DBSiteLikerWallet : likerWalletAddress,
-        avatar: likerDisplayName === '-' ? DBSiteLikerAvatar : likerAvatar,
+        likecoin_id: likerIdValue,
+        display_name: likerDisplayName,
+        wallet: likerWalletAddress,
+        avatar: likerAvatar,
       },
     };
     try {
@@ -151,7 +146,13 @@ function MainSettingTable(props) {
     setSavedSuccessful(false);
     setSubmitResponse(null);
   }
-  const handleDisconnect = () => {};
+  function handleDisconnect(e) {
+    e.preventDefault();
+    setLikerIdValue('');
+    setLikerDisplayName('');
+    setLikerWalletAddress('');
+    setLikerAvatar('');
+  }
 
   const forbiddenString = __('Sorry, you are not allowed to access this page.', 'likecoin');
 
@@ -180,38 +181,8 @@ function MainSettingTable(props) {
         />
       )}
       <form onSubmit={confirmHandler}>
-        <Section title={__('Site Liker ID', 'likecoin')} />
-        <tbody>
-          <CheckBox
-            checked={siteLikerIdEnabled}
-            handleCheck={setSiteLikerIdEnabled}
-            title={__('Enable site Liker ID', 'likecoin')}
-            details={__(
-              'Override all LikeCoin button with site Liker ID',
-              'likecoin',
-            )}
-            checkRef={siteLikerIdEnabledRef}
-          />
-        {siteLikerIdEnabled && (
-          <LikecoinInfoTable
-            likerIdValue={likerIdValue}
-            likerDisplayName={likerDisplayName}
-            likerWalletAddress={likerWalletAddress}
-            likerAvatar={likerAvatar}
-            isLoading={isLoading}
-            isChangingTypingLiker={isChangingTypingLiker}
-            handleClickOnChange={handleClickOnChange}
-            handleLikerIdInputChange={handleLikerIdInputChange}
-            handleDisconnect={handleDisconnect}
-            editable={true}
-            isMainSettingPage={true}
-            showChangeButton={true}
-            showDisconnectButton={false}
-          />
-        )}
-        </tbody>
         <Section
-          title={__('Site LikeCoin button display setting', 'likecoin')}
+          title={__('Enable LikeCoin button', 'likecoin')}
         />
         <tbody>
           <DropDown
@@ -230,6 +201,35 @@ function MainSettingTable(props) {
               'likecoin',
             )}
             checkRef={perPostOptionEnabledRef}
+          />
+        </tbody>
+        <Section title={__('Site Default Liker ID', 'likecoin')} />
+        <tbody>
+          <LikecoinInfoTable
+            likecoHost={props.likecoHost}
+            likerIdValue={likerIdValue}
+            likerDisplayName={likerDisplayName}
+            likerWalletAddress={likerWalletAddress}
+            likerAvatar={likerAvatar}
+            isLoading={isLoading}
+            isChangingTypingLiker={isChangingTypingLiker}
+            handleClickOnChange={handleClickOnChange}
+            handleLikerIdInputChange={handleLikerIdInputChange}
+            handleDisconnect={handleDisconnect}
+            editable={true}
+            isMainSettingPage={true}
+            showChangeButton={true}
+            showDisconnectButton={true}
+          />
+          <CheckBox
+            checked={siteLikerIdEnabled}
+            handleCheck={setSiteLikerIdEnabled}
+            title={__('Override all Liker ID with site default', 'likecoin')}
+            details={__(
+              'Override all LikeCoin button with site default Liker ID',
+              'likecoin',
+            )}
+            checkRef={siteLikerIdEnabledRef}
           />
         </tbody>
         <SubmitButton />

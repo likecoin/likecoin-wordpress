@@ -106,9 +106,9 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 	$iscn_view_page_url  = null;
 	$iscn_badge_endpoint = null;
 	if ( $iscn_mainnet_info ) {
-		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/';
+		$iscn_view_page_url  = 'https://' . LC_LIKE_CO_HOST . '/in/tx/iscn/';
 		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
-		$iscn_card_endpoint  = 'https://app.like.co/view/';
+		$iscn_card_endpoint  = 'https://app.' . LC_LIKE_CO_HOST . '/view/';
 	} elseif ( $iscn_testnet_info ) {
 		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/';
 		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
@@ -444,10 +444,12 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			'lc_js_metabox',
 			'wpApiSettings',
 			array(
-				'root'    => esc_url_raw( rest_url() ),
-				'siteurl' => get_site_url(),
-				'nonce'   => wp_create_nonce( 'wp_rest' ),
-				'postId'  => $post_id,
+				'root'          => esc_url_raw( rest_url() ),
+				'siteurl'       => get_site_url(),
+				'nonce'         => wp_create_nonce( 'wp_rest' ),
+				'postId'        => $post_id,
+				'likecoHost'    => LC_LIKE_CO_HOST,
+				'likerlandHost' => LC_LIKER_LAND_HOST,
 			)
 		);
 		wp_localize_script(

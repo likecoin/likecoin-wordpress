@@ -14,6 +14,8 @@ import LikecoinHeading from '../components/LikecoinHeading';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
+const { likecoHost } = window.likecoinReactAppData;
+
 function PureLikecoinButtonPage(props) {
   const [siteLikerIdEnabled] = useState(props.DBSiteLikerIdEnabled);
   const [likerIdValue, setLikerIdValue] = useState(props.defaultLikerId);
@@ -38,11 +40,11 @@ function PureLikecoinButtonPage(props) {
       if (!likerId) return;
       try {
         const response = await axios.get(
-          `https://api.like.co/users/id/${likerId}/min`,
+          `https://api.${likecoHost}/users/id/${likerId}/min`,
         );
         setLikerIdValue(response.data.user);
         setLikerDisplayName(response.data.displayName);
-        setLikerWalletAddress(response.data.cosmosWallet);
+        setLikerWalletAddress(response.data.likeWallet);
         setLikerAvatar(response.data.avatar);
         setIsLoading(false);
         setHasValidLikecoinId(true);
@@ -144,6 +146,7 @@ function PureLikecoinButtonPage(props) {
       <Section title={__('Your Liker ID', 'likecoin')} />
       <form onSubmit={confirmHandler}>
         <LikecoinInfoTable
+          likecoHost={likecoHost}
           likerIdValue={likerIdValue}
           likerDisplayName={likerDisplayName}
           likerWalletAddress={likerWalletAddress}
@@ -164,6 +167,7 @@ function PureLikecoinButtonPage(props) {
           <LikeButtonPreview
             userLikerId={likerIdValue}
             hasValidLikecoinId={hasValidLikecoinId}
+            likecoHost={likecoHost}
           />
         )}
         <SubmitButton />
@@ -190,7 +194,7 @@ function LikecoinButtonPage() {
   const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
 
   const defaultLikerId = useMemo(
-    () => (DBSiteLikerIdEnabled ? DBSiteLikerId : DBUserLikerId),
+    () => (DBSiteLikerIdEnabled ? DBSiteLikerId : (DBUserLikerId || DBSiteLikerId)),
     [DBSiteLikerIdEnabled, DBSiteLikerId, DBUserLikerId],
   );
   const defaultLikerDisplayName = useMemo(

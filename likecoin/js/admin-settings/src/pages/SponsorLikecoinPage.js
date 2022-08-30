@@ -4,6 +4,8 @@ import LikecoinHeading from '../components/LikecoinHeading';
 import ParagraphTitle from '../components/ParagraphTitle';
 import Link from '../components/Link';
 
+const { likerlandHost } = window.likecoinReactAppData;
+
 function SponsorLikecoinPage() {
   const localizedIntroduction = createInterpolateElement(
     __(
@@ -50,7 +52,7 @@ function SponsorLikecoinPage() {
       }),
       CivicLiker: createElement(Link, {
         text: __('Civic Liker', 'likecoin'),
-        linkAddress: 'https://liker.land/civic',
+        linkAddress: `https://${likerlandHost}/civic`,
       }),
     },
   );

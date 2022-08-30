@@ -18,7 +18,7 @@ import settingPageEndpoint from '../store/constant';
 import PublishStatus from '../components/PublishStatus';
 import LikeCoinIconPinbar from '../components/LikeCoinIconPinbar';
 
-const { siteurl } = window.wpApiSettings;
+const { siteurl, likecoHost, likerlandHost } = window.wpApiSettings;
 
 function LikeCoinPluginSideBar(props) {
   const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));
@@ -162,7 +162,7 @@ function LikeCoinPluginSideBar(props) {
           status={props.ISCNId ? props.ISCNId : '-'}
           link={
             props.ISCNId
-              ? `https://app.like.co/view/${encodeURIComponent(
+              ? `https://app.${likecoHost}/view/${encodeURIComponent(
                 props.ISCNId,
               )}`
               : ''
@@ -171,10 +171,10 @@ function LikeCoinPluginSideBar(props) {
         {props.ISCNId && (
           <SideBarStatusRow
             title={__('NFT', 'likecoin')}
-            status={props.NFTClassId ? props.NFTClassId : '-'}
+            status={props.NFTClassId ? props.NFTClassId : __('Mint Now', 'likecoin')}
             link={
               props.NFTClassId
-                ? `https://liker.land/nft/class/${encodeURIComponent(
+                ? `https://${likerlandHost}/nft/class/${encodeURIComponent(
                   props.NFTClassId,
                 )}`
                 : ''
