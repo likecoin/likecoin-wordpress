@@ -1,4 +1,4 @@
-=== LikeCoin - DePub on blockchain, ready for NFT, be web3 native ===
+=== LikeCoin - Decentralize Publishing with Writing NFT & Storage ===
 
 Contributors: likecoin,williamchong007,ckxpress
 Tags: web3, NFT, depub, LikeCoin, blockchain, web 3
@@ -13,29 +13,19 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 LikeCoin Writing NFT.  Earn as you write, Collect as you read.
 
 == Description ==
+If you are looking for ways to monetize, store and build communities with your readers, this plugin is for you. Register content metadata on-chain, keep your content on the distributed web (IPFS & Arweave), and publish content as NFT. It is an integrated tool that allows you to write as usual but publish differently.
 
-= How does the Writing NFT plugin work? =
-You can publish your WordPress posts as NFTs.  
-After installing the plugin: 
-- The NFT widget will appear in each post for reader's collection.  
-- The published NFT will be listed in your portfolio page.  
+= NFT WIDGET =
+A mini NFT marketplace is embedded into your WordPress posts to let readers collect their favorites.
 
-By simplifying the minting NFT flow from publishing to selling, writers can focus on creating quality content and engaging with fans.
+= NFT PORTFOLIO =
+A portfolio that can display your collected articles. Represent your readership and authorship.
 
-The following features help you to publish your post as NFT, and then earn as you write:
+= DYNAMIC PRICING =
+The marketplace will determine the mint price by bonding curve. The price of Writing NFT will increase automatically after each transaction. No sales hurdle.
 
-= NFT Widget =
-A mini NFT marketplace that is embedded into your WordPress posts to let readers collect their favorites.
-
-= NFT Portfolio =
-Your display window of Writing NFT which shows readership and authorship. You are what you read, your collection shows your taste, and you can also check the asset value here.
-
-= Dynamic Pricing =
-The marketplace will determine the mint price set by a bonding curve. The price of Writing NFT will increase automatically after each transaction. 
-
-= Decentralized Storage =
-Saving content metadata on LikeCoin chain, storing content file on IPFS and Arweave, all in one plugin.
-
+= DECENTRALIZED STORAGE =
+Register content metadata (ISCN) on the LikeCoin chain, storing the content file on IPFS and Arweave in one plugin.
 
 == Trading LikeCoin ==
 
