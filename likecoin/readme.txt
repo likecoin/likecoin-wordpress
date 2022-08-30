@@ -144,6 +144,10 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 
 - Add Writing NFT Support
 
+= 2.5.7 =
+
+- Fix issue with login to matters
+
 = 2.5.6 =
 
 - Refactor restful API
