@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 2.6.0
+Stable tag: 2.5.7
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -143,6 +143,15 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 3. LikeCoin Plugin Options
 
 == Changelog ==
+
+= 2.6.2 =
+
+- Change LikeCoin button iframe size for NFT widget support
+- Reorganize LikeCoin button/NFT widget display settings to allow enabling site LikeCoin button without forcing site Liker ID
+
+= 2.6.1 =
+
+- Improve Writing NFT minting UX. Support postMessage NFT class ID update event when minting Writing NFT
 
 = 2.6.0 =
 
