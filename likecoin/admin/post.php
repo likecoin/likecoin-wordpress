@@ -46,20 +46,23 @@ function likecoin_get_post_tags( $post ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_format_post_to_json_data( $post ) {
-	$files           = array();
-	$title           = apply_filters( 'the_title_rss', $post->post_title );
-	$content         = likecoin_get_post_content_with_relative_image_url( $post );
-	$urls            = likecoin_get_post_image_url( $post );
-	$feature_img_div = likecoin_get_post_thumbnail_with_relative_image_url( $post );
-	$content         = '<!DOCTYPE html><html>
+	$files            = array();
+	$title            = apply_filters( 'the_title_rss', $post->post_title );
+	$feature          = likecoin_get_post_thumbnail_with_relative_image_url( $post );
+	$feature_img_div  = $feature['content'];
+	$feature_img_data = $feature['image'];
+	$relative         = likecoin_get_post_content_with_relative_image_url( $post );
+	$content          = $relative['content'];
+	$image_data       = $relative['images'];
+	$content          = '<!DOCTYPE html><html>
   	<head> <title>' . $title . '</title>' .
 		'<meta charset="utf-8" />
 		 <meta name="viewport" content="width=device-width, initial-scale=1" />
 	</head>
 	<body><header><h1>' . $title . '</h1>' . $feature_img_div . '</header>' . $content . '
 	</body></html>';
-	$file_mime_type  = 'text/html';
-	$filename        = 'index.html';
+	$file_mime_type   = 'text/html';
+	$filename         = 'index.html';
 	// phpcs:disable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	$files[] = array(
 		'filename' => $filename,
@@ -67,25 +70,22 @@ function likecoin_format_post_to_json_data( $post ) {
 		'data'     => base64_encode( $content ),
 	);
 
-	$site_url_parsed = wp_parse_url( get_site_url() );
-	$site_host       = $site_url_parsed['host'];
-	foreach ( $urls as $url ) {
+	if ( ! empty( $feature_img_data ) ) {
+		$image_data[] = $feature_img_data;
+	}
+	foreach ( $image_data as $image ) {
+		$url       = $image['url'];
+		$key       = $image['key'];
 		$file_info = new finfo( FILEINFO_MIME_TYPE );
-		$parse     = wp_parse_url( $url );
-		$host      = $parse['host'];
-		if ( $host === $site_host ) {
-			$relative_path = ltrim( $parse['path'], '/' );
-			$image_path    = ABSPATH . $relative_path;
-			// phpcs:disable WordPress.WP.AlternativeFunctions
-			$img_body = file_get_contents( $image_path );
-			// phpcs:enable WordPress.WP.AlternativeFunctions
-			$mime_type = $file_info->buffer( $img_body );
-			$files[]   = array(
-				'filename' => $relative_path,
-				'mimeType' => $mime_type,
-				'data'     => base64_encode( $img_body ),
-			);
-		}
+		// phpcs:disable WordPress.WP.AlternativeFunctions
+		$img_body = file_get_contents( $url );
+		// phpcs:enable WordPress.WP.AlternativeFunctions
+		$mime_type = $file_info->buffer( $img_body );
+		$files[]   = array(
+			'filename' => $key,
+			'mimeType' => $mime_type,
+			'data'     => base64_encode( $img_body ),
+		);
 	}
 	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	return $files;
@@ -97,6 +97,7 @@ function likecoin_format_post_to_json_data( $post ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_get_post_content_with_relative_image_url( $post ) {
+	$image_urls            = array();
 	$content               = apply_filters( 'the_content', $post->post_content );
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
@@ -110,14 +111,27 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 	$site_url_parsed = wp_parse_url( get_site_url() );
 	$site_host       = $site_url_parsed['host'];
 	foreach ( $images as $image ) {
-		$url    = $image->getAttribute( 'src' );
-		$url    = explode( '#', $url )[0];
-		$url    = explode( '?', $url )[0];
-		$parsed = wp_parse_url( $url );
-		$host   = $parsed['host'];
-		if ( $host === $site_host ) {
+		$url = $image->getAttribute( 'data-orig-file' );
+		if ( empty( $url ) ) {
+			$url = $image->getAttribute( 'src' );
+		}
+		$attachment_id = $image->getAttribute( 'data-attachment-id' );
+		$url           = explode( '#', $url )[0];
+		$url           = explode( '?', $url )[0];
+		$parsed        = wp_parse_url( $url );
+		$host          = $parsed['host'];
+		if ( $attachment_id > 0 || $host === $site_host ) {
 			$image->setAttribute( 'src', '.' . $parsed['path'] );
 			$image->removeAttribute( 'srcset' );
+			$relative_path = ltrim( $parsed['path'], '/' );
+			$image_path    = ABSPATH . $relative_path;
+			if ( $attachment_id > 0 ) {
+				$image_path = get_attached_file( $attachment_id );
+			}
+			$image_urls[] = array(
+				'key' => $relative_path,
+				'url' => $image_path,
+			);
 		}
 	}
 	$root   = $dom_document->documentElement;
@@ -125,7 +139,10 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 	foreach ( $root->childNodes as $child_node ) {
 			$result .= $dom_document->saveHTML( $child_node );
 	}
-	return $result;
+	return array(
+		'content' => $result,
+		'images'  => $image_urls,
+	);
 }
 
 /**
@@ -136,52 +153,24 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 function likecoin_get_post_thumbnail_with_relative_image_url( $post ) {
 	$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
 	$feature_img_div   = '';
-	if ( ! empty( $post_thumbnail_id ) ) {
-		$url = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
-		if ( $url ) {
-			$site_url_parsed = wp_parse_url( get_site_url() );
-			$site_host       = $site_url_parsed['host'];
-			$parsed          = wp_parse_url( $url );
-			$host            = $parsed['host'];
-			if ( $host === $site_host ) {
-				$feature_img_div = '<figure><img src=".' . esc_url( $parsed['path'] ) . '"></figure>';
-			}
-		}
+	if ( ! $post_thumbnail_id ) {
+		return array(
+			'content' => '',
+			'image'   => null,
+		);
 	}
-	return $feature_img_div;
-}
-
-/**
- * Get image urls in post
- *
- * @param object| $post WordPress post object.
- */
-function likecoin_get_post_image_url( $post ) {
-	$urls                  = array();
-	$content               = apply_filters( 'the_content', $post->post_content );
-	$dom_document          = new DOMDocument();
-	$libxml_previous_state = libxml_use_internal_errors( true );
-	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
-	libxml_clear_errors();
-	libxml_use_internal_errors( $libxml_previous_state );
-	$images = $dom_document->getElementsByTagName( 'img' );
-
-	// get all images.
-	foreach ( $images as $image ) { // only works after attachment is converted to image by user.
-		$url    = $image->getAttribute( 'src' );
-		$url    = explode( '#', $url )[0];
-		$url    = explode( '?', $url )[0];
-		$urls[] = $url;
-	};
-	// get featured image.
-	$post_thumbnail_id = get_post_thumbnail_id( $post->ID );
-	if ( ! empty( $post_thumbnail_id ) ) {
-		$url = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
-		if ( $url ) {
-			$urls[] = $url;
-		}
-	}
-	return $urls;
+	$url             = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
+	$parsed          = wp_parse_url( $url );
+	$url             = get_attached_file( $post_thumbnail_id );
+	$feature_img_div = '<figure><img src=".' . esc_url( $parsed['path'] ) . '"></figure>';
+	$relative_path   = ltrim( $parsed['path'], '/' );
+	return array(
+		'content' => $feature_img_div,
+		'image'   => array(
+			'key' => $relative_path,
+			'url' => $url,
+		),
+	);
 }
 
 /**
