@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.0
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 2.6.2
+Stable tag: 2.6.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -143,6 +143,10 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 3. LikeCoin Plugin Options
 
 == Changelog ==
+
+= 2.6.3 =
+
+- Improve feature image and general image upload reliablity when uploading to Arweave.
 
 = 2.6.2 =
 
