@@ -367,7 +367,6 @@ function likecoin_get_iscn_full_info( $request ) {
 		$iscn_full_info['iscnHash'] = $iscn_info['iscn_hash'];
 		$iscn_full_info['iscnId']   = $iscn_info['iscn_id'];
 		// iscnVersion should be taken from chain API.
-		$iscn_full_info['timeZone']      = $timezone;
 		$iscn_full_info['iscnTimestamp'] = $iscn_info['last_saved_time'];
 		$iscn_full_info['iscnVersion']   = $iscn_info['iscn_version'];
 	}
