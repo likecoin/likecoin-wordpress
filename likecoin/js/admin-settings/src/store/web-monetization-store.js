@@ -1,5 +1,5 @@
-import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
+import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const WEB_MONETIZATION_STORE_NAME = 'likecoin/web_monetization';
@@ -95,9 +95,4 @@ const storeConfig = {
   actions,
 };
 
-const webMonetizationStore = createReduxStore(
-  WEB_MONETIZATION_STORE_NAME,
-  storeConfig,
-);
-
-register(webMonetizationStore);
+createAndRegisterReduxStore(WEB_MONETIZATION_STORE_NAME, storeConfig);

@@ -1,5 +1,5 @@
-import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
+import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SITE_LIKER_INFO_STORE_NAME = 'likecoin/site_liker_info';
@@ -147,9 +147,4 @@ const storeConfig = {
   actions,
 };
 
-const siteLikerInfoStore = createReduxStore(
-  SITE_LIKER_INFO_STORE_NAME,
-  storeConfig,
-);
-
-register(siteLikerInfoStore);
+createAndRegisterReduxStore(SITE_LIKER_INFO_STORE_NAME, storeConfig);
