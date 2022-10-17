@@ -221,6 +221,7 @@ function likecoin_get_meta_box_publish_params( $post, $force = false ) {
 			'ipfs_hash'          => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
 			'iscn_hash'          => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
 			'iscn_id'            => isset( $iscn_info['iscn_id'] ) ? $iscn_info['iscn_id'] : '',
+			'iscn_timestamp'     => isset( $iscn_info['last_saved_time'] ) ? $iscn_info['last_saved_time'] : '',
 			'arweave_id'         => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
 			'arweave_ipfs_hash'  => isset( $arweave_info['ipfs_hash'] ) ? $arweave_info['ipfs_hash'] : '',
 		);
@@ -397,8 +398,8 @@ function likecoin_add_button_meta_box( $button_params ) {
 				</tr>
 			</tbody>
 		</table>
-	<?php
-}
+		<?php
+	}
 }
 
 /**
@@ -458,11 +459,13 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			array(
 				'id'                 => $post_id,
 				'title'              => $post_title,
+				'lastModifiedTime'   => get_post_modified_time( 'U', true, $post_id ),
 				'mattersIPFSHash'    => $matters_ipfs_hash,
 				'isMattersPublished' => $matters_published_status,
 				'arweaveIPFSHash'    => $arweave_ipfs_hash,
 				'iscnHash'           => $publish_params['iscn_hash'],
 				'iscnId'             => $publish_params['iscn_id'],
+				'iscnTimestamp'      => $publish_params['iscn_timestamp'],
 				'tags'               => $post_tags,
 				'url'                => $post_url,
 				'arweaveId'          => $arweave_id,
@@ -483,6 +486,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'mainStatusRegisterISCN'  => __( 'Registering ISCN...', LC_PLUGIN_SLUG ),
 				'buttonSubmitISCN'        => __( 'Submit to ISCN', LC_PLUGIN_SLUG ),
 				'buttonRegisterISCN'      => __( 'Register ISCN', LC_PLUGIN_SLUG ),
+				'buttonUpdateISCN'        => __( 'Update ISCN', LC_PLUGIN_SLUG ),
 				'draft'                   => __( 'Draft', LC_PLUGIN_SLUG ),
 			)
 		);
