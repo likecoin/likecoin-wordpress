@@ -110,7 +110,7 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 	$images          = $dom_document->getElementsByTagName( 'img' );
 	$site_url_parsed = wp_parse_url( get_site_url() );
 	$site_host       = $site_url_parsed['host'];
-	foreach ( $images as $image ) {
+	foreach ( $images as $key=>$image ) {
 		$url = $image->getAttribute( 'data-orig-file' );
 		if ( empty( $url ) ) {
 			$url = $image->getAttribute( 'src' );
@@ -121,7 +121,8 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 		$parsed        = wp_parse_url( $url );
 		$host          = $parsed['host'];
 		if ( $attachment_id > 0 || $host === $site_host ) {
-			$image->setAttribute( 'src', '.' . $parsed['path'] );
+			$image_key = $key + 1; // 0 is for featured image
+			$image->setAttribute( 'src', './' . $image_key );
 			$image->removeAttribute( 'srcset' );
 			$relative_path = ltrim( $parsed['path'], '/' );
 			$image_path    = ABSPATH . $relative_path;
@@ -129,7 +130,7 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 				$image_path = get_attached_file( $attachment_id );
 			}
 			$image_urls[] = array(
-				'key' => $relative_path,
+				'key' => $image_key,
 				'url' => $image_path,
 			);
 		}
@@ -160,14 +161,12 @@ function likecoin_get_post_thumbnail_with_relative_image_url( $post ) {
 		);
 	}
 	$url             = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
-	$parsed          = wp_parse_url( $url );
 	$url             = get_attached_file( $post_thumbnail_id );
-	$feature_img_div = '<figure><img src=".' . esc_url( $parsed['path'] ) . '"></figure>';
-	$relative_path   = ltrim( $parsed['path'], '/' );
+	$feature_img_div = '<figure><img src="./0"></figure>';
 	return array(
 		'content' => $feature_img_div,
 		'image'   => array(
-			'key' => $relative_path,
+			'key' => '0', // index 0 for feature image
 			'url' => $url,
 		),
 	);
