@@ -22,7 +22,7 @@ function LikecoinInfoTable(props) {
               <td>
                 <div className="avatarWrapper">
                   {!props.isLoading
-                    && props.likerAvatar.length > 0
+                    && props.likerAvatar
                     && props.likerAvatar !== '-' && (
                       <img
                         id="likecoinAvatar"
@@ -31,7 +31,7 @@ function LikecoinInfoTable(props) {
                         alt="Avatar"
                       />
                   )}
-                  {props.likerIdValue.length > 0 && props.likerIdValue !== '-'
+                  {props.likerIdValue && props.likerIdValue !== '-'
                     && !props.isChangingTypingLiker && (
                       <a
                         id="likecoinId"
@@ -43,7 +43,7 @@ function LikecoinInfoTable(props) {
                         {props.likerIdValue}
                       </a>
                   )}
-                  {(props.likerIdValue.length === 0 || props.likerIdValue === '-'
+                  {(!props.likerIdValue || props.likerIdValue === '-'
                     || props.isChangingTypingLiker) && (
                     <div>
                       <input
@@ -106,7 +106,7 @@ function LikecoinInfoTable(props) {
           </tbody>
         </table>
         <section className="likecoin loading">
-          {props.likerIdValue.length !== 0
+          {props.likerIdValue
             && props.isLoading
             && __('Loading...', 'likecoin')}
         </section>

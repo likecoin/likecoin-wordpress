@@ -91,6 +91,7 @@ const resolvers = {
       if (!siteLikerInfo.button_display_option) {
         siteLikerInfo.button_display_option = INITIAL_STATE.DBDisplayOptionSelected;
       }
+      if (!siteLikerInfo.site_likecoin_user) siteLikerInfo.site_likecoin_user = {};
       return actions.setSiteLikerInfo(siteLikerInfo);
     } catch (error) {
       return actions.setHTTPError(error);
