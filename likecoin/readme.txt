@@ -3,10 +3,10 @@
 Contributors: likecoin,williamchong007,ckxpress
 Tags: web3, NFT, depub, LikeCoin, blockchain, web 3
 Donate link: https://github.com/sponsors/likecoin
-Requires at least: 5.0
+Requires at least: 5.3
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 2.6.3
+Stable tag: 2.6.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -143,6 +143,12 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 3. LikeCoin Plugin Options
 
 == Changelog ==
+
+= 2.6.4 =
+
+- Improve support to WordPress < 5.7
+- Add ISCN update from metabox
+- Fix an issue where non character image name might cause Arweave upload error
 
 = 2.6.3 =
 
