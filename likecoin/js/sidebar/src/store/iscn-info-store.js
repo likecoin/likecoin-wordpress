@@ -1,5 +1,5 @@
-import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
+import { createAndRegisterReduxStore } from './util';
 
 const {
   root, nonce, postId, likecoHost,
@@ -264,9 +264,5 @@ const storeConfig = {
   actions,
 };
 
-const iscnInfoStore = createReduxStore(
-  ISCN_INFO_STORE_NAME,
-  storeConfig,
-);
+createAndRegisterReduxStore(ISCN_INFO_STORE_NAME, storeConfig);
 
-register(iscnInfoStore);

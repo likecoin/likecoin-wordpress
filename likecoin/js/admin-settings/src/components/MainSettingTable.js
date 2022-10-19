@@ -61,6 +61,7 @@ function MainSettingTable(props) {
     () => debounce(async (likerId) => {
       setSavedSuccessful(false);
       setIsLoading(true);
+      if (!likerId) return;
       try {
         const response = await axios.get(
           `https://api.${props.likecoHost}/users/id/${likerId}/min`,

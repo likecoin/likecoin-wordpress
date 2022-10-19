@@ -1,5 +1,5 @@
-import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
+import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SITE_PUBLISH_STORE_NAME = 'likecoin/site_publish';
@@ -180,9 +180,4 @@ const storeConfig = {
   actions,
 };
 
-const siteMattersStore = createReduxStore(
-  SITE_PUBLISH_STORE_NAME,
-  storeConfig,
-);
-
-register(siteMattersStore);
+createAndRegisterReduxStore(SITE_PUBLISH_STORE_NAME, storeConfig);

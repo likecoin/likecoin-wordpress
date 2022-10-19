@@ -55,10 +55,10 @@ function likecoin_post_main_plugin_options( $request ) {
 	$per_post_option_enabled = $params['perPostOptionEnabled'];
 	$liker_infos             = $params['siteLikerInfos'];
 
-	$plugin_options['site_likecoin_id_enbled']        = $site_liker_id_enabled;
-	$plugin_options['button_display_option']          = $display_option;
-	$plugin_options['button_display_author_override'] = $per_post_option_enabled;
-	$plugin_options['site_likecoin_user']             = $liker_infos;
+	$plugin_options['site_likecoin_id_enbled']         = $site_liker_id_enabled;
+	$plugin_options[ LC_OPTION_BUTTON_DISPLAY_OPTION ] = $display_option;
+	$plugin_options['button_display_author_override']  = $per_post_option_enabled;
+	$plugin_options['site_likecoin_user']              = $liker_infos;
 
 	update_option( LC_BUTTON_OPTION_NAME, $plugin_options );
 	$plugin_options = get_option( LC_BUTTON_OPTION_NAME );
@@ -367,7 +367,6 @@ function likecoin_get_iscn_full_info( $request ) {
 		$iscn_full_info['iscnHash'] = $iscn_info['iscn_hash'];
 		$iscn_full_info['iscnId']   = $iscn_info['iscn_id'];
 		// iscnVersion should be taken from chain API.
-		$iscn_full_info['timeZone']      = $timezone;
 		$iscn_full_info['iscnTimestamp'] = $iscn_info['last_saved_time'];
 		$iscn_full_info['iscnVersion']   = $iscn_info['iscn_version'];
 	}

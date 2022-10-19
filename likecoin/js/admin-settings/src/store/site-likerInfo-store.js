@@ -1,5 +1,5 @@
-import { createReduxStore, register } from '@wordpress/data';
 import axios from 'axios';
+import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SITE_LIKER_INFO_STORE_NAME = 'likecoin/site_liker_info';
@@ -91,6 +91,7 @@ const resolvers = {
       if (!siteLikerInfo.button_display_option) {
         siteLikerInfo.button_display_option = INITIAL_STATE.DBDisplayOptionSelected;
       }
+      if (!siteLikerInfo.site_likecoin_user) siteLikerInfo.site_likecoin_user = {};
       return actions.setSiteLikerInfo(siteLikerInfo);
     } catch (error) {
       return actions.setHTTPError(error);
@@ -147,9 +148,4 @@ const storeConfig = {
   actions,
 };
 
-const siteLikerInfoStore = createReduxStore(
-  SITE_LIKER_INFO_STORE_NAME,
-  storeConfig,
-);
-
-register(siteLikerInfoStore);
+createAndRegisterReduxStore(SITE_LIKER_INFO_STORE_NAME, storeConfig);

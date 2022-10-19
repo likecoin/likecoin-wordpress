@@ -55,6 +55,13 @@ function likecoin_handle_init_and_upgrade() {
 	global $charset_collate;
 	$version = get_option( 'likecoin_plugin_version', LC_PLUGIN_VERSION );
 
+	// init button display option to 'post'.
+	$button_option = get_option( LC_BUTTON_OPTION_NAME, array() );
+	if ( ! isset( $button_option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] ) ) {
+		$button_option[ LC_OPTION_BUTTON_DISPLAY_OPTION ] = 'post';
+		update_option( LC_BUTTON_OPTION_NAME, $button_option );
+	}
+
 	if ( version_compare( $version, '1.1' ) < 0 ) {
 		delete_metadata( 'user', 0, 'lc_widget_option', '', true );
 		delete_metadata( 'user', 0, 'lc_widget_position', '', true );
