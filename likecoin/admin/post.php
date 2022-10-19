@@ -159,8 +159,9 @@ function likecoin_get_post_thumbnail_with_relative_image_url( $post ) {
 			'image'   => null,
 		);
 	}
-	$url             = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
-	$url             = get_attached_file( $post_thumbnail_id );
+	$url = wp_get_attachment_image_url( $post_thumbnail_id, 'full' );
+	$url = get_attached_file( $post_thumbnail_id );
+	// we place all <img> in html to 1...n in a later function, 0 is used for feature.
 	$feature_img_div = '<figure><img src="./0"></figure>';
 	return array(
 		'content' => $feature_img_div,
