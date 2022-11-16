@@ -1,6 +1,5 @@
 import '../style.css';
 import { useState, useEffect, useCallback } from 'react';
-import LikeCoinPluginPrePublishPanel from './LikeCoinPluginPrePublishPanel';
 import LikeCoinPluginDocumentSettingPanel from './LikeCoinPluginDocumentSettingPanel';
 import LikeCoinPluginSideBar from './LikeCoinPluginSideBar';
 import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
@@ -276,7 +275,6 @@ function LikeCoinPlugin(props) {
         tags={tags}
         url={url}
       />
-      <LikeCoinPluginPrePublishPanel />
       <LikeCoinPluginDocumentSettingPanel
         handleRegisterISCN={handleRegisterISCN}
         handleNFTAction={handleNFTAction}

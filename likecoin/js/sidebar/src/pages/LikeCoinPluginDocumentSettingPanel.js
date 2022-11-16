@@ -5,12 +5,8 @@ import { useSelect } from '@wordpress/data';
 import LikeCoinIcon from '../components/LikeCoinIcon';
 import PublishStatus from '../components/PublishStatus';
 import StatusTitle from '../components/StatusTitle';
-import settingPageEndpoint from '../store/constant';
-
-const { siteurl } = window.wpApiSettings;
 
 function LikeCoinPluginDocumentSettingPanel(props) {
-  const [showDashLink, setShowDashLink] = useState(true);
   const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
   const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
   const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
@@ -25,15 +21,13 @@ function LikeCoinPluginDocumentSettingPanel(props) {
   }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
   useEffect(() => setShowNFTButton(!!props.ISCNId), [props.ISCNId]);
   useEffect(() => {
-    setShowDashLink((!isCurrentPostPublished && !props.mattersDraftId)
-      || (isCurrentPostPublished && !props.mattersArticleId));
     setShowMattersDraftLink(!isCurrentPostPublished && props.mattersDraftId);
     setShowMattersArticleLink(isCurrentPostPublished && props.mattersArticleId);
   }, [isCurrentPostPublished, props]);
   return (
     <PluginDocumentSettingPanel
       name='depub-panel'
-      title={__('Decentralize Publishing', 'likecoin')}
+      title={__('Decentralized Publishing', 'likecoin')}
       className='depub-panel'
       icon={<LikeCoinIcon color='#9B9B9B' paddingLeft='10px' />}
     >
@@ -45,21 +39,6 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                 isCurrentPostPublished={isCurrentPostPublished}
                 ISCNId={props.ISCNId}
               />
-              {showDashLink && (
-                <div className='flexBoxRow'>
-                  <StatusTitle title={__('Distribution', 'likecoin')} />
-                  <div>
-                    <a
-                      rel='noopener noreferrer'
-                      target='_blank'
-                      className='icon'
-                      href={`${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`}
-                    >
-                      -
-                    </a>
-                  </div>
-                </div>
-              )}
               {showMattersDraftLink && (
                 <div className='flexBoxRow'>
                   <StatusTitle title={__('Distribution', 'likecoin')} />
@@ -119,7 +98,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                       className='blueBackgroundWhiteTextSmallBtn'
                       onClick={props.handleRegisterISCN}
                     >
-                      {__('DePub', 'likecoin')}
+                      {__('Publish', 'likecoin')}
                     </button>
                     <button
                       className='whiteBackgroundBlueTextSmallBtn'
@@ -130,7 +109,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                           .click();
                       }}
                     >
-                      {__('Check #DePub', 'likecoin')}
+                      {__('Details', 'likecoin')}
                     </button>
                   </div>
                 )}

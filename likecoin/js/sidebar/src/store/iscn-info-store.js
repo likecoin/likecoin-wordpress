@@ -265,4 +265,3 @@ const storeConfig = {
 };
 
 createAndRegisterReduxStore(ISCN_INFO_STORE_NAME, storeConfig);
-
