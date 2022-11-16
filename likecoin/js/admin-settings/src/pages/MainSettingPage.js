@@ -13,11 +13,13 @@ import LikecoinInfoTable from '../components/LikecoinInfoTable';
 import SettingNotice from '../components/SettingNotice';
 import LikecoinHeading from '../components/LikecoinHeading';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
+import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 
 const { likecoHost } = window.likecoinReactAppData;
 
 function MainSettingPage() {
   const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
+  const { postSitePublishOptions } = useDispatch(SITE_PUBLISH_STORE_NAME);
   /* do not want to re-render the whole component until submit. Hence use useRef(). */
   const siteLikerIdEnabledRef = useRef();
   const displayOptionRef = useRef();
@@ -32,6 +34,9 @@ function MainSettingPage() {
     DBDisplayOptionSelected,
     DBPerPostOptionEnabled,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
+  const {
+    DBISCNBadgeStyleOption,
+  } = useSelect((select) => select(SITE_PUBLISH_STORE_NAME).selectSitePublishOptions());
   const [siteLikerIdEnabled, setSiteLikerIdEnabled] = useState(DBSiteLikerIdEnabled);
   const [displayOptionSelected, setDisplayOptionSelected] = useState(DBDisplayOptionSelected);
   const [perPostOptionEnabled, setPerPostOptionEnabled] = useState(DBPerPostOptionEnabled);
@@ -59,6 +64,15 @@ function MainSettingPage() {
     { value: 'post', label: __('Post Only', 'likecoin') },
     { value: 'none', label: __('None', 'likecoin') },
   ];
+  const ISCNBadgeStyleOptionRef = useRef();
+  const ISCNStyleOptions = [
+    { value: 'light', label: __('Light Mode', 'likecoin') },
+    { value: 'dark', label: __('Dark Mode', 'likecoin') },
+    { value: 'none', label: __('None', 'likecoin') },
+  ];
+  const [ISCNBadgeStyleOption, setISCNBadgeStyleOption] = useState(
+    DBISCNBadgeStyleOption,
+  );
   // Update Data
   const fetchLikeCoinID = useMemo(
     () => debounce(async (likerId) => {
@@ -86,7 +100,9 @@ function MainSettingPage() {
   useEffect(() => {
     fetchLikeCoinID(likerIdValue);
   }, [fetchLikeCoinID, likerIdValue]);
-
+  useEffect(() => {
+    setISCNBadgeStyleOption(DBISCNBadgeStyleOption);
+  }, [DBISCNBadgeStyleOption]);
   useEffect(() => {
     setSiteLikerIdEnabled(DBSiteLikerIdEnabled);
     setDisplayOptionSelected(DBDisplayOptionSelected);
@@ -120,10 +136,11 @@ function MainSettingPage() {
     const isSiteLikerIdEnabled = siteLikerIdEnabledRef.current.checked;
     const displayOption = displayOptionRef.current.value;
     const isPerPostOptionEnabled = perPostOptionEnabledRef.current.checked;
-    const data = {
-      siteLikerIdEnabled: isSiteLikerIdEnabled,
+    const currentISCNBadgeStyleOption = ISCNBadgeStyleOptionRef.current.value;
+    const buttonData = {
       displayOption,
       perPostOptionEnabled: isPerPostOptionEnabled,
+      siteLikerIdEnabled: isSiteLikerIdEnabled,
       siteLikerInfos: {
         likecoin_id: likerIdValue,
         display_name: likerDisplayName,
@@ -131,9 +148,15 @@ function MainSettingPage() {
         avatar: likerAvatar,
       },
     };
+    const publishData = {
+      ISCNBadgeStyleOption: currentISCNBadgeStyleOption,
+    };
     try {
       // change global state & DB
-      const res = await postSiteLikerInfo(data);
+      const res = await Promise.all([
+        postSiteLikerInfo(buttonData),
+        postSitePublishOptions(publishData),
+      ]);
       setSubmitResponse(res.message);
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
@@ -186,7 +209,7 @@ function MainSettingPage() {
       )}
       <form onSubmit={confirmHandler}>
         <Section
-          title={__('Enable LikeCoin button', 'likecoin')}
+          title={__('Enable LikeCoin widget', 'likecoin')}
         />
         <tbody>
           <DropDown
@@ -207,6 +230,18 @@ function MainSettingPage() {
             checkRef={perPostOptionEnabledRef}
           />
         </tbody>
+        <hr />
+        <Section title={__('ISCN Badge', 'likecoin')} />
+        <table className="form-table" role="presentation">
+          <DropDown
+            selected={ISCNBadgeStyleOption}
+            handleSelect={setISCNBadgeStyleOption}
+            title={__('Show ISCN badge in registered post', 'likecoin')}
+            selectRef={ISCNBadgeStyleOptionRef}
+            options={ISCNStyleOptions}
+          />
+        </table>
+        <hr />
         <Section title={__('Site Default Liker ID', 'likecoin')} />
         <tbody>
           <LikecoinInfoTable

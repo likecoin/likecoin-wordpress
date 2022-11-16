@@ -136,10 +136,18 @@ function likecoin_get_user_data( $request ) {
 function likecoin_post_site_publish_options_data( $request ) {
 	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
 	$params          = $request->get_json_params();
-	$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
-	$publish_options['site_matters_auto_publish']    = $params['siteMattersAutoPublish'];
-	$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
-	$publish_options['iscn_badge_style_option']      = $params['ISCNBadgeStyleOption'];
+	if ( isset( $params['siteMattersAutoSaveDraft'] ) ) {
+		$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
+	}
+	if ( isset( $params['siteMattersAutoPublish'] ) ) {
+		$publish_options['site_matters_auto_publish'] = $params['siteMattersAutoPublish'];
+	}
+	if ( isset( $params['siteMattersAddFooterLink'] ) ) {
+		$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
+	}
+	if ( isset( $params['ISCNBadgeStyleOption'] ) ) {
+		$publish_options['iscn_badge_style_option'] = $params['ISCNBadgeStyleOption'];
+	}
 	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
 	$return_payload = likecoin_get_publish_option_for_restful();
 	$result['code'] = 200;

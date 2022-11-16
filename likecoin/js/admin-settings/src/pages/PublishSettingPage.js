@@ -7,9 +7,7 @@ import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
 import CheckBox from '../components/CheckBox';
-import DropDown from '../components/DropDown';
 import SubmitButton from '../components/SubmitButton';
-import ISCNDescription from '../components/ISCNDescription';
 import MattersDescription from '../components/MattersDescription';
 import MattersLoginTable from '../components/MattersLoginTable';
 import MattersStatusTable from '../components/MattersStatusTable';
@@ -22,7 +20,6 @@ function PublishSettingPage() {
     DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink,
-    DBISCNBadgeStyleOption,
   } = useSelect((select) => select(SITE_PUBLISH_STORE_NAME).selectSitePublishOptions());
   const {
     postSitePublishOptions,
@@ -34,12 +31,6 @@ function PublishSettingPage() {
   const siteMattersAutoSaveDraftRef = useRef();
   const siteMattersAutoPublishRef = useRef();
   const siteMattersAddFooterLinkRef = useRef();
-  const ISCNBadgeStyleOptionRef = useRef();
-  const ISCNStyleOptions = [
-    { value: 'light', label: __('Light Mode', 'likecoin') },
-    { value: 'dark', label: __('Dark Mode', 'likecoin') },
-    { value: 'none', label: __('None', 'likecoin') },
-  ];
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [siteMattersId, setSiteMattersId] = useState(
     DBSiteMattersId,
@@ -52,9 +43,6 @@ function PublishSettingPage() {
   );
   const [siteMattersAddFooterLink, setSiteMattersAddFooterLink] = useState(
     DBSiteMattersAddFooterLink,
-  );
-  const [ISCNBadgeStyleOption, setISCNBadgeStyleOption] = useState(
-    DBISCNBadgeStyleOption,
   );
   const [mattersLoginError, setMattersLoginError] = useState('');
 
@@ -137,13 +125,11 @@ function PublishSettingPage() {
     const isSiteMattersAutoSaveDraft = siteMattersAutoSaveDraftRef.current.checked;
     const isSiteMattersAutoPublish = siteMattersAutoPublishRef.current.checked;
     const isSiteMattersAddFooterLink = siteMattersAddFooterLinkRef.current.checked;
-    const currentISCNBadgeStyleOption = ISCNBadgeStyleOptionRef.current.value;
 
     const data = {
       siteMattersAutoSaveDraft: isSiteMattersAutoSaveDraft,
       siteMattersAutoPublish: isSiteMattersAutoPublish,
       siteMattersAddFooterLink: isSiteMattersAddFooterLink,
-      ISCNBadgeStyleOption: currentISCNBadgeStyleOption,
     };
 
     // save to Wordpress DB.
@@ -162,13 +148,11 @@ function PublishSettingPage() {
     setSiteMattersAutoSaveDraft(DBSiteMattersAutoSaveDraft);
     setSiteMattersAutoPublish(DBSiteMattersAutoPublish);
     setSiteMattersAddFooterLink(DBSiteMattersAddFooterLink);
-    setISCNBadgeStyleOption(DBISCNBadgeStyleOption);
   }, [
     DBSiteMattersId,
     DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish,
     DBSiteMattersAddFooterLink,
-    DBISCNBadgeStyleOption,
   ]);
 
   return (
@@ -181,21 +165,6 @@ function PublishSettingPage() {
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      <hr />
-      <Section title={__('Publish to ISCN', 'likecoin')} />
-      <form onSubmit={confirmHandler}>
-        <ISCNDescription />
-        <table className="form-table" role="presentation">
-          <DropDown
-            selected={ISCNBadgeStyleOption}
-            handleSelect={setISCNBadgeStyleOption}
-            title={__('Show ISCN badge in post', 'likecoin')}
-            selectRef={ISCNBadgeStyleOptionRef}
-            options={ISCNStyleOptions}
-          />
-        </table>
-        <SubmitButton />
-      </form>
       <hr />
       <Section title={__('Login with Matters ID', 'likecoin')} />
       <MattersDescription />
