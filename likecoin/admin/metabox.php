@@ -256,9 +256,9 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 		</button>
 	</h3>
 	<div id="lcTitleStatus"><?php if ( ! empty( $iscn_status['url'] ) ) { ?>
-		<h1 class="iscn-status-green"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'LIVE on #DePub', LC_PLUGIN_SLUG ); ?></h3>
+		<h1 class="iscn-status-green"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'Published', LC_PLUGIN_SLUG ); ?></h3>
 		<?php } elseif ( 'publish' === $wordpress_publish_status ) { ?>
-			<h1 class="iscn-status-orange"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'READY to #DePub', LC_PLUGIN_SLUG ); ?></h3>
+			<h1 class="iscn-status-orange"> &#183; </h1><h3 class="iscn-status-text"><?php esc_html_e( 'Ready to Submit', LC_PLUGIN_SLUG ); ?></h3>
 		<?php } else { ?>
 			<h1 class="iscn-status-red"> &#183; </h1><h3 class="iscn-status-text"> <?php esc_html_e( 'Publish Your Post First', LC_PLUGIN_SLUG ); ?></h3>
 		<?php } ?>
@@ -289,7 +289,7 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 				</td>
 			</tr>
 			<tr>
-				<th><label><?php esc_html_e( 'Arweave ID', LC_PLUGIN_SLUG ); ?></label></th>
+				<th><label><?php esc_html_e( 'Storage', LC_PLUGIN_SLUG ); ?></label></th>
 				<td id="lcArweaveStatus">
 					<?php if ( ! empty( $status['arweave']['url'] ) ) { ?>
 						<a rel="noopener" target="_blank" href="<?php echo esc_url( $status['arweave']['url'] ); ?>">
@@ -477,12 +477,12 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			'lcStringInfo',
 			array(
 				'mainTitleDraft'          => __( 'Publish Your Post First', LC_PLUGIN_SLUG ),
-				'mainTitleIntermediate'   => __( 'READY to #DePub', LC_PLUGIN_SLUG ),
-				'mainTitleDone'           => __( 'LIVE on #DePub', LC_PLUGIN_SLUG ),
+				'mainTitleIntermediate'   => __( 'Ready to submit', LC_PLUGIN_SLUG ),
+				'mainTitleDone'           => __( 'Published', LC_PLUGIN_SLUG ),
 				'mainStatusLoading'       => __( 'Loading...', LC_PLUGIN_SLUG ),
 				'mainStatusFailedPopUp'   => __( 'Failed to open like.co widget. Please allow popup in your browser and retry.', LC_PLUGIN_SLUG ),
 				'mainStatusLIKEPay'       => __( 'Waiting for LIKE Pay...', LC_PLUGIN_SLUG ),
-				'mainStatusUploadArweave' => __( 'Uploading to Arweave...', LC_PLUGIN_SLUG ),
+				'mainStatusUploadArweave' => __( 'Uploading to Storage...', LC_PLUGIN_SLUG ),
 				'mainStatusRegisterISCN'  => __( 'Registering ISCN...', LC_PLUGIN_SLUG ),
 				'buttonSubmitISCN'        => __( 'Submit to ISCN', LC_PLUGIN_SLUG ),
 				'buttonRegisterISCN'      => __( 'Register ISCN', LC_PLUGIN_SLUG ),

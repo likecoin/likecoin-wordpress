@@ -134,7 +134,7 @@ function LikeCoinPluginSideBar(props) {
               className='blueBackgroundWhiteTextBtn'
               onClick={props.handleRegisterISCN}
             >
-              {__('Update Depub', 'likecoin')}
+              {__('Update', 'likecoin')}
             </button>
           </div>
         </div>
@@ -152,7 +152,7 @@ function LikeCoinPluginSideBar(props) {
         </div>
       )}
       <div className='divOuterHolderMainSidebar'>
-        <SideBarStatusRow title={__('#DePub State', 'likecoin')} status='' />
+        <SideBarStatusRow title={__('Publishing Status', 'likecoin')} status='' />
         <PublishStatus
           isCurrentPostPublished={isCurrentPostPublished}
           ISCNId={props.ISCNId}
@@ -182,7 +182,7 @@ function LikeCoinPluginSideBar(props) {
           />
         )}
         <SideBarStatusRow
-          title={__('Arweave', 'likecoin')}
+          title={__('Storage', 'likecoin')}
           status={props.arweaveId ? props.arweaveId : '-'}
           link={props.arweaveId ? `https://arweave.net/${props.arweaveId}` : ''}
         />

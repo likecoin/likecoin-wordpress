@@ -34,7 +34,7 @@ function LikeCoinPluginPostPublishPanel(props) {
             <div className='flexBoxRow'>
               <div>
                 <p className='flexBoxRowNormalText'>
-                  {__('Register ISCN with Arweave, and distribute to:', 'likecoin')}
+                  {__('Register ISCN to Decentralized storage, and distribute to:', 'likecoin')}
                 </p>
                 <p className='flexBoxRowNormalText'> • {__('Matters (when connected)', 'likecoin')} </p>
               </div>

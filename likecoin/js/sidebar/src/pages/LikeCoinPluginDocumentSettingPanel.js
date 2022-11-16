@@ -33,7 +33,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
   return (
     <PluginDocumentSettingPanel
       name='depub-panel'
-      title='#DePub  '
+      title={__('Decentralize Publishing', 'likecoin')}
       className='depub-panel'
       icon={<LikeCoinIcon color='#9B9B9B' paddingLeft='10px' />}
     >
@@ -139,7 +139,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                     className='blueBackgroundWhiteTextSmallBtn'
                     onClick={props.handleRegisterISCN}
                   >
-                    {__('Update DePub', 'likecoin')}
+                    {__('Update', 'likecoin')}
                   </button>
                 )}
                 {showNFTButton && (
