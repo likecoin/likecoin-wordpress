@@ -83,17 +83,6 @@ function likecoin_display_admin_pages() {
 	);
 	add_action( 'load-' . $publish_setting_page, 'likecoin_load_admin_js' );
 
-	global $web_monetization_page;
-	$web_monetization_page = add_submenu_page(
-		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
-		__( 'Other Settings', 'likecoin' ),
-		'manage_options',
-		'/likecoin#/other',
-		'likecoin_load_admin_js'
-	);
-	add_action( 'load-' . $web_monetization_page, 'likecoin_load_admin_js' );
-
 	global $sponsor_likecoin_page;
 	$sponsor_likecoin_page = add_submenu_page(
 		'likecoin',
@@ -104,15 +93,6 @@ function likecoin_display_admin_pages() {
 		'likecoin_load_admin_js'
 	);
 	add_action( 'load-' . $sponsor_likecoin_page, 'likecoin_load_admin_js' );
-
-	global $become_civic_liker_page;
-	$become_civic_liker_page = add_submenu_page(
-		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
-		__( 'Become a Civic Liker', 'likecoin' ),
-		'edit_posts',
-		'https://liker.land/civic?utm_source=wp-plugin'
-	);
 }
 /**
  * Show default UI for admin main page.

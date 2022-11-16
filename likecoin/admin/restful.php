@@ -144,28 +144,6 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/option/web-monetization',
-				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_post_web_monetization_data',
-					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
-					},
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
-				'/option/web-monetization',
-				array(
-					'methods'             => 'GET',
-					'callback'            => 'likecoin_get_web_monetization_data',
-					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
-					},
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
 				'/posts/(?P<id>\d+)/iscn/refresh',
 				array(
 					'methods'             => 'POST',
