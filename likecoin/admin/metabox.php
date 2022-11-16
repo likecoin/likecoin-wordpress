@@ -128,7 +128,7 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 		$result['ipfs_status'] = 'Published';
 		$result['hash']        = $iscn_hash;
 	} elseif ( 'publish' === $post_status ) {
-		$result['status']       = __( 'Click to submit to ISCN', LC_PLUGIN_SLUG );
+		$result['status']       = __( 'Click to Publish', LC_PLUGIN_SLUG );
 		$result['ipfs_status']  = 'Published';
 		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit#likecoin_submit_iscn';
 	} else {
