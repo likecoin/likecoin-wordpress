@@ -31,6 +31,8 @@ function PublishSettingPage() {
   const siteMattersAutoSaveDraftRef = useRef();
   const siteMattersAutoPublishRef = useRef();
   const siteMattersAddFooterLinkRef = useRef();
+  const [showMatters, setShowMatters] = useState(!!(DBSiteMattersId
+    || DBSiteMattersAutoSaveDraft || DBSiteMattersAutoPublish));
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [siteMattersId, setSiteMattersId] = useState(
     DBSiteMattersId,
@@ -144,6 +146,7 @@ function PublishSettingPage() {
   }
 
   useEffect(() => {
+    setShowMatters(DBSiteMattersId || DBSiteMattersAutoSaveDraft || DBSiteMattersAutoPublish);
     setSiteMattersId(DBSiteMattersId);
     setSiteMattersAutoSaveDraft(DBSiteMattersAutoSaveDraft);
     setSiteMattersAutoPublish(DBSiteMattersAutoPublish);
@@ -166,49 +169,48 @@ function PublishSettingPage() {
         />
       )}
       <hr />
-      <Section title={__('Login with Matters ID', 'likecoin')} />
-      <MattersDescription />
-      <MattersLoginTable
-        loginHandler={loginHandler}
-        mattersIdRef={mattersIdRef}
-        mattersPasswordRef={mattersPasswordRef}
-        mattersLoginError={mattersLoginError}
-      />
-      <hr />
-      <form onSubmit={confirmHandler}>
-        <Section title={__('Matters connection status', 'likecoin')} />
-        <MattersStatusTable
-          siteMattersId={siteMattersId}
-          handleMattersLogout={handleMattersLogout}
-        />
-        <Section title={__('Publish to Matters', 'likecoin')} />
-        <table className="form-table" role="presentation">
-          <tbody>
-            <CheckBox
-              checked={siteMattersAutoSaveDraft}
-              handleCheck={setSiteMattersAutoSaveDraft}
-              title={__('Auto save draft to Matters', 'likecoin')}
-              details={__('Auto save draft to Matters', 'likecoin')}
-              checkRef={siteMattersAutoSaveDraftRef}
-            />
-            <CheckBox
-              checked={siteMattersAutoPublish}
-              handleCheck={setSiteMattersAutoPublish}
-              title={__('Auto publish post to Matters', 'likecoin')}
-              details={__('Auto publish post to Matters', 'likecoin')}
-              checkRef={siteMattersAutoPublishRef}
-            />
-            <CheckBox
-              checked={siteMattersAddFooterLink}
-              handleCheck={setSiteMattersAddFooterLink}
-              title={__('Add post link in footer', 'likecoin')}
-              details={__('Add post link in footer', 'likecoin')}
-              checkRef={siteMattersAddFooterLinkRef}
-            />
-          </tbody>
-        </table>
-        <SubmitButton />
-      </form>
+      <Section title={__('Distribution settings', 'likecoin')} />
+      <CheckBox
+        checked={showMatters}
+        handleCheck={setShowMatters}
+        title={__('Matters.news', 'likecoin')}
+        details={__('Show Matters distribution settings', 'likecoin')} />
+      {showMatters && (
+        <><Section title={__('Login with Matters ID', 'likecoin')} /><MattersDescription /><MattersLoginTable
+          loginHandler={loginHandler}
+          mattersIdRef={mattersIdRef}
+          mattersPasswordRef={mattersPasswordRef}
+          mattersLoginError={mattersLoginError} /><hr /><form onSubmit={confirmHandler}>
+            <Section title={__('Matters connection status', 'likecoin')} />
+            <MattersStatusTable
+              siteMattersId={siteMattersId}
+              handleMattersLogout={handleMattersLogout} />
+            <Section title={__('Publish to Matters', 'likecoin')} />
+            <table className="form-table" role="presentation">
+              <tbody>
+                <CheckBox
+                  checked={siteMattersAutoSaveDraft}
+                  handleCheck={setSiteMattersAutoSaveDraft}
+                  title={__('Auto save draft to Matters', 'likecoin')}
+                  details={__('Auto save draft to Matters', 'likecoin')}
+                  checkRef={siteMattersAutoSaveDraftRef} />
+                <CheckBox
+                  checked={siteMattersAutoPublish}
+                  handleCheck={setSiteMattersAutoPublish}
+                  title={__('Auto publish post to Matters', 'likecoin')}
+                  details={__('Auto publish post to Matters', 'likecoin')}
+                  checkRef={siteMattersAutoPublishRef} />
+                <CheckBox
+                  checked={siteMattersAddFooterLink}
+                  handleCheck={setSiteMattersAddFooterLink}
+                  title={__('Add post link in footer', 'likecoin')}
+                  details={__('Add post link in footer', 'likecoin')}
+                  checkRef={siteMattersAddFooterLinkRef} />
+              </tbody>
+            </table>
+            <SubmitButton />
+          </form></>
+      )}
     </div>
   );
 }

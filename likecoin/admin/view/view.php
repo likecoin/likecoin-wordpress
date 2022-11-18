@@ -76,7 +76,7 @@ function likecoin_display_admin_pages() {
 	$publish_setting_page = add_submenu_page(
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
-		__( 'Publish Setting', 'likecoin' ),
+		__( 'Distribution Setting', 'likecoin' ),
 		'manage_options',
 		'/likecoin#/publish-setting',
 		'likecoin_load_admin_js'
