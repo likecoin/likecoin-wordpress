@@ -65,7 +65,7 @@ function likecoin_display_admin_pages() {
 	$likecoin_button_page = add_submenu_page(
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
-		__( 'Your LikeCoin Button', 'likecoin' ),
+		__( 'Your Liker ID', 'likecoin' ),
 		'edit_posts',
 		'/likecoin#/likecoin-button',
 		'likecoin_load_admin_js'
