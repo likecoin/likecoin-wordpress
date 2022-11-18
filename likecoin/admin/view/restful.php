@@ -55,10 +55,18 @@ function likecoin_post_main_plugin_options( $request ) {
 	$per_post_option_enabled = $params['perPostOptionEnabled'];
 	$liker_infos             = $params['siteLikerInfos'];
 
-	$plugin_options['site_likecoin_id_enbled']         = $site_liker_id_enabled;
-	$plugin_options[ LC_OPTION_BUTTON_DISPLAY_OPTION ] = $display_option;
-	$plugin_options['button_display_author_override']  = $per_post_option_enabled;
-	$plugin_options['site_likecoin_user']              = $liker_infos;
+	if ( isset( $site_liker_id_enabled ) ) {
+		$plugin_options['site_likecoin_id_enbled'] = $site_liker_id_enabled;
+	}
+	if ( isset( $display_option ) ) {
+		$plugin_options[ LC_OPTION_BUTTON_DISPLAY_OPTION ] = $display_option;
+	}
+	if ( isset( $per_post_option_enabled ) ) {
+		$plugin_options['button_display_author_override'] = $per_post_option_enabled;
+	}
+	if ( isset( $liker_infos ) ) {
+		$plugin_options['site_likecoin_user'] = $liker_infos;
+	}
 
 	update_option( LC_BUTTON_OPTION_NAME, $plugin_options );
 	$plugin_options = get_option( LC_BUTTON_OPTION_NAME );
@@ -78,9 +86,10 @@ function likecoin_get_main_plugin_options( $request ) {
 	if ( ! $plugin_options ) {
 		return;
 	}
-	$result['code']    = 200;
-	$result['data']    = $plugin_options;
-	$result['message'] = 'Successfully GET main plugin setting data!';
+	$plugin_options['user_can_edit'] = current_user_can( 'manage_options' );
+	$result['code']                  = 200;
+	$result['data']                  = $plugin_options;
+	$result['message']               = 'Successfully GET main plugin setting data!';
 	return rest_ensure_response( $result );
 }
 /**
