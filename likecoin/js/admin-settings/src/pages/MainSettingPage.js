@@ -209,8 +209,11 @@ function MainSettingPage() {
       )}
       <form onSubmit={confirmHandler}>
         <Section
-          title={__('Enable LikeCoin widget', 'likecoin')}
+          title={__('LikeCoin widget', 'likecoin')}
         />
+        <div style={{ textAlign: 'left' }}>
+          <p>{__('Enable for Liker ID or ISCN registered post', 'likecoin')}</p>
+        </div>
         <tbody>
           <DropDown
             selected={displayOptionSelected}
@@ -232,11 +235,14 @@ function MainSettingPage() {
         </tbody>
         <hr />
         <Section title={__('ISCN Badge', 'likecoin')} />
+        <div style={{ textAlign: 'left' }}>
+          <p>{__('Display a badge for registered post', 'likecoin')}</p>
+        </div>
         <table className="form-table" role="presentation">
           <DropDown
             selected={ISCNBadgeStyleOption}
             handleSelect={setISCNBadgeStyleOption}
-            title={__('Show ISCN badge in registered post', 'likecoin')}
+            title={__('Display style', 'likecoin')}
             selectRef={ISCNBadgeStyleOptionRef}
             options={ISCNStyleOptions}
           />
