@@ -32,6 +32,7 @@ function LikeCoinPlugin() {
     DBMattersArticleId,
     DBMattersId,
     DBMattersArticleSlug,
+    DBLicense,
   } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectISCNInfo());
   const {
     DBNFTClassId,
@@ -86,9 +87,10 @@ function LikeCoinPlugin() {
         iscnId,
         iscnVersion,
         timestamp,
+        license: DBLicense,
       });
     },
-    [postISCNInfoData],
+    [DBLicense, postISCNInfoData],
   );
   const sendISCNRegisterData = useCallback(async () => {
     popUpWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
@@ -120,6 +122,7 @@ function LikeCoinPlugin() {
           authorDescription: refreshedAuthorDescription,
           description: refreshedDescription,
           type: 'article',
+          license: DBLicense,
           recordNotes: ISCN_RECORD_NOTE,
           memo: ISCN_RECORD_NOTE,
         },

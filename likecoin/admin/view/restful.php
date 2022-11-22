@@ -329,6 +329,9 @@ function likecoin_rest_update_iscn_hash_and_version( $request ) {
 		$data['iscnVersion']                  = $iscn_version;
 		$data['iscnTimestamp']                = $iscn_timestamp;
 	}
+	if ( isset( $params['iscnData'] ) ) {
+		$iscn_mainnet_info['iscn_data'] = $params['iscnData'];
+	}
 	// only allow to publish to mainnet going forward.
 	update_post_meta( $post_id, LC_ISCN_INFO, $iscn_mainnet_info );
 	return new WP_REST_Response( $data, 200 );
@@ -352,6 +355,7 @@ function likecoin_get_iscn_full_info( $request ) {
 	if ( is_array( $iscn_info ) ) {
 		$iscn_full_info['iscnHash'] = $iscn_info['iscn_hash'];
 		$iscn_full_info['iscnId']   = $iscn_info['iscn_id'];
+		$iscn_full_info['iscnData'] = $iscn_info['iscn_data'];
 		// iscnVersion should be taken from chain API.
 		$iscn_full_info['iscnTimestamp'] = $iscn_info['last_saved_time'];
 		$iscn_full_info['iscnVersion']   = $iscn_info['iscn_version'];

@@ -1,8 +1,9 @@
 import { PluginSidebar } from '@wordpress/edit-post';
 import { useState, useEffect } from 'react';
-import { useSelect } from '@wordpress/data';
+import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { count as wordCount } from '@wordpress/wordcount';
+import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
 import LikeCoinIcon from '../components/LikeCoinIcon';
 import SideBarStatusRow from '../components/SideBarStatusRow';
 import StatusTitle from '../components/StatusTitle';
@@ -12,12 +13,15 @@ import MetaPopUpStatusTitle from '../components/MetaPopUpStatusTitle';
 import MetaPopUpStatusDetails from '../components/MetaPopUpStatusDetails';
 import Tag from '../components/Tag';
 import PublishStatus from '../components/PublishStatus';
+import LicensePicker from '../components/LicensePicker';
 import LikeCoinIconPinbar from '../components/LikeCoinIconPinbar';
 
 const { likecoHost, likerlandHost } = window.wpApiSettings;
 
 function LikeCoinPluginSideBar(props) {
   const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));
+  const { setISCNLicense } = useDispatch(ISCN_INFO_STORE_NAME);
+  const iscnLicense = useSelect((select) => select(ISCN_INFO_STORE_NAME).getLicense());
   const numberOfWords = wordCount(content, 'words', {});
   const [showMetaData, setShowMetaData] = useState(false);
   const [ISCNVersionString, setISCNVersionString] = useState(true);
@@ -39,6 +43,9 @@ function LikeCoinPluginSideBar(props) {
     const iscnVersionString = props.ISCNVersion ? `${props.ISCNVersion} (${(new Date(props.ISCNTimestamp)).toGMTString()})` : '-';
     setISCNVersionString(iscnVersionString);
   }, [props.ISCNVersion, props.ISCNTimestamp]);
+  function handleOnLicenseSelect(license) {
+    setISCNLicense(license);
+  }
   function handleShowMetaData(e) {
     e.preventDefault();
     setShowMetaData(!showMetaData);
@@ -158,6 +165,12 @@ function LikeCoinPluginSideBar(props) {
         <SideBarStatusRow
           title={__('Version', 'likecoin')}
           status={ISCNVersionString}
+        />
+      </div>
+      <div className='divOuterHolderMainSidebar'>
+        <LicensePicker
+          defaultLicense={iscnLicense}
+          onSelect={handleOnLicenseSelect}
         />
       </div>
       <div className='divOuterHolderMainSidebar'>

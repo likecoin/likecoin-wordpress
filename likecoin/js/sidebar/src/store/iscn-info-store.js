@@ -27,6 +27,7 @@ const INITIAL_STATE = {
   DBArticleTags: [],
   DBISCNId: '',
   DBArweaveId: '',
+  DBLicense: '',
   DBISCNVersion: 0,
   DBISCNTimestamp: 0,
   DBNFTClassId: '',
@@ -47,6 +48,12 @@ const actions = {
     return {
       type: 'SET_ISCN_INFO',
       data,
+    };
+  },
+  setISCNLicense(license) {
+    return {
+      type: 'SET_ISCN_LICENSE',
+      license,
     };
   },
   getNFTInfo(iscnId) {
@@ -106,6 +113,9 @@ const actions = {
 const selectors = {
   selectISCNInfo: (state) => state,
   selectNFTInfo: (state) => state,
+  getLicense(state) {
+    return state.DBLicense;
+  },
 };
 
 const controls = {
@@ -135,6 +145,9 @@ const controls = {
         iscnId: action.data.iscnId,
         iscnVersion: action.data.iscnVersion,
         iscnTimestamp: action.data.timestamp,
+        iscnData: {
+          license: action.data.license,
+        },
       },
     );
   },
@@ -148,6 +161,7 @@ const resolvers = {
         iscnId,
         iscnVersion,
         iscnTimestamp,
+        iscnData = {},
         title,
         authorDescription,
         description,
@@ -163,6 +177,7 @@ const resolvers = {
         mattersArticleSlug,
       } = response.data;
       return actions.setISCNInfo({
+        ...iscnData,
         iscnId,
         iscnVersion,
         iscnTimestamp: iscnTimestamp * 1000,
@@ -211,6 +226,7 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBISCNId: action.data.iscnId,
         DBISCNVersion: action.data.iscnVersion,
         DBISCNTimestamp: action.data.iscnTimestamp,
+        DBLicense: action.data.license,
         DBNFTClassId: action.data.nftClassId,
         DBArticleTitle: action.data.title,
         DBAuthorDescription: action.data.authorDescription,
@@ -230,6 +246,12 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         DBNFTClassId: action.data.classId,
+      };
+    }
+    case 'SET_ISCN_LICENSE': {
+      return {
+        ...state,
+        DBLicense: action.license,
       };
     }
     case 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE': {
