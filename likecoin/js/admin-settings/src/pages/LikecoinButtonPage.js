@@ -1,5 +1,5 @@
 import {
-  useState, useEffect, useMemo, useRef,
+  useState, useEffect, useRef,
 } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
