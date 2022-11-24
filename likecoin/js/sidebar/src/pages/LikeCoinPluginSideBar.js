@@ -25,6 +25,7 @@ function LikeCoinPluginSideBar(props) {
   const numberOfWords = wordCount(content, 'words', {});
   const [showMetaData, setShowMetaData] = useState(false);
   const [ISCNVersionString, setISCNVersionString] = useState(true);
+  const [showPublishISCNButton, setShowPublisnISCNButton] = useState(true);
   const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const [showNFTButton, setShowNFTButton] = useState(true);
   const [pinBarIconColor, setPinBarIconColor] = useState('#28646E');
@@ -33,6 +34,9 @@ function LikeCoinPluginSideBar(props) {
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
   const postDate = useSelect((select) => select('core/editor').getEditedPostAttribute('modified_gmt'));
+  useEffect(() => {
+    setShowPublisnISCNButton(!!isCurrentPostPublished && !props.ISCNId)
+  }, [isCurrentPostPublished, props.ISCNId]);
   useEffect(() => {
     setShowUpdateISCNButton(!!(isCurrentPostPublished
       && props.ISCNTimestamp
@@ -91,7 +95,7 @@ function LikeCoinPluginSideBar(props) {
           </div>
         </div>
       )}
-      {isCurrentPostPublished && !props.ISCNId && (
+      {showPublishISCNButton && (
         <div className='divOuterHolder'>
           <div className='divInnerHolder'>
             <button
@@ -171,6 +175,7 @@ function LikeCoinPluginSideBar(props) {
         <LicensePicker
           defaultLicense={iscnLicense}
           onSelect={handleOnLicenseSelect}
+          disabled={!(!isCurrentPostPublished || showPublishISCNButton || showUpdateISCNButton)}
         />
       </div>
       <div className='divOuterHolderMainSidebar'>

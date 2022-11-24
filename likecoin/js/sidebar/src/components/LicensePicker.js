@@ -25,13 +25,15 @@ function LicensePicker(props) {
     props.onSelect(e.target.value);
   };
   return (
-    <><StatusTitle title={__('License:', 'likecoin')} /><select name="license" onChange={onSelect}>
-      {OPTIONS.map((o) => <option
-        selected={o.value === props.defaultLicense ? true : null}
-        value={o.value}>
-        {o.name}
-      </option>)}
-    </select></>
+    <><StatusTitle title={__('License:', 'likecoin')} />
+      <select name="license" onChange={onSelect} disabled={props.disabled ? true : null}>
+        {OPTIONS.map((o) => <option
+          selected={o.value === props.defaultLicense ? true : null}
+          value={o.value}>
+          {o.name}
+        </option>)}
+      </select>
+    </>
   );
 }
 export default LicensePicker;
