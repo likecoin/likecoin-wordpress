@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 2.6.4
+Stable tag: 2.7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -143,6 +143,16 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 3. LikeCoin Plugin Options
 
 == Changelog ==
+
+= 2.7.0 =
+
+- Add license field when publishing to ISCN
+- Remove matters and IPFS column from post list
+- Remove web monetization settings
+- Move ISCN badge option into main setting page
+- Move Liker ID settings into a single setting page
+- Simplify editor sidebar layout
+- Update copywriting
 
 = 2.6.4 =
 

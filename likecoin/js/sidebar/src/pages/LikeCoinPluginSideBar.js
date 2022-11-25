@@ -35,7 +35,7 @@ function LikeCoinPluginSideBar(props) {
     .isCurrentPostPublished());
   const postDate = useSelect((select) => select('core/editor').getEditedPostAttribute('modified_gmt'));
   useEffect(() => {
-    setShowPublisnISCNButton(!!isCurrentPostPublished && !props.ISCNId)
+    setShowPublisnISCNButton(!!isCurrentPostPublished && !props.ISCNId);
   }, [isCurrentPostPublished, props.ISCNId]);
   useEffect(() => {
     setShowUpdateISCNButton(!!(isCurrentPostPublished
