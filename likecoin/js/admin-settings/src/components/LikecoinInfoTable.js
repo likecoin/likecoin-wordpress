@@ -1,14 +1,110 @@
-import { useRef } from 'react';
+import {
+  useRef, useState, useEffect, useMemo,
+} from 'react';
+import axios from 'axios';
 import { __ } from '@wordpress/i18n';
+import { debounce } from 'lodash';
 import Text from './Text';
 
 function LikecoinInfoTable(props) {
   const likerIdRef = useRef();
+  const [likerIdValue, setLikerIdValue] = useState(props.defaultLikerId);
+  const [likerDisplayName, setLikerDisplayName] = useState(
+    props.defaultLikerDisplayName,
+  );
+  const [likerWalletAddress, setLikerWalletAddress] = useState(
+    props.defaultLikerWalletAddress,
+  );
+  const [likerAvatar, setLikerAvatar] = useState(props.defaultLikerAvatar);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isChangingTypingLiker, setIsChangingTypingLiker] = useState(false);
+  const [showChangeButton, setShowChangeButton] = useState(true);
+  const [showDisconnectButton, setShowDisconnectButton] = useState(false);
+  // Update Data based on data returned by likecoin server.
+  const fetchLikeCoinID = useMemo(
+    () => debounce(async (likerId) => {
+      if (!likerId) return;
+      try {
+        const response = await axios.get(
+          `https://api.${props.likecoHost}/users/id/${likerId}/min`,
+        );
+        const {
+          user,
+          displayName,
+          likeWallet,
+          avatar,
+        } = response.data;
+        setLikerIdValue(user);
+        setLikerDisplayName(displayName);
+        setLikerWalletAddress(likeWallet);
+        setLikerAvatar(avatar);
+        setIsLoading(false);
+        props.onLikerIdUpdate({
+          likerIdValue: user,
+          likerDisplayName: displayName,
+          likerWalletAddress: likeWallet,
+          likerAvatar: avatar,
+        });
+      } catch (error) {
+        setIsLoading(false);
+        setLikerIdValue('');
+        setLikerDisplayName('');
+        setLikerWalletAddress('');
+        setLikerAvatar('');
+      }
+    }, 500),
+    [],
+  );
+  useEffect(() => {
+    fetchLikeCoinID(likerIdValue);
+  }, [fetchLikeCoinID, likerIdValue]);
+  useEffect(() => {
+    setLikerIdValue(props.defaultLikerId);
+    setLikerDisplayName(props.defaultLikerDisplayName);
+    setLikerWalletAddress(props.defaultLikerWalletAddress);
+    setLikerAvatar(props.defaultLikerAvatar);
+    setShowChangeButton(!!props.defaultLikerId);
+    setShowDisconnectButton(!!props.defaultLikerId);
+    setIsChangingTypingLiker(!props.defaultLikerId);
+  }, [
+    props.defaultLikerId,
+    props.defaultLikerDisplayName,
+    props.defaultLikerWalletAddress,
+    props.defaultLikerAvatar,
+  ]);
+  useEffect(() => {
+    setShowDisconnectButton(!!likerIdValue);
+    setShowChangeButton(!!likerIdValue);
+  }, [
+    likerIdValue,
+  ]);
+  function handleClickOnChange(e) {
+    e.preventDefault();
+    setIsChangingTypingLiker(true);
+  }
+  function handleDisconnect(e) {
+    e.preventDefault();
+    setLikerIdValue('');
+    setLikerDisplayName('');
+    setLikerWalletAddress('');
+    setLikerAvatar('');
+    props.onLikerIdUpdate({
+      likerIdValue: '',
+      likerDisplayName: '',
+      likerWalletAddress: '',
+      likerAvatar: '',
+    });
+  }
+  function handleLikerIdInputChange(e) {
+    e.preventDefault();
+    setIsChangingTypingLiker(true);
+    setIsLoading(true);
+    const typingLikerId = e.target.value;
+    setLikerIdValue(typingLikerId); // change liker Id based on user immediate input.
+  }
+
   return (
     <tr>
-      {props.isMainSettingPage && (
-        <th className="optionTitle">{__('Site Default Liker ID', 'likecoin')}</th>
-      )}
       <td>
         <table className="form-table likecoinTable">
           <tbody>
@@ -21,37 +117,37 @@ function LikecoinInfoTable(props) {
             <tr>
               <td>
                 <div className="avatarWrapper">
-                  {!props.isLoading
-                    && props.likerAvatar
-                    && props.likerAvatar !== '-' && (
+                  {!isLoading
+                    && likerAvatar
+                    && likerAvatar !== '-' && (
                       <img
                         id="likecoinAvatar"
                         className="likecoinAvatar"
-                        src={props.likerAvatar}
+                        src={likerAvatar}
                         alt="Avatar"
                       />
                   )}
-                  {props.likerIdValue && props.likerIdValue !== '-'
-                    && !props.isChangingTypingLiker && (
+                  {likerIdValue && likerIdValue !== '-'
+                    && !isChangingTypingLiker && (
                       <a
                         id="likecoinId"
                         rel="noopener noreferrer"
                         target="_blank"
-                        href={`https://${props.likecoHost}/${props.likerIdValue}`}
+                        href={`https://${props.likecoHost}/${likerIdValue}`}
                         className="likecoin likecoinId"
                       >
-                        {props.likerIdValue}
+                        {likerIdValue}
                       </a>
                   )}
-                  {(!props.likerIdValue || props.likerIdValue === '-'
-                    || props.isChangingTypingLiker) && (
+                  {(props.editable && (!likerIdValue || likerIdValue === '-'
+                    || isChangingTypingLiker)) && (
                     <div>
                       <input
                         type="text"
                         id="likecoinIdInputBox"
                         ref={likerIdRef}
                         className="likecoinInputBox"
-                        onChange={props.handleLikerIdInputChange}
+                        onChange={handleLikerIdInputChange}
                       />
                       <p>
                         <a
@@ -69,33 +165,33 @@ function LikecoinInfoTable(props) {
                 </div>
               </td>
               <td>
-                {!props.isLoading && (
-                  <Text text={props.likerDisplayName || '-'} />
+                {!isLoading && (
+                  <Text text={likerDisplayName || '-'} />
                 )}
               </td>
               <td>
-                {!props.isLoading && (
-                  <Text text={props.likerWalletAddress || '-'} />
+                {!isLoading && (
+                  <Text text={likerWalletAddress || '-'} />
                 )}
               </td>
               <td className="actions">
-                {props.showChangeButton && props.editable && (
+                {showChangeButton && props.editable && (
                   <span className="actionWrapper">
                     <a
                       id="likecoinChangeBtn"
                       type="button"
-                      onClick={props.handleClickOnChange}
+                      onClick={handleClickOnChange}
                     >
                       {__('Change', 'likecoin')}
                     </a>
                   </span>
                 )}
-                {props.showDisconnectButton && props.editable && (
+                {showDisconnectButton && props.editable && (
                   <span className="actionWrapper">
                     <a
                       id="likecoinLogoutBtn"
                       type="button"
-                      onClick={props.handleDisconnect}
+                      onClick={handleDisconnect}
                     >
                       {__('Disconnect', 'likecoin')}
                     </a>
@@ -106,13 +202,13 @@ function LikecoinInfoTable(props) {
           </tbody>
         </table>
         <section className="likecoin loading">
-          {props.likerIdValue
-            && props.isLoading
+          {likerIdValue
+            && isLoading
             && __('Loading...', 'likecoin')}
         </section>
 
         <section>
-          {props.likerAvatar === '-' && !props.isLoading && (
+          {likerAvatar === '-' && !isLoading && (
             <div className="likecoin likecoinError userNotFound">
               <h4>{__('Liker ID not found', 'likecoin')}</h4>
             </div>

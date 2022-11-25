@@ -7,7 +7,7 @@ export const SITE_LIKER_INFO_STORE_NAME = 'likecoin/site_liker_info';
 const endPoint = `${window.wpApiSettings.root}likecoin/v1/options/button`;
 
 const INITIAL_STATE = {
-  DBIsForbidden: false,
+  DBUserCanEditOption: true,
   DBErrorMessage: '',
   DBSiteLikerId: '',
   DBSiteLikerAvatar: '',
@@ -103,6 +103,7 @@ const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case 'SET_SITE_LIKER_INFO': {
       return {
+        ...state,
         DBSiteLikerId: action.info.site_likecoin_user.likecoin_id,
         DBSiteLikerAvatar: action.info.site_likecoin_user.avatar,
         DBSiteLikerDisplayName: action.info.site_likecoin_user.display_name,
@@ -110,22 +111,22 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBSiteLikerIdEnabled: action.info.site_likecoin_id_enbled,
         DBDisplayOptionSelected: action.info.button_display_option,
         DBPerPostOptionEnabled: action.info.button_display_author_override,
+        DBUserCanEditOption: action.info.user_can_edit,
       };
     }
     case 'CHANGE_SITE_LIKER_INFO_GLOBAL_STATE': {
       return {
+        ...state,
         DBSiteLikerId: action.data.siteLikerInfos.likecoin_id,
         DBSiteLikerAvatar: action.data.siteLikerInfos.avatar,
         DBSiteLikerDisplayName: action.data.siteLikerInfos.display_name,
         DBSiteLikerWallet: action.data.siteLikerInfos.wallet,
         DBSiteLikerIdEnabled: action.data.siteLikerIdEnabled,
-        DBDisplayOptionSelected: action.data.displayOption,
-        DBPerPostOptionEnabled: action.data.perPostOptionEnabled,
       };
     }
     case 'SET_FORBIDDEN_ERROR': {
       return {
-        DBIsForbidden: true,
+        DBUserCanEditOption: false,
         DBErrorMessage: action.errorMsg,
       };
     }

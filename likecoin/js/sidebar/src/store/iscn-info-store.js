@@ -29,7 +29,6 @@ const INITIAL_STATE = {
   DBArweaveId: '',
   DBISCNVersion: 0,
   DBISCNTimestamp: 0,
-  DBArweaveIPFSHash: '',
   DBNFTClassId: '',
   DBMattersIPFSHash: '',
   DBMattersPublishedArticleHash: '',
@@ -220,7 +219,6 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBArticleURL: action.data.url,
         DBArticleTags: action.data.tags,
         DBArweaveId: action.data.arweaveId,
-        DBArweaveIPFSHash: action.data.arweaveIPFSHash,
         DBMattersIPFSHash: action.data.mattersIPFSHash,
         DBMattersPublishedArticleHash: action.data.mattersPublishedArticleHash,
         DBMattersArticleId: action.data.mattersArticleId,
@@ -235,11 +233,10 @@ const reducer = (state = INITIAL_STATE, action) => {
       };
     }
     case 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE': {
-      const { arweaveId, ipfsHash: arweaveIPFSHash } = action.data;
+      const { arweaveId } = action.data;
       return {
         ...state,
         DBArweaveId: arweaveId,
-        DBArweaveIPFSHash: arweaveIPFSHash,
       };
     }
     case 'UPDATE_ISCN_ID_GLOBAL_STATE': {
@@ -265,4 +262,3 @@ const storeConfig = {
 };
 
 createAndRegisterReduxStore(ISCN_INFO_STORE_NAME, storeConfig);
-

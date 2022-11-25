@@ -61,13 +61,9 @@ function likecoin_format_post_column_icon( $svg, $title ) {
  */
 function likecoin_add_posts_columns( $columns ) {
 	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$matters_svg = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/matters.svg' ) );
-	$ipfs_svg    = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ipfs.svg' ) );
-	$iscn_svg    = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ISCN_logo_extra_small.svg' ) );
+	$iscn_svg = 'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/ISCN_logo_extra_small.svg' ) );
 	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-	$columns['matters'] = likecoin_format_post_column_icon( $matters_svg, __( 'Matters Publish status', LC_PLUGIN_SLUG ) );
-	$columns['ipfs']    = likecoin_format_post_column_icon( $ipfs_svg, __( 'IPFS status', LC_PLUGIN_SLUG ) );
-	$columns['iscn']    = likecoin_format_post_column_icon( $iscn_svg, __( 'ISCN status', LC_PLUGIN_SLUG ) );
+	$columns['iscn'] = likecoin_format_post_column_icon( $iscn_svg, __( 'ISCN status', LC_PLUGIN_SLUG ) );
 	return $columns;
 }
 
@@ -80,24 +76,6 @@ function likecoin_add_posts_columns( $columns ) {
 function likecoin_populate_posts_columns( $column, $post_id ) {
 	global $post;
 	switch ( $column ) {
-		case 'matters':
-		case 'ipfs':
-			$publish_params = likecoin_get_meta_box_publish_params( $post );
-			$status         = likecoin_parse_publish_status( $publish_params );
-			if ( ! empty( $status[ $column ]['url'] ) ) {
-				?>
-					<a rel="noopener" target="_blank" href="
-				<?php
-				echo esc_url( $status[ $column ]['url'] );
-				?>
-					">
-				<?php echo esc_html( $status[ $column ]['status'] ); ?>
-					</a>
-					<?php
-			} else {
-				echo esc_html( $status[ $column ]['status'] );
-			}
-			break;
 		case 'iscn':
 			// get iscn related info status.
 			$publish_params = likecoin_get_meta_box_publish_params( $post );

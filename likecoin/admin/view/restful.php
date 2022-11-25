@@ -55,10 +55,18 @@ function likecoin_post_main_plugin_options( $request ) {
 	$per_post_option_enabled = $params['perPostOptionEnabled'];
 	$liker_infos             = $params['siteLikerInfos'];
 
-	$plugin_options['site_likecoin_id_enbled']         = $site_liker_id_enabled;
-	$plugin_options[ LC_OPTION_BUTTON_DISPLAY_OPTION ] = $display_option;
-	$plugin_options['button_display_author_override']  = $per_post_option_enabled;
-	$plugin_options['site_likecoin_user']              = $liker_infos;
+	if ( isset( $site_liker_id_enabled ) ) {
+		$plugin_options['site_likecoin_id_enbled'] = $site_liker_id_enabled;
+	}
+	if ( isset( $display_option ) ) {
+		$plugin_options[ LC_OPTION_BUTTON_DISPLAY_OPTION ] = $display_option;
+	}
+	if ( isset( $per_post_option_enabled ) ) {
+		$plugin_options['button_display_author_override'] = $per_post_option_enabled;
+	}
+	if ( isset( $liker_infos ) ) {
+		$plugin_options['site_likecoin_user'] = $liker_infos;
+	}
 
 	update_option( LC_BUTTON_OPTION_NAME, $plugin_options );
 	$plugin_options = get_option( LC_BUTTON_OPTION_NAME );
@@ -78,9 +86,10 @@ function likecoin_get_main_plugin_options( $request ) {
 	if ( ! $plugin_options ) {
 		return;
 	}
-	$result['code']    = 200;
-	$result['data']    = $plugin_options;
-	$result['message'] = 'Successfully GET main plugin setting data!';
+	$plugin_options['user_can_edit'] = current_user_can( 'manage_options' );
+	$result['code']                  = 200;
+	$result['data']                  = $plugin_options;
+	$result['message']               = 'Successfully GET main plugin setting data!';
 	return rest_ensure_response( $result );
 }
 /**
@@ -136,10 +145,18 @@ function likecoin_get_user_data( $request ) {
 function likecoin_post_site_publish_options_data( $request ) {
 	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
 	$params          = $request->get_json_params();
-	$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
-	$publish_options['site_matters_auto_publish']    = $params['siteMattersAutoPublish'];
-	$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
-	$publish_options['iscn_badge_style_option']      = $params['ISCNBadgeStyleOption'];
+	if ( isset( $params['siteMattersAutoSaveDraft'] ) ) {
+		$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
+	}
+	if ( isset( $params['siteMattersAutoPublish'] ) ) {
+		$publish_options['site_matters_auto_publish'] = $params['siteMattersAutoPublish'];
+	}
+	if ( isset( $params['siteMattersAddFooterLink'] ) ) {
+		$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
+	}
+	if ( isset( $params['ISCNBadgeStyleOption'] ) ) {
+		$publish_options['iscn_badge_style_option'] = $params['ISCNBadgeStyleOption'];
+	}
 	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
 	$return_payload = likecoin_get_publish_option_for_restful();
 	$result['code'] = 200;
@@ -210,37 +227,6 @@ function likecoin_get_site_matters_data( $request ) {
 	$result['data'] = $return_payload;
 	return rest_ensure_response( $result );
 }
-/**
- * Post matters login data from WordPress database.
- *
- * @param WP_REST_Request $request Full data about the request.
- */
-function likecoin_post_web_monetization_data( $request ) {
-	$monetization_options                         = get_option( LC_MONETIZATION_OPTION_NAME );
-	$params                                       = $request->get_json_params();
-	$monetization_options['site_payment_pointer'] = $params['paymentPointer'];
-	update_option( LC_MONETIZATION_OPTION_NAME, $monetization_options );
-	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
-	$result['code']       = 200;
-	$result['data']       = $monetization_options;
-	return rest_ensure_response( $result );
-}
-/**
- * Get matters login data from WordPress database.
- *
- * @param WP_REST_Request $request Full data about the request.
- */
-function likecoin_get_web_monetization_data( $request ) {
-	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
-	if ( ! $monetization_options ) {
-		$monetization_options = array();
-	}
-	$result['code'] = 200;
-	$result['data'] = $monetization_options;
-	return rest_ensure_response( $result );
-
-}
-
 
 /**
  * Add refresh publish status endpoint

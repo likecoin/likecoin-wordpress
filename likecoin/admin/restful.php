@@ -72,7 +72,7 @@ function likecoin_init_restful_service() {
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_main_plugin_options',
 					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
+						return current_user_can( 'edit_posts' );
 					},
 				)
 			);
@@ -137,28 +137,6 @@ function likecoin_init_restful_service() {
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_site_matters_data',
-					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
-					},
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
-				'/option/web-monetization',
-				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_post_web_monetization_data',
-					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
-					},
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
-				'/option/web-monetization',
-				array(
-					'methods'             => 'GET',
-					'callback'            => 'likecoin_get_web_monetization_data',
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},

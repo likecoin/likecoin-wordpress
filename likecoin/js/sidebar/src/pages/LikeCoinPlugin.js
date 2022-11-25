@@ -1,9 +1,10 @@
 import '../style.css';
 import { useState, useEffect, useCallback } from 'react';
-import LikeCoinPluginPrePublishPanel from './LikeCoinPluginPrePublishPanel';
+import { useSelect, useDispatch } from '@wordpress/data';
 import LikeCoinPluginDocumentSettingPanel from './LikeCoinPluginDocumentSettingPanel';
 import LikeCoinPluginSideBar from './LikeCoinPluginSideBar';
 import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
+import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
 
 const { siteurl, likecoHost, likerlandHost } = window.wpApiSettings;
 
@@ -11,26 +12,54 @@ const ISCN_WIDGET_ORIGIN = `https://${likecoHost}`;
 const NFT_WIDGET_ORIGIN = `https://app.${likecoHost}`;
 const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
 
-function LikeCoinPlugin(props) {
-  const [title, setTitle] = useState(props.DBArticleTitle);
-  const [authorDescription, setAuthorDescription] = useState(props.DBAuthorDescription);
-  const [description, setDescription] = useState(props.DBDescription);
-  const [author, setAuthor] = useState(props.DBAuthor);
-  const [url, setUrl] = useState(props.DBArticleURL);
-  const [tags, setTags] = useState(props.DBArticleTags);
-  const [ISCNId, setISCNId] = useState(props.DBISCNId);
-  const [NFTClassId, setNFTClassId] = useState(props.DBNFTClassId);
-  const [arweaveId, setArweaveId] = useState(props.DBArweaveId);
-  const [mattersIPFSHash, setMattersIPFSHash] = useState(props.DBMattersIPFSHash);
+function LikeCoinPlugin() {
+  const {
+    DBLIKEPayAmount,
+    DBMemo,
+    DBArticleTitle,
+    DBAuthorDescription,
+    DBDescription,
+    DBAuthor,
+    DBArticleURL,
+    DBArticleTags,
+    DBISCNId,
+    DBArweaveId,
+    DBMattersIPFSHash,
+    DBMattersPublishedArticleHash,
+    DBISCNVersion,
+    DBISCNTimestamp,
+    DBMattersDraftId,
+    DBMattersArticleId,
+    DBMattersId,
+    DBMattersArticleSlug,
+  } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectISCNInfo());
+  const {
+    DBNFTClassId,
+  } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectNFTInfo(DBISCNId));
+  const {
+    fetchISCNRegisterData,
+    postArweaveInfoData,
+    postISCNInfoData,
+  } = useDispatch(ISCN_INFO_STORE_NAME);
+  const [title, setTitle] = useState(DBArticleTitle);
+  const [authorDescription, setAuthorDescription] = useState(DBAuthorDescription);
+  const [description, setDescription] = useState(DBDescription);
+  const [author, setAuthor] = useState(DBAuthor);
+  const [url, setUrl] = useState(DBArticleURL);
+  const [tags, setTags] = useState(DBArticleTags);
+  const [ISCNId, setISCNId] = useState(DBISCNId);
+  const [NFTClassId, setNFTClassId] = useState(DBNFTClassId);
+  const [arweaveId, setArweaveId] = useState(DBArweaveId);
+  const [mattersIPFSHash, setMattersIPFSHash] = useState(DBMattersIPFSHash);
   const [mattersPublishedArticleHash, setMattersPublishedArticleHash] = useState(
-    props.DBMattersPublishedArticleHash,
+    DBMattersPublishedArticleHash,
   );
-  const [ISCNVersion, setISCNVersion] = useState(props.DBISCNVersion);
-  const [ISCNTimestamp, setISCNTimestamp] = useState(props.DBISCNTimestamp);
-  const [mattersDraftId, setMattersDraftId] = useState(props.DBMattersDraftId);
-  const [mattersArticleId, setMattersArticleId] = useState(props.DBMattersArticleId);
-  const [mattersId, setMattersId] = useState(props.DBMattersId);
-  const [mattersArticleSlug, setMattersArticleSlug] = useState(props.DBMattersArticleSlug);
+  const [ISCNVersion, setISCNVersion] = useState(DBISCNVersion);
+  const [ISCNTimestamp, setISCNTimestamp] = useState(DBISCNTimestamp);
+  const [mattersDraftId, setMattersDraftId] = useState(DBMattersDraftId);
+  const [mattersArticleId, setMattersArticleId] = useState(DBMattersArticleId);
+  const [mattersId, setMattersId] = useState(DBMattersId);
+  const [mattersArticleSlug, setMattersArticleSlug] = useState(DBMattersArticleSlug);
   const [fingerprints, setFingerprints] = useState([]);
   const [shouldStartProcess, setShouldStartProcess] = useState(false);
   const [shouldSendISCNRegisterData, setShouldSendISCNRegisterData] = useState(false);
@@ -41,29 +70,29 @@ function LikeCoinPlugin(props) {
         ipfsHash, arweaveId: newArweaveId,
       } = data;
       setArweaveId(newArweaveId);
-      props.postArweaveInfoData({
+      postArweaveInfoData({
         ipfsHash, arweaveId: newArweaveId,
       });
     },
-    [setArweaveId, props],
+    [postArweaveInfoData],
   );
   const onISCNCallback = useCallback(
     (data) => {
       const {
         tx_hash: txHash, iscnId, iscnVersion, timestamp,
       } = data;
-      props.postISCNInfoData({
+      postISCNInfoData({
         iscnHash: txHash,
         iscnId,
         iscnVersion,
         timestamp,
       });
     },
-    [props],
+    [postISCNInfoData],
   );
   const sendISCNRegisterData = useCallback(async () => {
     popUpWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
-    const res = await props.fetchISCNRegisterData();
+    const res = await fetchISCNRegisterData();
     const {
       files,
       title: refreshedTitle,
@@ -91,7 +120,6 @@ function LikeCoinPlugin(props) {
           authorDescription: refreshedAuthorDescription,
           description: refreshedDescription,
           type: 'article',
-          license: '',
           recordNotes: ISCN_RECORD_NOTE,
           memo: ISCN_RECORD_NOTE,
         },
@@ -99,7 +127,7 @@ function LikeCoinPlugin(props) {
       },
     });
     popUpWindow.postMessage(payload, ISCN_WIDGET_ORIGIN);
-  }, [props, fingerprints, popUpWindow]);
+  }, [fetchISCNRegisterData, fingerprints, popUpWindow]);
 
   const onPostMessageCallback = useCallback(
     async (event) => {
@@ -144,68 +172,68 @@ function LikeCoinPlugin(props) {
     }
   }, [ISCNId, onPostMessageCallback]);
   useEffect(() => {
-    setTitle(props.DBArticleTitle);
-    if (props.DBAuthorDescription) {
-      const { length } = props.DBAuthorDescription.split(' ');
+    setTitle(DBArticleTitle);
+    if (DBAuthorDescription) {
+      const { length } = DBAuthorDescription.split(' ');
       if (length > 200) {
-        const cutDescription = props.DBAuthorDescription.split(' ')
+        const cutDescription = DBAuthorDescription.split(' ')
           .slice(0, 197)
           .join(' ')
           .concat('...')
-          .concat(props.DBAuthorDescription.split(' ')[length - 1]);
+          .concat(DBAuthorDescription.split(' ')[length - 1]);
         setAuthorDescription(cutDescription);
       } else {
-        setAuthorDescription(props.DBAuthorDescription);
+        setAuthorDescription(DBAuthorDescription);
       }
     }
     // default length for excerpt is 55. Hence, no need 197 length guard.
-    if (props.DBDescription) {
-      setDescription(props.DBDescription);
+    if (DBDescription) {
+      setDescription(DBDescription);
     }
-    setAuthor(props.DBAuthor);
-    setUrl(props.DBArticleURL);
-    setTags(props.DBArticleTags);
-    setISCNId(props.DBISCNId);
-    setNFTClassId(props.DBNFTClassId);
-    setISCNVersion(props.DBISCNVersion);
-    setISCNTimestamp(props.DBISCNTimestamp);
-    setMattersDraftId(props.DBMattersDraftId);
-    setMattersArticleId(props.DBMattersArticleId);
-    setMattersId(props.DBMattersId);
-    setMattersArticleSlug(props.DBMattersArticleSlug);
-    setMattersPublishedArticleHash(props.DBMattersPublishedArticleHash);
-    setArweaveId(props.DBArweaveId);
+    setAuthor(DBAuthor);
+    setUrl(DBArticleURL);
+    setTags(DBArticleTags);
+    setISCNId(DBISCNId);
+    setNFTClassId(DBNFTClassId);
+    setISCNVersion(DBISCNVersion);
+    setISCNTimestamp(DBISCNTimestamp);
+    setMattersDraftId(DBMattersDraftId);
+    setMattersArticleId(DBMattersArticleId);
+    setMattersId(DBMattersId);
+    setMattersArticleSlug(DBMattersArticleSlug);
+    setMattersPublishedArticleHash(DBMattersPublishedArticleHash);
+    setArweaveId(DBArweaveId);
   }, [
-    props.DBLIKEPayAmount,
-    props.DBMemo,
-    props.DBArticleTitle,
-    props.DBAuthorDescription,
-    props.DBDescription,
-    props.DBAuthor,
-    props.DBArticleURL,
-    props.DBArticleTags,
-    props.DBISCNId,
-    props.DBISCNVersion,
-    props.DBISCNTimestamp,
-    props.DBNFTClassId,
-    props.DBMattersDraftId,
-    props.DBMattersArticleId,
-    props.DBMattersId,
-    props.DBMattersArticleSlug,
-    props.DBMattersPublishedArticleHash,
-    props.DBArweaveId,
+    DBLIKEPayAmount,
+    DBMemo,
+    DBArticleTitle,
+    DBAuthorDescription,
+    DBDescription,
+    DBAuthor,
+    DBArticleURL,
+    DBArticleTags,
+    DBISCNId,
+    DBISCNVersion,
+    DBISCNTimestamp,
+    DBNFTClassId,
+    DBMattersDraftId,
+    DBMattersArticleId,
+    DBMattersId,
+    DBMattersArticleSlug,
+    DBMattersPublishedArticleHash,
+    DBArweaveId,
   ]);
   useEffect(() => {
-    setMattersIPFSHash(props.DBMattersIPFSHash);
+    setMattersIPFSHash(DBMattersIPFSHash);
     const fingerprintsArr = [];
-    if (props.DBMattersIPFSHash && props.DBMattersIPFSHash !== '-') {
-      const mattersIPFSHashFingerprint = `ipfs://${props.DBMattersIPFSHash}`;
+    if (DBMattersIPFSHash && DBMattersIPFSHash !== '-') {
+      const mattersIPFSHashFingerprint = `ipfs://${DBMattersIPFSHash}`;
       fingerprintsArr.push(mattersIPFSHashFingerprint);
     }
     if (fingerprintsArr.length > 1) {
       setFingerprints(fingerprintsArr);
     }
-  }, [props.DBMattersIPFSHash]);
+  }, [DBMattersIPFSHash]);
   useEffect(() => {
     if (shouldStartProcess) {
       openISCNWidget();
@@ -276,7 +304,6 @@ function LikeCoinPlugin(props) {
         tags={tags}
         url={url}
       />
-      <LikeCoinPluginPrePublishPanel />
       <LikeCoinPluginDocumentSettingPanel
         handleRegisterISCN={handleRegisterISCN}
         handleNFTAction={handleNFTAction}

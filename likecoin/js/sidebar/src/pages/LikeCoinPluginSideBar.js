@@ -4,9 +4,6 @@ import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { count as wordCount } from '@wordpress/wordcount';
 import LikeCoinIcon from '../components/LikeCoinIcon';
-import ShowMoreIcon from '../components/ShowMoreIcon';
-import ShowLessIcon from '../components/ShowLessIcon';
-import CheckMark from '../components/CheckMark';
 import SideBarStatusRow from '../components/SideBarStatusRow';
 import StatusTitle from '../components/StatusTitle';
 import MoreInfoIcon from '../components/MoreInfoIcon';
@@ -14,26 +11,19 @@ import CrossIcon from '../components/CrossIcon';
 import MetaPopUpStatusTitle from '../components/MetaPopUpStatusTitle';
 import MetaPopUpStatusDetails from '../components/MetaPopUpStatusDetails';
 import Tag from '../components/Tag';
-import settingPageEndpoint from '../store/constant';
 import PublishStatus from '../components/PublishStatus';
 import LikeCoinIconPinbar from '../components/LikeCoinIconPinbar';
 
-const { siteurl, likecoHost, likerlandHost } = window.wpApiSettings;
+const { likecoHost, likerlandHost } = window.wpApiSettings;
 
 function LikeCoinPluginSideBar(props) {
   const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));
   const numberOfWords = wordCount(content, 'words', {});
-  const [showMore, setShowMore] = useState(true);
   const [showMetaData, setShowMetaData] = useState(false);
-  const [showBlankMattersTickBox, setShowBlankMattersTickBox] = useState(true);
-  const [showFilledMattersTickBox, setShowFilledMattersTickBox] = useState(false);
-  const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
-  const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
   const [ISCNVersionString, setISCNVersionString] = useState(true);
   const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const [showNFTButton, setShowNFTButton] = useState(true);
   const [pinBarIconColor, setPinBarIconColor] = useState('#28646E');
-  const [distributeToMatters, setDistributeToMatters] = useState(true);
   const isPluginSidebarOpened = useSelect((select) => select('core/edit-post')
     .isPluginSidebarOpened());
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
@@ -49,28 +39,10 @@ function LikeCoinPluginSideBar(props) {
     const iscnVersionString = props.ISCNVersion ? `${props.ISCNVersion} (${(new Date(props.ISCNTimestamp)).toGMTString()})` : '-';
     setISCNVersionString(iscnVersionString);
   }, [props.ISCNVersion, props.ISCNTimestamp]);
-  function handleShowMore(e) {
-    e.preventDefault();
-    setShowMore(!showMore);
-  }
   function handleShowMetaData(e) {
     e.preventDefault();
     setShowMetaData(!showMetaData);
   }
-  function handleDistributeToMatters(e) {
-    e.preventDefault();
-    // TODO: Allow user to decide in next sidebar version.
-  }
-  useEffect(() => {
-    setShowBlankMattersTickBox(!props.mattersId);
-    setShowFilledMattersTickBox(
-      props.mattersId && !props.mattersDraftId && !props.mattersArticleId,
-    );
-    setShowMattersDraftLink(
-      !isCurrentPostPublished && props.mattersDraftId && !props.mattersArticleId,
-    );
-    setShowMattersArticleLink(isCurrentPostPublished && props.mattersArticleId);
-  }, [isCurrentPostPublished, props]);
   useEffect(() => {
     if (isPluginSidebarOpened) {
       setPinBarIconColor('white');
@@ -78,9 +50,6 @@ function LikeCoinPluginSideBar(props) {
       setPinBarIconColor('#28646E');
     }
   }, [isPluginSidebarOpened, setPinBarIconColor]);
-  useEffect(() => {
-    setDistributeToMatters(!!props.mattersId);
-  }, [props.mattersId]);
 
   return (
     <PluginSidebar
@@ -90,7 +59,7 @@ function LikeCoinPluginSideBar(props) {
     >
       <div className='divOuterHolder'>
         <div className='dePubMainSidebarDiv'>
-          <p className='dePubStatusRed'>#DePub</p>
+          <p className='dePubStatusRed'>{__('Decentralized Publishing', 'likecoin')}</p>
         </div>
         <div className='likeCoinIconOuterDiv'>
           <LikeCoinIcon color='#9B9B9B' />
@@ -122,7 +91,7 @@ function LikeCoinPluginSideBar(props) {
               className='blueBackgroundWhiteTextBtn'
               onClick={props.handleRegisterISCN}
             >
-              {__('DePub', 'likecoin')}
+              {__('Publish', 'likecoin')}
             </button>
           </div>
         </div>
@@ -240,97 +209,6 @@ function LikeCoinPluginSideBar(props) {
               </div>
             </div>
           </div>
-        )}
-      </div>
-      <div className='divOuterHolderMainSidebar'>
-        <div
-          className='sidebarStatusTitleOuterDivPointer'
-          onClick={handleShowMore}
-        >
-          <StatusTitle title={__('Distribution', 'likecoin')} />
-          <div className='marginLeftAuto'>
-            {!showMore && <ShowMoreIcon />}
-            {showMore && <ShowLessIcon />}
-          </div>
-        </div>
-        {showMore && (
-          <>
-            <div className='sidebarStatusTitleOuterDiv'>
-              <div>
-                <p className='greyText'>
-                  {__(
-                    'Your article will publish to other platform automatically after ISCN registration.',
-                    'likecoin',
-                  )}
-                </p>
-              </div>
-            </div>
-            <div
-              className={
-                props.mattersArticleId
-                  ? 'sidebarStatusTitleOuterDivMatters'
-                  : 'sidebarStatusTitleOuterDiv'
-              }
-            >
-              {showBlankMattersTickBox && (
-                <>
-                  <span className='components-checkbox-control__input-container'>
-                    <input
-                      type='checkbox'
-                      checked={distributeToMatters}
-                      onChange={handleDistributeToMatters}
-                      ref={props.checkRef}
-                      id='inspector-checkbox-control-999'
-                      className='components-checkbox-control__input'
-                      style={{ margin: '0 10px 10px 0' }}
-                    />
-                  </span>
-                  <div> Matters </div>
-                </>
-              )}
-              {showFilledMattersTickBox && (
-                <>
-                  <span className='components-checkbox-control__input-container'>
-                    <input
-                      type='checkbox'
-                      checked={distributeToMatters}
-                      onChange={handleDistributeToMatters}
-                      ref={props.checkRef}
-                      id='inspector-checkbox-control-999'
-                      className='components-checkbox-control__input'
-                      style={{ margin: '0 10px 10px 0' }}
-                    />
-                    <CheckMark />
-                  </span>
-                  <div> Matters </div>
-                </>
-              )}
-              {showMattersDraftLink && (
-                <SideBarStatusRow
-                  title='Matters'
-                  status={props.mattersDraftId}
-                  link={`https://matters.news/me/drafts/${props.mattersDraftId}`}
-                />
-              )}
-              {showMattersArticleLink && (
-                <SideBarStatusRow
-                  title='Matters'
-                  status={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
-                  link={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
-                />
-              )}
-            </div>
-            <div style={{ paddingTop: '10px' }}>
-              <a
-                href={`${siteurl}/wp-admin/admin.php?page=likecoin${settingPageEndpoint}`}
-                target='_blank'
-                rel='noreferrer'
-                className='settingLink'
-              >
-                {__('Settings', 'likecoin')}
-              </a>
-            </div>
-          </>
         )}
       </div>
     </PluginSidebar>

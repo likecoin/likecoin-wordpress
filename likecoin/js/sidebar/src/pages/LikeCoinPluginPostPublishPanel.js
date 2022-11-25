@@ -4,9 +4,6 @@ import { useState } from 'react';
 import LikeCoinIcon from '../components/LikeCoinIcon';
 import ShowLessIcon from '../components/ShowLessIcon';
 import ShowMoreIcon from '../components/ShowMoreIcon';
-import settingPageEndpoint from '../store/constant';
-
-const { siteurl } = window.wpApiSettings;
 
 function LikeCoinPluginPostPublishPanel(props) {
   const [showMore, setShowMore] = useState(true);
@@ -19,7 +16,7 @@ function LikeCoinPluginPostPublishPanel(props) {
       <div className='divOuterHolderStatusInfoPanel'>
         <div className='flexBoxRow'>
           <div className='dePubDiv'>
-            <p className='dePubStatusRed'>#DePub</p>
+            <p className='dePubStatusRed'>Decentralized Publishing</p>
           </div>
           <div className='likeCoinIconOuterDiv'>
             <LikeCoinIcon color='#9B9B9B' />
@@ -34,9 +31,8 @@ function LikeCoinPluginPostPublishPanel(props) {
             <div className='flexBoxRow'>
               <div>
                 <p className='flexBoxRowNormalText'>
-                  {__('Register ISCN to Decentralized storage, and distribute to:', 'likecoin')}
+                  {__('Register your content to decetralized publishing', 'likecoin')}
                 </p>
-                <p className='flexBoxRowNormalText'> • {__('Matters (when connected)', 'likecoin')} </p>
               </div>
             </div>
             <div className='registerISCNBtnOuterDiv'>
@@ -44,7 +40,7 @@ function LikeCoinPluginPostPublishPanel(props) {
                 className='blueBackgroundWhiteTextSmallBtn'
                 onClick={props.handleRegisterISCN}
               >
-                {__('DePub', 'likecoin')}
+                {__('Publish', 'likecoin')}
               </button>
               <button
                 className='whiteBackgroundBlueTextSmallBtn'
@@ -53,7 +49,7 @@ function LikeCoinPluginPostPublishPanel(props) {
                   document.querySelector('[aria-label="Close panel"]').click();
                 }}
               >
-                {__('Check #DePub', 'likecoin')}
+                {__('Details', 'likecoin')}
               </button>
             </div>
           </>
