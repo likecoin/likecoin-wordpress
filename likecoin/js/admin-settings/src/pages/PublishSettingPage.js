@@ -163,7 +163,7 @@ function PublishSettingPage() {
       <LikecoinHeading />
       {savedSuccessful && (
         <SettingNotice
-          text="Settings Saved"
+          text={__('Settings Saved', 'likecoin')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />

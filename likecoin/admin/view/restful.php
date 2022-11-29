@@ -227,6 +227,37 @@ function likecoin_get_site_matters_data( $request ) {
 	$result['data'] = $return_payload;
 	return rest_ensure_response( $result );
 }
+/**
+ * Post web monetization data to WordPress database.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ */
+function likecoin_post_web_monetization_data( $request ) {
+	$monetization_options                         = get_option( LC_MONETIZATION_OPTION_NAME );
+	$params                                       = $request->get_json_params();
+	$monetization_options['site_payment_pointer'] = $params['paymentPointer'];
+	update_option( LC_MONETIZATION_OPTION_NAME, $monetization_options );
+	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
+	$result['code']       = 200;
+	$result['data']       = $monetization_options;
+	return rest_ensure_response( $result );
+}
+/**
+ * Get web monetization data from WordPress database.
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ */
+function likecoin_get_web_monetization_data( $request ) {
+	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
+	if ( ! $monetization_options ) {
+		$monetization_options = array();
+	}
+	$result['code'] = 200;
+	$result['data'] = $monetization_options;
+	return rest_ensure_response( $result );
+
+}
+
 
 /**
  * Add refresh publish status endpoint

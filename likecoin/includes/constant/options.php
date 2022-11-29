@@ -23,6 +23,7 @@
 // Plugin root is site option page.
 define( 'LC_BUTTON_SITE_OPTIONS_PAGE', '' );
 define( 'LC_BUTTON_USER_OPTIONS_PAGE', 'likecoin-button' );
+define( 'LC_OTHER_OPTIONS_PAGE', 'other-setting' );
 define( 'LC_PUBLISH_SITE_OPTIONS_PAGE', 'publish-setting' );
 define( 'LC_SPONSOR_PAGE', 'sponsor-likecoin' );
 define( 'LC_BUTTON_OPTION_NAME', 'lc_plugin_options' );
@@ -61,6 +62,8 @@ define( 'LC_OPTION_SITE_MATTERS_AUTO_PUBLISH', 'site_matters_auto_publish' );
 define( 'LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK', 'site_matters_add_footer_link' );
 
 define( 'LC_OPTION_ISCN_BADGE_STYLE_OPTION', 'iscn_badge_style_option' );
+
+define( 'LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER', 'site_payment_pointer' );
 
 define( 'LC_MATTERS_ID_FIELD', 'matters_id' );
 define( 'LC_MATTERS_USER_ACCESS_TOKEN_FIELD', 'access_token' );

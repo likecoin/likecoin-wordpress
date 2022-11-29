@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import MainSettingPage from './pages/MainSettingPage';
 import LikecoinButtonPage from './pages/LikecoinButtonPage';
 import PublishSettingPage from './pages/PublishSettingPage';
+import OtherSettingPage from './pages/OtherSettingPage';
 import SponsorLikecoinPage from './pages/SponsorLikecoinPage';
 
 function App() {
@@ -17,6 +18,9 @@ function App() {
         </Route>
         <Route path="/publish-setting" exact>
           <PublishSettingPage />
+        </Route>
+        <Route path="/other" exact>
+          <OtherSettingPage />
         </Route>
         <Route path="/sponsor-likecoin" exact>
           <SponsorLikecoinPage />
