@@ -83,6 +83,17 @@ function likecoin_display_admin_pages() {
 	);
 	add_action( 'load-' . $publish_setting_page, 'likecoin_load_admin_js' );
 
+	global $other_setting_page;
+	$other_setting_page = add_submenu_page(
+		'likecoin',
+		__( 'LikeCoin', 'likecoin' ),
+		__( 'Other Setting', 'likecoin' ),
+		'manage_options',
+		'/likecoin#/other',
+		'likecoin_load_admin_js'
+	);
+	add_action( 'load-' . $other_setting_page, 'likecoin_load_admin_js' );
+
 	global $sponsor_likecoin_page;
 	$sponsor_likecoin_page = add_submenu_page(
 		'likecoin',
