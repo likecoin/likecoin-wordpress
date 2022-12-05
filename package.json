@@ -6,6 +6,9 @@
     "node": ">=14"
   },
   "scripts": {
+    "dev:admin:metabox": "wp-scripts start likecoin/js/admin-metabox/likecoin_metabox.js --output-path=likecoin/assets/js/admin-metabox",
+    "dev:admin-settings": "wp-scripts start likecoin/js/admin-settings/src/index.js --output-path=likecoin/assets/js/admin-settings",
+    "dev:sidebar": "wp-scripts start likecoin/js/sidebar/src/index.js --output-path=likecoin/assets/js/sidebar",
     "build": "npm run build:admin:metabox && npm run build:admin-settings && npm run build:sidebar",
     "build:admin:metabox": "wp-scripts build likecoin/js/admin-metabox/likecoin_metabox.js --output-path=likecoin/assets/js/admin-metabox",
     "build:admin-settings": "wp-scripts build likecoin/js/admin-settings/src/index.js --output-path=likecoin/assets/js/admin-settings",
