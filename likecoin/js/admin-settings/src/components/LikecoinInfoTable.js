@@ -53,6 +53,8 @@ function LikecoinInfoTable(props) {
         setLikerAvatar('');
       }
     }, 500),
+    // setting dep on prop causes infinite loop, might need refactoring
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [],
   );
   useEffect(() => {
