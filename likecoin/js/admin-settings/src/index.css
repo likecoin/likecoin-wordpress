@@ -1,353 +1,432 @@
 body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	margin: 0;
+
+	font-family:
+		-apple-system,
+		BlinkMacSystemFont,
+		"Segoe UI",
+		"Roboto",
+		"Oxygen",
+		"Ubuntu",
+		"Cantarell",
+		"Fira Sans",
+		"Droid Sans",
+		"Helvetica Neue",
+		sans-serif;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+	font-family:
+		source-code-pro,
+		Menlo,
+		Monaco,
+		Consolas,
+		"Courier New",
+		monospace;
 }
+
 section {
-  padding: 0 10px;
-  display: block;
+	display: block;
+
+	padding: 0 10px;
 }
 
 input {
-  margin: 0 1px;
-  font-size: 14px;
+	margin: 0 1px;
+
+	font-size: 14px;
 }
 
 h1 {
-  text-align: left;
+	text-align: left;
 }
 
 h4 {
-  font-size: 1em;
-  margin: 1.33em 0;
-  display: block;
-  font-weight: 600;
-  margin-block-start: 1.33em;
-  margin-block-end: 1.33em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
+	display: block;
+
+	margin: 1.33em 0;
+
+	font-size: 1em;
+	font-weight: 600;
+	margin-block-start: 1.33em;
+	margin-block-end: 1.33em;
+	margin-inline-start: 0;
+	margin-inline-end: 0;
 }
 
 tr {
-  text-align: left;
+	text-align: left;
 }
 
 img {
-  border: none;
+	border: none;
 }
 
 div {
-  display: block;
-  outline: 0;
+	display: block;
+
+	outline: 0;
 }
 
 .actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0;
-  padding: 16px;
-  white-space: nowrap;
-}
+	display: flex;
+	align-items: center;
+	justify-content: center;
 
-#likecoinChangeBtn {
-  color: #4a90e2;
+	margin-bottom: 0;
+	padding: 16px;
+
+	white-space: nowrap;
 }
 
 .optionTitle {
-  padding: 20px 10px 20px 0px;
+	padding: 20px 10px 20px 0;
 }
 
 .optionDetails {
-  color: black;
-  font-weight: normal;
-  padding: 15px 10px;
+	padding: 15px 10px;
+
+	color: black;
+
+	font-weight: normal;
 }
 
 .likecoinTable th {
-  height: 40px;
-  padding: 0 14px;
-  vertical-align: middle;
-  background: white;
-  font-size: 14px;
-  font-weight: 600;
+	height: 40px;
+	padding: 0 14px;
+
+	vertical-align: middle;
+
+	background: white;
+
+	font-size: 14px;
+	font-weight: 600;
 }
 
 .likecoinTable td {
-  height: 64px;
-  padding: 8px 14px;
-  font-size: 14px;
+	height: 64px;
+	padding: 8px 14px;
+
+	font-size: 14px;
 }
 
 .form-table {
-  border-collapse: collapse;
-  margin-top: 0.5em;
-  width: 100%;
-  clear: both;
+	clear: both;
+
+	width: 100%;
+	margin-top: 0.5em;
+
+	border-collapse: collapse;
 }
 
 .form-table td {
-  line-height: 1.3;
-  font-size: 14px;
+	font-size: 14px;
+	line-height: 1.3;
 }
 
 table {
-  display: table;
-  border-collapse: separate;
-  box-sizing: border-box;
-  text-indent: initial;
-  border-spacing: 2px;
-  border-color: grey;
+	display: table;
+
+	box-sizing: border-box;
+
+	border-spacing: 2px;
+
+	text-indent: initial;
+
+	border-collapse: separate;
+	border-color: grey;
 }
 
 .likecoinId {
-  text-decoration: none;
-  color: #4a90e2;
-  font-size: 14px;
-  font-weight: 600;
+	text-decoration: none;
+
+	color: #4a90e2;
+
+	font-size: 14px;
+	font-weight: 600;
 }
 
 .likecoinInputLabel {
-  float: right;
-  color: gray;
-  font-style: italic;
+	float: right;
+
+	color: gray;
+
+	font-style: italic;
 }
 
 .likecoinSubmitButton {
-  min-width: 256px;
-  padding: 8px 16px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  border: 0;
-  background-color: #28646e;
-  font-size: 24px;
+	min-width: 256px;
+	padding: 8px 16px;
+
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+
+	color: white;
+	border: 0;
+	background-color: #28646e;
+
+	font-size: 24px;
 }
 
 .avatarWrapper {
-  display: flex;
-  align-items: center;
-  flex: 1;
+	display: flex;
+	align-items: center;
+	flex: 1;
 }
 
 .likecoinAvatar {
-  max-width: 64px;
-  max-height: 64px;
-  margin-right: 16px;
-  border-radius: 50%;
+	max-width: 64px;
+	max-height: 64px;
+	margin-right: 16px;
+
+	border-radius: 50%;
 }
 
 .notice {
-  background: #fff;
-  border: 1px solid #ccd0d4;
-  border-left-width: 4px;
-  box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
-  margin: 5px 15px 2px;
-  padding: 1px 12px;
+	margin: 5px 15px 2px;
+	padding: 1px 12px;
+
+	border: 1px solid #ccd0d4;
+	border-left-width: 4px;
+	background: #fff;
+	box-shadow: 0 1px 1px rgb(0 0 0 / 4%);
 }
 
 .notice-success {
-  border-left-color: #46b450 !important;
+	border-left-color: #46b450 !important;
 }
 
 .notice-error {
-  border-left-color: #dc3232 !important;
+	border-left-color: #dc3232 !important;
 }
 
 .is-dismissable {
-  padding-right: 38px;
-  position: relative;
+	position: relative;
+
+	padding-right: 38px;
 }
 
 .notice-dismiss {
-  position: absolute;
-  top: 0;
-  right: 1px;
-  border: none;
-  margin: 0;
-  padding: 9px;
-  background: 0 0;
-  color: #72777c;
-  cursor: pointer;
+	position: absolute;
+	top: 0;
+	right: 1px;
+
+	margin: 0;
+	padding: 9px;
+
+	cursor: pointer;
+
+	color: #72777c;
+	border: none;
+	background: 0 0;
 }
 
 .screen-reader-text {
-  border: 0;
-  clip: rect(1px, 1px, 1px, 1px);
-  -webkit-clip-path: inset(50%);
-  clip-path: inset(50%);
-  height: 1px;
-  margin: -1px;
-  overflow: hidden;
-  padding: 0;
-  position: absolute;
-  width: 1px;
-  word-wrap: normal !important;
+	position: absolute;
+
+	overflow: hidden;
+	clip: rect(1px, 1px, 1px, 1px);
+
+	width: 1px;
+	height: 1px;
+	margin: -1px;
+	padding: 0;
+
+	word-wrap: normal !important;
+
+	border: 0;
+	-webkit-clip-path: inset(50%);
+	clip-path: inset(50%);
 }
 
 .likecoin {
-  font-family: 'Open Sans', 'Source Sans Pro', 'Noto Sans', 'Microsoft JhengHei',
-    Arial, sans-serif;
+	font-family:
+		"Open Sans",
+		"Source Sans Pro",
+		"Noto Sans",
+		"Microsoft JhengHei",
+		Arial,
+		sans-serif;
 }
 
 .likecoin h3 {
-  color: #462405;
+	color: #462405;
 }
 
 .likecoin a {
-  color: #28646e;
+	color: #28646e;
 }
 
 .likecoin section {
-  padding: 0 10px;
+	padding: 0 10px;
 }
 
 .likecoin .links {
-  float: right;
+	float: right;
 }
 
 .likecoin .icon svg {
-  float: right;
-  width: 22px;
-  height: 22px;
-  color: #737373;
-  fill: currentColor;
+	float: right;
+
+	width: 22px;
+	height: 22px;
+
+	color: #737373;
+	fill: currentColor;
 }
 
 .likecoin .likecoinButton {
-  min-width: 256px;
-  padding: 8px 16px;
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  color: white;
-  border: 0;
-  background-color: #28646e;
-  font-size: 24px;
+	min-width: 256px;
+	padding: 8px 16px;
+
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+
+	color: white;
+	border: 0;
+	background-color: #28646e;
+
+	font-size: 24px;
 }
 
 .likecoin .centerContainer {
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+	justify-content: center;
+
+	width: 100%;
+	height: 100%;
 }
 
 .likecoin.optionsSection .changeBtn {
-  cursor: pointer;
-  text-decoration: underline;
-  font-size: 12px;
+	cursor: pointer;
+	text-decoration: underline;
+
+	font-size: 12px;
 }
 
 .likecoin .previewSection {
-  -webkit-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
-  padding: 20px 40px;
-  color: #d8d8d8;
-  background: white;
+	-webkit-flex: 1;
+	-ms-flex: 1;
+	flex: 1;
+
+	padding: 20px 40px;
+
+	color: #d8d8d8;
+	background: white;
 }
 
 .likecoin .previewSection span {
-  margin: 20px 0;
+	margin: 20px 0;
 }
 
 .likecoin .likecoinId {
-  text-decoration: none;
-  color: #4a90e2;
-  font-size: 14px;
-  font-weight: 600;
+	text-decoration: none;
+
+	color: #4a90e2;
+
+	font-size: 14px;
+	font-weight: 600;
 }
 
 /* LikeCoin ID table*/
 
 .likecoin .likecoinTable {
-  border: solid 1px #e6e6e6;
-  background: #f9f9f9;
+	border: solid 1px #e6e6e6;
+	background: #f9f9f9;
 }
 
 .likecoin .likecoinTable .likecoinAvatar {
-  max-width: 64px;
-  max-height: 64px;
-  margin-right: 16px;
-  border-radius: 50%;
+	max-width: 64px;
+	max-height: 64px;
+	margin-right: 16px;
+
+	border-radius: 50%;
 }
 
 .likecoin .likecoinTable .avatarWrapper {
-  display: flex;
-  align-items: center;
-  flex: 1;
+	display: flex;
+	align-items: center;
+	flex: 1;
 }
 
 .likecoin .likecoinInputLabel {
-  float: right;
-  color: gray;
-  font-style: italic;
+	float: right;
+
+	color: gray;
+
+	font-style: italic;
 }
 
 .likecoin .likecoinTable tr {
-  white-space: nowrap;
-  border: solid 1px #e6e6e6;
+	white-space: nowrap;
+
+	border: solid 1px #e6e6e6;
 }
 
 .likecoin .likecoinTable th {
-  height: 40px;
-  padding: 0 14px;
-  vertical-align: middle;
-  background: white;
-  font-size: 14px;
-  font-weight: 600;
+	height: 40px;
+	padding: 0 14px;
+
+	vertical-align: middle;
+
+	background: white;
+
+	font-size: 14px;
+	font-weight: 600;
 }
 
 .likecoin .likecoinTable td {
-  height: 64px;
-  padding: 8px 14px;
-  font-size: 14px;
+	height: 64px;
+	padding: 8px 14px;
+
+	font-size: 14px;
 }
 
 .likecoin .likecoinTable td.actions {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 0;
-  padding: 16px;
-  white-space: nowrap;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	margin-bottom: 0;
+	padding: 16px;
+
+	white-space: nowrap;
 }
 
 .likecoin .likecoinTable td.actions .actionWrapper {
-  display: flex;
-  align-items: center;
-  flex: 1;
-  justify-content: center;
-  height: 48px;
-  border-right: solid 1px #d8d8d8;
-  border-left: solid 1px #d8d8d8;
+	display: flex;
+	align-items: center;
+	flex: 1;
+	justify-content: center;
+
+	height: 48px;
+
+	border-right: solid 1px #d8d8d8;
+	border-left: solid 1px #d8d8d8;
 }
 
 .likecoin .likecoinTable td.actions a {
-  cursor: pointer;
-  text-align: center;
-  text-decoration: none;
-  font-weight: 600;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+
+	font-weight: 600;
 }
 
 #likecoinChangeBtn {
-  color: #4a90e2;
-  font-weight: 600;
+	color: #4a90e2;
+
+	font-weight: 600;
 }
 
 #likecoinLogoutBtn {
-  color: #d0021b;
-  font-weight: 600;
+	color: #d0021b;
+
+	font-weight: 600;
 }

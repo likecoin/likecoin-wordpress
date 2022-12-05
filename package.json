@@ -13,11 +13,12 @@
     "build:admin:metabox": "wp-scripts build likecoin/js/admin-metabox/likecoin_metabox.js --output-path=likecoin/assets/js/admin-metabox",
     "build:admin-settings": "wp-scripts build likecoin/js/admin-settings/src/index.js --output-path=likecoin/assets/js/admin-settings",
     "build:sidebar": "wp-scripts build likecoin/js/sidebar/src/index.js --output-path=likecoin/assets/js/sidebar",
-    "test": "npm run lint && npm run test:admin-settings",
-    "test:admin-settings": "cd js/admin-settings && npm run test",
-    "lint": "npm run lint:es && npm run lint:style",
-    "lint:es": "eslint . --fix",
-    "lint:style": "stylelint 'js/admin-settings' 'likecoin/assets/css' --fix",
+    "lint": "npm run lint:js && npm run lint:style",
+    "lint:js": "wp-scripts lint-js",
+    "lint:style": "wp-scripts lint-style --fix",
+    "format:js": "wp-scripts format",
+    "lint:js:fix": "npm run lint:js -- --fix",
+    "lint:pkg-json": "wp-scripts lint-pkg-json",
     "prettier": "prettier --write ./src"
   },
   "dependencies": {
@@ -39,15 +40,14 @@
   "devDependencies": {
     "@wordpress/browserslist-config": "^5.5.0",
     "@wordpress/scripts": "^19.2.2",
-    "eslint": "^7.20.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-react-app": "^6.0.0",
+    "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-jest": "^27.1.6",
+    "eslint-plugin-testing-library": "^5.9.1",
     "postcss": "^8.4.5",
-    "prettier": "2.4.1",
-    "stylelint": "^13.5.0",
-    "stylelint-config-recommended": "^3.0.0",
-    "stylelint-order": "^4.1.0",
+    "stylelint-order": "^5.0.0",
     "webpack": "^5.75.0"
   }
 }
