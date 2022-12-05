@@ -1,10 +1,10 @@
-import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SITE_LIKER_INFO_STORE_NAME = 'likecoin/site_liker_info';
 
-const endPoint = `${window.wpApiSettings.root}likecoin/v1/options/button`;
+const buttonEndPoint = '/likecoin/v1/options/button';
 
 const INITIAL_STATE = {
   DBUserCanEditOption: true,
@@ -56,19 +56,13 @@ const selectors = {
 
 const controls = {
   GET_SITE_LIKER_INFO() {
-    return axios.get(endPoint, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
-    });
+    return apiFetch({ path: buttonEndPoint });
   },
   POST_SITE_LIKER_INFO_TO_DB(action) {
-    return axios.post(endPoint, JSON.stringify(action.data), {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
+    return apiFetch({
+      method: 'POST',
+      path: buttonEndPoint,
+      data: action.data,
     });
   },
 };
@@ -77,7 +71,7 @@ const resolvers = {
   * selectSiteLikerInfo() {
     try {
       const response = yield actions.getSiteLikerInfo();
-      const siteLikerInfo = response.data.data;
+      const siteLikerInfo = response.data;
       const DBSiteLikerIdEnabled = !!(
         siteLikerInfo.site_likecoin_id_enbled === '1'
         || siteLikerInfo.site_likecoin_id_enbled === true

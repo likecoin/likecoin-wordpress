@@ -1,5 +1,5 @@
+import { render } from '@wordpress/element';
 import React from 'react';
-import ReactDOM from 'react-dom';
 import { HashRouter as Router } from 'react-router-dom';
 import './index.css';
 import App from './App';
@@ -9,7 +9,7 @@ const reactAppData = window.likecoinReactAppData || {};
 const { appSelector } = reactAppData;
 const appAnchorElement = document.querySelector(appSelector);
 if (appAnchorElement) {
-  ReactDOM.render(
+  render(
     <Router>
       <App />
     </Router>,
@@ -19,7 +19,7 @@ if (appAnchorElement) {
   const root = document.querySelector('#root');
   window.wpApiSettings = window.wpApiSettings || {};
   if (root) {
-    ReactDOM.render(
+    render(
       <Router>
         <App />
       </Router>,

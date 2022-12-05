@@ -140,36 +140,23 @@ function likecoin_get_css_files( $file_string ) {
  * Define how to load JavaScript files coming from React.
  */
 function likecoin_enqueue_admin_js() {
-	$react_app_build_url = LC_URI . 'assets/js/admin-settings/';
-	$manifest_path       = LC_DIR . 'assets/js/admin-settings/asset-manifest.json';
-	// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-	$request = file_get_contents( $manifest_path );
-	// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
-
-	if ( ! $request ) {
-		return false;
-	}
-	$files_data = json_decode( $request );
-	if ( null === $files_data ) {
-		return;
-	}
-	if ( ! property_exists( $files_data, 'entrypoints' ) ) {
-		return false;
-	}
-	$assets_files = $files_data->entrypoints;
-
-	$js_files  = array_filter( $assets_files, 'likecoin_get_js_files' );
-	$css_files = array_filter( $assets_files, 'likecoin_get_css_files' );
-	foreach ( $css_files as $index => $css_file ) {
-		wp_enqueue_style( 'likecoin-admin-settings-' . $index, $react_app_build_url . $css_file, array(), LC_PLUGIN_VERSION );
-	}
-	foreach ( $js_files as $index => $js_file ) {
-		// add wp-api-request as dependency so React can access window.wpApiSettings.
-		wp_enqueue_script( 'likecoin-admin-settings-' . $index, $react_app_build_url . $js_file, array( 'wp-api-request', 'wp-i18n' ), LC_PLUGIN_VERSION, true );
-	}
+	$asset_file = include plugin_dir_path( __FILE__ ) . '/../../assets/js/admin-settings/index.asset.php';
+	wp_enqueue_style(
+		'likecoin-admin-settings',
+		LC_URI . 'assets/js/admin-settings/index.css',
+		array(),
+		$asset_file['version']
+	);
+	wp_enqueue_script(
+		'likecoin-admin-settings',
+		LC_URI . 'assets/js/admin-settings/index.js',
+		$asset_file['dependencies'],
+		$asset_file['version'],
+		true
+	);
 	// create a window.likecoinReactAppData which can be accessed by JavaScript.
 	wp_localize_script(
-		'likecoin-admin-settings-1',
+		'likecoin-admin-settings',
 		'likecoinReactAppData',
 		array(
 			'appSelector'   => '#wpbody #wpbody-content',

@@ -1,8 +1,5 @@
 {
     "scripts": {
-      "build": "react-scripts build",
-      "test": "react-scripts test",
-      "start": "react-scripts start",
-      "eject": "react-scripts eject"
+      "build": "wp-scripts build"
     }
 }

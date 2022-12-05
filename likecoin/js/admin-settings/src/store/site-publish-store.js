@@ -1,12 +1,12 @@
-import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const SITE_PUBLISH_STORE_NAME = 'likecoin/site_publish';
 
-const mattersLoginEndpoint = `${window.wpApiSettings.root}likecoin/v1/option/publish/settings/matters`;
-const getAllMattersDataEndpoint = `${window.wpApiSettings.root}likecoin/v1/option/publish`;
-const postMattersOptionsEndpoint = `${window.wpApiSettings.root}likecoin/v1/option/publish`;
+const mattersLoginEndpoint = '/likecoin/v1/option/publish/settings/matters';
+const getAllMattersDataEndpoint = '/likecoin/v1/option/publish';
+const postMattersOptionsEndpoint = '/likecoin/v1/option/publish';
 
 const INITIAL_STATE = {
   DBSiteMattersId: '',
@@ -69,35 +69,26 @@ const selectors = {
 
 const controls = {
   GET_SITE_PUBLISH_OPTIONS(action) {
-    return axios.get(action.path, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
-    });
+    return apiFetch({ path: action.path });
   },
   MATTERS_LOGIN(action) {
-    return axios.post(mattersLoginEndpoint, JSON.stringify(action.data), {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
+    return apiFetch({
+      method: 'POST',
+      path: mattersLoginEndpoint,
+      data: action.data,
     });
   },
   POST_SITE_PUBLISH_OPTIONS_TO_DB(action) {
-    return axios.post(postMattersOptionsEndpoint, JSON.stringify(action.data), {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-      },
+    return apiFetch({
+      method: 'POST',
+      path: postMattersOptionsEndpoint,
+      data: action.data,
     });
   },
   MATTERS_LOGOUT() {
-    return axios.delete(mattersLoginEndpoint, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
+    return apiFetch({
+      method: 'DELETE',
+      path: mattersLoginEndpoint,
     });
   },
 };
