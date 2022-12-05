@@ -1,4 +1,3 @@
-import '../style.css';
 import { useState, useEffect, useCallback } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import LikeCoinPluginDocumentSettingPanel from './LikeCoinPluginDocumentSettingPanel';
@@ -130,7 +129,7 @@ function LikeCoinPlugin() {
       },
     });
     popUpWindow.postMessage(payload, ISCN_WIDGET_ORIGIN);
-  }, [fetchISCNRegisterData, fingerprints, popUpWindow]);
+  }, [DBLicense, fetchISCNRegisterData, fingerprints, popUpWindow]);
 
   const onPostMessageCallback = useCallback(
     async (event) => {

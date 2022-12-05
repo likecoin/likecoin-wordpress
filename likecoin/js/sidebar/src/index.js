@@ -1,5 +1,5 @@
-import './style.css';
 import { registerPlugin } from '@wordpress/plugins';
+import './index.css';
 import LikeCoinPlugin from './pages/LikeCoinPlugin';
 
 function LikeCoinSideBar() {
