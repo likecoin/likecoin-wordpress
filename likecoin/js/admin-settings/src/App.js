@@ -4,8 +4,7 @@ import Header from './components/Header';
 import MainSettingLayout from './pages/MainSettingLayout';
 import MainSettingPage from './pages/MainSettingPage';
 import LikecoinButtonPage from './pages/LikecoinButtonPage';
-import PublishSettingPage from './pages/PublishSettingPage';
-import OtherSettingPage from './pages/OtherSettingPage';
+import AdvancedSettingPage from './pages/AdvancedSettingPage';
 import SponsorLikecoinPage from './pages/SponsorLikecoinPage';
 import LikeCoinHelpPage from './pages/LikeCoinHelpPage';
 
@@ -16,8 +15,7 @@ function App() {
       <Routes>
         <Route path="" element={<MainSettingLayout />}>
           <Route index element={<MainSettingPage />} />
-          <Route path="advanced" element={<PublishSettingPage />} />
-          <Route path="other" element={<OtherSettingPage />} />
+          <Route path="advanced" element={<AdvancedSettingPage />} />
           <Route path="about" element={<SponsorLikecoinPage />} />
         </Route>
         <Route path="button" element={<LikecoinButtonPage />} />

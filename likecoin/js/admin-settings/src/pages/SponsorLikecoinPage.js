@@ -8,12 +8,12 @@ const { likerlandHost } = window.likecoinReactAppData;
 function SponsorLikecoinPage() {
   const localizedIntroduction = createInterpolateElement(
     __(
-      '<Likecoin/> is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
+      '<LikeCoin/> is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
       'likecoin',
     ),
     {
-      Likecoin: createElement(Link, {
-        text: __('Likecoin', 'likecoin'),
+      LikeCoin: createElement(Link, {
+        text: __('LikeCoin', 'likecoin'),
         linkAddress: 'https://like.co',
       }),
     },

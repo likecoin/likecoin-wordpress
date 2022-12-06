@@ -1,14 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import CheckBox from '../components/CheckBox';
-import Section from '../components/Section';
-import SettingNotice from '../components/SettingNotice';
-import SubmitButton from '../components/SubmitButton';
-import WebMonetizationDescription from '../components/WebMonetizationDescription';
+import CheckBox from './CheckBox';
+import Section from './Section';
+import SettingNotice from './SettingNotice';
+import SubmitButton from './SubmitButton';
+import WebMonetizationDescription from './WebMonetizationDescription';
 import { OTHER_SETTING_STORE_NAME } from '../store/other-setting-store';
 
-function OtherSettingPage() {
+function WebmonitizationSetting() {
   // eslint-disable-next-line arrow-body-style
   const DBPaymentPointer = useSelect((select) => select(OTHER_SETTING_STORE_NAME)
     .selectPaymentPointer());
@@ -42,14 +42,15 @@ function OtherSettingPage() {
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      <Section title={__('Other settings', 'likecoin')} />
+      <Section title={__('Web Monetization', 'likecoin')} />
+      <WebMonetizationDescription />
       <CheckBox
         checked={showWebMonetization}
         handleCheck={setShowWebMonetization}
         title={__('Web Monetization', 'likecoin')}
-        details={__('Show Web Monetization settings', 'likecoin')} />
+        details={__('Enable settings', 'likecoin')} />
       {showWebMonetization && (
-        <><WebMonetizationDescription /><form onSubmit={confirmHandler}>
+        <><form onSubmit={confirmHandler}>
           <table className="form-table" role="presentation">
             <tbody>
               <tr>
@@ -83,4 +84,4 @@ function OtherSettingPage() {
   );
 }
 
-export default OtherSettingPage;
+export default WebmonitizationSetting;

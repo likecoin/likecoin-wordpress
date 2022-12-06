@@ -419,6 +419,10 @@ table {
 	font-weight: 600;
 }
 
+.wrap {
+	text-align: left;
+}
+
 #likecoinChangeBtn {
 	color: #4a90e2;
 

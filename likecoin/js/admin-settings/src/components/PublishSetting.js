@@ -3,16 +3,16 @@ import {
 } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import Section from '../components/Section';
-import SettingNotice from '../components/SettingNotice';
-import CheckBox from '../components/CheckBox';
-import SubmitButton from '../components/SubmitButton';
-import MattersDescription from '../components/MattersDescription';
-import MattersLoginTable from '../components/MattersLoginTable';
-import MattersStatusTable from '../components/MattersStatusTable';
+import Section from './Section';
+import SettingNotice from './SettingNotice';
+import CheckBox from './CheckBox';
+import SubmitButton from './SubmitButton';
+import MattersDescription from './MattersDescription';
+import MattersLoginTable from './MattersLoginTable';
+import MattersStatusTable from './MattersStatusTable';
 import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 
-function PublishSettingPage() {
+function PublishSetting() {
   // eslint-disable-next-line arrow-body-style
   const {
     DBSiteMattersId,
@@ -166,13 +166,13 @@ function PublishSettingPage() {
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      <hr />
-      <Section title={__('Distribution settings', 'likecoin')} />
+      <Section title={__('Publish to other platforms', 'likecoin')} />
+      <p>{__('LikeCoin plugin can help you to publish you post to other platform.', 'likecoin')}</p>
       <CheckBox
         checked={showMatters}
         handleCheck={setShowMatters}
-        title={__('Matters.news', 'likecoin')}
-        details={__('Show Matters distribution settings', 'likecoin')} />
+        title={__('Matters', 'likecoin')}
+        details={__('Publish to Matters.news', 'likecoin')} />
       {showMatters && (
         <><Section title={__('Login with Matters ID', 'likecoin')} /><MattersDescription /><MattersLoginTable
           loginHandler={loginHandler}
@@ -213,4 +213,4 @@ function PublishSettingPage() {
   );
 }
 
-export default PublishSettingPage;
+export default PublishSetting;
