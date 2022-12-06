@@ -8,7 +8,6 @@ import LikecoinInfoTable from '../components/LikecoinInfoTable';
 import SubmitButton from '../components/SubmitButton';
 import LikeButtonPreview from '../components/LikeButtonPreview';
 import SettingNotice from '../components/SettingNotice';
-import LikecoinHeading from '../components/LikecoinHeading';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
@@ -83,7 +82,6 @@ function LikecoinButtonPage() {
   }
   return (
     <div className="wrap likecoin">
-      <LikecoinHeading />
       {savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}

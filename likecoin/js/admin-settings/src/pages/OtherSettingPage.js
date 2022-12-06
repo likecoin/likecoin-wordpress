@@ -1,7 +1,6 @@
 import { useRef, useState, useEffect } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import LikecoinHeading from '../components/LikecoinHeading';
 import CheckBox from '../components/CheckBox';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
@@ -36,7 +35,6 @@ function OtherSettingPage() {
 
   return (
     <div className="wrap likecoin">
-      <LikecoinHeading />
       {savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}

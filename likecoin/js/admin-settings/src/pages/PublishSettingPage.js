@@ -3,7 +3,6 @@ import {
 } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import LikecoinHeading from '../components/LikecoinHeading';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
 import CheckBox from '../components/CheckBox';
@@ -160,7 +159,6 @@ function PublishSettingPage() {
 
   return (
     <div className="wrap likecoin">
-      <LikecoinHeading />
       {savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}

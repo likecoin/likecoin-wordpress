@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
-import LikecoinHeading from '../components/LikecoinHeading';
 import ParagraphTitle from '../components/ParagraphTitle';
 import Link from '../components/Link';
 
@@ -76,7 +75,6 @@ function SponsorLikecoinPage() {
 
   return (
     <div>
-      <LikecoinHeading />
       <div style={{ textAlign: 'left' }}>
         <iframe
           src="https://github.com/sponsors/likecoin/card"

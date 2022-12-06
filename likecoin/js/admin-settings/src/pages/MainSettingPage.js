@@ -7,7 +7,6 @@ import CheckBox from '../components/CheckBox';
 import DropDown from '../components/DropDown';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
-import LikecoinHeading from '../components/LikecoinHeading';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 import SubmitButton from '../components/SubmitButton';
@@ -94,14 +93,12 @@ function MainSettingPage() {
   if (!DBUserCanEditOption) {
     return (
       <div className="wrap likecoin">
-        <LikecoinHeading />
         <p>{forbiddenString}</p>
       </div>
     );
   }
   return (
     <div className="wrap likecoin">
-      <LikecoinHeading />
       {submitResponse && !savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}
