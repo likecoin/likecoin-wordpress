@@ -25,7 +25,6 @@ function WebmonitizationSetting() {
       setSavedSuccessful(true);
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
-      setSavedSuccessful(false);
     }
   }
   function handleNoticeDismiss(e) {

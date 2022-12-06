@@ -3,7 +3,6 @@ import {
 } from 'react';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import CheckBox from '../components/CheckBox';
 import DropDown from '../components/DropDown';
 import Section from '../components/Section';
 import SettingNotice from '../components/SettingNotice';
@@ -16,17 +15,14 @@ function MainSettingPage() {
   const { postSitePublishOptions } = useDispatch(SITE_PUBLISH_STORE_NAME);
   /* do not want to re-render the whole component until submit. Hence use useRef(). */
   const displayOptionRef = useRef();
-  const perPostOptionEnabledRef = useRef();
   const {
     DBUserCanEditOption,
     DBDisplayOptionSelected,
-    DBPerPostOptionEnabled,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   const {
     DBISCNBadgeStyleOption,
   } = useSelect((select) => select(SITE_PUBLISH_STORE_NAME).selectSitePublishOptions());
   const [displayOptionSelected, setDisplayOptionSelected] = useState(DBDisplayOptionSelected);
-  const [perPostOptionEnabled, setPerPostOptionEnabled] = useState(DBPerPostOptionEnabled);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [submitResponse, setSubmitResponse] = useState(false);
   const pluginSettingOptions = [
@@ -48,21 +44,17 @@ function MainSettingPage() {
   }, [DBISCNBadgeStyleOption]);
   useEffect(() => {
     setDisplayOptionSelected(DBDisplayOptionSelected);
-    setPerPostOptionEnabled(DBPerPostOptionEnabled);
   }, [
     DBDisplayOptionSelected,
-    DBPerPostOptionEnabled,
   ]);
   async function confirmHandler(e) {
     setSubmitResponse(null);
     setSavedSuccessful(false);
     e.preventDefault();
     const displayOption = displayOptionRef.current.value;
-    const isPerPostOptionEnabled = perPostOptionEnabledRef.current.checked;
     const currentISCNBadgeStyleOption = ISCNBadgeStyleOptionRef.current.value;
     const buttonData = {
       displayOption,
-      perPostOptionEnabled: isPerPostOptionEnabled,
     };
     const publishData = {
       ISCNBadgeStyleOption: currentISCNBadgeStyleOption,
@@ -126,16 +118,6 @@ function MainSettingPage() {
             title={__('Display option', 'likecoin')}
             selectRef={displayOptionRef}
             options={pluginSettingOptions}
-          />
-          <CheckBox
-            checked={perPostOptionEnabled}
-            handleCheck={setPerPostOptionEnabled}
-            title={__('Allow per Post option', 'likecoin')}
-            details={__(
-              'Allow editors to customize display setting per post',
-              'likecoin',
-            )}
-            checkRef={perPostOptionEnabledRef}
           />
         </tbody>
         <hr />
