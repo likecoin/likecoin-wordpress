@@ -28,6 +28,7 @@ function MainSettingPage() {
   const pluginSettingOptions = [
     { value: 'always', label: __('Page and Post', 'likecoin') },
     { value: 'post', label: __('Post Only', 'likecoin') },
+    { value: 'page', label: __('Page Only', 'likecoin') },
     { value: 'none', label: __('None', 'likecoin') },
   ];
   const ISCNBadgeStyleOptionRef = useRef();
