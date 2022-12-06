@@ -1,22 +1,19 @@
 import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import { createAndRegisterReduxStore } from './util';
 
 const {
-  root, nonce, postId, likecoHost,
+  postId, likecoHost,
 } = window.wpApiSettings;
 
 // eslint-disable-next-line import/prefer-default-export
 export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
 
-const getISCNRegisterDataEndPoint = `${root}likecoin/v1/posts/${postId}/iscn/arweave/upload`;
-const saveArweaveInfoEndpoint = `${root}likecoin/v1/posts/${postId}/iscn/arweave`;
-const getISCNInfoEndpoint = `${root}likecoin/v1/posts/${postId}/iscn/metadata`;
-const saveISCNInfoEndPoint = `${root}likecoin/v1/posts/${postId}/iscn/metadata`;
+const getISCNRegisterDataEndPoint = `/likecoin/v1/posts/${postId}/iscn/arweave/upload`;
+const saveArweaveInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/arweave`;
+const getISCNInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
+const saveISCNInfoEndPoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
 const getNFTMintInfoEndpoint = `https://api.${likecoHost}/likernft/mint?iscn_id=`;
-
-if (nonce) {
-  axios.defaults.headers.common['X-WP-Nonce'] = window.wpApiSettings.nonce;
-}
 
 const INITIAL_STATE = {
   DBArticleTitle: '',
@@ -75,34 +72,34 @@ const actions = {
     };
   },
   * fetchISCNRegisterData() {
-    const response = yield { type: 'GET_ISCN_REGISTER_DATA' };
-    if (!response.data) {
+    const res = yield { type: 'GET_ISCN_REGISTER_DATA' };
+    if (!res) {
       throw new Error('NO_ISCN_REGISTER_DATA_RETURNED');
     }
-    return response;
+    return res;
   },
   * postArweaveInfoData(data) {
-    const response = yield { type: 'POST_ARWEAVE_INFO_DATA', data };
-    if (!response.data) {
+    const res = yield { type: 'POST_ARWEAVE_INFO_DATA', data };
+    if (!res) {
       throw new Error('NO_ARWEAVE_INFO_RETURNED');
     }
     yield {
       type: 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE',
       data: {
-        arweaveId: response.data.arweave_id, ipfsHash: response.data.ipfs_hash,
+        arweaveId: res.arweave_id, ipfsHash: res.ipfs_hash,
       },
     };
   },
   * postISCNInfoData(data) {
-    const response = yield { type: 'POST_ISCN_INFO_DATA', data };
-    if (!response.data) {
+    const res = yield { type: 'POST_ISCN_INFO_DATA', data };
+    if (!res) {
       throw new Error('NO_ISCN_INFO_RETURNED');
     }
-    const { iscnVersion, iscnTimestamp } = response.data;
+    const { iscn_id: iscnId, iscnVersion, iscnTimestamp } = res;
     yield {
       type: 'UPDATE_ISCN_ID_GLOBAL_STATE',
       data: {
-        iscnId: response.data.iscn_id,
+        iscnId,
         iscnTimestamp,
         iscnVersion,
       },
@@ -120,27 +117,33 @@ const selectors = {
 
 const controls = {
   GET_ISCN_INFO() {
-    return axios.get(getISCNInfoEndpoint);
+    return apiFetch({
+      path: getISCNInfoEndpoint,
+    });
   },
   GET_NFT_INFO(action) {
     return axios.get(`${getNFTMintInfoEndpoint}${encodeURIComponent(action.iscnId)}`);
   },
   GET_ISCN_REGISTER_DATA() {
-    return axios.get(getISCNRegisterDataEndPoint);
+    return apiFetch({
+      path: getISCNRegisterDataEndPoint,
+    });
   },
   POST_ARWEAVE_INFO_DATA(action) {
-    return axios.post(
-      saveArweaveInfoEndpoint,
-      {
+    return apiFetch({
+      method: 'POST',
+      path: saveArweaveInfoEndpoint,
+      data: {
         arweaveIPFSHash: action.data.ipfsHash,
         arweaveId: action.data.arweaveId,
       },
-    );
+    });
   },
   POST_ISCN_INFO_DATA(action) {
-    return axios.post(
-      saveISCNInfoEndPoint,
-      {
+    apiFetch({
+      method: 'POST',
+      path: saveISCNInfoEndPoint,
+      data: {
         iscnHash: action.data.iscnHash,
         iscnId: action.data.iscnId,
         iscnVersion: action.data.iscnVersion,
@@ -149,7 +152,7 @@ const controls = {
           license: action.data.license,
         },
       },
-    );
+    });
   },
 };
 
@@ -175,7 +178,7 @@ const resolvers = {
         mattersArticleId,
         mattersId,
         mattersArticleSlug,
-      } = response.data;
+      } = response;
       return actions.setISCNInfo({
         ...iscnData,
         iscnId,

@@ -1,4 +1,4 @@
 <?php return array(
-	'dependencies' => array( 'react', 'wp-data', 'wp-edit-post', 'wp-element', 'wp-i18n', 'wp-plugins', 'wp-wordcount' ),
-	'version'      => '0eb0c5b34bbdbdf6976566bae87a31a0',
+	'dependencies' => array( 'react', 'wp-api-fetch', 'wp-data', 'wp-edit-post', 'wp-element', 'wp-i18n', 'wp-plugins', 'wp-wordcount' ),
+	'version'      => '1559214092f636436b786e00f2869979',
 );

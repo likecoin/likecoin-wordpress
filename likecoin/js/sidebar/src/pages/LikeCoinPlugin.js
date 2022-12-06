@@ -93,7 +93,7 @@ function LikeCoinPlugin() {
   );
   const sendISCNRegisterData = useCallback(async () => {
     popUpWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
-    const res = await fetchISCNRegisterData();
+    const data = await fetchISCNRegisterData();
     const {
       files,
       title: refreshedTitle,
@@ -102,7 +102,7 @@ function LikeCoinPlugin() {
       author: refreshedAuthor,
       authorDescription: refreshedAuthorDescription,
       description: refreshedDescription,
-    } = res.data;
+    } = data;
     setTitle(refreshedTitle);
     setTags(refreshedTags);
     setUrl(refreshedUrl);
