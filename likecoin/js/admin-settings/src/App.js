@@ -7,6 +7,7 @@ import LikecoinButtonPage from './pages/LikecoinButtonPage';
 import PublishSettingPage from './pages/PublishSettingPage';
 import OtherSettingPage from './pages/OtherSettingPage';
 import SponsorLikecoinPage from './pages/SponsorLikecoinPage';
+import LikeCoinHelpPage from './pages/LikeCoinHelpPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
           <Route path="about" element={<SponsorLikecoinPage />} />
         </Route>
         <Route path="button" element={<LikecoinButtonPage />} />
+        <Route path="help" element={<LikeCoinHelpPage />} />
       </Routes>
     </div>
   );

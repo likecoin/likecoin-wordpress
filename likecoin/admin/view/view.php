@@ -71,6 +71,17 @@ function likecoin_display_admin_pages() {
 		'likecoin_load_admin_js'
 	);
 	add_action( 'load-' . $likecoin_button_page, 'likecoin_load_admin_js' );
+
+	global $likecoin_help_page;
+	$likecoin_help_page = add_submenu_page(
+		'likecoin',
+		__( 'LikeCoin', 'likecoin' ),
+		__( 'Getting Started', 'likecoin' ),
+		'edit_posts',
+		'/likecoin#/help',
+		'likecoin_load_admin_js'
+	);
+	add_action( 'load-' . $likecoin_help_page, 'likecoin_load_admin_js' );
 }
 /**
  * Show default UI for admin main page.
