@@ -13,7 +13,6 @@ const INITIAL_STATE = {
   DBSiteLikerAvatar: '',
   DBSiteLikerDisplayName: '',
   DBSiteLikerWallet: '',
-  DBSiteLikerIdEnabled: false,
   DBDisplayOptionSelected: 'none',
   DBPerPostOptionEnabled: false,
 };
@@ -72,15 +71,10 @@ const resolvers = {
     try {
       const response = yield actions.getSiteLikerInfo();
       const siteLikerInfo = response.data;
-      const DBSiteLikerIdEnabled = !!(
-        siteLikerInfo.site_likecoin_id_enbled === '1'
-        || siteLikerInfo.site_likecoin_id_enbled === true
-      );
       const DBPerPostOptionEnabled = !!(
         siteLikerInfo.button_display_author_override === '1'
         || siteLikerInfo.button_display_author_override === true
       );
-      siteLikerInfo.site_likecoin_id_enbled = DBSiteLikerIdEnabled;
       siteLikerInfo.button_display_author_override = DBPerPostOptionEnabled;
       if (!siteLikerInfo.button_display_option) {
         siteLikerInfo.button_display_option = INITIAL_STATE.DBDisplayOptionSelected;
@@ -102,7 +96,6 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBSiteLikerAvatar: action.info.site_likecoin_user.avatar,
         DBSiteLikerDisplayName: action.info.site_likecoin_user.display_name,
         DBSiteLikerWallet: action.info.site_likecoin_user.wallet,
-        DBSiteLikerIdEnabled: action.info.site_likecoin_id_enbled,
         DBDisplayOptionSelected: action.info.button_display_option,
         DBPerPostOptionEnabled: action.info.button_display_author_override,
         DBUserCanEditOption: action.info.user_can_edit,
@@ -115,7 +108,6 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBSiteLikerAvatar: action.data.siteLikerInfos.avatar,
         DBSiteLikerDisplayName: action.data.siteLikerInfos.display_name,
         DBSiteLikerWallet: action.data.siteLikerInfos.wallet,
-        DBSiteLikerIdEnabled: action.data.siteLikerIdEnabled,
       };
     }
     case 'SET_FORBIDDEN_ERROR': {

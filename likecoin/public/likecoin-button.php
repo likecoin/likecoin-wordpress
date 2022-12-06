@@ -88,9 +88,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 	} else {
 		// check site id override.
 		$site_liker_id = empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ? '' : $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
-		if ( ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] ) && $site_liker_id ) {
-			$likecoin_id = $site_liker_id;
-		} elseif ( $post ) {
+		if ( $post ) {
 			$likecoin_id = likecoin_get_author_likecoin_id( $post );
 			if ( empty( $likecoin_id ) ) {
 				$likecoin_id = $site_liker_id;

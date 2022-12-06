@@ -50,7 +50,6 @@ define( 'LC_ISCN_INFO', 'lc_iscn_info' );
 define( 'LC_ARWEAVE_INFO', 'lc_arweave_info' );
 define( 'LC_MATTERS_IMAGE_INFO', 'lc_matters_image_info' );
 
-define( 'LC_OPTION_SITE_BUTTON_ENABLED', 'site_likecoin_id_enbled' );
 define( 'LC_OPTION_SITE_LIKECOIN_USER', 'site_likecoin_user' );
 
 define( 'LC_OPTION_BUTTON_DISPLAY_OPTION', 'button_display_option' );

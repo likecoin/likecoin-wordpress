@@ -1,10 +1,9 @@
 import {
-  useState, useEffect, useRef,
+  useState, useEffect,
 } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import Section from '../components/Section';
-import CheckBox from '../components/CheckBox';
 import LikecoinInfoTable from '../components/LikecoinInfoTable';
 import SubmitButton from '../components/SubmitButton';
 import LikeButtonPreview from '../components/LikeButtonPreview';
@@ -22,7 +21,6 @@ function LikecoinButtonPage() {
     DBSiteLikerAvatar,
     DBSiteLikerDisplayName,
     DBSiteLikerWallet,
-    DBSiteLikerIdEnabled,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   const {
     DBUserLikerId,
@@ -32,17 +30,12 @@ function LikecoinButtonPage() {
   } = useSelect((select) => select(USER_LIKER_INFO_STORE_NAME).selectUserLikerInfo());
   const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
   const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
-  const siteLikerIdEnabledRef = useRef();
-  useEffect(() => {
-    setSiteLikerIdEnabled(DBSiteLikerIdEnabled);
-  }, [DBSiteLikerIdEnabled]);
   const [currentLikerId, setCurrentLikerId] = useState(
-    DBSiteLikerIdEnabled ? DBSiteLikerId : (DBUserLikerId || DBSiteLikerId),
+    DBUserLikerId || DBSiteLikerId,
   );
   useEffect(() => {
-    setCurrentLikerId(DBSiteLikerIdEnabled ? DBSiteLikerId : (DBUserLikerId || DBSiteLikerId));
-  }, [DBSiteLikerId, DBSiteLikerIdEnabled, DBUserLikerId]);
-  const [siteLikerIdEnabled, setSiteLikerIdEnabled] = useState(DBSiteLikerIdEnabled);
+    setCurrentLikerId(DBUserLikerId || DBSiteLikerId);
+  }, [DBSiteLikerId, DBUserLikerId]);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [siteLikerInfo, setSiteLikerInfo] = useState({});
   const [userLikerInfo, setUserLikerInfo] = useState({});
@@ -56,9 +49,7 @@ function LikecoinButtonPage() {
   function updateLikerIdHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
-    const isSiteLikerIdEnabled = siteLikerIdEnabledRef?.current?.checked;
     const siteData = {
-      siteLikerIdEnabled: isSiteLikerIdEnabled,
       siteLikerInfos: {
         likecoin_id: siteLikerInfo.likerIdValue,
         display_name: siteLikerInfo.likerDisplayName,
@@ -113,17 +104,6 @@ function LikecoinButtonPage() {
               onLikerIdUpdate={onSiteLikerIdUpdate}
             />
             <br />
-            <tbody>
-              <CheckBox
-                checked={siteLikerIdEnabled}
-                handleCheck={setSiteLikerIdEnabled}
-                title={__('Override all Liker ID with site default', 'likecoin')}
-                details={__(
-                  'Override all LikeCoin button with site default Liker ID',
-                  'likecoin',
-                )}
-                checkRef={siteLikerIdEnabledRef} />
-            </tbody>
           </>
         )}
         <hr />
@@ -134,10 +114,9 @@ function LikecoinButtonPage() {
           defaultLikerDisplayName={DBUserLikerDisplayName}
           defaultLikerWalletAddress={DBUserLikerWallet}
           defaultLikerAvatar={DBUserLikerAvatar}
-          editable={!siteLikerIdEnabled}
           onLikerIdUpdate={onUserLikerIdUpdate}
         />
-        {(!DBSiteLikerIdEnabled || DBUserCanEditOption) && (
+        {(DBUserCanEditOption) && (
           <SubmitButton />
         )}
       </form>
