@@ -1,14 +1,14 @@
 import { useRef, useState, useEffect } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import CheckBox from './CheckBox';
-import Section from './Section';
-import SettingNotice from './SettingNotice';
-import SubmitButton from './SubmitButton';
+import CheckBox from '../CheckBox';
+import Section from '../Section';
+import SettingNotice from '../SettingNotice';
+import SubmitButton from '../SubmitButton';
 import WebMonetizationDescription from './WebMonetizationDescription';
-import { OTHER_SETTING_STORE_NAME } from '../store/other-setting-store';
+import { OTHER_SETTING_STORE_NAME } from '../../store/other-setting-store';
 
-function WebmonitizationSetting() {
+function WebMonetizationSetting() {
   // eslint-disable-next-line arrow-body-style
   const DBPaymentPointer = useSelect((select) => select(OTHER_SETTING_STORE_NAME)
     .selectPaymentPointer());
@@ -83,4 +83,4 @@ function WebmonitizationSetting() {
   );
 }
 
-export default WebmonitizationSetting;
+export default WebMonetizationSetting;

@@ -1,7 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import AdvancedWidgetSetting from '../components/AdvancedWidgetSetting';
 import PublishSetting from '../components/PublishSetting';
-import WebmonitizationSetting from '../components/WebMonetizationSetting';
+import WebMonetizationSetting from '../components/WebMonetization/WebMonetizationSetting';
 
 function AdvancedSettingPage() {
   return (
@@ -10,7 +10,7 @@ function AdvancedSettingPage() {
       <hr />
       <PublishSetting />
       <hr />
-      <WebmonitizationSetting />
+      <WebMonetizationSetting />
     </>
   );
 }

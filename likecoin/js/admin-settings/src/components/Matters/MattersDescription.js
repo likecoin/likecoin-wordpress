@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
-import Link from './Link';
+import Link from '../Link';
 
 function MattersDescription() {
   const localizedMattersShortIntro = createInterpolateElement(

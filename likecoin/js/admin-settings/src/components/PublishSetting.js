@@ -7,9 +7,9 @@ import Section from './Section';
 import SettingNotice from './SettingNotice';
 import CheckBox from './CheckBox';
 import SubmitButton from './SubmitButton';
-import MattersDescription from './MattersDescription';
-import MattersLoginTable from './MattersLoginTable';
-import MattersStatusTable from './MattersStatusTable';
+import MattersDescription from './Matters/MattersDescription';
+import MattersLoginTable from './Matters/MattersLoginTable';
+import MattersStatusTable from './Matters/MattersStatusTable';
 import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 
 function PublishSetting() {
