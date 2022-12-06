@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import Section from '../components/Section';
-import LikecoinInfoTable from '../components/LikecoinInfoTable';
+import LikerIdTable from '../components/LikerIdTable';
 import SubmitButton from '../components/SubmitButton';
 import SettingNotice from '../components/SettingNotice';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
@@ -61,12 +61,13 @@ function LikecoinButtonPage() {
       )}
       <form onSubmit={updateLikerIdHandler}>
         <Section title={__('Your Liker ID', 'likecoin')} />
-        <LikecoinInfoTable
+        <LikerIdTable
           likecoHost={likecoHost}
           defaultLikerId={DBUserLikerId}
           defaultLikerDisplayName={DBUserLikerDisplayName}
           defaultLikerWalletAddress={DBUserLikerWallet}
           defaultLikerAvatar={DBUserLikerAvatar}
+          editable={true}
           onLikerIdUpdate={onUserLikerIdUpdate}
         />
         {(DBUserCanEditOption) && (

@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import Text from './Text';
 
-function LikecoinInfoTable(props) {
+function LikerIdTable(props) {
   const likerIdRef = useRef();
   const [likerIdValue, setLikerIdValue] = useState(props.defaultLikerId);
   const [likerDisplayName, setLikerDisplayName] = useState(
@@ -221,4 +221,4 @@ function LikecoinInfoTable(props) {
   );
 }
 
-export default LikecoinInfoTable;
+export default LikerIdTable;

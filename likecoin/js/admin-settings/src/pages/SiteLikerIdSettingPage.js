@@ -2,25 +2,28 @@ import { useState } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import Section from '../components/Section';
-import LikecoinInfoTable from '../components/LikecoinInfoTable';
+import LikerIdTable from '../components/LikerIdTable';
 import SubmitButton from '../components/SubmitButton';
 import SettingNotice from '../components/SettingNotice';
+import CheckBox from '../components/CheckBox';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
-// import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
+import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
 const { likecoHost } = window.likecoinReactAppData;
 
 function SiteLikerSetting() {
   const {
     DBUserCanEditOption,
+    DBUserLikerId,
     DBSiteLikerId,
     DBSiteLikerAvatar,
     DBSiteLikerDisplayName,
     DBSiteLikerWallet,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
-  // const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
+  const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
+  const [saveAsUser, setSaveAsUser] = useState(DBUserLikerId === DBSiteLikerId);
   const [siteLikerInfo, setSiteLikerInfo] = useState({});
 
   function onSiteLikerIdUpdate(likerInfo) {
@@ -37,20 +40,22 @@ function SiteLikerSetting() {
         avatar: siteLikerInfo.likerAvatar,
       },
     };
-    // const userData = {
-    //   userLikerInfos: {
-    //     likecoin_id: siteLikerInfo.likerIdValue,
-    //     display_name: siteLikerInfo.likerDisplayName,
-    //     wallet: siteLikerInfo.likerWalletAddress,
-    //     avatar: siteLikerInfo.likerAvatar,
-    //   },
-    // };
+    const userData = {
+      userLikerInfos: {
+        likecoin_id: siteLikerInfo.likerIdValue,
+        display_name: siteLikerInfo.likerDisplayName,
+        wallet: siteLikerInfo.likerWalletAddress,
+        avatar: siteLikerInfo.likerAvatar,
+      },
+    };
     try {
       // Change global state & DB
       if (DBUserCanEditOption) {
         postSiteLikerInfo(siteData);
       }
-      // postUserLikerInfo(userData);
+      if (saveAsUser) {
+        postUserLikerInfo(userData);
+      }
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
     } catch (error) {
@@ -73,7 +78,7 @@ function SiteLikerSetting() {
       <form onSubmit={updateLikerIdHandler}>
         {DBUserCanEditOption && (
           <><Section title={__('Site Default Liker ID', 'likecoin')} />
-            <LikecoinInfoTable
+            <LikerIdTable
               likecoHost={likecoHost}
               defaultLikerId={DBSiteLikerId}
               defaultLikerDisplayName={DBSiteLikerDisplayName}
@@ -85,6 +90,10 @@ function SiteLikerSetting() {
             <br />
           </>
         )}
+        <CheckBox
+          checked={saveAsUser}
+          handleCheck={setSaveAsUser}
+          details={__('Also use as your Liker ID', 'likecoin')} />
         <hr />
         {(DBUserCanEditOption) && (
           <SubmitButton />
