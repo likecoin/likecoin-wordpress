@@ -65,45 +65,12 @@ function likecoin_display_admin_pages() {
 	$likecoin_button_page = add_submenu_page(
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
-		__( 'Your Liker ID', 'likecoin' ),
+		__( 'Liker ID', 'likecoin' ),
 		'edit_posts',
-		'/likecoin#/likecoin-button',
+		'/likecoin#/button',
 		'likecoin_load_admin_js'
 	);
 	add_action( 'load-' . $likecoin_button_page, 'likecoin_load_admin_js' );
-
-	global $publish_setting_page;
-	$publish_setting_page = add_submenu_page(
-		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
-		__( 'Distribution Setting', 'likecoin' ),
-		'manage_options',
-		'/likecoin#/publish-setting',
-		'likecoin_load_admin_js'
-	);
-	add_action( 'load-' . $publish_setting_page, 'likecoin_load_admin_js' );
-
-	global $other_setting_page;
-	$other_setting_page = add_submenu_page(
-		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
-		__( 'Other Setting', 'likecoin' ),
-		'manage_options',
-		'/likecoin#/other',
-		'likecoin_load_admin_js'
-	);
-	add_action( 'load-' . $other_setting_page, 'likecoin_load_admin_js' );
-
-	global $sponsor_likecoin_page;
-	$sponsor_likecoin_page = add_submenu_page(
-		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
-		__( 'Sponsor Likecoin', 'likecoin' ),
-		'edit_posts',
-		'/likecoin#/sponsor-likecoin',
-		'likecoin_load_admin_js'
-	);
-	add_action( 'load-' . $sponsor_likecoin_page, 'likecoin_load_admin_js' );
 }
 /**
  * Show default UI for admin main page.
