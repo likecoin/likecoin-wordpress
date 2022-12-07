@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
 import Link from '../components/Link';
+import Section from '../components/Section';
 
 function LikeCoinHelpPage() {
   const localizedIntroduction = createInterpolateElement(
@@ -17,7 +18,8 @@ function LikeCoinHelpPage() {
   );
   return (
     <div>
-      <div style={{ textAlign: 'left' }}>
+      <div>
+      <Section title={__('Getting Started', 'likecoin')} />
         <p>{localizedIntroduction}</p>
       </div>
     </div>

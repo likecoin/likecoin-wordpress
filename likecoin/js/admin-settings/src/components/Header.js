@@ -2,11 +2,18 @@ import { __ } from '@wordpress/i18n';
 import Logo from '../assets/logo.png';
 
 function Header() {
-  return <header>
+  return <header style={{ display: 'flex' }}>
     <img src={Logo} alt={__('liker.land logo', 'likecoin')}/>
-    <a href="https://liker.land/dashboard" rel="noopenner">
-      {__('Your Portfolio', 'likecoin')}
-    </a>
+    <div></div>
+    <div style={{ margin: '5px' }}>
+      <a style={{
+        padding: '5px',
+        border: 'solid 1px',
+        borderRadius: '5px',
+      }} href="https://liker.land/dashboard" rel="noopenner">
+        {__('Your Portfolio', 'likecoin')}
+      </a>
+    </div>
   </header>;
 }
 
