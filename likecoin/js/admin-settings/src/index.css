@@ -39,10 +39,6 @@ input {
 	font-size: 14px;
 }
 
-h1 {
-	text-align: left;
-}
-
 h4 {
 	display: block;
 
@@ -54,10 +50,6 @@ h4 {
 	margin-block-end: 1.33em;
 	margin-inline-start: 0;
 	margin-inline-end: 0;
-}
-
-tr {
-	text-align: left;
 }
 
 img {
@@ -417,10 +409,6 @@ table {
 	text-decoration: none;
 
 	font-weight: 600;
-}
-
-.wrap {
-	text-align: left;
 }
 
 #likecoinChangeBtn {

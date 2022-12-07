@@ -108,7 +108,7 @@ function MainSettingPage() {
         <Section
           title={__('LikeCoin widget', 'likecoin')}
         />
-        <div style={{ textAlign: 'left' }}>
+        <div>
           <p>{__('Enable for Liker ID or ISCN registered post', 'likecoin')}</p>
         </div>
         <tbody>
@@ -122,7 +122,7 @@ function MainSettingPage() {
         </tbody>
         <hr />
         <Section title={__('ISCN Badge', 'likecoin')} />
-        <div style={{ textAlign: 'left' }}>
+        <div>
           <p>{__('Display a badge for registered post', 'likecoin')}</p>
         </div>
         <table className="form-table" role="presentation">

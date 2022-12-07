@@ -1,6 +1,6 @@
 function Section(props) {
   return (
-    <h2 style={{ textAlign: 'left' }}>{props.title}</h2>
+    <h2>{props.title}</h2>
   );
 }
 

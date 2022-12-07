@@ -28,7 +28,7 @@ function MattersDescription() {
     },
   );
   return (
-    <div style={{ textAlign: 'left' }}>
+    <div>
       <h2>
         <a
           rel="noopener noreferrer"
