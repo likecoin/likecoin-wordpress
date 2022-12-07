@@ -75,14 +75,8 @@ function SponsorLikecoinPage() {
 
   return (
     <div>
-      <div style={{ textAlign: 'left' }}>
-        <iframe
-          src="https://github.com/sponsors/likecoin/card"
-          title="Sponsor likecoin"
-          height="225"
-          width="660"
-          style={{ overflow: 'hidden', border: 0 }}
-        ></iframe>
+      <div>
+        <ParagraphTitle text={__('What is LikeCoin?', 'likecoin')} />
         <p>{localizedIntroduction}</p>
         <ParagraphTitle text={__('Decentralized Registry', 'likecoin')} />
         <p>{localizedDecentralizedRegistry}</p>
@@ -98,10 +92,10 @@ function SponsorLikecoinPage() {
         <ParagraphTitle text={__('Decentralized Governance', 'likecoin')} />
         <p>{localizedDecentralizedGovernance}</p>
         <iframe
-          src="https://github.com/sponsors/likecoin/button"
+          src="https://github.com/sponsors/likecoin/card"
           title="Sponsor likecoin"
-          height="35"
-          width="116"
+          height="225"
+          width="660"
           style={{ overflow: 'hidden', border: 0 }}
         ></iframe>
       </div>
