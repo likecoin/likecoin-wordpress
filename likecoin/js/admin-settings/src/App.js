@@ -1,4 +1,6 @@
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelect } from '@wordpress/data';
+import { SITE_LIKER_INFO_STORE_NAME } from './store/site-likerInfo-store';
 import Header from './components/Header';
 import MainSettingLayout from './pages/MainSettingLayout';
 import MainSettingPage from './pages/MainSettingPage';
@@ -10,17 +12,20 @@ import SponsorLikecoinPage from './pages/SponsorLikecoinPage';
 import LikeCoinHelpPage from './pages/LikeCoinHelpPage';
 
 function App() {
+  const {
+    DBUserCanEditOption,
+  } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   return (
     <div className="App">
       <Header />
       <Routes>
         <Route path="" element={<MainSettingLayout />}>
-          <Route index element={<MainSettingPage />} />
+          <Route index element={DBUserCanEditOption ? <MainSettingPage /> : <Navigate to="/about" replace />} />
           <Route path="advanced" element={<AdvancedSettingPage />} />
           <Route path="about" element={<SponsorLikecoinPage />} />
         </Route>
         <Route path="button" element={<LikerIdSettingLayout />}>
-          <Route index element={<SiteLikerIdSettingPage />} />
+          <Route index element={DBUserCanEditOption ? <SiteLikerIdSettingPage /> : <Navigate to="user" replace />} />
           <Route path="user" element={<UserLikerIdSettingPage />} />
         </Route>
         <Route path="help" element={<LikeCoinHelpPage />} />
