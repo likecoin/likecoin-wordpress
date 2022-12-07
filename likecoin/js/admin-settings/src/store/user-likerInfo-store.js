@@ -34,7 +34,9 @@ const actions = {
   },
   * postUserLikerInfo(info) {
     yield { type: 'POST_USER_LIKER_INFO_TO_DB', data: info };
-    yield { type: 'CHANGE_USER_LIKER_INFO_GLOBAL_STATE', data: info };
+    if (info.likecoin_user) {
+      yield { type: 'CHANGE_USER_LIKER_INFO_GLOBAL_STATE', data: info };
+    }
   },
 };
 
