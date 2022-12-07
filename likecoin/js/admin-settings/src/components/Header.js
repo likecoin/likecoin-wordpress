@@ -10,7 +10,7 @@ function Header() {
         padding: '5px',
         border: 'solid 1px',
         borderRadius: '5px',
-      }} href="https://liker.land/dashboard" rel="noopenner">
+      }} href="https://liker.land/dashboard" rel="noopener noreferrer" target="_blank">
         {__('Your Portfolio', 'likecoin')}
       </a>
     </div>
