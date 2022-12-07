@@ -88,7 +88,7 @@ function likecoin_display_admin_pages() {
  */
 function likecoin_show_likecoin_admin_main_page_content() {
 	?> 
-	<div id="likecoin-admin-settingss"></div>
+	<div id="likecoin-admin-settings"></div>
 	<?php
 }
 /**
@@ -137,7 +137,7 @@ function likecoin_enqueue_admin_js() {
 		'likecoin-admin-settings',
 		'likecoinReactAppData',
 		array(
-			'appSelector'   => '#likecoin-admin-settingss',
+			'appSelector'   => '#likecoin-admin-settings',
 			'likecoHost'    => LC_LIKE_CO_HOST,
 			'likerlandHost' => LC_LIKER_LAND_HOST,
 		)
