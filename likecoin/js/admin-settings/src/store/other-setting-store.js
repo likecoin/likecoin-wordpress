@@ -1,10 +1,10 @@
-import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const OTHER_SETTING_STORE_NAME = 'likecoin/other_settings';
 
-const webMonetizationEndpoint = `${window.wpApiSettings.root}likecoin/v1/option/web-monetization`;
+const webMonetizationEndpoint = '/likecoin/v1/option/web-monetization';
 const INITIAL_STATE = {
   DBPaymentPointer: '',
 };
@@ -38,24 +38,14 @@ const selectors = {
 
 const controls = {
   GET_PAYMENT_POINTER() {
-    return axios.get(webMonetizationEndpoint, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
-    });
+    return apiFetch({ path: webMonetizationEndpoint });
   },
   POST_PAYMENT_POINTER(action) {
-    return axios.post(
-      webMonetizationEndpoint,
-      JSON.stringify({ paymentPointer: action.paymentPointer }),
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          'X-WP-Nonce': window.wpApiSettings.nonce, // prevent CORS attack.
-        },
-      },
-    );
+    return apiFetch({
+      method: 'POST',
+      path: webMonetizationEndpoint,
+      data: { paymentPointer: action.paymentPointer },
+    });
   },
 };
 
@@ -63,7 +53,7 @@ const resolvers = {
   * selectPaymentPointer() { // need to match corresponding selector names
     try {
       const response = yield actions.getPaymentPointer();
-      const paymentPointer = response.data.data.site_payment_pointer;
+      const paymentPointer = response.data.site_payment_pointer;
       return actions.setPaymentPointer(paymentPointer);
     } catch (error) {
       return actions.setHTTPErrors(error.message); // need a return value even for errors from lint.

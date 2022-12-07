@@ -54,9 +54,7 @@ function likecoin_add_sidebar( $post, $publish_params ) {
 		'lc-plugin-sidebar-js',
 		'wpApiSettings',
 		array(
-			'root'          => esc_url_raw( rest_url() ),
 			'siteurl'       => get_site_url(),
-			'nonce'         => wp_create_nonce( 'wp_rest' ),
 			'postId'        => $post_id,
 			'likecoHost'    => LC_LIKE_CO_HOST,
 			'likerlandHost' => LC_LIKER_LAND_HOST,

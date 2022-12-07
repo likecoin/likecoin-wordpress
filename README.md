@@ -22,9 +22,26 @@ docker-compose build
 
 # Run the dev env
 docker-compose up
+
+# Install nodejs dependencies
+# npm install
 ```
 
-## Test
+## JavaScript Development
+Auto rebuild script in dev mode. Only one javascript component can be run at a time.
+``` bash
+# DePub metabox for classic editor
+npm run dev:admin:metabox
+
+# LikeCoin plugin admin setting pages
+npm run dev:admin-settings
+
+# DePub Editor sidebar for Gutenberg
+npm run dev:sidebar
+```
+
+
+## Lint
 TODO: we are running these command in host, should switch to docker-based test command
 
 Run PHP sniffer for PHP lint
@@ -48,23 +65,17 @@ cd ..
 ./vendor/bin/phpcbf likecoin --standard=WordPress --extensions=php
 ```
 
-Run Eslint for javascript lint
+Run Eslint and Stylelint for javascript lint
 ``` bash
-# Install nodejs dependencies
-npm install
-
-# run eslint
-npm run test
+# run eslint and stylelint
+npm run lint
 ```
 
 ## Production
 
-Javascript files need to be transpile using rollup
+Javascript files need to be transpile using wp-script
 
 ``` bash
-# Install nodejs dependencies
-# npm install
-
-# Run babel and rollup
+# Run wp-script/webpack
 npm run build
 ```

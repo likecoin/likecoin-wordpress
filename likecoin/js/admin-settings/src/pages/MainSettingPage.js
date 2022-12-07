@@ -102,14 +102,14 @@ function MainSettingPage() {
   return (
     <div className="wrap likecoin">
       <LikecoinHeading />
-      {submitResponse && !savedSuccessful && (
+      {submitResponse && savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}
           className="notice-success"
           handleNoticeDismiss={handleNoticeDismiss}
         />
       )}
-      {submitResponse && savedSuccessful && (
+      {submitResponse && !savedSuccessful && (
         <SettingNotice
           text={submitResponse}
           className="notice-error"

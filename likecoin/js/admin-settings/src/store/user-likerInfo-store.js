@@ -1,10 +1,10 @@
-import axios from 'axios';
+import apiFetch from '@wordpress/api-fetch';
 import { createAndRegisterReduxStore } from './util';
 
 // eslint-disable-next-line import/prefer-default-export
 export const USER_LIKER_INFO_STORE_NAME = 'likecoin/user_liker_info';
 
-const endPoint = `${window.wpApiSettings.root}likecoin/v1/options/button/user`;
+const endPoint = '/likecoin/v1/options/button/user';
 
 const INITIAL_STATE = {
   DBUserLikerId: '',
@@ -34,7 +34,9 @@ const actions = {
   },
   * postUserLikerInfo(info) {
     yield { type: 'POST_USER_LIKER_INFO_TO_DB', data: info };
-    yield { type: 'CHANGE_USER_LIKER_INFO_GLOBAL_STATE', data: info };
+    if (info.likecoin_user) {
+      yield { type: 'CHANGE_USER_LIKER_INFO_GLOBAL_STATE', data: info };
+    }
   },
 };
 
@@ -44,19 +46,13 @@ const selectors = {
 
 const controls = {
   GET_USER_LIKER_INFO(action) {
-    return axios.get(action.path, {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
-    });
+    return apiFetch({ path: action.path });
   },
   POST_USER_LIKER_INFO_TO_DB(action) {
-    return axios.post(endPoint, JSON.stringify(action.data), {
-      headers: {
-        'Content-Type': 'application/json',
-        'X-WP-Nonce': window.wpApiSettings.nonce,
-      },
+    return apiFetch({
+      method: 'POST',
+      path: endPoint,
+      data: action.data,
     });
   },
 };
@@ -65,7 +61,7 @@ const resolvers = {
   * selectUserLikerInfo() {
     try {
       const response = yield actions.getUserLikerInfo(endPoint);
-      const userLikersInfo = response.data.data;
+      const userLikersInfo = response.data;
       return actions.setUserLikerInfo(userLikersInfo);
     } catch (error) {
       return actions.setHTTPErrors(error.message);
