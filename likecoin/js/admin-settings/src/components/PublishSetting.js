@@ -1,18 +1,16 @@
 import {
-  useRef, useState, useEffect,
+  useRef, useState, useEffect, useImperativeHandle, forwardRef,
 } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import Section from './Section';
-import SettingNotice from './SettingNotice';
 import CheckBox from './CheckBox';
-import SubmitButton from './SubmitButton';
 import MattersDescription from './Matters/MattersDescription';
 import MattersLoginTable from './Matters/MattersLoginTable';
 import MattersStatusTable from './Matters/MattersStatusTable';
 import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 
-function PublishSetting() {
+function PublishSetting(_, ref) {
   // eslint-disable-next-line arrow-body-style
   const {
     DBSiteMattersId,
@@ -32,7 +30,6 @@ function PublishSetting() {
   const siteMattersAddFooterLinkRef = useRef();
   const [showMatters, setShowMatters] = useState(!!(DBSiteMattersId
     || DBSiteMattersAutoSaveDraft || DBSiteMattersAutoPublish));
-  const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [siteMattersId, setSiteMattersId] = useState(
     DBSiteMattersId,
   );
@@ -78,10 +75,9 @@ function PublishSetting() {
 
       // change global state
       updateSiteMattersLoginGlobalState(siteMattersUser);
-      setMattersLoginError('');
+      setMattersLoginError(__('Success', 'likecoin'));
       // change local state
       setSiteMattersId(siteMattersUser.mattersId);
-      setSavedSuccessful(true);
     } catch (error) {
       console.error(error);
     }
@@ -99,7 +95,6 @@ function PublishSetting() {
     await loginToMattersAndSaveDataToWordpress(data);
   }
   async function handleMattersLogout(e) {
-    setSavedSuccessful(false);
     e.preventDefault();
 
     // set local state
@@ -113,16 +108,10 @@ function PublishSetting() {
     await siteMattersLogout();
     // change global state
     updateSiteMattersLoginGlobalState(siteMattersUser);
-    setSavedSuccessful(true);
-  }
-  function handleNoticeDismiss(e) {
-    e.preventDefault();
-    setSavedSuccessful(false);
   }
 
-  async function confirmHandler(e) {
-    setSavedSuccessful(false);
-    e.preventDefault();
+  async function confirmHandler() {
+    if (!showMatters) return;
     const isSiteMattersAutoSaveDraft = siteMattersAutoSaveDraftRef.current.checked;
     const isSiteMattersAutoPublish = siteMattersAutoPublishRef.current.checked;
     const isSiteMattersAddFooterLink = siteMattersAddFooterLinkRef.current.checked;
@@ -132,16 +121,7 @@ function PublishSetting() {
       siteMattersAutoPublish: isSiteMattersAutoPublish,
       siteMattersAddFooterLink: isSiteMattersAddFooterLink,
     };
-
-    // save to Wordpress DB.
-    try {
-      // Change global state & DB
-      postSitePublishOptions(data);
-      setSavedSuccessful(true);
-    } catch (error) {
-      console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console
-      setSavedSuccessful(false);
-    }
+    postSitePublishOptions(data);
   }
 
   useEffect(() => {
@@ -157,15 +137,10 @@ function PublishSetting() {
     DBSiteMattersAddFooterLink,
   ]);
 
-  return (
-    <div className="wrap likecoin">
-      {savedSuccessful && (
-        <SettingNotice
-          text={__('Settings Saved', 'likecoin')}
-          className="notice-success"
-          handleNoticeDismiss={handleNoticeDismiss}
-        />
-      )}
+  useImperativeHandle(ref, () => ({
+    submit: confirmHandler,
+  }));
+  return (<>
       <Section title={__('Publish to other platforms', 'likecoin')} />
       <p>{__('LikeCoin plugin can help you to publish you post to other platform.', 'likecoin')}</p>
       <CheckBox
@@ -174,43 +149,44 @@ function PublishSetting() {
         title={__('Matters', 'likecoin')}
         details={__('Publish to Matters.news', 'likecoin')} />
       {showMatters && (
-        <><Section title={__('Login with Matters ID', 'likecoin')} /><MattersDescription /><MattersLoginTable
+        <><Section title={__('Login with Matters ID', 'likecoin')} />
+        <MattersDescription />
+        <MattersLoginTable
           loginHandler={loginHandler}
           mattersIdRef={mattersIdRef}
           mattersPasswordRef={mattersPasswordRef}
-          mattersLoginError={mattersLoginError} /><hr /><form onSubmit={confirmHandler}>
-            <Section title={__('Matters connection status', 'likecoin')} />
-            <MattersStatusTable
-              siteMattersId={siteMattersId}
-              handleMattersLogout={handleMattersLogout} />
-            <Section title={__('Publish to Matters', 'likecoin')} />
-            <table className="form-table" role="presentation">
-              <tbody>
-                <CheckBox
-                  checked={siteMattersAutoSaveDraft}
-                  handleCheck={setSiteMattersAutoSaveDraft}
-                  title={__('Auto save draft to Matters', 'likecoin')}
-                  details={__('Auto save draft to Matters', 'likecoin')}
-                  checkRef={siteMattersAutoSaveDraftRef} />
-                <CheckBox
-                  checked={siteMattersAutoPublish}
-                  handleCheck={setSiteMattersAutoPublish}
-                  title={__('Auto publish post to Matters', 'likecoin')}
-                  details={__('Auto publish post to Matters', 'likecoin')}
-                  checkRef={siteMattersAutoPublishRef} />
-                <CheckBox
-                  checked={siteMattersAddFooterLink}
-                  handleCheck={setSiteMattersAddFooterLink}
-                  title={__('Add post link in footer', 'likecoin')}
-                  details={__('Add post link in footer', 'likecoin')}
-                  checkRef={siteMattersAddFooterLinkRef} />
-              </tbody>
-            </table>
-            <SubmitButton />
-          </form></>
+          mattersLoginError={mattersLoginError} />
+          <hr />
+          <Section title={__('Matters connection status', 'likecoin')} />
+          <MattersStatusTable
+            siteMattersId={siteMattersId}
+            handleMattersLogout={handleMattersLogout} />
+          <Section title={__('Publish to Matters', 'likecoin')} />
+          <table className="form-table" role="presentation">
+            <tbody>
+              <CheckBox
+                checked={siteMattersAutoSaveDraft}
+                handleCheck={setSiteMattersAutoSaveDraft}
+                title={__('Auto save draft to Matters', 'likecoin')}
+                details={__('Auto save draft to Matters', 'likecoin')}
+                checkRef={siteMattersAutoSaveDraftRef} />
+              <CheckBox
+                checked={siteMattersAutoPublish}
+                handleCheck={setSiteMattersAutoPublish}
+                title={__('Auto publish post to Matters', 'likecoin')}
+                details={__('Auto publish post to Matters', 'likecoin')}
+                checkRef={siteMattersAutoPublishRef} />
+              <CheckBox
+                checked={siteMattersAddFooterLink}
+                handleCheck={setSiteMattersAddFooterLink}
+                title={__('Add post link in footer', 'likecoin')}
+                details={__('Add post link in footer', 'likecoin')}
+                checkRef={siteMattersAddFooterLinkRef} />
+            </tbody>
+          </table></>
       )}
-    </div>
+    </>
   );
 }
 
-export default PublishSetting;
+export default forwardRef(PublishSetting);

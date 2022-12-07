@@ -1,46 +1,33 @@
-import { useRef, useState, useEffect } from 'react';
+import {
+  useRef, useState, useEffect, useImperativeHandle, forwardRef,
+} from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import CheckBox from '../CheckBox';
 import Section from '../Section';
-import SettingNotice from '../SettingNotice';
-import SubmitButton from '../SubmitButton';
 import WebMonetizationDescription from './WebMonetizationDescription';
 import { OTHER_SETTING_STORE_NAME } from '../../store/other-setting-store';
 
-function WebMonetizationSetting() {
-  // eslint-disable-next-line arrow-body-style
+function WebMonetizationSetting(_, ref) {
   const DBPaymentPointer = useSelect((select) => select(OTHER_SETTING_STORE_NAME)
     .selectPaymentPointer());
   const { postPaymentPointer } = useDispatch(OTHER_SETTING_STORE_NAME);
-  const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [showWebMonetization, setShowWebMonetization] = useState(!!DBPaymentPointer);
   useEffect(() => { setShowWebMonetization(!!DBPaymentPointer); }, [DBPaymentPointer]);
   const paymentPointerRef = useRef();
-  async function confirmHandler(e) {
-    setSavedSuccessful(false);
-    e.preventDefault();
+  async function confirmHandler() {
+    if (!showWebMonetization) return;
     try {
       postPaymentPointer(paymentPointerRef.current.value); // change global state & DB
-      setSavedSuccessful(true);
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
     }
   }
-  function handleNoticeDismiss(e) {
-    e.preventDefault();
-    setSavedSuccessful(false);
-  }
-
+  useImperativeHandle(ref, () => ({
+    submit: confirmHandler,
+  }));
   return (
-    <div className="wrap likecoin">
-      {savedSuccessful && (
-        <SettingNotice
-          text={__('Settings Saved', 'likecoin')}
-          className="notice-success"
-          handleNoticeDismiss={handleNoticeDismiss}
-        />
-      )}
+      <>
       <Section title={__('Web Monetization', 'likecoin')} />
       <WebMonetizationDescription />
       <CheckBox
@@ -49,8 +36,7 @@ function WebMonetizationSetting() {
         title={__('Web Monetization', 'likecoin')}
         details={__('Enable settings', 'likecoin')} />
       {showWebMonetization && (
-        <><form onSubmit={confirmHandler}>
-          <table className="form-table" role="presentation">
+        <><table className="form-table" role="presentation">
             <tbody>
               <tr>
                 <th scope="row">
@@ -76,11 +62,10 @@ function WebMonetizationSetting() {
               </tr>
             </tbody>
           </table>
-          <SubmitButton />
-        </form></>
+        </>
       )}
-    </div>
+    </>
   );
 }
 
-export default WebMonetizationSetting;
+export default forwardRef(WebMonetizationSetting);

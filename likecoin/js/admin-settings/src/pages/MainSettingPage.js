@@ -72,7 +72,6 @@ function MainSettingPage() {
     } catch (error) {
       console.error(error);
       setSubmitResponse(error.message.toString());
-      setSavedSuccessful(false);
     }
   }
   function handleNoticeDismiss(e) {
