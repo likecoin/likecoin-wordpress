@@ -106,7 +106,7 @@ function MainSettingPage() {
           title={__('LikeCoin widget', 'likecoin')}
         />
         <div>
-          <p>{__('Display LikeCoin Button/Widget when author has a Liker ID or post is registered on ISCN', 'likecoin')}</p>
+          <p>{__('Display LikeCoin Button/Widget when author has a Liker ID, or if post is registered on ISCN', 'likecoin')}</p>
         </div>
         <tbody>
           <CheckBox

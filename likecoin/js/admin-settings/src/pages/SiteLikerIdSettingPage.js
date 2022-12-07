@@ -78,6 +78,7 @@ function SiteLikerSetting() {
       <form onSubmit={updateLikerIdHandler}>
         {DBUserCanEditOption && (
           <><Section title={__('Site Default Liker ID', 'likecoin')} />
+            <p>{__('This will be the site default Liker ID if any author has not set one.', 'likecoin')}</p>
             <LikerIdTable
               likecoHost={likecoHost}
               defaultLikerId={DBSiteLikerId}

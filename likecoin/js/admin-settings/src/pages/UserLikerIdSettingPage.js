@@ -12,9 +12,6 @@ const { likecoHost } = window.likecoinReactAppData;
 
 function LikecoinButtonPage() {
   const {
-    DBUserCanEditOption,
-  } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
-  const {
     DBUserLikerId,
     DBUserLikerAvatar,
     DBUserLikerDisplayName,
@@ -61,6 +58,7 @@ function LikecoinButtonPage() {
       )}
       <form onSubmit={updateLikerIdHandler}>
         <Section title={__('Your Liker ID', 'likecoin')} />
+            <p>{__('This is your Liker ID, which is used to display LikeCoin button when post is not registered on ISCN yet.', 'likecoin')}</p>
         <LikerIdTable
           likecoHost={likecoHost}
           defaultLikerId={DBUserLikerId}
@@ -70,9 +68,8 @@ function LikecoinButtonPage() {
           editable={true}
           onLikerIdUpdate={onUserLikerIdUpdate}
         />
-        {(DBUserCanEditOption) && (
-          <SubmitButton />
-        )}
+        <hr />
+        <SubmitButton />
       </form>
     </div>
   );
