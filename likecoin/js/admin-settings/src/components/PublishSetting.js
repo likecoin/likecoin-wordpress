@@ -54,10 +54,10 @@ function PublishSetting() {
       if (!mattersLoginResponse) {
         throw new Error('Calling Server failed.');
       }
-      if (mattersLoginResponse.data.errors) {
+      if (mattersLoginResponse.errors) {
         let errorMessage = 'ERROR:';
-        if (mattersLoginResponse.data.errors.length > 0) {
-          mattersLoginResponse.data.errors.forEach((e) => {
+        if (mattersLoginResponse.errors.length > 0) {
+          mattersLoginResponse.errors.forEach((e) => {
             if (e.message.indexOf('password') > 0) {
               const passwordIndex = e.message.search('password');
               errorMessage = errorMessage.concat(
@@ -72,8 +72,8 @@ function PublishSetting() {
         return;
       }
       const siteMattersUser = {
-        mattersId: mattersLoginResponse.data.viewer.userName,
-        accessToken: mattersLoginResponse.data.userLogin.token,
+        mattersId: mattersLoginResponse.viewer.userName,
+        accessToken: mattersLoginResponse.userLogin.token,
       };
 
       // change global state

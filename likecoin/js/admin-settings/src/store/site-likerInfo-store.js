@@ -45,7 +45,9 @@ const actions = {
   },
   * postSiteLikerInfo(info) {
     yield { type: 'POST_SITE_LIKER_INFO_TO_DB', data: info };
-    yield { type: 'CHANGE_SITE_LIKER_INFO_GLOBAL_STATE', data: info };
+    if (info.siteLikerInfos) {
+      yield { type: 'CHANGE_SITE_LIKER_INFO_GLOBAL_STATE', data: info };
+    }
   },
 };
 
