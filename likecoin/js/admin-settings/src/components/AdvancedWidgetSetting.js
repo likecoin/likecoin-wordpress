@@ -24,6 +24,12 @@ function AdvancedWidgetSetting(_, ref) {
     };
     await postSiteLikerInfo(buttonData);
   }
+
+  function handleResetDefault(e) {
+    e.preventDefault();
+    setPerPostOptionEnabled(false);
+  }
+
   useImperativeHandle(ref, () => ({
     submit: confirmHandler,
   }));
@@ -39,6 +45,12 @@ function AdvancedWidgetSetting(_, ref) {
         'likecoin',
       )}
       checkRef={perPostOptionEnabledRef} />
+    <a
+      href='#'
+      onClick={handleResetDefault}
+    >
+      {__('Reset to default', 'likecoin')}
+    </a>
     </>
   );
 }

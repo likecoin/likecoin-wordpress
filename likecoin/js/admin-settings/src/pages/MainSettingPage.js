@@ -42,6 +42,14 @@ function MainSettingPage() {
   }, [
     DBDisplayOptionSelected,
   ]);
+
+  function handleResetDefault(e) {
+    e.preventDefault();
+    setShowInPosts(true);
+    setShowInPages(false);
+    setISCNBadgeStyleOption('none');
+  }
+
   async function confirmHandler(e) {
     setSavedSuccessful(false);
     e.preventDefault();
@@ -125,6 +133,14 @@ function MainSettingPage() {
             options={ISCNStyleOptions}
           />
         </table>
+        <hr />
+        <a
+          href='#'
+          onClick={handleResetDefault}
+        >
+          {__('Reset to default', 'likecoin')}
+        </a>
+        <hr />
         <SubmitButton />
       </form>
     </div>
