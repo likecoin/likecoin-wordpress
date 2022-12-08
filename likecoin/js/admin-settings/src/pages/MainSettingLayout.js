@@ -1,5 +1,5 @@
 import { __ } from '@wordpress/i18n';
-import { Link, Outlet } from 'react-router-dom';
+import { NavLink, Outlet } from 'react-router-dom';
 import { useSelect } from '@wordpress/data';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 
@@ -12,16 +12,25 @@ const navStyle = {
 const tabStyle = {
   padding: '5px',
   border: 'solid 1px',
+  textDecoration: 'none',
 };
+
+const tableStyleFn = ({ isActive }) => (isActive
+  ? tabStyle
+  : {
+    ...tabStyle,
+    color: '#9B9B9B',
+    background: '#EBEBEB;',
+  });
 
 function MainSettingLayout() {
   const {
     DBUserCanEditOption,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   return <><nav style={navStyle}>
-      {DBUserCanEditOption && (<Link style={tabStyle} to="">{__('General', 'likecoin')}</Link>)}
-      {DBUserCanEditOption && (<Link style={tabStyle} to="advanced">{__('Advanced', 'likecoin')}</Link>)}
-      <Link style={tabStyle} to="about">{__('About', 'likecoin')}</Link>
+      {DBUserCanEditOption && (<NavLink style={tableStyleFn} to="" end={true}>{__('General', 'likecoin')}</NavLink>)}
+      {DBUserCanEditOption && (<NavLink style={tableStyleFn} to="advanced">{__('Advanced', 'likecoin')}</NavLink>)}
+      <NavLink style={tableStyleFn} to="about">{__('About', 'likecoin')}</NavLink>
     </nav>
     <Outlet />
   </>;
