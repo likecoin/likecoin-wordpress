@@ -5,25 +5,21 @@ import Section from '../components/Section';
 import LikerIdTable from '../components/LikerIdTable';
 import SubmitButton from '../components/SubmitButton';
 import SettingNotice from '../components/SettingNotice';
-import CheckBox from '../components/CheckBox';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
-import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
 const { likecoHost } = window.likecoinReactAppData;
 
 function SiteLikerSetting() {
   const {
     DBUserCanEditOption,
-    DBUserLikerId,
     DBSiteLikerId,
     DBSiteLikerAvatar,
     DBSiteLikerDisplayName,
     DBSiteLikerWallet,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
-  const { postUserLikerInfo } = useDispatch(USER_LIKER_INFO_STORE_NAME);
   const [savedSuccessful, setSavedSuccessful] = useState(false);
-  const [saveAsUser, setSaveAsUser] = useState(DBUserLikerId === DBSiteLikerId);
+
   const [siteLikerInfo, setSiteLikerInfo] = useState({});
 
   function onSiteLikerIdUpdate(likerInfo) {
@@ -53,9 +49,6 @@ function SiteLikerSetting() {
       if (DBUserCanEditOption) {
         postSiteLikerInfo(siteData);
       }
-      if (saveAsUser) {
-        postUserLikerInfo(userData);
-      }
       // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
     } catch (error) {
@@ -76,25 +69,18 @@ function SiteLikerSetting() {
         />
       )}
       <form onSubmit={updateLikerIdHandler}>
-        {DBUserCanEditOption && (
-          <><Section title={__('Site Default Liker ID', 'likecoin')} />
-            <p>{__('This will be the site default Liker ID if any author has not set one.', 'likecoin')}</p>
-            <LikerIdTable
-              likecoHost={likecoHost}
-              defaultLikerId={DBSiteLikerId}
-              defaultLikerDisplayName={DBSiteLikerDisplayName}
-              defaultLikerWalletAddress={DBSiteLikerWallet}
-              defaultLikerAvatar={DBSiteLikerAvatar}
-              editable={DBUserCanEditOption}
-              onLikerIdUpdate={onSiteLikerIdUpdate}
-            />
-            <br />
-          </>
-        )}
-        <CheckBox
-          checked={saveAsUser}
-          handleCheck={setSaveAsUser}
-          details={__('Also use as your Liker ID', 'likecoin')} />
+        <Section title={__('Site Default Liker ID', 'likecoin')} />
+        <p>{__('This will be the site default Liker ID if any author has not set one.', 'likecoin')}</p>
+        <LikerIdTable
+          likecoHost={likecoHost}
+          defaultLikerId={DBSiteLikerId}
+          defaultLikerDisplayName={DBSiteLikerDisplayName}
+          defaultLikerWalletAddress={DBSiteLikerWallet}
+          defaultLikerAvatar={DBSiteLikerAvatar}
+          editable={DBUserCanEditOption}
+          onLikerIdUpdate={onSiteLikerIdUpdate}
+        />
+        <br />
         <hr />
         {(DBUserCanEditOption) && (
           <SubmitButton />
