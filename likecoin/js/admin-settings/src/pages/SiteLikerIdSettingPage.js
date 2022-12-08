@@ -67,7 +67,7 @@ function SiteLikerSetting() {
     setSavedSuccessful(false);
   }
   return (
-    <div className="wrap likecoin">
+    <div className="likecoin">
       {savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}

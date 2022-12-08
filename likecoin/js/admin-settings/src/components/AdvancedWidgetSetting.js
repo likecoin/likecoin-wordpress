@@ -39,7 +39,7 @@ function AdvancedWidgetSetting(_, ref) {
     <CheckBox
       checked={perPostOptionEnabled}
       handleCheck={setPerPostOptionEnabled}
-      title={__('Allow per Post option', 'likecoin')}
+      title={__('Post option', 'likecoin')}
       details={__(
         'Allow editors to customize display setting per post',
         'likecoin',

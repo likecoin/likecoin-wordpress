@@ -28,7 +28,7 @@ function MainSettingPage() {
   const ISCNStyleOptions = [
     { value: 'light', label: __('Light Mode', 'likecoin') },
     { value: 'dark', label: __('Dark Mode', 'likecoin') },
-    { value: 'none', label: __('None', 'likecoin') },
+    { value: 'none', label: __('Not shown', 'likecoin') },
   ];
   const [ISCNBadgeStyleOption, setISCNBadgeStyleOption] = useState(
     DBISCNBadgeStyleOption,
@@ -87,13 +87,13 @@ function MainSettingPage() {
 
   if (!DBUserCanEditOption) {
     return (
-      <div className="wrap likecoin">
+      <div className="likecoin">
         <p>{forbiddenString}</p>
       </div>
     );
   }
   return (
-    <div className="wrap likecoin">
+    <div className="likecoin">
       {savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}

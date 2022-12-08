@@ -16,7 +16,8 @@ function App() {
     DBUserCanEditOption,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
   return (
-    <div className="App">
+    <div className="wrap">
+      <h2> </h2>
       <Header />
       <Routes>
         <Route path="" element={<MainSettingLayout />}>
