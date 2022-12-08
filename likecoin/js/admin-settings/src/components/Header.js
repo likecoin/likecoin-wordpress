@@ -4,8 +4,8 @@ import Logo from '../assets/logo.png';
 function Header() {
   return <header style={{ display: 'flex' }}>
     <img src={Logo} alt={__('liker.land logo', 'likecoin')}/>
-    <div></div>
-    <div style={{ margin: '5px' }}>
+    <div style={{ flex: 1 }}></div>
+    <div style={{ margin: '5px', padding: '20px' }}>
       <a style={{
         padding: '5px',
         border: 'solid 1px',
