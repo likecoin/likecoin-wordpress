@@ -19,7 +19,14 @@ function LikeCoinHelpPage() {
   return (
     <div>
       <div>
-      <Section title={__('Getting Started', 'likecoin')} />
+        <Section title={__('Getting Started', 'likecoin')} />
+        <iframe
+          width="560" height="315"
+          src="https://www.youtube.com/embed/4fYNwZHRXCY"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowfullscreen></iframe>
         <p>{localizedIntroduction}</p>
       </div>
     </div>
