@@ -57,7 +57,7 @@ function LikecoinButtonPage() {
       )}
       <form onSubmit={updateLikerIdHandler}>
         <Section title={__('Your Liker ID', 'likecoin')} />
-            <p>{__('This is your Liker ID, which is used to display LikeCoin button when post is not registered on ISCN yet.', 'likecoin')}</p>
+          <p>{__('This is your Liker ID, which is used to display LikeCoin button when post is not registered on ISCN yet.', 'likecoin')}</p>
         <LikerIdTable
           likecoHost={likecoHost}
           defaultLikerId={DBUserLikerId}

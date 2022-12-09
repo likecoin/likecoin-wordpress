@@ -34,9 +34,11 @@ function WebMonetizationSetting(_, ref) {
         checked={showWebMonetization}
         handleCheck={setShowWebMonetization}
         title={__('Web Monetization', 'likecoin')}
-        details={__('Enable', 'likecoin')} />
+        details={__('Enable', 'likecoin')}
+      />
       {showWebMonetization && (
-        <><table className="form-table" role="presentation">
+        <>
+          <table className="form-table" role="presentation">
             <tbody>
               <tr>
                 <th scope="row">

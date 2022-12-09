@@ -25,11 +25,14 @@ function LikerIdSettingLayout() {
   const {
     DBUserCanEditOption,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
-  return <><nav style={navStyle}>
-      {DBUserCanEditOption && <NavLink style={tableStyleFn} to="" end={true}>{__('Website Liker ID', 'likecoin')}</NavLink>}
-      <NavLink style={tableStyleFn} to="user">{__('Your Liker ID', 'likecoin')}</NavLink>
-    </nav>
-    <Outlet />
-  </>;
+  return (
+    <>
+      <nav style={navStyle}>
+        {DBUserCanEditOption && <NavLink style={tableStyleFn} to="" end={true}>{__('Website Liker ID', 'likecoin')}</NavLink>}
+        <NavLink style={tableStyleFn} to="user">{__('Your Liker ID', 'likecoin')}</NavLink>
+      </nav>
+      <Outlet />
+    </>
+  );
 }
 export default LikerIdSettingLayout;

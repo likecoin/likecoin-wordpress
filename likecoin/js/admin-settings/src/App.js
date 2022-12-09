@@ -15,6 +15,8 @@ function App() {
   const {
     DBUserCanEditOption,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
+  // An empty h2 under .wrap is used for displaying notice
+  // https://wordpress.stackexchange.com/questions/220650/how-to-change-the-location-of-admin-notice-in-html-without-using-javascript
   return (
     <div className="wrap">
       <h2> </h2>

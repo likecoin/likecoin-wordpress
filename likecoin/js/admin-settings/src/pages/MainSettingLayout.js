@@ -27,12 +27,15 @@ function MainSettingLayout() {
   const {
     DBUserCanEditOption,
   } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
-  return <><nav style={navStyle}>
-      {DBUserCanEditOption && (<NavLink style={tableStyleFn} to="" end={true}>{__('General', 'likecoin')}</NavLink>)}
-      {DBUserCanEditOption && (<NavLink style={tableStyleFn} to="advanced">{__('Advanced', 'likecoin')}</NavLink>)}
-      <NavLink style={tableStyleFn} to="about">{__('About', 'likecoin')}</NavLink>
-    </nav>
-    <Outlet />
-  </>;
+  return (
+    <>
+      <nav style={navStyle}>
+        {DBUserCanEditOption && (<NavLink style={tableStyleFn} to="" end={true}>{__('General', 'likecoin')}</NavLink>)}
+        {DBUserCanEditOption && (<NavLink style={tableStyleFn} to="advanced">{__('Advanced', 'likecoin')}</NavLink>)}
+        <NavLink style={tableStyleFn} to="about">{__('About', 'likecoin')}</NavLink>
+      </nav>
+      <Outlet />
+    </>
+  );
 }
 export default MainSettingLayout;

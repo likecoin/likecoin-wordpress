@@ -35,22 +35,23 @@ function AdvancedWidgetSetting(_, ref) {
   }));
   return (
     <>
-    <Section title={__('LikeCoin widget advanced settings', 'likecoin')} />
-    <CheckBox
-      checked={perPostOptionEnabled}
-      handleCheck={setPerPostOptionEnabled}
-      title={__('Post option', 'likecoin')}
-      details={__(
-        'Allow editors to customize display setting per post',
-        'likecoin',
-      )}
-      checkRef={perPostOptionEnabledRef} />
-    <a
-      href='#'
-      onClick={handleResetDefault}
-    >
-      {__('Reset to default', 'likecoin')}
-    </a>
+      <Section title={__('LikeCoin widget advanced settings', 'likecoin')} />
+      <CheckBox
+        checked={perPostOptionEnabled}
+        handleCheck={setPerPostOptionEnabled}
+        title={__('Post option', 'likecoin')}
+        details={__(
+          'Allow editors to customize display setting per post',
+          'likecoin',
+        )}
+        checkRef={perPostOptionEnabledRef}
+      />
+      <a
+        href='#'
+        onClick={handleResetDefault}
+      >
+        {__('Reset to default', 'likecoin')}
+      </a>
     </>
   );
 }

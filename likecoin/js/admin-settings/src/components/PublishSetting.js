@@ -140,52 +140,61 @@ function PublishSetting(_, ref) {
   useImperativeHandle(ref, () => ({
     submit: confirmHandler,
   }));
-  return (<>
-    <Section title={__('Publish to other platforms', 'likecoin')} />
-    <p>{__('LikeCoin plugin can help you to publish you post to other platform.', 'likecoin')}</p>
-    <CheckBox
-      checked={showMatters}
-      handleCheck={setShowMatters}
-      title={__('Matters', 'likecoin')}
-      details={__('Publish to Matters.news', 'likecoin')} />
-    {showMatters && (
-      <><Section title={__('Login with Matters ID', 'likecoin')} />
-        <MattersDescription />
-        {!siteMattersId && <MattersLoginTable
-          loginHandler={loginHandler}
-          mattersIdRef={mattersIdRef}
-          mattersPasswordRef={mattersPasswordRef}
-          mattersLoginError={mattersLoginError} />}
-        <hr />
-        <Section title={__('Matters connection status', 'likecoin')} />
-        <MattersStatusTable
-          siteMattersId={siteMattersId}
-          handleMattersLogout={handleMattersLogout} />
-        <Section title={__('Publish to Matters', 'likecoin')} />
-        <table className="form-table" role="presentation">
-          <tbody>
-            <CheckBox
-              checked={siteMattersAutoSaveDraft}
-              handleCheck={setSiteMattersAutoSaveDraft}
-              title={__('Auto save draft to Matters', 'likecoin')}
-              details={__('Auto save draft to Matters', 'likecoin')}
-              checkRef={siteMattersAutoSaveDraftRef} />
-            <CheckBox
-              checked={siteMattersAutoPublish}
-              handleCheck={setSiteMattersAutoPublish}
-              title={__('Auto publish post to Matters', 'likecoin')}
-              details={__('Auto publish post to Matters', 'likecoin')}
-              checkRef={siteMattersAutoPublishRef} />
-            <CheckBox
-              checked={siteMattersAddFooterLink}
-              handleCheck={setSiteMattersAddFooterLink}
-              title={__('Add post link in footer', 'likecoin')}
-              details={__('Add post link in footer', 'likecoin')}
-              checkRef={siteMattersAddFooterLinkRef} />
-          </tbody>
-        </table></>
-    )}
-  </>
+  return (
+    <>
+      <Section title={__('Publish to other platforms', 'likecoin')} />
+      <p>{__('LikeCoin plugin can help you to publish you post to other platform.', 'likecoin')}</p>
+      <CheckBox
+        checked={showMatters}
+        handleCheck={setShowMatters}
+        title={__('Matters', 'likecoin')}
+        details={__('Publish to Matters.news', 'likecoin')}
+      />
+      {showMatters && (
+        <>
+          <Section title={__('Login with Matters ID', 'likecoin')} />
+          <MattersDescription />
+          {!siteMattersId && <MattersLoginTable
+            loginHandler={loginHandler}
+            mattersIdRef={mattersIdRef}
+            mattersPasswordRef={mattersPasswordRef}
+            mattersLoginError={mattersLoginError}
+          />}
+          <hr />
+          <Section title={__('Matters connection status', 'likecoin')} />
+          <MattersStatusTable
+            siteMattersId={siteMattersId}
+            handleMattersLogout={handleMattersLogout}
+          />
+          <Section title={__('Publish to Matters', 'likecoin')} />
+          <table className="form-table" role="presentation">
+            <tbody>
+              <CheckBox
+                checked={siteMattersAutoSaveDraft}
+                handleCheck={setSiteMattersAutoSaveDraft}
+                title={__('Auto save draft to Matters', 'likecoin')}
+                details={__('Auto save draft to Matters', 'likecoin')}
+                checkRef={siteMattersAutoSaveDraftRef}
+              />
+              <CheckBox
+                checked={siteMattersAutoPublish}
+                handleCheck={setSiteMattersAutoPublish}
+                title={__('Auto publish post to Matters', 'likecoin')}
+                details={__('Auto publish post to Matters', 'likecoin')}
+                checkRef={siteMattersAutoPublishRef}
+              />
+              <CheckBox
+                checked={siteMattersAddFooterLink}
+                handleCheck={setSiteMattersAddFooterLink}
+                title={__('Add post link in footer', 'likecoin')}
+                details={__('Add post link in footer', 'likecoin')}
+                checkRef={siteMattersAddFooterLinkRef}
+              />
+            </tbody>
+          </table>
+        </>
+      )}
+    </>
   );
 }
 
