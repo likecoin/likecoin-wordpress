@@ -97,10 +97,10 @@ const resolvers = {
   * selectSitePublishOptions() {
     try {
       const response = yield actions.getSitePublishOptions(getAllMattersDataEndpoint);
-      const sitePublishOptions = response.data.data;
-      const DBMattersId = response.data.data.site_matters_user ? response.data.data.site_matters_user.matters_id : '';
-      const DBAccessToken = response.data.data.site_matters_user
-        ? response.data.data.site_matters_user.access_token
+      const sitePublishOptions = response.data;
+      const DBMattersId = response.data.site_matters_user ? response.data.site_matters_user.matters_id : '';
+      const DBAccessToken = response.data.site_matters_user
+        ? response.data.site_matters_user.access_token
         : '';
       const DBSiteMattersAutoSaveDraft = !!(
         sitePublishOptions.site_matters_auto_save_draft === '1'

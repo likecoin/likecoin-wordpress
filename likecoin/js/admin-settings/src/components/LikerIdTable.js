@@ -6,7 +6,7 @@ import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
 import Text from './Text';
 
-function LikecoinInfoTable(props) {
+function LikerIdTable(props) {
   const likerIdRef = useRef();
   const [likerIdValue, setLikerIdValue] = useState(props.defaultLikerId);
   const [likerDisplayName, setLikerDisplayName] = useState(
@@ -120,8 +120,7 @@ function LikecoinInfoTable(props) {
               <td>
                 <div className="avatarWrapper">
                   {!isLoading
-                    && likerAvatar
-                    && likerAvatar !== '-' && (
+                    && likerAvatar && (
                       <img
                         id="likecoinAvatar"
                         className="likecoinAvatar"
@@ -129,8 +128,7 @@ function LikecoinInfoTable(props) {
                         alt="Avatar"
                       />
                   )}
-                  {likerIdValue && likerIdValue !== '-'
-                    && !isChangingTypingLiker && (
+                  {likerIdValue && !isChangingTypingLiker && (
                       <a
                         id="likecoinId"
                         rel="noopener noreferrer"
@@ -141,8 +139,7 @@ function LikecoinInfoTable(props) {
                         {likerIdValue}
                       </a>
                   )}
-                  {(props.editable && (!likerIdValue || likerIdValue === '-'
-                    || isChangingTypingLiker)) && (
+                  {(props.editable && (!likerIdValue || isChangingTypingLiker)) && (
                     <div>
                       <input
                         type="text"
@@ -168,12 +165,12 @@ function LikecoinInfoTable(props) {
               </td>
               <td>
                 {!isLoading && (
-                  <Text text={likerDisplayName || '-'} />
+                  <Text text={likerDisplayName} />
                 )}
               </td>
               <td>
                 {!isLoading && (
-                  <Text text={likerWalletAddress || '-'} />
+                  <Text text={likerWalletAddress} />
                 )}
               </td>
               <td className="actions">
@@ -210,7 +207,7 @@ function LikecoinInfoTable(props) {
         </section>
 
         <section>
-          {likerAvatar === '-' && !isLoading && (
+          {likerIdValue && !isLoading && !likerAvatar && (
             <div className="likecoin likecoinError userNotFound">
               <h4>{__('Liker ID not found', 'likecoin')}</h4>
             </div>
@@ -221,4 +218,4 @@ function LikecoinInfoTable(props) {
   );
 }
 
-export default LikecoinInfoTable;
+export default LikerIdTable;

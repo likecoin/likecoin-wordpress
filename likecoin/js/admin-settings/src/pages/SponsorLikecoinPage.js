@@ -1,6 +1,5 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
-import LikecoinHeading from '../components/LikecoinHeading';
 import ParagraphTitle from '../components/ParagraphTitle';
 import Link from '../components/Link';
 
@@ -9,12 +8,12 @@ const { likerlandHost } = window.likecoinReactAppData;
 function SponsorLikecoinPage() {
   const localizedIntroduction = createInterpolateElement(
     __(
-      '<Likecoin/> is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
+      '<LikeCoin/> is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
       'likecoin',
     ),
     {
-      Likecoin: createElement(Link, {
-        text: __('Likecoin', 'likecoin'),
+      LikeCoin: createElement(Link, {
+        text: __('LikeCoin', 'likecoin'),
         linkAddress: 'https://like.co',
       }),
     },
@@ -76,15 +75,8 @@ function SponsorLikecoinPage() {
 
   return (
     <div>
-      <LikecoinHeading />
-      <div style={{ textAlign: 'left' }}>
-        <iframe
-          src="https://github.com/sponsors/likecoin/card"
-          title="Sponsor likecoin"
-          height="225"
-          width="660"
-          style={{ overflow: 'hidden', border: 0 }}
-        ></iframe>
+      <div>
+        <ParagraphTitle text={__('What is LikeCoin?', 'likecoin')} />
         <p>{localizedIntroduction}</p>
         <ParagraphTitle text={__('Decentralized Registry', 'likecoin')} />
         <p>{localizedDecentralizedRegistry}</p>
@@ -100,10 +92,10 @@ function SponsorLikecoinPage() {
         <ParagraphTitle text={__('Decentralized Governance', 'likecoin')} />
         <p>{localizedDecentralizedGovernance}</p>
         <iframe
-          src="https://github.com/sponsors/likecoin/button"
+          src="https://github.com/sponsors/likecoin/card"
           title="Sponsor likecoin"
-          height="35"
-          width="116"
+          height="225"
+          width="660"
           style={{ overflow: 'hidden', border: 0 }}
         ></iframe>
       </div>

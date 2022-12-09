@@ -164,7 +164,6 @@ function likecoin_get_meta_box_button_params( $post ) {
 	$author          = $post->post_author;
 	$option          = get_option( LC_BUTTON_OPTION_NAME );
 	$is_disabled     = ! ( isset( $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] ) && $option[ LC_OPTION_BUTTON_DISPLAY_AUTHOR_OVERRIDE ] );
-	$site_id_enabled = ! empty( $option[ LC_OPTION_SITE_BUTTON_ENABLED ] );
 	$likecoin_id     = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
 	$widget_option   = get_post_meta( $post->ID, LC_OPTION_WIDGET_OPTION, true );
 	$widget_position = isset( $widget_option[ LC_OPTION_WIDGET_POSITION ] ) ? $widget_option[ LC_OPTION_WIDGET_POSITION ] : '';
@@ -181,7 +180,7 @@ function likecoin_get_meta_box_button_params( $post ) {
 		}
 	}
 	$is_widget_enabled = strlen( $widget_position ) > 0 ? 'none' !== $widget_position : $default_enabled;
-	$show_no_id_error  = ! $has_likecoin_id && ! $site_id_enabled;
+	$show_no_id_error  = ! $has_likecoin_id;
 	$button_params     = array(
 		'is_widget_enabled' => $is_widget_enabled,
 		'is_disabled'       => $is_disabled,

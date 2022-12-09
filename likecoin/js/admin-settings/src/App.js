@@ -1,31 +1,38 @@
-import './App.css';
-import { Route, Switch } from 'react-router-dom';
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { useSelect } from '@wordpress/data';
+import { SITE_LIKER_INFO_STORE_NAME } from './store/site-likerInfo-store';
+import Header from './components/Header';
+import MainSettingLayout from './pages/MainSettingLayout';
 import MainSettingPage from './pages/MainSettingPage';
-import LikecoinButtonPage from './pages/LikecoinButtonPage';
-import PublishSettingPage from './pages/PublishSettingPage';
-import OtherSettingPage from './pages/OtherSettingPage';
+import LikerIdSettingLayout from './pages/LikerIdSettingLayout';
+import AdvancedSettingPage from './pages/AdvancedSettingPage';
+import UserLikerIdSettingPage from './pages/UserLikerIdSettingPage';
+import SiteLikerIdSettingPage from './pages/SiteLikerIdSettingPage';
 import SponsorLikecoinPage from './pages/SponsorLikecoinPage';
+import LikeCoinHelpPage from './pages/LikeCoinHelpPage';
 
 function App() {
+  const {
+    DBUserCanEditOption,
+  } = useSelect((select) => select(SITE_LIKER_INFO_STORE_NAME).selectSiteLikerInfo());
+  // An empty h2 under .wrap is used for displaying notice
+  // https://wordpress.stackexchange.com/questions/220650/how-to-change-the-location-of-admin-notice-in-html-without-using-javascript
   return (
-    <div className="App">
-      <Switch>
-        <Route path="/" exact>
-          <MainSettingPage />
+    <div className="wrap">
+      <h2> </h2>
+      <Header />
+      <Routes>
+        <Route path="" element={<MainSettingLayout />}>
+          <Route index element={DBUserCanEditOption ? <MainSettingPage /> : <Navigate to="/about" replace />} />
+          <Route path="advanced" element={<AdvancedSettingPage />} />
+          <Route path="about" element={<SponsorLikecoinPage />} />
         </Route>
-        <Route path="/likecoin-button" exact>
-          <LikecoinButtonPage />
+        <Route path="button" element={<LikerIdSettingLayout />}>
+          <Route index element={DBUserCanEditOption ? <SiteLikerIdSettingPage /> : <Navigate to="user" replace />} />
+          <Route path="user" element={<UserLikerIdSettingPage />} />
         </Route>
-        <Route path="/publish-setting" exact>
-          <PublishSettingPage />
-        </Route>
-        <Route path="/other" exact>
-          <OtherSettingPage />
-        </Route>
-        <Route path="/sponsor-likecoin" exact>
-          <SponsorLikecoinPage />
-        </Route>
-      </Switch>
+        <Route path="help" element={<LikeCoinHelpPage />} />
+      </Routes>
     </div>
   );
 }

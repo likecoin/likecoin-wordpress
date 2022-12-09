@@ -2,7 +2,7 @@ import { __ } from '@wordpress/i18n';
 
 function SubmitButton() {
   return (
-    <div style={{ textAlign: 'left' }}>
+    <div>
       <button className="likecoinSubmitButton">
         {__('Confirm', 'likecoin')}
       </button>

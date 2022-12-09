@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
-import Link from './Link';
+import Link from '../Link';
 
 const localizedWebMonetizationShortIntro = createInterpolateElement(
   __(
@@ -32,8 +32,7 @@ const localizedWebMonetizationLongIntro = createInterpolateElement(
 );
 function WebMonetizationDescription() {
   return (
-    <div style={{ textAlign: 'left' }}>
-      <h2 style={{ margin: '20px 0' }}>{__('What is Web Monetization?', 'likecoin')}</h2>
+    <div>
       <p>{localizedWebMonetizationShortIntro}</p>
       <p>{localizedWebMonetizationLongIntro}</p>
     </div>

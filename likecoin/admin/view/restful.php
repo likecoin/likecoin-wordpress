@@ -50,14 +50,10 @@ function likecoin_get_publish_option_for_restful() {
 function likecoin_post_main_plugin_options( $request ) {
 	$plugin_options          = get_option( LC_BUTTON_OPTION_NAME );
 	$params                  = $request->get_json_params();
-	$site_liker_id_enabled   = $params['siteLikerIdEnabled'];
 	$display_option          = $params['displayOption'];
 	$per_post_option_enabled = $params['perPostOptionEnabled'];
 	$liker_infos             = $params['siteLikerInfos'];
 
-	if ( isset( $site_liker_id_enabled ) ) {
-		$plugin_options['site_likecoin_id_enbled'] = $site_liker_id_enabled;
-	}
 	if ( isset( $display_option ) ) {
 		$plugin_options[ LC_OPTION_BUTTON_DISPLAY_OPTION ] = $display_option;
 	}

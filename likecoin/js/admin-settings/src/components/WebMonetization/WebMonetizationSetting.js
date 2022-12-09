@@ -1,57 +1,43 @@
-import { useRef, useState, useEffect } from 'react';
+import {
+  useRef, useState, useEffect, useImperativeHandle, forwardRef,
+} from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import LikecoinHeading from '../components/LikecoinHeading';
-import CheckBox from '../components/CheckBox';
-import Section from '../components/Section';
-import SettingNotice from '../components/SettingNotice';
-import SubmitButton from '../components/SubmitButton';
-import WebMonetizationDescription from '../components/WebMonetizationDescription';
-import { OTHER_SETTING_STORE_NAME } from '../store/other-setting-store';
+import CheckBox from '../CheckBox';
+import Section from '../Section';
+import WebMonetizationDescription from './WebMonetizationDescription';
+import { OTHER_SETTING_STORE_NAME } from '../../store/other-setting-store';
 
-function OtherSettingPage() {
-  // eslint-disable-next-line arrow-body-style
+function WebMonetizationSetting(_, ref) {
   const DBPaymentPointer = useSelect((select) => select(OTHER_SETTING_STORE_NAME)
     .selectPaymentPointer());
   const { postPaymentPointer } = useDispatch(OTHER_SETTING_STORE_NAME);
-  const [savedSuccessful, setSavedSuccessful] = useState(false);
   const [showWebMonetization, setShowWebMonetization] = useState(!!DBPaymentPointer);
   useEffect(() => { setShowWebMonetization(!!DBPaymentPointer); }, [DBPaymentPointer]);
   const paymentPointerRef = useRef();
-  async function confirmHandler(e) {
-    setSavedSuccessful(false);
-    e.preventDefault();
+  async function confirmHandler() {
+    if (!showWebMonetization) return;
     try {
       postPaymentPointer(paymentPointerRef.current.value); // change global state & DB
-      setSavedSuccessful(true);
     } catch (error) {
       console.error(error); // eslint-disable-line no-console
-      setSavedSuccessful(false);
     }
   }
-  function handleNoticeDismiss(e) {
-    e.preventDefault();
-    setSavedSuccessful(false);
-  }
-
+  useImperativeHandle(ref, () => ({
+    submit: confirmHandler,
+  }));
   return (
-    <div className="wrap likecoin">
-      <LikecoinHeading />
-      {savedSuccessful && (
-        <SettingNotice
-          text={__('Settings Saved', 'likecoin')}
-          className="notice-success"
-          handleNoticeDismiss={handleNoticeDismiss}
-        />
-      )}
-      <Section title={__('Other settings', 'likecoin')} />
+      <>
+      <Section title={__('Web Monetization', 'likecoin')} />
+      <WebMonetizationDescription />
       <CheckBox
         checked={showWebMonetization}
         handleCheck={setShowWebMonetization}
         title={__('Web Monetization', 'likecoin')}
-        details={__('Show Web Monetization settings', 'likecoin')} />
+        details={__('Enable', 'likecoin')}
+      />
       {showWebMonetization && (
-        <><WebMonetizationDescription /><form onSubmit={confirmHandler}>
+        <>
           <table className="form-table" role="presentation">
             <tbody>
               <tr>
@@ -78,11 +64,10 @@ function OtherSettingPage() {
               </tr>
             </tbody>
           </table>
-          <SubmitButton />
-        </form></>
+        </>
       )}
-    </div>
+    </>
   );
 }
 
-export default OtherSettingPage;
+export default forwardRef(WebMonetizationSetting);
