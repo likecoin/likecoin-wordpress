@@ -74,6 +74,7 @@ function MainSettingPage() {
         postSitePublishOptions(publishData),
       ]);
       setSavedSuccessful(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error(error);
     }

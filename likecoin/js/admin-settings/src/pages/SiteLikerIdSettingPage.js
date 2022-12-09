@@ -49,8 +49,8 @@ function SiteLikerSetting() {
       if (DBUserCanEditOption) {
         postSiteLikerInfo(siteData);
       }
-      // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console
     }

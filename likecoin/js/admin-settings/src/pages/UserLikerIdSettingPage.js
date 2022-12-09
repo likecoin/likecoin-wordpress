@@ -5,7 +5,6 @@ import Section from '../components/Section';
 import LikerIdTable from '../components/LikerIdTable';
 import SubmitButton from '../components/SubmitButton';
 import SettingNotice from '../components/SettingNotice';
-import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 import { USER_LIKER_INFO_STORE_NAME } from '../store/user-likerInfo-store';
 
 const { likecoHost } = window.likecoinReactAppData;
@@ -37,8 +36,8 @@ function LikecoinButtonPage() {
     };
     try {
       postUserLikerInfo(userData);
-      // Only re-render . Do not refresh page.
       setSavedSuccessful(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } catch (error) {
       console.error('Error occured when saving to Wordpress DB: ', error); // eslint-disable-line no-console
     }
