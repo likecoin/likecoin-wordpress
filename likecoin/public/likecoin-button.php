@@ -61,10 +61,12 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 			switch ( $type ) {
 				case 'post':
 					$post_type_query = 'post';
-					// fall through to set position.
+					$widget_position = 'bottom';
+					break;
 				case 'page':
 					$post_type_query = 'page';
-					// fall through to set position.
+					$widget_position = 'bottom';
+					break;
 				case 'always':
 					$widget_position = 'bottom';
 					break;
