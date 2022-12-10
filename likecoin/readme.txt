@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.0
 Requires PHP: 5.4
-Stable tag: 2.8.0
+Stable tag: 2.8.1
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -143,6 +143,10 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 3. LikeCoin Plugin Options
 
 == Changelog ==
+
+= 2.8.1 =
+
+- Fix LikeCoin button not shown when option is set to post only.
 
 = 2.8.0 =
 
