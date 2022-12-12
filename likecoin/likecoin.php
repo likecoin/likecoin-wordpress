@@ -47,6 +47,7 @@ require_once dirname( __FILE__ ) . '/includes/constant/options.php';
 require_once dirname( __FILE__ ) . '/public/likecoin.php';
 require_once dirname( __FILE__ ) . '/admin/restful.php';
 require_once dirname( __FILE__ ) . '/admin/matters.php';
+require_once dirname( __FILE__ ) . '/admin/internet-archive.php';
 
 /**
  * Handle plugin init and upgrade
@@ -111,6 +112,7 @@ function likecoin_add_all_hooks() {
 		likecoin_add_admin_hooks();
 	}
 	likecoin_add_matters_hook();
+	likecoin_add_internet_archive_hook();
 	likecoin_hook_restful_hook();
 	likecoin_add_public_hooks();
 	register_activation_hook( __FILE__, 'likecoin_handle_init_and_upgrade' );

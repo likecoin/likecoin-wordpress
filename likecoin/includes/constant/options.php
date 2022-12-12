@@ -49,6 +49,7 @@ define( 'LC_ISCN_DEV_INFO', 'lc_iscn_dev_info' );
 define( 'LC_ISCN_INFO', 'lc_iscn_info' );
 define( 'LC_ARWEAVE_INFO', 'lc_arweave_info' );
 define( 'LC_MATTERS_IMAGE_INFO', 'lc_matters_image_info' );
+define( 'LC_IA_INFO', 'lc_internet_archive_info' );
 
 define( 'LC_OPTION_SITE_LIKECOIN_USER', 'site_likecoin_user' );
 
@@ -59,6 +60,10 @@ define( 'LC_OPTION_SITE_MATTERS_USER', 'site_matters_user' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_DRAFT', 'site_matters_auto_save_draft' );
 define( 'LC_OPTION_SITE_MATTERS_AUTO_PUBLISH', 'site_matters_auto_publish' );
 define( 'LC_OPTION_SITE_MATTERS_ADD_FOOTER_LINK', 'site_matters_add_footer_link' );
+
+define( 'LC_OPTION_IA_ENABLED', 'lc_internet_archive_enabled' );
+define( 'LC_OPTION_IA_ACCESS_KEY', 'lc_internet_archive_access_key' );
+define( 'LC_OPTION_IA_SECRET', 'lc_internet_archive_secret' );
 
 define( 'LC_OPTION_ISCN_BADGE_STYLE_OPTION', 'iscn_badge_style_option' );
 
