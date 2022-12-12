@@ -41,13 +41,14 @@ function likecoin_post_to_internet_archive( $post_id, $post ) {
 	$key     = isset( $option[ LC_OPTION_IA_ACCESS_KEY ] ) ? $option[ LC_OPTION_IA_ACCESS_KEY ] : '';
 	$secret  = isset( $option[ LC_OPTION_IA_SECRET ] ) ? $option[ LC_OPTION_IA_SECRET ] : '';
 	$headers = array(
-		'Content-Type' => 'application/x-www-form-urlencoded',
-		'Accept'       => 'application/json',
+		'Content-Type'  => 'application/x-www-form-urlencoded',
+		'Accept'        => 'application/json',
 		'Authorization' => 'LOW ' . $key . ':' . $secret,
 	);
-	$request = wp_remote_post(
+	wp_remote_post(
 		'https://web.archive.org/save',
 		array(
+			'blocking'   => WP_DEBUG === true,
 			'user-agent' => 'LikeCoin WordPress Plugin' . LC_PLUGIN_VERSION,
 			'headers'    => $headers,
 			'body'       => array(
@@ -56,32 +57,6 @@ function likecoin_post_to_internet_archive( $post_id, $post ) {
 			),
 		)
 	);
-	if ( is_wp_error( $request ) ) {
-        // phpcs:disable WordPress.PHP.DevelopmentFunctions
-		error_log( $request->get_error_message() );
-        // phpcs:enable
-		return;
-	}
-	$decoded_response = json_decode( $request['body'], true );
-	if ( ! $decoded_response ) {
-        // phpcs:disable WordPress.PHP.DevelopmentFunctions
-		error_log( $request['body'] );
-        // phpcs:enable
-		return;
-	}
-	if ( ! isset( $decoded_response['job_id'] ) ) {
-        // phpcs:disable WordPress.PHP.DevelopmentFunctions
-		error_log( wp_json_encode( $decoded_response ) );
-        // phpcs:enable
-		return;
-	}
-	$job_id  = $decoded_response['job_id'];
-	$ia_info = get_post_meta( $post_id, LC_IA_INFO, true );
-	if ( ! $ia_info ) {
-		$ia_info = array();
-	}
-	$ia_info['job_id'] = $job_id;
-	update_post_meta( $post_id, LC_IA_INFO, $ia_info );
 }
 
 /**
