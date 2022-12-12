@@ -140,7 +140,8 @@ function MattersSetting(_, ref) {
   ]);
 
   return (<>
-    <Section title={__('Login with Matters ID', 'likecoin')} />
+    <hr />
+    <h4>{__('Login with Matters ID', 'likecoin')}</h4>
     <MattersDescription />
     {
       !siteMattersId && <MattersLoginTable
@@ -151,12 +152,11 @@ function MattersSetting(_, ref) {
       />
     }
     <hr />
-    <Section title={__('Matters connection status', 'likecoin')} />
+    <h4>{__('Matters connection status', 'likecoin')}</h4>
     <MattersStatusTable
       siteMattersId={siteMattersId}
       handleMattersLogout={handleMattersLogout}
     />
-    <Section title={__('Publish to Matters', 'likecoin')} />
     <table className="form-table" role="presentation">
       <tbody>
         <CheckBox
@@ -182,6 +182,7 @@ function MattersSetting(_, ref) {
         />
       </tbody>
     </table>
+    <hr />
   </>);
 }
 
