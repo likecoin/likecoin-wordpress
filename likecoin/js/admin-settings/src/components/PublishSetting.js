@@ -7,6 +7,7 @@ import Section from './Section';
 import CheckBox from './CheckBox';
 import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 import MattersSetting from './Publish/Matters/MattersSetting';
+import InternetArchiveSetting from './Publish/InternetArchive/InternetArchiveSetting';
 
 function PublishSetting(_, ref) {
   // eslint-disable-next-line arrow-body-style
@@ -14,27 +15,32 @@ function PublishSetting(_, ref) {
     DBSiteMattersId,
     DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish,
+    DBSiteInternetArchiveEnabled,
   } = useSelect((select) => select(SITE_PUBLISH_STORE_NAME).selectSitePublishOptions());
 
   const mattersSettingRef = useRef();
+  const internetArchiveSettingRef = useRef();
 
   const [showMatters, setShowMatters] = useState(!!(DBSiteMattersId
     || DBSiteMattersAutoSaveDraft || DBSiteMattersAutoPublish));
+  const [showInternetArchive, setShowInternetArchive] = useState(!!(DBSiteInternetArchiveEnabled));
 
   useEffect(() => {
-    setShowMatters(DBSiteMattersId || DBSiteMattersAutoSaveDraft || DBSiteMattersAutoPublish);
+    setShowMatters(!!(DBSiteMattersId || DBSiteMattersAutoSaveDraft || DBSiteMattersAutoPublish));
   }, [
     DBSiteMattersId,
     DBSiteMattersAutoSaveDraft,
     DBSiteMattersAutoPublish,
   ]);
+  useEffect(() => {
+    setShowInternetArchive(!!DBSiteInternetArchiveEnabled);
+  }, [DBSiteInternetArchiveEnabled]);
 
   async function confirmHandler() {
-    if (showMatters) {
-      await Promise.all([
-        mattersSettingRef.current.submit(),
-      ]);
-    }
+    const promises = [];
+    if (showMatters) promises.push(mattersSettingRef.current.submit());
+    if (showInternetArchive) promises.push(internetArchiveSettingRef.current.submit());
+    await Promise.all(promises);
   }
   useImperativeHandle(ref, () => ({
     submit: confirmHandler,
@@ -51,6 +57,15 @@ function PublishSetting(_, ref) {
       />
       {showMatters && (
         <MattersSetting ref={mattersSettingRef} />
+      )}
+      <CheckBox
+        checked={showInternetArchive}
+        handleCheck={setShowInternetArchive}
+        title={__('Internet Archive', 'likecoin')}
+        details={__('Publish to Internet Archive', 'likecoin')}
+      />
+      {showInternetArchive && (
+        <InternetArchiveSetting ref={internetArchiveSettingRef} />
       )}
     </>
   );

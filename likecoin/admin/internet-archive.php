@@ -43,10 +43,8 @@ function likecoin_post_to_internet_archive( $post_id, $post ) {
 	$headers = array(
 		'Content-Type' => 'application/x-www-form-urlencoded',
 		'Accept'       => 'application/json',
+		'Authorization' => 'LOW ' . $key . ':' . $secret,
 	);
-	if ( ! empty( $token ) && ! empty( $secret ) ) {
-		$headers['Authorization'] = 'LOW ' . $key . ':' . $secret;
-	}
 	$request = wp_remote_post(
 		'https://web.archive.org/save',
 		array(

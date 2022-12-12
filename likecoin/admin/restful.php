@@ -136,7 +136,7 @@ function likecoin_init_restful_service() {
 				'/option/publish',
 				array(
 					'methods'             => 'GET',
-					'callback'            => 'likecoin_get_site_matters_data',
+					'callback'            => 'likecoin_get_site_publish_data',
 					'permission_callback' => function () {
 						return current_user_can( 'manage_options' );
 					},
