@@ -137,7 +137,7 @@ function likecoin_get_user_data( $request ) {
 	return rest_ensure_response( $result );
 }
 /**
- * Post matters login data to WordPress database.
+ * Post publish option data to WordPress database.
  *
  * @param WP_REST_Request $request Full data about the request.
  */
@@ -161,7 +161,9 @@ function likecoin_post_site_publish_options_data( $request ) {
 	}
 	if ( isset( $params['siteInternetArchiveAccessKey'] ) ) {
 		$publish_options[ LC_OPTION_IA_ACCESS_KEY ] = $params['siteInternetArchiveAccessKey'];
-		$publish_options[ LC_OPTION_IA_SECRET ]     = $params['siteInternetArchiveSecret'];
+	}
+	if ( isset( $params['siteInternetArchiveSecret'] ) ) {
+		$publish_options[ LC_OPTION_IA_SECRET ] = $params['siteInternetArchiveSecret'];
 	}
 	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
 	$return_payload = likecoin_get_publish_option_for_restful();
