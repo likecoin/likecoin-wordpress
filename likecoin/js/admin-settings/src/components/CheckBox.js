@@ -11,6 +11,7 @@ function CheckBox(props) {
         <input
           type="checkbox"
           checked={props.checked}
+          disabled={props.disabled}
           onChange={handleCheck}
           ref={props.checkRef}
         />

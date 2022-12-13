@@ -14,6 +14,8 @@ const INITIAL_STATE = {
   DBSiteMattersAutoSaveDraft: false,
   DBSiteMattersAutoPublish: false,
   DBSiteMattersAddFooterLink: false,
+  DBSiteInternetArchiveEnabled: false,
+  DBSiteInternetArchiveAccessKey: '',
   DBISCNBadgeStyleOption: 'none',
 };
 
@@ -138,16 +140,24 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBSiteMattersAutoSaveDraft: action.options.site_matters_auto_save_draft,
         DBSiteMattersAutoPublish: action.options.site_matters_auto_publish,
         DBSiteMattersAddFooterLink: action.options.site_matters_add_footer_link,
+        DBSiteInternetArchiveEnabled: action.options.lc_internet_archive_enabled,
+        DBSiteInternetArchiveAccessKey: action.options.lc_internet_archive_access_key,
         DBISCNBadgeStyleOption: action.options.iscn_badge_style_option,
       };
     }
     case 'CHANGE_SITE_PUBLISH_OPTIONS_GLOBAL_STATE': {
-      return {
-        ...state,
+      // HACK: remove all undefined data to prevent unneeded overwrite
+      const updateObject = JSON.parse(JSON.stringify({
         DBSiteMattersAutoSaveDraft: action.data.siteMattersAutoSaveDraft,
         DBSiteMattersAutoPublish: action.data.siteMattersAutoPublish,
         DBSiteMattersAddFooterLink: action.data.siteMattersAddFooterLink,
+        DBSiteInternetArchiveEnabled: action.data.siteInternetArchiveEnabled,
+        DBSiteInternetArchiveAccessKey: action.data.siteInternetArchiveAccessKey,
         DBISCNBadgeStyleOption: action.data.ISCNBadgeStyleOption,
+      }));
+      return {
+        ...state,
+        ...updateObject,
       };
     }
     case 'CHANGE_SITE_MATTERS_USER_GLOBAL_STATE': {

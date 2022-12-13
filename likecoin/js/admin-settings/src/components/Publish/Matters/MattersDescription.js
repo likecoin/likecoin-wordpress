@@ -1,6 +1,6 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
-import Link from '../Link';
+import Link from '../../Link';
 
 function MattersDescription() {
   const localizedMattersShortIntro = createInterpolateElement(
@@ -29,7 +29,7 @@ function MattersDescription() {
   );
   return (
     <div>
-      <h2>
+      <h3>
         <a
           rel="noopener noreferrer"
           target="_blank"
@@ -43,7 +43,7 @@ function MattersDescription() {
           ></img>
         </a>
         {__('What is Matters.news?', 'likecoin')}
-      </h2>
+      </h3>
       <p>{localizedMattersShortIntro}</p>
       <p>{localizedMattersLongIntro}</p>
     </div>

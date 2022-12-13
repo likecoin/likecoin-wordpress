@@ -31,13 +31,16 @@ require_once dirname( __FILE__ ) . '/../iscn.php';
 require_once dirname( __FILE__ ) . '/view.php';
 
 /**
- * Remove matters access token from publisb option
+ * Remove access token from publisb option
  */
 function likecoin_get_publish_option_for_restful() {
 	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
 	// Don't give access token to frontend, not useful and security risk.
 	if ( isset( $publish_options['site_matters_user']['access_token'] ) ) {
 		unset( $publish_options['site_matters_user']['access_token'] );
+	}
+	if ( isset( $publish_options[ LC_OPTION_IA_SECRET ] ) ) {
+		unset( $publish_options[ LC_OPTION_IA_SECRET ] );
 	}
 	return $publish_options;
 }
@@ -134,7 +137,7 @@ function likecoin_get_user_data( $request ) {
 	return rest_ensure_response( $result );
 }
 /**
- * Post matters login data to WordPress database.
+ * Post publish option data to WordPress database.
  *
  * @param WP_REST_Request $request Full data about the request.
  */
@@ -152,6 +155,15 @@ function likecoin_post_site_publish_options_data( $request ) {
 	}
 	if ( isset( $params['ISCNBadgeStyleOption'] ) ) {
 		$publish_options['iscn_badge_style_option'] = $params['ISCNBadgeStyleOption'];
+	}
+	if ( isset( $params['siteInternetArchiveEnabled'] ) ) {
+		$publish_options[ LC_OPTION_IA_ENABLED ] = $params['siteInternetArchiveEnabled'];
+	}
+	if ( isset( $params['siteInternetArchiveAccessKey'] ) ) {
+		$publish_options[ LC_OPTION_IA_ACCESS_KEY ] = $params['siteInternetArchiveAccessKey'];
+	}
+	if ( isset( $params['siteInternetArchiveSecret'] ) ) {
+		$publish_options[ LC_OPTION_IA_SECRET ] = $params['siteInternetArchiveSecret'];
 	}
 	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
 	$return_payload = likecoin_get_publish_option_for_restful();
@@ -209,11 +221,11 @@ function likecoin_save_site_matters_login_data( $matters_info ) {
 	return rest_ensure_response( $result );
 }
 /**
- * Get matters login data from WordPress database.
+ * Get publish option data from WordPress database.
  *
  * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_get_site_matters_data( $request ) {
+function likecoin_get_site_publish_data( $request ) {
 	$return_payload = likecoin_get_publish_option_for_restful();
 	// incl. login and publish data.
 	if ( ! $return_payload ) {

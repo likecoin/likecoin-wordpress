@@ -48,7 +48,7 @@ function likecoin_add_sidebar( $post, $publish_params ) {
 		LC_PLUGIN_VERSION,
 		true
 	);
-	wp_register_style( 'lc_plugin_sidebar_css', LC_URI . 'assets/js/sidebar/style-index.css', false, LC_PLUGIN_VERSION );
+	wp_register_style( 'lc_plugin_sidebar_css', LC_URI . 'assets/js/sidebar/index.css', false, LC_PLUGIN_VERSION );
 	wp_enqueue_style( 'lc_plugin_sidebar_css' );
 	wp_localize_script(
 		'lc-plugin-sidebar-js',
