@@ -144,6 +144,12 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 
 == Changelog ==
 
+= 2.8.2 =
+
+- Add auto publish to Internet Archive
+- Simplify publish setting page
+
+
 = 2.8.1 =
 
 - Fix LikeCoin button not shown when option is set to post only.
