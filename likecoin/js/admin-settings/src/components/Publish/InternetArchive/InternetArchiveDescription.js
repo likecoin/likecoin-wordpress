@@ -10,7 +10,7 @@ function InternetArchiveDescription() {
     ),
     {
       InternetArchive: createElement(Link, {
-        text: __('Internet Archive', 'likecoin'),
+        text: __('Internet Archive (archive.org)', 'likecoin'),
         linkAddress: 'https://archive.org/',
       }),
     },
@@ -29,9 +29,6 @@ function InternetArchiveDescription() {
   );
   return (
     <div>
-      <h3>
-        {__('What is Internet Archive (archive.org)?', 'likecoin')}
-      </h3>
       <p>{localizedInternetArchiveShortIntro}</p>
       <p>{localizedInternetSecretIntro}</p>
     </div>
