@@ -92,7 +92,7 @@ class LikeCoin_Matters_API {
 				'headers'    => array(
 					'Content-Type' => 'application/json',
 				),
-				'user-agent' => 'LikeCoin WordPress Plugin' . LC_PLUGIN_VERSION,
+				'user-agent' => 'LikeCoin WordPress Plugin ' . LC_PLUGIN_VERSION,
 				'body'       => wp_json_encode(
 					array(
 						'query' => 'mutation {
@@ -135,7 +135,7 @@ class LikeCoin_Matters_API {
 					'Content-Type'   => 'application/json',
 					'x-access-token' => isset( $access_token ) ? $access_token : $this->access_token,
 				),
-				'user-agent' => 'LikeCoin WordPress Plugin' . LC_PLUGIN_VERSION,
+				'user-agent' => 'LikeCoin WordPress Plugin ' . LC_PLUGIN_VERSION,
 				'body'       => wp_json_encode(
 					array(
 						'query' => $payload,
@@ -206,7 +206,7 @@ class LikeCoin_Matters_API {
 		$request = wp_remote_post(
 			$this->base_url,
 			array(
-				'user-agent' => 'LikeCoin WordPress Plugin' . LC_PLUGIN_VERSION,
+				'user-agent' => 'LikeCoin WordPress Plugin ' . LC_PLUGIN_VERSION,
 				'headers'    => array(
 					'Content-Type'   => 'multipart/form-data; boundary=' . $boundary,
 					'x-access-token' => $this->access_token,

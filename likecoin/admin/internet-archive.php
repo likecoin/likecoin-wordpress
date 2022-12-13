@@ -49,7 +49,7 @@ function likecoin_post_to_internet_archive( $post_id, $post ) {
 		'https://web.archive.org/save',
 		array(
 			'blocking'   => WP_DEBUG === true,
-			'user-agent' => 'LikeCoin WordPress Plugin' . LC_PLUGIN_VERSION,
+			'user-agent' => 'LikeCoin WordPress Plugin ' . LC_PLUGIN_VERSION,
 			'headers'    => $headers,
 			'body'       => array(
 				'url'                => $url,
