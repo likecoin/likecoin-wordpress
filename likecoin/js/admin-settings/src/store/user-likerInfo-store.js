@@ -4,7 +4,7 @@ import { createAndRegisterReduxStore } from './util';
 // eslint-disable-next-line import/prefer-default-export
 export const USER_LIKER_INFO_STORE_NAME = 'likecoin/user_liker_info';
 
-const endPoint = '/likecoin/v1/options/button/user';
+const endPoint = '/likecoin/v1/options/liker-id/user';
 
 const INITIAL_STATE = {
   DBUserLikerId: '',
