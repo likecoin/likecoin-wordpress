@@ -27,7 +27,7 @@ function App() {
           <Route path="advanced" element={<AdvancedSettingPage />} />
           <Route path="about" element={<SponsorLikecoinPage />} />
         </Route>
-        <Route path="button" element={<LikerIdSettingLayout />}>
+        <Route path="liker-id" element={<LikerIdSettingLayout />}>
           <Route index element={DBUserCanEditOption ? <SiteLikerIdSettingPage /> : <Navigate to="user" replace />} />
           <Route path="user" element={<UserLikerIdSettingPage />} />
         </Route>

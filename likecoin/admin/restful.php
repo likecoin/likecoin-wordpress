@@ -56,7 +56,7 @@ function likecoin_init_restful_service() {
 		function () {
 			register_rest_route(
 				'likecoin/v1',
-				'/options/button',
+				'/options/liker-id',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_post_main_plugin_options',
@@ -78,7 +78,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/options/button/user',
+				'/options/liker-id/user',
 				array(
 					'methods'             => 'POST',
 					'callback'            => 'likecoin_post_user_data',
@@ -89,7 +89,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/options/button/user',
+				'/options/liker-id/user',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_user_data',

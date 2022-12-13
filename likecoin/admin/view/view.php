@@ -67,7 +67,7 @@ function likecoin_display_admin_pages() {
 		__( 'LikeCoin', 'likecoin' ),
 		__( 'Liker ID', 'likecoin' ),
 		'edit_posts',
-		'/likecoin#/button',
+		'/likecoin#/liker-id',
 		'likecoin_load_admin_js'
 	);
 	add_action( 'load-' . $likecoin_button_page, 'likecoin_load_admin_js' );
