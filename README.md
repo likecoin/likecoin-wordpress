@@ -34,7 +34,7 @@ Auto rebuild script in dev mode. Only one javascript component can be run at a t
 npm run dev:admin:metabox
 
 # LikeCoin plugin admin setting pages
-npm run dev:admin-settings
+npm run dev:admin:settings
 
 # DePub Editor sidebar for Gutenberg
 npm run dev:sidebar
