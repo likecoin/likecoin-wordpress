@@ -29,9 +29,9 @@ function InternetArchiveDescription() {
   );
   return (
     <div>
-      <h2>
+      <h3>
         {__('What is Internet Archive (archive.org)?', 'likecoin')}
-      </h2>
+      </h3>
       <p>{localizedInternetArchiveShortIntro}</p>
       <p>{localizedInternetSecretIntro}</p>
     </div>

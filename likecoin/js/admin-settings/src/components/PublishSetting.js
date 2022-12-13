@@ -47,23 +47,24 @@ function PublishSetting(_, ref) {
   }));
   return (
     <>
-      <Section title={__('Publish to other platforms', 'likecoin')} />
-      <p>{__('LikeCoin plugin can help you to publish you post to other platform.', 'likecoin')}</p>
-      <CheckBox
+      <h2>{__('Publish to Matters', 'likecoin')}</h2>
+      {!showMatters && (<CheckBox
         checked={showMatters}
         handleCheck={setShowMatters}
         title={__('Matters', 'likecoin')}
-        details={__('Publish to Matters.news', 'likecoin')}
-      />
+        details={__('Show Matters.news settings', 'likecoin')}
+      />)}
       {showMatters && (
         <MattersSetting ref={mattersSettingRef} />
       )}
-      <CheckBox
+      <hr />
+      <h2>{__('Publish to Internet Archive', 'likecoin')}</h2>
+      {!showInternetArchive && (<CheckBox
         checked={showInternetArchive}
         handleCheck={setShowInternetArchive}
         title={__('Internet Archive', 'likecoin')}
-        details={__('Publish to Internet Archive', 'likecoin')}
-      />
+        details={__('Show Internet Archive settings', 'likecoin')}
+      />)}
       {showInternetArchive && (
         <InternetArchiveSetting ref={internetArchiveSettingRef} />
       )}

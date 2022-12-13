@@ -57,7 +57,6 @@ function InternetArchiveSetting(_, ref) {
   }, [DBSiteInternetArchiveAccessKey, DBSiteInternetArchiveEnabled]);
 
   return (<>
-    <hr />
     <InternetArchiveDescription />
     <CheckBox
       checked={siteInternetArchiveEnabled}
@@ -84,7 +83,6 @@ function InternetArchiveSetting(_, ref) {
       value={siteInternetArchiveSecret}
       onChange={(e) => setSiteInternetArchiveSecret(e.target.value)}
     />
-    <hr />
   </>);
 }
 

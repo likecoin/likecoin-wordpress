@@ -42,7 +42,8 @@ function MattersSetting(_, ref) {
   const {
     postSitePublishOptions,
     siteMattersLogin,
-    siteMattersLogout, updateSiteMattersLoginGlobalState,
+    siteMattersLogout,
+    updateSiteMattersLoginGlobalState,
   } = useDispatch(SITE_PUBLISH_STORE_NAME);
 
   async function loginToMattersAndSaveDataToWordpress(data) {
@@ -139,51 +140,49 @@ function MattersSetting(_, ref) {
     DBSiteMattersAddFooterLink,
   ]);
 
-  return (<>
-    <hr />
-    <h4>{__('Login with Matters ID', 'likecoin')}</h4>
-    <MattersDescription />
-    {
-      !siteMattersId && <MattersLoginTable
-        loginHandler={loginHandler}
-        mattersIdRef={mattersIdRef}
-        mattersPasswordRef={mattersPasswordRef}
-        mattersLoginError={mattersLoginError}
-      />
-    }
-    <hr />
-    <h4>{__('Matters connection status', 'likecoin')}</h4>
-    <MattersStatusTable
-      siteMattersId={siteMattersId}
-      handleMattersLogout={handleMattersLogout}
-    />
-    <table className="form-table" role="presentation">
-      <tbody>
-        <CheckBox
-          checked={siteMattersAutoSaveDraft}
-          handleCheck={setSiteMattersAutoSaveDraft}
-          title={__('Auto save draft to Matters', 'likecoin')}
-          details={__('Auto save draft to Matters', 'likecoin')}
-          checkRef={siteMattersAutoSaveDraftRef}
+  return (
+    <>
+      <MattersDescription />
+      {
+        !siteMattersId && <MattersLoginTable
+          loginHandler={loginHandler}
+          mattersIdRef={mattersIdRef}
+          mattersPasswordRef={mattersPasswordRef}
+          mattersLoginError={mattersLoginError}
         />
-        <CheckBox
-          checked={siteMattersAutoPublish}
-          handleCheck={setSiteMattersAutoPublish}
-          title={__('Auto publish post to Matters', 'likecoin')}
-          details={__('Auto publish post to Matters', 'likecoin')}
-          checkRef={siteMattersAutoPublishRef}
+      }
+      {
+        siteMattersId && <MattersStatusTable
+          siteMattersId={siteMattersId}
+          handleMattersLogout={handleMattersLogout}
         />
-        <CheckBox
-          checked={siteMattersAddFooterLink}
-          handleCheck={setSiteMattersAddFooterLink}
-          title={__('Add post link in footer', 'likecoin')}
-          details={__('Add post link in footer', 'likecoin')}
-          checkRef={siteMattersAddFooterLinkRef}
-        />
-      </tbody>
-    </table>
-    <hr />
-  </>);
+      }
+      <table className="form-table" role="presentation">
+        <tbody>
+          <CheckBox
+            checked={siteMattersAutoSaveDraft}
+            handleCheck={setSiteMattersAutoSaveDraft}
+            title={__('Auto save draft to Matters', 'likecoin')}
+            details={__('Auto save draft to Matters', 'likecoin')}
+            checkRef={siteMattersAutoSaveDraftRef}
+          />
+          <CheckBox
+            checked={siteMattersAutoPublish}
+            handleCheck={setSiteMattersAutoPublish}
+            title={__('Auto publish post to Matters', 'likecoin')}
+            details={__('Auto publish post to Matters', 'likecoin')}
+            checkRef={siteMattersAutoPublishRef}
+          />
+          <CheckBox
+            checked={siteMattersAddFooterLink}
+            handleCheck={setSiteMattersAddFooterLink}
+            title={__('Add post link in footer', 'likecoin')}
+            details={__('Add post link in footer', 'likecoin')}
+            checkRef={siteMattersAddFooterLinkRef}
+          />
+        </tbody>
+      </table>
+    </>);
 }
 
 export default forwardRef(MattersSetting);
