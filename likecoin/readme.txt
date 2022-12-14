@@ -1,7 +1,7 @@
 === LikeCoin - Decentralize Publishing with Writing NFT & Storage ===
 
 Contributors: likecoin,williamchong007,ckxpress
-Tags: web3, NFT, depub, LikeCoin, blockchain, web 3
+Tags: web3, NFT, depub, LikeCoin, blockchain, publishing, decentralized
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.0
@@ -26,6 +26,9 @@ The marketplace will determine the mint price by bonding curve. The price of Wri
 
 = DECENTRALIZED STORAGE =
 Register content metadata (ISCN) on the LikeCoin chain, storing the content file on IPFS and Arweave in one plugin.
+
+= PUBLISH TO MULTIPLE PLATFORM =
+Publish your content to platforms like Matters.news and Internet Archive automatically.
 
 == Contribution ==
 
