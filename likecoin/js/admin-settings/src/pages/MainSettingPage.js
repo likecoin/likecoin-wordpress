@@ -9,6 +9,7 @@ import SettingNotice from '../components/SettingNotice';
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
 import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
 import CheckBox from '../components/CheckBox';
+import FormTable from '../components/FormTable';
 import SubmitButton from '../components/SubmitButton';
 
 function MainSettingPage() {
@@ -88,9 +89,7 @@ function MainSettingPage() {
 
   if (!DBUserCanEditOption) {
     return (
-      <div className="likecoin">
-        <p>{forbiddenString}</p>
-      </div>
+      <p>{forbiddenString}</p>
     );
   }
   return (
@@ -103,29 +102,25 @@ function MainSettingPage() {
         />
       )}
       <form onSubmit={confirmHandler}>
-        <Section
-          title={__('LikeCoin widget', 'likecoin')}
-        />
-        <div>
-          <p>{__('Display LikeCoin Button/Widget when author has a Liker ID, or if post is registered on ISCN', 'likecoin')}</p>
-        </div>
-        <tbody>
+        <Section title={__('LikeCoin widget', 'likecoin')} />
+        <p>{__('Display LikeCoin Button/Widget when author has a Liker ID, or if post is registered on ISCN', 'likecoin')}</p>
+        <FormTable>
           <CheckBox
             checked={showInPosts}
             handleCheck={setShowInPosts}
             title={__('Show in Posts', 'likecoin')}
-            details={__('*recommended', 'likecoin')} />
+            append={__(' *Recommended', 'likecoin')}
+          />
           <CheckBox
             checked={showInPages}
             handleCheck={setShowInPages}
-            title={__('Show in Pages', 'likecoin')} />
-        </tbody>
+            title={__('Show in Pages', 'likecoin')}
+          />
+        </FormTable>
         <hr />
         <Section title={__('ISCN Badge', 'likecoin')} />
-        <div>
-          <p>{__('Display a badge for ISCN registered post', 'likecoin')}</p>
-        </div>
-        <table className="form-table" role="presentation">
+        <p>{__('Display a badge for ISCN registered post', 'likecoin')}</p>
+        <FormTable>
           <DropDown
             selected={ISCNBadgeStyleOption}
             handleSelect={setISCNBadgeStyleOption}
@@ -133,16 +128,17 @@ function MainSettingPage() {
             selectRef={ISCNBadgeStyleOptionRef}
             options={ISCNStyleOptions}
           />
-        </table>
-        <hr />
-        <a
-          href='#'
-          onClick={handleResetDefault}
-        >
-          {__('Reset to default', 'likecoin')}
-        </a>
-        <hr />
-        <SubmitButton />
+        </FormTable>
+        <SubmitButton>
+          &nbsp;
+          <a
+            className="button"
+            href="#"
+            onClick={handleResetDefault}
+          >
+            {__('Reset to default', 'likecoin')}
+          </a>
+        </SubmitButton>
       </form>
     </div>
   );

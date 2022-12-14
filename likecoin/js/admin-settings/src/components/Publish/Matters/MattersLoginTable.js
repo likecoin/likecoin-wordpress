@@ -1,53 +1,45 @@
 import { __ } from '@wordpress/i18n';
 
+import FormTable from '../../FormTable';
+import FormTableRow from '../../FormTableRow';
+
 function MattersLoginTable(props) {
   return (
-    <>
-      <h4>{__('Login with Matters ID', 'likecoin')}</h4>
-      <table className="form-table">
-        <tbody>
-          <tr>
-            <td>
-              <label for="matters_id">
-                {__('Matters login email ', 'likecoin')}
-              </label>
-              <input
-                type="text"
-                name="lc_matters_id"
-                id="matters_id"
-                ref={props.mattersIdRef}
-              ></input>
-            </td>
-            <td>
-              <label for="matters_password">
-                {__('Password ', 'likecoin')}
-              </label>
-              <input
-                type="password"
-                name="lc_matters_password"
-                id="matters_password"
-                ref={props.mattersPasswordRef}
-              ></input>
-            </td>
-          </tr>
-          <tr>
-            <td className="actions" style={{ float: 'left' }}>
-              <span className="actionWrapper" style={{ border: '0px' }}>
-                <input
-                  id="lcMattersIdLoginBtn"
-                  type="button"
-                  value={__('Login', 'likecoin')}
-                  onClick={props.loginHandler}
-                ></input>
-              </span>
-            </td>
-            <td>
-              <span id="lcMattersErrorMessage">{props.mattersLoginError}</span>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </>
+    <FormTable>
+      <FormTableRow title={__('Connect to Matters', 'likecoin')}>
+        <p className="description">{__('Login with Matters ID', 'likecoin')}</p>
+        <FormTable>
+          <FormTableRow title={__('Matters login email ', 'likecoin')}>
+            <input
+              ref={props.mattersIdRef}
+              id="matters_id"
+              name="lc_matters_id"
+              type="text"
+            />
+          </FormTableRow>
+          <FormTableRow title={__('Password ', 'likecoin')}>
+            <input
+              ref={props.mattersPasswordRef}
+              id="matters_password"
+              name="lc_matters_password"
+              type="password"
+            />
+          </FormTableRow>
+          <FormTableRow>
+            <input
+              id="lcMattersIdLoginBtn"
+              className="button button-primary"
+              type="button"
+              value={__('Login', 'likecoin')}
+              onClick={props.loginHandler}
+            />
+            {props.mattersLoginError && (
+              <p id="lcMattersErrorMessage">{props.mattersLoginError}</p>
+            )}
+          </FormTableRow>
+        </FormTable>
+      </FormTableRow>
+    </FormTable>
   );
 }
 

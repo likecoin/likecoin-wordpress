@@ -3,9 +3,12 @@ import {
 } from 'react';
 import { useDispatch, useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import Section from './Section';
-import CheckBox from './CheckBox';
+
 import { SITE_LIKER_INFO_STORE_NAME } from '../store/site-likerInfo-store';
+
+import CheckBox from './CheckBox';
+import FormTable from './FormTable';
+import Section from './Section';
 
 function AdvancedWidgetSetting(_, ref) {
   const { postSiteLikerInfo } = useDispatch(SITE_LIKER_INFO_STORE_NAME);
@@ -36,22 +39,26 @@ function AdvancedWidgetSetting(_, ref) {
   return (
     <>
       <Section title={__('LikeCoin widget advanced settings', 'likecoin')} />
-      <CheckBox
-        checked={perPostOptionEnabled}
-        handleCheck={setPerPostOptionEnabled}
-        title={__('Post option', 'likecoin')}
-        details={__(
-          'Allow editors to customize display setting per post',
-          'likecoin',
-        )}
-        checkRef={perPostOptionEnabledRef}
-      />
-      <a
-        href='#'
-        onClick={handleResetDefault}
-      >
-        {__('Reset to default', 'likecoin')}
-      </a>
+      <FormTable>
+        <CheckBox
+          checked={perPostOptionEnabled}
+          handleCheck={setPerPostOptionEnabled}
+          title={__('Post option', 'likecoin')}
+          details={__(
+            'Allow editors to customize display setting per post',
+            'likecoin',
+          )}
+          append={(
+            <a
+              href='#'
+              onClick={handleResetDefault}
+            >
+              {__('Reset to default', 'likecoin')}
+            </a>
+          )}
+          checkRef={perPostOptionEnabledRef}
+        />
+      </FormTable>
     </>
   );
 }

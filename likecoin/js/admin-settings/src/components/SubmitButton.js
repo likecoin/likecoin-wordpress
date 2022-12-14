@@ -1,11 +1,12 @@
 import { __ } from '@wordpress/i18n';
 
-function SubmitButton() {
+function SubmitButton({ children }) {
   return (
-    <div>
-      <button className="likecoinSubmitButton">
+    <div className="submit">
+      <button className="button button-primary">
         {__('Confirm', 'likecoin')}
       </button>
+      {children}
     </div>
   );
 }

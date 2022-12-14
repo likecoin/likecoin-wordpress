@@ -401,14 +401,64 @@ table {
 	font-weight: 600;
 }
 
-#likecoinChangeBtn {
-	color: #4a90e2;
+/* NOTE: New CSS start here, all classes should prefix `lcp-` */
 
-	font-weight: 600;
+:root {
+	--lcp-admin-panel-radius: 14px;
+	--lcp-admin-panel-border-color: #ccc;
+	--lcp-admin-header-color: #fff;
+	--lcp-color-gray-dark: #4a4a4a;
+	--lcp-color-gray-medium: #9b9b9b;
 }
 
-#likecoinLogoutBtn {
-	color: #d0021b;
+.lcp-admin-header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
 
-	font-weight: 600;
+	padding: 20px;
+		
+	border: 1px solid var(--lcp-admin-panel-border-color);
+	border-bottom: 0;
+	border-top-left-radius: var(--lcp-admin-panel-radius);
+	border-top-right-radius: var(--lcp-admin-panel-radius);
+	background: var(--lcp-admin-header-color);
+}
+
+.lcp-admin-header__portfolio-button {		
+	padding: 6px 12px;
+	
+	text-decoration: none;
+
+	color: var(--lcp-color-dark-gray);
+
+	border: 1px solid var(--lcp-color-gray-medium);
+	border-radius: 9999px;
+}
+
+.lcp-nav-tab-wrapper {
+	padding: 0 15px;
+
+	border-right: 1px solid var(--lcp-admin-panel-border-color);
+	border-left: 1px solid var(--lcp-admin-panel-border-color);
+
+	background: var(--lcp-admin-header-color);
+}
+
+.lcp-nav-tab-panel {
+	padding: 10px 20px 20px;
+
+	border: 1px solid var(--lcp-admin-panel-border-color);
+	border-top: none;
+	border-bottom-right-radius: var(--lcp-admin-panel-radius);
+	border-bottom-left-radius: var(--lcp-admin-panel-radius);
+}
+
+.lcp-github-sponsor-card {
+	overflow: hidden;
+
+	margin-top: 16px;
+
+	border: 0;
+	border-radius: 8px;
 }

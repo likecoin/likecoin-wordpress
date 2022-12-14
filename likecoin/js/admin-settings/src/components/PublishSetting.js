@@ -3,11 +3,16 @@ import {
 } from 'react';
 import { useSelect } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import Section from './Section';
-import CheckBox from './CheckBox';
+
 import { SITE_PUBLISH_STORE_NAME } from '../store/site-publish-store';
+
+import MattersDescription from './Publish/Matters/MattersDescription';
 import MattersSetting from './Publish/Matters/MattersSetting';
+import InternetArchiveDescription from './Publish/InternetArchive/InternetArchiveDescription';
 import InternetArchiveSetting from './Publish/InternetArchive/InternetArchiveSetting';
+
+import CheckBox from './CheckBox';
+import FormTable from './FormTable';
 
 function PublishSetting(_, ref) {
   // eslint-disable-next-line arrow-body-style
@@ -48,23 +53,30 @@ function PublishSetting(_, ref) {
   return (
     <>
       <h2>{__('Publish to Matters', 'likecoin')}</h2>
-      {!showMatters && (<CheckBox
-        checked={showMatters}
-        handleCheck={setShowMatters}
-        title={__('Matters', 'likecoin')}
-        details={__('Show Matters.news settings', 'likecoin')}
-      />)}
-      {showMatters && (
+      <MattersDescription />
+      {!showMatters ? (
+        <FormTable>
+          <CheckBox
+            checked={showMatters}
+            handleCheck={setShowMatters}
+            title={__('Show settings', 'likecoin')}
+          />
+        </FormTable>
+      ) : (
         <MattersSetting ref={mattersSettingRef} />
       )}
       <hr />
       <h2>{__('Publish to Internet Archive', 'likecoin')}</h2>
-      {!showInternetArchive && (<CheckBox
-        checked={showInternetArchive}
-        handleCheck={setShowInternetArchive}
-        title={__('Internet Archive', 'likecoin')}
-        details={__('Show Internet Archive settings', 'likecoin')}
-      />)}
+      <InternetArchiveDescription />
+      {!showInternetArchive && (
+        <FormTable>
+          <CheckBox
+            checked={showInternetArchive}
+            handleCheck={setShowInternetArchive}
+            title={__('Show settings', 'likecoin')}
+          />
+        </FormTable>
+      )}
       {showInternetArchive && (
         <InternetArchiveSetting ref={internetArchiveSettingRef} />
       )}

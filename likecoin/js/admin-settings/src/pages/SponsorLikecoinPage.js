@@ -74,31 +74,29 @@ function SponsorLikecoinPage() {
   );
 
   return (
-    <div>
-      <div>
-        <ParagraphTitle text={__('What is LikeCoin?', 'likecoin')} />
-        <p>{localizedIntroduction}</p>
-        <ParagraphTitle text={__('Decentralized Registry', 'likecoin')} />
-        <p>{localizedDecentralizedRegistry}</p>
-        <ParagraphTitle text={__('Decentralized Rewards', 'likecoin')} />
-        <p>{localizedDecentralizedRewards}</p>
-        <ParagraphTitle text={__('Decentralized Editorials', 'likecoin')} />
-        <p>
-          {__(
-            "Apart from rewarding creators as a Liker, readers may go further to become a Content Jockey. Content Jockeys help curate creative stories and insightful commentaries with Super Like, which is purposely designed to be scarce to cut out noise from signals. When a story gets popular, LikeCoin's unique distribution footprint rewards both creator and Content Jockey, creating an all win situation for the content ecosystem.",
-            'likecoin',
-          )}
-        </p>
-        <ParagraphTitle text={__('Decentralized Governance', 'likecoin')} />
-        <p>{localizedDecentralizedGovernance}</p>
-        <iframe
-          src="https://github.com/sponsors/likecoin/card"
-          title="Sponsor likecoin"
-          height="225"
-          width="660"
-          style={{ overflow: 'hidden', border: 0 }}
-        ></iframe>
-      </div>
+    <div className="likecoin">
+      <ParagraphTitle text={__('What is LikeCoin?', 'likecoin')} />
+      <p>{localizedIntroduction}</p>
+      <ParagraphTitle text={__('Decentralized Registry', 'likecoin')} />
+      <p>{localizedDecentralizedRegistry}</p>
+      <ParagraphTitle text={__('Decentralized Rewards', 'likecoin')} />
+      <p>{localizedDecentralizedRewards}</p>
+      <ParagraphTitle text={__('Decentralized Editorials', 'likecoin')} />
+      <p>
+        {__(
+          "Apart from rewarding creators as a Liker, readers may go further to become a Content Jockey. Content Jockeys help curate creative stories and insightful commentaries with Super Like, which is purposely designed to be scarce to cut out noise from signals. When a story gets popular, LikeCoin's unique distribution footprint rewards both creator and Content Jockey, creating an all win situation for the content ecosystem.",
+          'likecoin',
+        )}
+      </p>
+      <ParagraphTitle text={__('Decentralized Governance', 'likecoin')} />
+      <p>{localizedDecentralizedGovernance}</p>
+      <iframe
+        className="lcp-github-sponsor-card"
+        src="https://github.com/sponsors/likecoin/card"
+        title="Sponsor likecoin"
+        height="225"
+        width="660"
+      />
     </div>
   );
 }

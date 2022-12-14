@@ -3,11 +3,12 @@ import {
 } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
-import Section from '../../Section';
-import CheckBox from '../../CheckBox';
+
 import { SITE_PUBLISH_STORE_NAME } from '../../../store/site-publish-store';
 
-import MattersDescription from './MattersDescription';
+import CheckBox from '../../CheckBox';
+import FormTable from '../../FormTable';
+
 import MattersLoginTable from './MattersLoginTable';
 import MattersStatusTable from './MattersStatusTable';
 
@@ -142,7 +143,6 @@ function MattersSetting(_, ref) {
 
   return (
     <>
-      <MattersDescription />
       {
         !siteMattersId && <MattersLoginTable
           loginHandler={loginHandler}
@@ -157,31 +157,29 @@ function MattersSetting(_, ref) {
           handleMattersLogout={handleMattersLogout}
         />
       }
-      <table className="form-table" role="presentation">
-        <tbody>
-          <CheckBox
-            checked={siteMattersAutoSaveDraft}
-            handleCheck={setSiteMattersAutoSaveDraft}
-            title={__('Auto save draft to Matters', 'likecoin')}
-            details={__('Auto save draft to Matters', 'likecoin')}
-            checkRef={siteMattersAutoSaveDraftRef}
-          />
-          <CheckBox
-            checked={siteMattersAutoPublish}
-            handleCheck={setSiteMattersAutoPublish}
-            title={__('Auto publish post to Matters', 'likecoin')}
-            details={__('Auto publish post to Matters', 'likecoin')}
-            checkRef={siteMattersAutoPublishRef}
-          />
-          <CheckBox
-            checked={siteMattersAddFooterLink}
-            handleCheck={setSiteMattersAddFooterLink}
-            title={__('Add post link in footer', 'likecoin')}
-            details={__('Add post link in footer', 'likecoin')}
-            checkRef={siteMattersAddFooterLinkRef}
-          />
-        </tbody>
-      </table>
+      <FormTable>
+        <CheckBox
+          checked={siteMattersAutoSaveDraft}
+          handleCheck={setSiteMattersAutoSaveDraft}
+          title={__('Auto save draft to Matters', 'likecoin')}
+          details={__('Auto save draft to Matters', 'likecoin')}
+          checkRef={siteMattersAutoSaveDraftRef}
+        />
+        <CheckBox
+          checked={siteMattersAutoPublish}
+          handleCheck={setSiteMattersAutoPublish}
+          title={__('Auto publish post to Matters', 'likecoin')}
+          details={__('Auto publish post to Matters', 'likecoin')}
+          checkRef={siteMattersAutoPublishRef}
+        />
+        <CheckBox
+          checked={siteMattersAddFooterLink}
+          handleCheck={setSiteMattersAddFooterLink}
+          title={__('Add post link in footer', 'likecoin')}
+          details={__('Add post link in footer', 'likecoin')}
+          checkRef={siteMattersAddFooterLinkRef}
+        />
+      </FormTable>
     </>);
 }
 

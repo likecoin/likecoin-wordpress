@@ -173,28 +173,23 @@ function LikerIdTable(props) {
                   <Text text={likerWalletAddress} />
                 )}
               </td>
-              <td className="actions">
+              <td>
                 {showChangeButton && props.editable && (
-                  <span className="actionWrapper">
-                    <a
-                      id="likecoinChangeBtn"
-                      type="button"
-                      onClick={handleClickOnChange}
-                    >
-                      {__('Change', 'likecoin')}
-                    </a>
-                  </span>
+                  <button
+                    className="button"
+                    type="button"
+                    onClick={handleClickOnChange}
+                  >{__('Change', 'likecoin')}</button>
                 )}
                 {showDisconnectButton && props.editable && (
-                  <span className="actionWrapper">
-                    <a
-                      id="likecoinLogoutBtn"
+                  <>
+                    &nbsp;
+                    <button
+                      className="button button-link-delete"
                       type="button"
                       onClick={handleDisconnect}
-                    >
-                      {__('Disconnect', 'likecoin')}
-                    </a>
-                  </span>
+                    >{__('Disconnect', 'likecoin')}</button>
+                  </>
                 )}
               </td>
             </tr>

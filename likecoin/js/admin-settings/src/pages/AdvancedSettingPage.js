@@ -31,7 +31,7 @@ function AdvancedSettingPage() {
     setSavedSuccessful(false);
   }
   return (
-    <form onSubmit={confirmHandler}>
+    <form className="likecoin" onSubmit={confirmHandler}>
       {savedSuccessful && (
         <SettingNotice
           text={__('Settings Saved', 'likecoin')}

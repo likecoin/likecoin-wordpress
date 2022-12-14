@@ -29,21 +29,6 @@ function MattersDescription() {
   );
   return (
     <div>
-      <h3>
-        <a
-          rel="noopener noreferrer"
-          target="_blank"
-          href="https://matters.news"
-        >
-          <img
-            height="32"
-            weight="32"
-            src="https://matters.news/static/icon-144x144.png"
-            alt="matters-logo"
-          ></img>
-        </a>
-        {__('What is Matters.news?', 'likecoin')}
-      </h3>
       <p>{localizedMattersShortIntro}</p>
       <p>{localizedMattersLongIntro}</p>
     </div>

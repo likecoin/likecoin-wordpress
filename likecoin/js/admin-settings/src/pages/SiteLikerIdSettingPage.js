@@ -80,8 +80,6 @@ function SiteLikerSetting() {
           editable={DBUserCanEditOption}
           onLikerIdUpdate={onSiteLikerIdUpdate}
         />
-        <br />
-        <hr />
         {(DBUserCanEditOption) && (
           <SubmitButton />
         )}

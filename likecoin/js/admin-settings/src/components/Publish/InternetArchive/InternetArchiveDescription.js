@@ -15,23 +15,8 @@ function InternetArchiveDescription() {
       }),
     },
   );
-  const localizedInternetSecretIntro = createInterpolateElement(
-    __(
-      'An <Register/> is needed for auto publishing your post to Internet Archive.',
-      'likecoin',
-    ),
-    {
-      Register: createElement(Link, {
-        text: __('Internet Archive S3 API Key', 'likecoin'),
-        linkAddress: 'https://archive.org/account/s3.php',
-      }),
-    },
-  );
   return (
-    <div>
-      <p>{localizedInternetArchiveShortIntro}</p>
-      <p>{localizedInternetSecretIntro}</p>
-    </div>
+    <p>{localizedInternetArchiveShortIntro}</p>
   );
 }
 

@@ -67,7 +67,6 @@ function LikecoinButtonPage() {
           editable={true}
           onLikerIdUpdate={onUserLikerIdUpdate}
         />
-        <hr />
         <SubmitButton />
       </form>
     </div>

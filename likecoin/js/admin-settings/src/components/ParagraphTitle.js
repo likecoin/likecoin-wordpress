@@ -1,8 +1,6 @@
 function ParagraphTitle(props) {
   return (
-    <p>
-      <strong>{props.text}</strong>
-    </p>
+    <h2>{props.text}</h2>
   );
 }
 
