@@ -67,7 +67,7 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/options/button',
+				'/options/liker-id',
 				array(
 					'methods'             => 'GET',
 					'callback'            => 'likecoin_get_main_plugin_options',
