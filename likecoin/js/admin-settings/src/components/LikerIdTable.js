@@ -134,7 +134,7 @@ function LikerIdTable(props) {
                         rel="noopener noreferrer"
                         target="_blank"
                         href={`https://${props.likecoHost}/${likerIdValue}`}
-                        className="likecoin likecoinId"
+                        className="likecoin"
                       >
                         {likerIdValue}
                       </a>
@@ -185,7 +185,7 @@ function LikerIdTable(props) {
                   <>
                     &nbsp;
                     <button
-                      className="button button-link-delete"
+                      className="button button-danger"
                       type="button"
                       onClick={handleDisconnect}
                     >{__('Disconnect', 'likecoin')}</button>
