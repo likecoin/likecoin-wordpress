@@ -36,14 +36,6 @@ function SiteLikerSetting() {
         avatar: siteLikerInfo.likerAvatar,
       },
     };
-    const userData = {
-      userLikerInfos: {
-        likecoin_id: siteLikerInfo.likerIdValue,
-        display_name: siteLikerInfo.likerDisplayName,
-        wallet: siteLikerInfo.likerWalletAddress,
-        avatar: siteLikerInfo.likerAvatar,
-      },
-    };
     try {
       // Change global state & DB
       if (DBUserCanEditOption) {

@@ -4,7 +4,6 @@ import {
 import axios from 'axios';
 import { __ } from '@wordpress/i18n';
 import { debounce } from 'lodash';
-import Text from './Text';
 
 function LikerIdTable(props) {
   const likerIdRef = useRef();
@@ -106,110 +105,108 @@ function LikerIdTable(props) {
   }
 
   return (
-    <tr>
-      <td>
-        <table className="form-table likecoinTable">
-          <tbody>
-            <tr>
-              <th>{__('Liker ID', 'likecoin')}</th>
-              <th>{__('Display Name', 'likecoin')}</th>
-              <th>{__('Wallet', 'likecoin')}</th>
-              <th> </th>
-            </tr>
-            <tr>
-              <td>
-                <div className="avatarWrapper">
-                  {!isLoading
-                    && likerAvatar && (
-                      <img
-                        id="likecoinAvatar"
-                        className="likecoinAvatar"
-                        src={likerAvatar}
-                        alt="Avatar"
-                      />
+    <>
+      {(props.editable && (!likerIdValue || isChangingTypingLiker)) && (
+        <div className="tablenav top">
+          <div className="alignleft actions">
+            <input
+              ref={likerIdRef}
+              id="likecoinIdInputBox"
+              className="likecoinInputBox"
+              type="text"
+              placeholder={__('Search your Liker ID', 'likecoin')}
+              onChange={handleLikerIdInputChange}
+            />
+            &nbsp;
+            <a
+              id="likecoinInputLabel"
+              className="likecoinInputLabel"
+              target="_blank"
+              rel="noopener noreferrer"
+              href={`https://${props.likecoHost}/in`}
+            >
+              {__('Sign Up / Find my Liker ID', 'likecoin')}
+            </a>
+          </div>
+          <br className="clear" />
+        </div>
+      )}
+      {isLoading ? (
+        likerIdValue && (
+          <p className="description">
+            {__('Loading...', 'likecoin')}
+          </p>
+        )
+      ) : (
+        likerDisplayName && (
+          <table className="wp-list-table widefat fixed striped table-view-list">
+            <thead>
+              <tr>
+                <th>{__('Liker ID', 'likecoin')}</th>
+                <th>{__('Wallet', 'likecoin')}</th>
+                <th />
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td className="column-username column-primary">
+                  {likerAvatar && (
+                    <img
+                      id="likecoinAvatar"
+                      src={likerAvatar}
+                      width="48"
+                      height="48"
+                      alt="Avatar"
+                    />
                   )}
-                  {likerIdValue && !isChangingTypingLiker && (
-                      <a
-                        id="likecoinId"
-                        rel="noopener noreferrer"
-                        target="_blank"
-                        href={`https://${props.likecoHost}/${likerIdValue}`}
-                        className="likecoin"
-                      >
-                        {likerIdValue}
-                      </a>
+                  <strong>
+                    <a
+                      id="likecoinId"
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      href={`https://${props.likecoHost}/${likerIdValue}`}
+                      className="likecoin"
+                    >{likerDisplayName}</a>
+                  </strong>
+                </td>
+                <td>{likerWalletAddress}</td>
+                <td>
+                  {props.editable && (
+                    <>
+                      {showChangeButton && (
+                        <button
+                          className="button"
+                          type="button"
+                          onClick={handleClickOnChange}
+                        >{__('Change', 'likecoin')}</button>
+                      )}
+                      {showDisconnectButton && (
+                        <>
+                          &nbsp;
+                          <button
+                            className="button button-danger"
+                            type="button"
+                            onClick={handleDisconnect}
+                          >{__('Disconnect', 'likecoin')}</button>
+                        </>
+                      )}
+                    </>
                   )}
-                  {(props.editable && (!likerIdValue || isChangingTypingLiker)) && (
-                    <div>
-                      <input
-                        type="text"
-                        id="likecoinIdInputBox"
-                        ref={likerIdRef}
-                        className="likecoinInputBox"
-                        onChange={handleLikerIdInputChange}
-                      />
-                      <p>
-                        <a
-                          id="likecoinInputLabel"
-                          className="likecoinInputLabel"
-                          target="blacnk"
-                          rel="noopener"
-                          href={`https://${props.likecoHost}/in`}
-                        >
-                          {__('Sign Up / Find my Liker ID', 'likecoin')}
-                        </a>
-                      </p>
-                    </div>
-                  )}
-                </div>
-              </td>
-              <td>
-                {!isLoading && (
-                  <Text text={likerDisplayName} />
-                )}
-              </td>
-              <td>
-                {!isLoading && (
-                  <Text text={likerWalletAddress} />
-                )}
-              </td>
-              <td>
-                {showChangeButton && props.editable && (
-                  <button
-                    className="button"
-                    type="button"
-                    onClick={handleClickOnChange}
-                  >{__('Change', 'likecoin')}</button>
-                )}
-                {showDisconnectButton && props.editable && (
-                  <>
-                    &nbsp;
-                    <button
-                      className="button button-danger"
-                      type="button"
-                      onClick={handleDisconnect}
-                    >{__('Disconnect', 'likecoin')}</button>
-                  </>
-                )}
-              </td>
-            </tr>
-          </tbody>
-        </table>
-        <section className="likecoin loading">
-          {likerIdValue
-            && isLoading
-            && __('Loading...', 'likecoin')}
-        </section>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        )
+      )}
 
-        <section>
-          {likerIdValue && !isLoading && !likerAvatar && (
-            <div className="likecoin likecoinError userNotFound">
-              <h4>{__('Liker ID not found', 'likecoin')}</h4>
-            </div>
-          )}
-        </section>
-      </td>
-    </tr>
+      <section>
+        {likerIdValue && !isLoading && !likerAvatar && (
+          <div className="likecoin likecoinError userNotFound">
+            <h4>{__('Liker ID not found', 'likecoin')}</h4>
+          </div>
+        )}
+      </section>
+    </>
   );
 }
 
