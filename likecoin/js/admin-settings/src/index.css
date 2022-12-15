@@ -131,14 +131,6 @@ table {
 	border-color: grey;
 }
 
-.likecoinInputLabel {
-	float: right;
-
-	color: gray;
-
-	font-style: italic;
-}
-
 .likecoinSubmitButton {
 	min-width: 256px;
 	padding: 8px 16px;
@@ -158,14 +150,6 @@ table {
 	display: flex;
 	align-items: center;
 	flex: 1;
-}
-
-.likecoinAvatar {
-	max-width: 64px;
-	max-height: 64px;
-	margin-right: 16px;
-
-	border-radius: 50%;
 }
 
 .notice-success {
@@ -314,26 +298,10 @@ table {
 	background: #f9f9f9;
 }
 
-.likecoin .likecoinTable .likecoinAvatar {
-	max-width: 64px;
-	max-height: 64px;
-	margin-right: 16px;
-
-	border-radius: 50%;
-}
-
 .likecoin .likecoinTable .avatarWrapper {
 	display: flex;
 	align-items: center;
 	flex: 1;
-}
-
-.likecoin .likecoinInputLabel {
-	float: right;
-
-	color: gray;
-
-	font-style: italic;
 }
 
 .likecoin .likecoinTable tr {
@@ -476,6 +444,17 @@ table {
 
 .lcp-nav-tab-panel .button.button-primary:hover {
 	background: var(--lcp-color-like-green-dark);
+}
+
+.lcp-nav-tab-panel .wp-list-table td,
+.lcp-nav-tab-panel .wp-list-table td img {
+	vertical-align: middle;
+}
+
+.lcp-nav-tab-panel .wp-list-table td img {
+	float: none;
+
+	border-radius: var(--lcp-admin-panel-radius);
 }
 
 .lcp-github-sponsor-card {
