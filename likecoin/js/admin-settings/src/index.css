@@ -131,15 +131,6 @@ table {
 	border-color: grey;
 }
 
-.likecoinId {
-	text-decoration: none;
-
-	color: #4a90e2;
-
-	font-size: 14px;
-	font-weight: 600;
-}
-
 .likecoinInputLabel {
 	float: right;
 
@@ -409,6 +400,10 @@ table {
 	--lcp-admin-header-color: #fff;
 	--lcp-color-gray-dark: #4a4a4a;
 	--lcp-color-gray-medium: #9b9b9b;
+	--lcp-color-like-green: #28646e;
+	--lcp-color-like-green-dark: #2d4f57;
+	--lcp-color-like-cyan-light: #aaf1e7;
+	--lcp-color-red: #e35050;
 }
 
 .lcp-admin-header {
@@ -436,6 +431,12 @@ table {
 	border-radius: 9999px;
 }
 
+.lcp-admin-header__portfolio-button:hover {		
+	color: var(--lcp-color-like-green);
+
+	border-color: var(--lcp-color-like-green);
+}
+
 .lcp-admin-header__portfolio-button .dashicons {
 	vertical-align: bottom;
 }
@@ -456,6 +457,25 @@ table {
 	border-top: none;
 	border-bottom-right-radius: var(--lcp-admin-panel-radius);
 	border-bottom-left-radius: var(--lcp-admin-panel-radius);
+}
+
+.lcp-nav-tab-panel .button {
+	color: var(--lcp-color-like-green);
+	border-color: var(--lcp-color-like-green);
+}
+
+.lcp-nav-tab-panel .button.button-danger {
+	color: var(--lcp-color-red);
+	border-color: var(--lcp-color-red);
+}
+
+.lcp-nav-tab-panel .button.button-primary {
+	color: var(--lcp-color-like-cyan-light);
+	background: var(--lcp-color-like-green);
+}
+
+.lcp-nav-tab-panel .button.button-primary:hover {
+	background: var(--lcp-color-like-green-dark);
 }
 
 .lcp-github-sponsor-card {

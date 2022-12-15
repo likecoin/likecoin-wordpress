@@ -17,7 +17,7 @@ function LikeCoinHelpPage() {
     },
   );
   return (
-    <div className="lcp-nav-tab-panel">
+    <div className="lcp-nav-tab-panel likecoin">
       <Section title={__('Getting Started', 'likecoin')} />
       <iframe
         width="560" height="315"
