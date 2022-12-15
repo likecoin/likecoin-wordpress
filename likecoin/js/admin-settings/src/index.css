@@ -404,7 +404,7 @@ table {
 /* NOTE: New CSS start here, all classes should prefix `lcp-` */
 
 :root {
-	--lcp-admin-panel-radius: 14px;
+	--lcp-admin-panel-radius: 4px;
 	--lcp-admin-panel-border-color: #ccc;
 	--lcp-admin-header-color: #fff;
 	--lcp-color-gray-dark: #4a4a4a;
