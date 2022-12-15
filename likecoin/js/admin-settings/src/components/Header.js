@@ -12,6 +12,8 @@ function Header() {
         target="_blank"
       >
         {__('Your Portfolio', 'likecoin')}
+        &nbsp;
+        <span className="dashicons dashicons-external" />
       </a>
     </header>
   );

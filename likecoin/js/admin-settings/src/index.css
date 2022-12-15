@@ -426,7 +426,7 @@ table {
 }
 
 .lcp-admin-header__portfolio-button {		
-	padding: 6px 12px;
+	padding: 6px 14px;
 	
 	text-decoration: none;
 
@@ -434,6 +434,10 @@ table {
 
 	border: 1px solid var(--lcp-color-gray-medium);
 	border-radius: 9999px;
+}
+
+.lcp-admin-header__portfolio-button .dashicons {
+	vertical-align: bottom;
 }
 
 .lcp-nav-tab-wrapper {
