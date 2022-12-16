@@ -149,7 +149,7 @@ function LikerIdTable(props) {
             </thead>
             <tbody>
               <tr>
-                <td className="column-username column-primary">
+                <td className="column-username">
                   {likerAvatar && (
                     <img
                       id="likecoinAvatar"
