@@ -21,12 +21,12 @@
  */
 
 /**
- * Get post author's Liker ID from post
+ * Get post author's Liker ID object from post
  *
  * @param object| $post WordPress post object.
  */
-function likecoin_get_author_likecoin_id( $post ) {
-	$author      = $post->post_author;
-	$likecoin_id = get_user_meta( $author, LC_USER_LIKECOIN_ID, true );
-	return $likecoin_id;
+function likecoin_get_author_likecoin_user( $post ) {
+	$author        = $post->post_author;
+	$likecoin_user = get_user_meta( $author, LC_USER_LIKECOIN_USER, true );
+	return $likecoin_user;
 }
