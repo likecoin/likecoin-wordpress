@@ -56,6 +56,14 @@ function likecoin_get_post_liker_id( $post ) {
 function likecoin_add_likecoin_meta_header() {
 	$post = get_post();
 	if ( $post ) {
+		$iscn_mainnet_info = get_post_meta( $post->ID, LC_ISCN_INFO, true );
+		$iscn_id           = '';
+		if ( $iscn_mainnet_info ) {
+			$iscn_id = $iscn_mainnet_info['iscn_id'];
+		}
+		if ( ! empty( $iscn_id ) ) {
+			echo '<meta name="likecoin:iscn" content="' . esc_attr( $iscn_id ) . '">';
+		}
 		$likecoin_user = likecoin_get_post_liker_id( $post );
 		if ( ! empty( $likecoin_user['id'] ) ) {
 			echo '<meta name="likecoin:liker-id" content="' . esc_attr( $likecoin_user['id'] ) . '">';
