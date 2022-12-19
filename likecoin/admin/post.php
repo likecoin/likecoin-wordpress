@@ -48,6 +48,7 @@ function likecoin_get_post_tags( $post ) {
 function likecoin_format_post_to_json_data( $post ) {
 	$files            = array();
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
+	$description      = get_the_excerpt( $post );
 	$feature          = likecoin_get_post_thumbnail_with_relative_image_url( $post );
 	$feature_img_div  = $feature['content'];
 	$feature_img_data = $feature['image'];
@@ -57,7 +58,10 @@ function likecoin_format_post_to_json_data( $post ) {
 	$content          = '<!DOCTYPE html><html>
   	<head> <title>' . $title . '</title>' .
 		'<meta charset="utf-8" />
-		 <meta name="viewport" content="width=device-width, initial-scale=1" />
+		 <meta name="viewport" content="width=device-width, initial-scale=1" />' . '
+		 <meta property="og:title" content="' . $title . '">
+		 <meta name="description" content="' . $description . '" />
+		 <meta property="og:description" content="' . $description . '">
 	</head>
 	<body><header><h1>' . $title . '</h1>' . $feature_img_div . '</header>' . $content . '
 	</body></html>';
