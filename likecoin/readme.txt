@@ -13,34 +13,27 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 LikeCoin Writing NFT.  Earn as you write, Collect as you read.
 
 == Description ==
-If you are looking for ways to monetize, store and build communities with your readers, this plugin is for you. Register content metadata on-chain, keep your content on the distributed web (IPFS & Arweave), and publish content as NFT. It is an integrated tool that allows you to write as usual but publish differently.
+If you are looking for ways to monetize, store and build communities with your readers, this plugin is for you.  List your posts for sale, preserve your content on chain, connect your readers in web3 way.  It is an integrated tool that allows you to write as usual but publish differently.
 
-= NFT WIDGET =
-A mini NFT marketplace is embedded into your WordPress posts to let readers collect their favorites.
+= SELL YOUR POSTS =
+A mini NFT Widget is embedded into your WordPress posts to let readers collect their favorites.
 
-= NFT PORTFOLIO =
-A portfolio that can display your collected articles. Represent your readership and authorship.
+= SHOW OFF YOUR WORKS=
+Share your [NFT portfolio](https://liker.land?utm_source=WordPress) to show-off and sell your published articles. 
 
-= DYNAMIC PRICING =
-The marketplace will determine the mint price by bonding curve. The price of Writing NFT will increase automatically after each transaction. No sales hurdle.
+= PRESERVE YOUR CONTENT =
+Register content metadata (ISCN) on LikeCoin chain, storing the content file on IPFS and Arweave, backup on Internet Archive, all in one plugin.
 
-= DECENTRALIZED STORAGE =
-Register content metadata (ISCN) on the LikeCoin chain, storing the content file on IPFS and Arweave in one plugin.
-
-= PUBLISH TO MULTIPLE PLATFORM =
-Publish your content to platforms like Matters.news and Internet Archive automatically.
+= BUILD YOUR COMMUNITY =
+Connect your fans by sending NFT gifts with warm greetings.  Publish your content to platforms like Matters.news automatically.
 
 == Contribution ==
 
 LikeCoin is an open-source project. You are welcome to contribute to the plugin on [Github](https://github.com/likecoin/likecoin-wordpress) if you are a developer.
 
-Welcome to sponsor LikeCoin by being our [Civic Liker](https://liker.land/foundation/civic).
-
 == Installation ==
 
 Installing LikeCoin WordPress plugin is easy-peasy, it takes only a few steps, within one minute.
-
-Before installing the plugin, please [install Keplr](https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en), a crypto wallet Chrome extension for LikeCoin.  See the detail procedure of installing Keplr [here](https://docs.like.co/general-guides/wallet/keplr/how-to-install-keplr-extension).
 
 Follow the below steps to install LikeCoin plugin:
 
@@ -49,9 +42,11 @@ Follow the below steps to install LikeCoin plugin:
 3. Search for "LikeCoin" and find the LikeCoin plugin, click "Install Now" and wait for the system to finish the job, then click "Activate".
 4. After installation, there will be a "LikeCoin" option in the menu. Congratulations, installation is done!
 
+After installing the plugin, please [install Keplr](https://chrome.google.com/webstore/detail/keplr/dmkamcknogkgcdfhhbddcghachkejeap?hl=en), a crypto wallet Chrome extension for LikeCoin.  See the detail procedure of installing Keplr [here](https://docs.like.co/general-guides/wallet/keplr/how-to-install-keplr-extension).  The crypto wallet is necessary for you to publish and keep your Writing NFTs.
+
 = Configuring LikeCoin plugin =
 
-You are ready to publish your post as NFT right after finishing Keplr installation.  If you want to further enjoy the like-to-earn feature, you can also [register a Liker ID](https://docs.like.co/user-guide/liker-id/register-with-keplr).  After finishing Liker ID registration, follow the below configuration steps:
+You are ready to publish your post as Writing NFT right after finishing Keplr installation.  If you want to further enjoy the like-to-earn feature, you can also [register a Liker ID](https://docs.like.co/user-guide/liker-id/register-with-keplr).  After finishing Liker ID registration, follow the below configuration steps:
 
 1. On the menu, select "Your LikeCoin button", then fill in your Liker ID in the Liker ID field.
 2. Click "Confirm" to finish setting up your Writing NFT widget, the widget will appear at the bottom of each post.
@@ -60,17 +55,17 @@ Configure LikeCoin button to appear at anywhere of the articles - use the shortc
 
 = More Information =
 
-To learn more, please visit [liker.land](https://liker.land).
+To learn more, please visit [liker.land](https://liker.land) or [product documentation](https://docs.like.co)
 
 == Frequently Asked Questions ==
 
 = How to collect Writing NFT? =
 
-Collect in "NFT widget" embedded in the content, or at the user’s portfolio page.  Readers need to install Keplr wallet and spend LikeCoin to collect NFT.
+Collect in "NFT widget" embedded in the content, or at the user’s portfolio page.  Readers can pay by Credit/Debit card, but need to install Keplr wallet to collect Writing NFT.
 
 = How to list Writing NFT for sale? =
 
-After install Writing NFT WordPress plugin, writers can publish their posts as NFTs, and readers can then collect via the NFT widget.
+After installing LikeCoin WordPress plugin, writers can publish their posts as NFTs, and readers can then collect via the NFT widget.
 
 = On what basis the price of Writing NFT changes? =
 
@@ -78,11 +73,11 @@ The price changes dynamically based on supply and demand of the NFT.  Writers do
 
 = I do not have Liker ID, can I buy or sell Writing NFT? =
 
-Yes.  Readers can buy Writing NFT, writers can mint and hence list NFT for sale, as long as they have enough LikeCoin in their Keplr wallet.  Liker ID is not needed.
+Yes.  Readers can buy Writing NFT by credit/debit card or LikeCoin, but they must have Keplr installed to keep the NFT.  Writers can mint and hence list NFT for sale as long as they have enough LikeCoin in their Keplr wallet.  In both cases, Liker ID is not madatory.
 
 = Where can I check out my NFT collection? =
 
-At NFT [portfolio page](https://liker.land).
+At [NFT portfolio](https://liker.land) page.
 
 = How to sell Writing NFT in secondary market? =
 
@@ -94,7 +89,7 @@ There is no upper limit in principle.  However, as the marked price will increas
 
 = How to transfer NFT? =
 
-Can be done at NFT portfolio page.
+Can be done at NFT portfolio page, detail instructions [here](https://docs.like.co/general-guides/writing-nft/transfer-writing-nft).
 
 = How to check my LikeCoin balance? =
 
@@ -102,9 +97,11 @@ Users can check LikeCoin balance by:
 
 [Keplr wallet](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/general-guides/wallet/keplr "Keplr wallet")
 
+[Cosmostation wallet](https://docs.like.co/general-guides/wallet/cosmostation "Cosmostation wallet")
+
 [Liker Land mobile app](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/user-guide/liker-land/download "Liker Land mobile app")
 
-[stake.like.co](https://stake.like.co "stake.like.co")
+[dao.like.co](https://dao.like.co "dao.like.co")
 
 [Ledger](https://app.gitbook.com/o/-LL4mdaUaSAFWedMLtcC/s/-LL4mdaVjNgL6A1--PV0-1972196547/general-guides/wallet/hardware-wallet "Ledger")
 
@@ -116,16 +113,17 @@ An easier way to register a Liker ID without any crypto knowledge, however, is t
 
 = How to change LikeCoin to fiat currency? =
 
-Can do it in [Liquid.com](https://www.liquid.com/ "Liquid.com"), which supports more than 10 types of popular fiat currencies. LikeCoin can be converted to other currencies in many exchanges, for details please refer to [this guide](https://docs.like.co/general-guides/trade "this guide").
+Can change LIKE at [Osmosis DEX](https://osmosis.zone) to other coins such as ATOM first, then trade ATOM to other coins such stable coins (e.g. USDC、USDT、BUSD) that can be then change to fiat currency on Centralized Exchanges such as Kraken or Binance.
+LikeCoin can be converted to other currencies in some other exchanges, for details please refer to [this guide](https://docs.like.co/general-guides/trade "this guide").
 
 = What is Civic Liker? =
 
-Civic Liker is a movement to reward good content and encourage openness. The Civic Liker subscription plan provides a convenient way for supporters to sponsor creators by monthly subscription, and let the creators focus on their work with decent rewards. Readers can pay for at least the cost of a coffee, or up to the cost of a bottle of champagne, to support creators.
+Civic Liker is a movement to reward good content and encourage openness.  You can become a Civic Liker by staking at least 5,000 LikeCoin to the [“Civic Liker” node](https://dao.like.co/validators/likevaloper1jxpfche2386a6m0kvfpj6xq9zlrjtuqwz2rnug) with a Liker ID tied to the staking wallet address. The node takes 100% of the stake reward to let you distribute the reward to the creators you “likes” via the LikeCoin button.
 For details please [refer to this guide](https://docs.like.co/user-guide/civic-liker "refer to this guide").
 
 = How to earn bonus from Creator's Fund? =
 
-Creators Fund will be distributed daily according to the claps via LikeCoin buttons by Likers. You can add LikeCoin button to your works by[ installing LikeCoin WordPress plugin](https://docs.like.co/user-guide/creator/wordpress " installing LikeCoin WordPress plugin"). Note that Civic Likers' claps has a much heavier weight for the distribution.
+Creators Fund will be distributed daily according to the claps via LikeCoin buttons by Likers. You can add LikeCoin button to your works by[ installing LikeCoin WordPress plugin](https://docs.like.co/user-guide/creator/wordpress " installing LikeCoin WordPress plugin"). Note that Civic Likers' claps has a much heavier weight for the fund distribution.
 
 = Possible to have different Liker ID within the same WordPress site? =
 
