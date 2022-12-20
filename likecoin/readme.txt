@@ -22,7 +22,7 @@ A mini NFT Widget is embedded into your WordPress posts to let readers collect t
 Share your [NFT portfolio](https://liker.land?utm_source=WordPress) to show-off and sell your published articles. 
 
 = PRESERVE YOUR CONTENT =
-Register content metadata (ISCN) on LikeCoin chain, storing the content file on IPFS and Arweave, backup on Internet Archive, in one plugin.
+Register content metadata (ISCN) on LikeCoin chain, storing the content file on IPFS and Arweave, backup on Internet Archive, all in one plugin.
 
 = BUILD YOUR COMMUNITY =
 Connect your fans by sending NFT gifts with warm greetings.  Publish your content to platforms like Matters.news automatically.
