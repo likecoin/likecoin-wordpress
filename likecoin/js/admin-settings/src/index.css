@@ -457,6 +457,13 @@ table {
 	border-radius: var(--lcp-admin-panel-radius);
 }
 
+.lcp-nav-tab-panel hr {
+	margin: 32px 0;
+
+	border: 0;
+	border-top: 1px solid var(--lcp-admin-panel-border-color);
+}
+
 .lcp-github-sponsor-card {
 	overflow: hidden;
 
@@ -464,4 +471,28 @@ table {
 
 	border: 0;
 	border-radius: 8px;
+}
+
+.lcp-card {
+	margin: 16px 0;
+	padding: 24px;
+
+	border-radius: 8px;
+	background: #fff;
+}
+
+* + .lcp-card {
+	margin-top: 32px;
+}
+
+.lcp-card h2 {
+	color: var(--lcp-color-like-green);
+}
+
+.lcp-card > *:first-child {
+	margin-top: 0;
+}
+
+.lcp-card > *:last-child {
+	margin-bottom: 0;
 }
