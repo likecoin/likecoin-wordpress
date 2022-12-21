@@ -60,6 +60,7 @@ function likecoin_timeout_extend() {
 function likecoin_add_public_hooks() {
 	add_filter( 'the_content', 'likecoin_content_filter' );
 	add_action( 'wp_head', 'likecoin_add_web_monetization_header' );
+	add_action( 'wp_head', 'likecoin_add_likecoin_meta_header' );
 	add_shortcode( 'likecoin', 'likecoin_likecoin_shortcode' );
 	add_filter( 'http_request_timeout', 'likecoin_timeout_extend' );
 }

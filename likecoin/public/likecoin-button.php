@@ -26,6 +26,55 @@
 require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
 
 /**
+ * Get Liker ID and wallet from post
+ *
+ * @param WP_Post| $post The target post for querying liker id.
+ */
+function likecoin_get_post_liker_id( $post ) {
+	$likecoin_id     = '';
+	$likecoin_wallet = '';
+	$likecoin_user   = likecoin_get_author_likecoin_user( $post );
+	if ( empty( $likecoin_user ) ) {
+		$option            = get_option( LC_BUTTON_OPTION_NAME );
+		$site_liker_id     = empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ? '' : $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
+		$site_liker_wallet = empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_WALLET_FIELD ] ) ? '' : $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_WALLET_FIELD ];
+		$likecoin_id       = $site_liker_id;
+		$likecoin_wallet   = $site_liker_wallet;
+	} else {
+		$likecoin_id     = $likecoin_user[ LC_LIKECOIN_USER_ID_FIELD ];
+		$likecoin_wallet = $likecoin_user[ LC_LIKECOIN_USER_WALLET_FIELD ];
+	}
+	return array(
+		'id'     => $likecoin_id,
+		'wallet' => $likecoin_wallet,
+	);
+}
+
+/**
+ * Add LikeCoin header if LikerId exist
+ */
+function likecoin_add_likecoin_meta_header() {
+	$post = get_post();
+	if ( $post ) {
+		$iscn_mainnet_info = get_post_meta( $post->ID, LC_ISCN_INFO, true );
+		$iscn_id           = '';
+		if ( $iscn_mainnet_info ) {
+			$iscn_id = $iscn_mainnet_info['iscn_id'];
+		}
+		if ( ! empty( $iscn_id ) ) {
+			echo '<meta name="likecoin:iscn" content="' . esc_attr( $iscn_id ) . '">';
+		}
+		$likecoin_user = likecoin_get_post_liker_id( $post );
+		if ( ! empty( $likecoin_user['id'] ) ) {
+			echo '<meta name="likecoin:liker-id" content="' . esc_attr( $likecoin_user['id'] ) . '">';
+		}
+		if ( ! empty( $likecoin_user['wallet'] ) ) {
+			echo '<meta name="likecoin:wallet" content="' . esc_attr( $likecoin_user['wallet'] ) . '">';
+		}
+	}
+}
+
+/**
  * Add LikeCoin Button if LikerId exist
  *
  * @param string| $likecoin_id The Liker ID of owner of LikeCoin Button.
@@ -91,14 +140,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		// override Liker ID with ISCN.
 		$likecoin_id = 'iscn';
 	} else {
-		// check site id override.
-		$site_liker_id = empty( $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ] ) ? '' : $option[ LC_OPTION_SITE_LIKECOIN_USER ][ LC_LIKECOIN_USER_ID_FIELD ];
-		if ( $post ) {
-			$likecoin_id = likecoin_get_author_likecoin_id( $post );
-			if ( empty( $likecoin_id ) ) {
-				$likecoin_id = $site_liker_id;
-			}
-		}
+		$likecoin_id = likecoin_get_post_liker_id( $post )['id'];
 	}
 	if ( empty( $likecoin_id ) ) {
 		return '';
