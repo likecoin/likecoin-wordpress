@@ -40,7 +40,7 @@ function LikeCoinHelpPage() {
         <p>{__('Here is a video to help you understand how to publish a Writing NFT', 'likecoin')}</p>
         <iframe
           height="315"
-          src="https://www.youtube.com/embed/4fYNwZHRXCY"
+          src="https://www.youtube.com/embed/iyquF_ClMeQ"
           title="YouTube video player"
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
