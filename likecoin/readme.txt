@@ -18,7 +18,7 @@ If you are looking for ways to monetize, store and build communities with your r
 = SELL YOUR POSTS =
 A mini NFT Widget is embedded into your WordPress posts to let readers collect their favorites.
 
-= SHOW OFF YOUR WORKS=
+= SHOW OFF YOUR WORKS =
 Share your [NFT portfolio](https://liker.land?utm_source=WordPress) to show-off and sell your published articles. 
 
 = PRESERVE YOUR CONTENT =
