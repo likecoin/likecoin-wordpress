@@ -122,7 +122,7 @@ function likecoin_load_plugin_textdomain() {
 function likecoin_add_all_hooks() {
 	if ( is_admin() ) {
 		require_once dirname( __FILE__ ) . '/admin/likecoin.php';
-		likecoin_add_admin_hooks();
+		likecoin_add_admin_hooks( plugin_basename( __FILE__ ) );
 	}
 	likecoin_add_matters_hook();
 	likecoin_add_internet_archive_hook();

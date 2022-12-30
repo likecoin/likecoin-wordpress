@@ -95,11 +95,13 @@ function likecoin_show_plugin() {
 }
 /**
  * Run all admin related WordPress hook
+ *
+ * @param string| $basename plugin base path.
  */
-function likecoin_add_admin_hooks() {
+function likecoin_add_admin_hooks( $basename ) {
 	add_action( 'admin_menu', 'likecoin_display_admin_pages' );
 	add_action( 'admin_init', 'likecoin_admin_init' );
-	add_filter( 'plugin_action_links_' . plugin_basename( __FILE__ ), 'modify_plugin_action_links' );
+	add_filter( 'plugin_action_links_' . $basename, 'likecoin_modify_plugin_action_links' );
 	add_action( 'save_post_post', 'likecoin_save_postdata' );
 	add_action( 'save_post_page', 'likecoin_save_postdata' );
 	add_action( 'admin_post_likecoin_update_user_id', 'likecoin_update_user_id' );
