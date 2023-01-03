@@ -3,11 +3,12 @@ const { __ } = wp.i18n;
 
 jQuery(() => {
   jQuery('#deactivate-likecoin').click((e) => {
+    const SURVEY_LINK = 'https://forms.gle/3QJMcKbZJczmrAfS9';
     e.preventDefault();
     const text1 = jQuery('<p></p>').text(__('Sorry to hear you leave.'));
     const text2 = jQuery('<p></p>');
     const link = jQuery('<a></a>', {
-      href: '#', // TODO: replace with link
+      href: SURVEY_LINK,
       target: '_blank',
       rel: 'noopener',
     }).text(__('Please let us understand how we can improve by filling in a survey here.'));
@@ -25,10 +26,12 @@ jQuery(() => {
       width: 400,
       modal: true,
       buttons: {
-        [__('Survey')]() {
-          window.open('#'); // TODO: replace with link
+        [__('Skip')]() {
+          window.location = jQuery('#deactivate-likecoin').attr('href');
+          jQuery(this).dialog('close');
         },
-        [__('Deactivate')]() {
+        [__('OK')]() {
+          window.open(SURVEY_LINK);
           window.location = jQuery('#deactivate-likecoin').attr('href');
           jQuery(this).dialog('close');
         },
