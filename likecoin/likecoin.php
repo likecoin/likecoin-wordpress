@@ -13,7 +13,7 @@
  * Plugin Name:  LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
  * Description:  Integrate your Liker ID, Writing NFT and decentralized publishing to WordPress.
- * Version:      2.8.3
+ * Version:      2.8.4
  * Author:       LikeCoin
  * Author URI:   https://like.co/
  * License:      GPLv3
@@ -41,7 +41,7 @@ define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LC_PLUGIN_SLUG', 'likecoin' );
 define( 'LC_PLUGIN_NAME', 'LikeCoin' );
-define( 'LC_PLUGIN_VERSION', '2.8.3' );
+define( 'LC_PLUGIN_VERSION', '2.8.4' );
 
 require_once dirname( __FILE__ ) . '/includes/constant/options.php';
 require_once dirname( __FILE__ ) . '/public/likecoin.php';

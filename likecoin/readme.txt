@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 2.8.3
+Stable tag: 2.8.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -144,6 +144,12 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 3. LikeCoin Plugin Options
 
 == Changelog ==
+
+= 2.8.4 =
+
+- Fix broken action links in plugins page
+- Auto redirect to Getting Started page on activation
+- Add feedback form on deactivation
 
 = 2.8.3 =
 
