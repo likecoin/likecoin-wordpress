@@ -12,7 +12,7 @@
 
  * Plugin Name:  LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
- * Description:  Integrate your Liker ID, add LikeCoin Button and decentralized publishing to WordPress.
+ * Description:  Integrate your Liker ID, Writing NFT and decentralized publishing to WordPress.
  * Version:      2.8.3
  * Author:       LikeCoin
  * Author URI:   https://like.co/
@@ -75,6 +75,19 @@ function likecoin_handle_init_and_upgrade() {
 
 }
 
+
+/**
+ * Handle plugin activated
+ *
+ * @param string| $plugin plugin path being activated.
+ */
+function likecoin_handle_activated( $plugin ) {
+	if ( plugin_basename( __FILE__ ) === $plugin ) {
+		wp_safe_redirect( esc_url( admin_url( 'options-general.php?page=likecoin#/help' ) ) );
+		exit();
+	}
+}
+
 /**
  * Handle plugin uninstall
  */
@@ -109,7 +122,7 @@ function likecoin_load_plugin_textdomain() {
 function likecoin_add_all_hooks() {
 	if ( is_admin() ) {
 		require_once dirname( __FILE__ ) . '/admin/likecoin.php';
-		likecoin_add_admin_hooks();
+		likecoin_add_admin_hooks( plugin_basename( __FILE__ ) );
 	}
 	likecoin_add_matters_hook();
 	likecoin_add_internet_archive_hook();
@@ -119,6 +132,7 @@ function likecoin_add_all_hooks() {
 	add_action( 'upgrader_process_complete', 'likecoin_handle_init_and_upgrade' );
 	add_action( 'init', 'likecoin_handle_init_and_upgrade' );
 	add_action( 'plugins_loaded', 'likecoin_load_plugin_textdomain' );
+	add_action( 'activated_plugin', 'likecoin_handle_activated' );
 	register_uninstall_hook( __FILE__, 'likecoin_handle_uninstall' );
 }
 
