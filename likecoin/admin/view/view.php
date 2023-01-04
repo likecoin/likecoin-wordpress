@@ -25,12 +25,6 @@
  */
 require_once dirname( __FILE__ ) . '/../../includes/constant/options.php';
 
-/**
- * Get translation scripts
- */
-function likecoin_set_script_translations() {
-	wp_set_script_translations( 'react-plugin-0', 'likecoin' );
-}
 
 /**
  * Set up Admin Page menus on the left side bar.
@@ -50,7 +44,7 @@ function likecoin_display_admin_pages() {
 	);
 	add_action( 'load-' . $likecoin_admin_main_page, 'likecoin_load_admin_js' );
 
-	global $likecoin_plugin_main_page;
+	global $likecoin_admin_plugin_page;
 	$likecoin_admin_plugin_page = add_submenu_page(
 		'likecoin',
 		__( 'LikeCoin', 'likecoin' ),
@@ -59,7 +53,7 @@ function likecoin_display_admin_pages() {
 		'likecoin',
 		'likecoin_load_admin_js'
 	);
-	add_action( 'load-' . $likecoin_plugin_main_page, 'likecoin_load_admin_js' );
+	add_action( 'load-' . $likecoin_admin_plugin_page, 'likecoin_load_admin_js' );
 
 	global $likecoin_button_page;
 	$likecoin_button_page = add_submenu_page(
@@ -96,7 +90,6 @@ function likecoin_show_likecoin_admin_main_page_content() {
  */
 function likecoin_load_admin_js() {
 	add_action( 'admin_enqueue_scripts', 'likecoin_enqueue_admin_js', 13 );
-	add_action( 'admin_enqueue_scripts', 'likecoin_set_script_translations', 13 );
 }
 /**
  * Load JavaScript files coming from React.

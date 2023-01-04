@@ -32,15 +32,7 @@ require_once dirname( __FILE__ ) . '/metabox.php';
  * @param object| $publish_params Params for displaying publish related settings.
  */
 function likecoin_add_sidebar( $post, $publish_params ) {
-	$post_id                  = $post->ID;
-	$post_title               = $post->post_title;
-	$post_tags                = likecoin_get_post_tags( $post );
-	$post_url                 = get_permalink( $post );
-	$matters_ipfs_hash        = $publish_params['ipfs_hash'];
-	$matters_published_status = $publish_params['published'];
-	$arweave_info             = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
-	$arweave_id               = '';
-	$arweave_ipfs_hash        = '';
+	$post_id = $post->ID;
 	wp_enqueue_script(
 		'lc-plugin-sidebar-js',
 		LC_URI . 'assets/js/sidebar/index.js',
