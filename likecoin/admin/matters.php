@@ -387,6 +387,9 @@ function likecoin_upload_url_image_to_matters( $matters_draft_id, $post ) {
 		// convert stdClass to associative array.
 		$image_infos = json_decode( wp_json_encode( $image_infos ), true );
 	}
+	if ( ! isset( $image_infos ) || ! is_array( $image_infos ) ) {
+		$image_infos = array();
+	}
 	foreach ( $images as $image ) {
 		$url                        = $image->getAttribute( 'src' );
 		$url                        = explode( '#', $url )[0];
