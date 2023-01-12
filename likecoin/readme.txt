@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 2.8.4
+Stable tag: 2.8.5
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -144,6 +144,13 @@ Creators can register content metadata to guarantee its integrity by acquiring a
 3. LikeCoin Plugin Options
 
 == Changelog ==
+
+= 2.8.5 =
+
+- Fix a case where published post cannot be updated when auto publish to Matters.news is enabled
+- Fix an issue where ISCN ID is not updated after published
+- Support updating NFT Class ID in ISCN publish flow
+- Update query string format in app.like.co NFT portal
 
 = 2.8.4 =
 
