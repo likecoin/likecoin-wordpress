@@ -133,7 +133,10 @@ function LikeCoinPlugin() {
 
   const onPostMessageCallback = useCallback(
     async (event) => {
-      if (event && event.data && event.origin === ISCN_WIDGET_ORIGIN && typeof event.data === 'string') {
+      if (event
+          && event.data
+          && (event.origin === ISCN_WIDGET_ORIGIN || event.origin === NFT_WIDGET_ORIGIN)
+          && typeof event.data === 'string') {
         try {
           const { action, data } = JSON.parse(event.data);
           if (action === 'ISCN_WIDGET_READY') {
@@ -142,6 +145,8 @@ function LikeCoinPlugin() {
             onArweaveCallback(data);
           } else if (action === 'ISCN_SUBMITTED') {
             onISCNCallback(data);
+          } else if (action === 'NFT_MINT_DATA') {
+            if (data.classId) setNFTClassId(data.classId);
           } else {
             console.warn(`Unknown event: ${action}`);
           }
