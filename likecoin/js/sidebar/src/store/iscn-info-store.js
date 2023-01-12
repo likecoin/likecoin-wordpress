@@ -140,7 +140,7 @@ const controls = {
     });
   },
   POST_ISCN_INFO_DATA(action) {
-    apiFetch({
+    return apiFetch({
       method: 'POST',
       path: saveISCNInfoEndPoint,
       data: {
