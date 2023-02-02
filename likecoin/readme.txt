@@ -15,6 +15,8 @@ LikeCoin Writing NFT.  Earn as you write, Collect as you read.
 == Description ==
 If you are looking for ways to monetize, store and build communities with your readers, this plugin is for you.  List your posts for sale, preserve your content on chain, connect your readers in web3 way.  It is an integrated tool that allows you to write as usual but publish differently.
 
+https://www.youtube.com/watch?v=iyquF_ClMeQ
+
 = SELL YOUR POSTS =
 A mini NFT Widget is embedded into your WordPress posts to let readers collect their favorites.
 
