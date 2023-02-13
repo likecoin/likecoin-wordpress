@@ -36,7 +36,7 @@ function LikeCoinHelpPage() {
     <div className="lcp-nav-tab-panel likecoin">
       <Section title={__('Getting Started', 'likecoin')} />
       <div className="lcp-card">
-        <h2>{__('1. Get some LikeCoin token to get started', 'likecoin')}</h2>
+        <h2>{__('1. Get some LikeCoin tokens to get started', 'likecoin')}</h2>
         <p>{faucetDescription}</p>
       </div>
       <div className="lcp-card">
