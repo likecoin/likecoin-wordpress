@@ -18,13 +18,17 @@ function LikeCoinHelpPage() {
   );
   const faucetDescription = createInterpolateElement(
     __(
-      'Never heard of LikeCoin? Don’t worry, <Link>here</Link> are some for you to get started.',
+      'Never heard of <LikeCoin>LikeCoin</LikeCoin>? Don’t worry, <Link>here</Link> are some for you to get started.',
       'likecoin',
     ),
     {
+      LikeCoin: createElement(Link, {
+        text: __('LikeCoin', 'likecoin'),
+        linkAddress: 'https://like.co',
+      }),
       Link: createElement(Link, {
         text: __('here', 'likecoin'),
-        linkAddress: 'https://docs.like.co/general-guides/faucet',
+        linkAddress: `https://faucet.like.co/?platform=wordpress&referrer=${encodeURIComponent(document.location.origin)}`,
       }),
     },
   );
@@ -32,7 +36,7 @@ function LikeCoinHelpPage() {
     <div className="lcp-nav-tab-panel likecoin">
       <Section title={__('Getting Started', 'likecoin')} />
       <div className="lcp-card">
-        <h2>{__('1. You may need some LikeCoin token to get started', 'likecoin')}</h2>
+        <h2>{__('1. Get some LikeCoin token to get started', 'likecoin')}</h2>
         <p>{faucetDescription}</p>
       </div>
       <div className="lcp-card">
