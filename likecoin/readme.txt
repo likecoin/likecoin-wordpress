@@ -1,4 +1,4 @@
-=== LikeCoin - Decentralize Publishing with Writing NFT & Storage ===
+=== Web3Press - Decentralize Publishing with Writing NFT by LikeCoin ===
 
 Contributors: likecoin,williamchong007,ckxpress
 Tags: web3, NFT, depub, LikeCoin, blockchain, publishing, decentralized
