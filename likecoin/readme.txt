@@ -15,7 +15,7 @@ Web3Press - Earn as you write, Collect as you read.
 == Description ==
 The best product for your fans, is your IDEA.  Web3Press publishes your posts to the blockchain, enabling you to write as usual but publish differently.
 
-Web3Press provides a creative business model, especially for open content. No paywall or advertisement anymore. Your readers buy your posts because they love your words. Readers’ collections add a touch of class to their web3 portfolio.  If you are looking for ways to monetize, store and build communities with your readers, this plugin is for you.  
+Web3Press provides a creative business model, especially for open content. No paywall or advertisement anymore. Your readers buy your posts because they love your words. Readers’ collections add a touch of class to their web3 portfolio.  If you are looking for ways to monetize, build communities with your readers and preserve your content, this plugin is for you.  
 
 Web3Press is based on LikeCoin, an application-specific blockchain that the community and infrastructure focus on the creator’s economy.
 
