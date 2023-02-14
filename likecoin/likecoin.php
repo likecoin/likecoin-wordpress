@@ -1,6 +1,6 @@
 <?php
 /**
- * LikeCoin WordPress Plugin
+ * Web3Press by LikeCoin
  *
  * Plugin for embbeding LikeCoin functionalities into WordPress.
  *
@@ -10,9 +10,9 @@
  * @link      https://github.com/likecoin/likecoin-wordpress
  * @copyright 2018 LikerLand
 
- * Plugin Name:  LikeCoin
+ * Plugin Name:  Web3Press by LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
- * Description:  Integrate your Liker ID, Writing NFT and decentralized publishing to WordPress.
+ * Description:  Publishes your posts to the blockchain. Sell your posts, share your works, build community, preserve content.
  * Version:      2.8.5
  * Author:       LikeCoin
  * Author URI:   https://like.co/
