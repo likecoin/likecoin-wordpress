@@ -13,7 +13,7 @@ License URI: https://www.gnu.org/licenses/gpl-3.0.html
 LikeCoin Writing NFT.  Earn as you write, Collect as you read.
 
 == Description ==
-If you are looking for ways to monetize, store and build communities with your readers, this plugin is for you.  List your posts for sale, preserve your content on chain, connect your readers in web3 way.  It is an integrated tool that allows you to write as usual but publish differently.
+If you are looking for ways to monetize, build communities with your readers and preserve your content, this plugin is for you.  List your posts for sale, preserve your content on chain, connect your readers in web3 way.  It is an integrated tool that allows you to write as usual but publish differently.
 
 https://www.youtube.com/watch?v=iyquF_ClMeQ
 
