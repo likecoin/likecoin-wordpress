@@ -1,4 +1,4 @@
-# LikeCoin WordPress Plugin
+# Web3Press WordPress Plugin By LikeCoin
 
 [![WordPress plugin downloads](https://img.shields.io/wordpress/plugin/dt/likecoin.svg)](https://wordpress.org/plugins/likecoin/)
 [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/likecoin.svg)](https://wordpress.org/plugins/likecoin/)
