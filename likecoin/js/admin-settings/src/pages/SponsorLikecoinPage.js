@@ -7,8 +7,7 @@ function SponsorLikecoinPage() {
   const localizedIntroduction = createInterpolateElement(
     __(
       `Web3Press provides a creative business model, especially for open content. No paywall or advertisement anymore.
-      Web3Press is based on <LikeCoin />, an application-specific blockchain that the community and infrastructure focus on the creator’s economy.
-      With Web3Press, you can:`,
+      Web3Press is based on <LikeCoin />, an application-specific blockchain that the community and infrastructure focus on the creator’s economy.`,
       'likecoin',
     ),
     {
@@ -99,6 +98,7 @@ function SponsorLikecoinPage() {
       <img src={Banner} alt="Word3Press Banner"></img>
       <h2>{__('What is Web3Press?', 'likecoin')}</h2>
       <p>{localizedIntroduction}</p>
+      <p>{__('With Web3Press, you can:', 'likecoin')}</p>
       <h3>{__('Sell your posts', 'likecoin')}</h3>
       <p>{localizedNFTIntroduction}</p>
       <h3>{__('Be proud of your work', 'likecoin')}</h3>
