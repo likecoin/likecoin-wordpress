@@ -32,13 +32,13 @@ require_once dirname( __FILE__ ) . '/../../includes/constant/options.php';
 function likecoin_display_admin_pages() {
 	global $likecoin_admin_main_page;
 	$likecoin_admin_main_page = add_menu_page(
-		__( 'LikeCoin', 'likecoin' ),
-		__( 'LikeCoin', 'likecoin' ),
+		__( 'Web3Press', 'likecoin' ),
+		__( 'Web3Press', 'likecoin' ),
 		'edit_posts',
 		'likecoin',
 		'likecoin_show_likecoin_admin_main_page_content',
 		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
-		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/likecoin.svg' ) ),
+		'data:image/svg+xml;base64,' . base64_encode( file_get_contents( LC_DIR . 'assets/icon/star.svg' ) ),
 		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped,WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents,WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 		50
 	);
@@ -47,7 +47,7 @@ function likecoin_display_admin_pages() {
 	global $likecoin_admin_plugin_page;
 	$likecoin_admin_plugin_page = add_submenu_page(
 		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
+		__( 'Web3Press', 'likecoin' ),
 		__( 'Plugin Setting', 'likecoin' ),
 		'edit_posts',
 		'likecoin',
@@ -58,7 +58,7 @@ function likecoin_display_admin_pages() {
 	global $likecoin_button_page;
 	$likecoin_button_page = add_submenu_page(
 		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
+		__( 'Web3Press', 'likecoin' ),
 		__( 'Liker ID', 'likecoin' ),
 		'edit_posts',
 		'/likecoin#/liker-id',
@@ -69,7 +69,7 @@ function likecoin_display_admin_pages() {
 	global $likecoin_help_page;
 	$likecoin_help_page = add_submenu_page(
 		'likecoin',
-		__( 'LikeCoin', 'likecoin' ),
+		__( 'Web3Press', 'likecoin' ),
 		__( 'Getting Started', 'likecoin' ),
 		'edit_posts',
 		'/likecoin#/help',

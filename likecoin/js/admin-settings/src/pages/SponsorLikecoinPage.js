@@ -1,14 +1,52 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
-import ParagraphTitle from '../components/ParagraphTitle';
 import Link from '../components/Link';
-
-const { likerlandHost } = window.likecoinReactAppData;
+import Banner from '../assets/w3p_banner.png';
 
 function SponsorLikecoinPage() {
   const localizedIntroduction = createInterpolateElement(
     __(
-      '<LikeCoin/> is a Decentralized Publishing Infrastructure. It reinvents the publishing industry with decentralized registry, rewards, editorial, and governance.',
+      `Web3Press provides a creative business model, especially for open content. No paywall or advertisement anymore.
+      Web3Press is based on <LikeCoin />, an application-specific blockchain that the community and infrastructure focus on the creator’s economy.`,
+      'likecoin',
+    ),
+    {
+      LikeCoin: createElement(Link, {
+        text: __('LikeCoin', 'likecoin'),
+        linkAddress: 'https://like.co',
+      }),
+    },
+  );
+  const localizedNFTIntroduction = createInterpolateElement(
+    __('Idea is the best product for your readers. Your readers buy your posts because they love your words. Web3Press helps you to productize your posts as <WNFT/>. Let readers support you by buying your posts while reading.', 'likecoin'),
+    {
+      WNFT: createElement(Link, {
+        text: __('NFTs', 'likecoin'),
+        linkAddress: 'https://liker.land/writing-nft/about',
+      }),
+    },
+  );
+  const localizedOnChainIntroduction = createInterpolateElement(
+    __('You know who has bought your NFTs with <Explorer />. You can connect with your fans by sending NFT gifts with warm greetings is not only possible but convenient. Conditional offers can be made according to the open data on-chain.', 'likecoin'),
+    {
+      Explorer: createElement(Link, {
+        text: __('on-chain data', 'likecoin'),
+        linkAddress: 'https://www.mintscan.io/likecoin',
+      }),
+    },
+  );
+  const localizedPortfolioIntroduction = createInterpolateElement(
+    __('“You are what you read”. Share your <Portfolio /> with pride. Collect the rare and valuable articles into your wallet.', 'likecoin'),
+    {
+      Portfolio: createElement(Link, {
+        text: __('NFT portfolio', 'likecoin'),
+        linkAddress: 'https://liker.land/dashboard?tab=collected',
+      }),
+    },
+  );
+  const localizedLikeCoinIntroduction = createInterpolateElement(
+    __(
+      'Web3Press is based on <LikeCoin />, an application-specific blockchain that the community and infrastructure focus on the creator’s economy.',
       'likecoin',
     ),
     {
@@ -20,7 +58,7 @@ function SponsorLikecoinPage() {
   );
   const localizedDecentralizedRegistry = createInterpolateElement(
     __(
-      'The heart of Decentralized Publishing is decentralized registry powered by <ISCN/>, a specification we drafted in collaboration with the industry. Inspired by ISBN for books, ISCN is a unique number assigned to content such as articles and images, and comes with metadata such as author, publisher, content address, license terms and creation footprint. Stored on <LikeCoinChain />, ISCN is immutable and censorship resilient. The content, on the other hand, is stored on <IPFS/> for tamper resistance and peer-to-peer distribution.',
+      'Register metadata (<ISCN />) on the <LikeCoinChain />, store content on the decentralized file system (<IPFS /> and <Arweave />), and backup on Internet Archive, all in one plugin.',
       'likecoin',
     ),
     {
@@ -30,66 +68,52 @@ function SponsorLikecoinPage() {
       }),
       LikeCoinChain: createElement(Link, {
         text: __('LikeCoin chain', 'likecoin'),
-        linkAddress: 'https://likecoin.bigdipper.live/',
+        linkAddress: 'https://www.mintscan.io/likecoin',
       }),
       IPFS: createElement(Link, {
         text: __('IPFS', 'likecoin'),
         linkAddress: 'https://ipfs.io/',
       }),
-    },
-  );
-
-  const localizedDecentralizedRewards = createInterpolateElement(
-    __(
-      'By simply attaching a LikeCoin button beneath your content and without setting up a paywall, every Like by readers is turned into measurable rewards in <LikeCoinTokens/>. The <CivicLiker/> movement encourages readers to contribute USD5/mo to reward creativity and journalism, while the matching fund, distributed according to the Likes of all users, doubles the rewarding pool. With decentralized rewards, every Like counts.',
-      'likecoin',
-    ),
-    {
-      LikeCoinTokens: createElement(Link, {
-        text: __('LikeCoin tokens', 'likecoin'),
-        linkAddress: 'https://www.coingecko.com/en/coins/likecoin',
-      }),
-      CivicLiker: createElement(Link, {
-        text: __('Civic Liker', 'likecoin'),
-        linkAddress: `https://${likerlandHost}/civic`,
+      Arweave: createElement(Link, {
+        text: __('Arweave', 'likecoin'),
+        linkAddress: 'https://arweave.io/',
       }),
     },
   );
-
-  const localizedDecentralizedGovernance = createInterpolateElement(
+  const localizedWeb3Introduction = createInterpolateElement(
     __(
-      'Not only is LikeCoin token a reward to creators and Content Jockeys, it also serves doubly as the governing token for the decentralized autonomous organization (DAO), namely the <RepublicOfLikerLand/>. Likers participate in liquid democracy by delegating their LikeCoin tokens to validators they trust, and freely switch among them without a fixed term of office. Issues such as default Content Jockeys, inflation rate and protocol updates require passing a corresponding <Proposal/> by the Republic.',
+      'Web3 is a new standard of the Internet. The Internet has been evolving in the past decades and becoming increasingly decentralized. In Web1, information was 1-way-broadcast; in Web2, information was user-generated. In Web3, the concept of ownership applies to every piece of data. Echoing <WordPress />, the vision of WordPress, Web3Press pushes one more step forward: the freedom to OWN. Oh yes, it’s free, as in freedom.',
       'likecoin',
     ),
     {
-      RepublicOfLikerLand: createElement(Link, {
-        text: __('Republic of Liker Land', 'likecoin'),
-        linkAddress: 'https://likecoin.bigdipper.live',
-      }),
-      Proposal: createElement(Link, {
-        text: __('proposal', 'likecoin'),
-        linkAddress: 'https://likecoin.bigdipper.live/proposalsc',
+      WordPress: createElement(Link, {
+        text: __('Democratise Publishing', 'likecoin'),
+        linkAddress: 'https://wordpress.org/about/',
       }),
     },
   );
 
   return (
     <div className="likecoin">
-      <ParagraphTitle text={__('What is LikeCoin?', 'likecoin')} />
+      <img src={Banner} alt="Word3Press Banner"></img>
+      <h2>{__('What is Web3Press?', 'likecoin')}</h2>
       <p>{localizedIntroduction}</p>
-      <ParagraphTitle text={__('Decentralized Registry', 'likecoin')} />
+      <p>{__('With Web3Press, you can:', 'likecoin')}</p>
+      <h3>{__('Sell your posts', 'likecoin')}</h3>
+      <p>{localizedNFTIntroduction}</p>
+      <h3>{__('Be proud of your work', 'likecoin')}</h3>
+      <p>{localizedPortfolioIntroduction}</p>
+      <h3>{__('Build Community', 'likecoin')}</h3>
+      <p>{localizedOnChainIntroduction}</p>
+      <h3>{__('Preserve Content', 'likecoin')}</h3>
       <p>{localizedDecentralizedRegistry}</p>
-      <ParagraphTitle text={__('Decentralized Rewards', 'likecoin')} />
-      <p>{localizedDecentralizedRewards}</p>
-      <ParagraphTitle text={__('Decentralized Editorials', 'likecoin')} />
-      <p>
-        {__(
-          "Apart from rewarding creators as a Liker, readers may go further to become a Content Jockey. Content Jockeys help curate creative stories and insightful commentaries with Super Like, which is purposely designed to be scarce to cut out noise from signals. When a story gets popular, LikeCoin's unique distribution footprint rewards both creator and Content Jockey, creating an all win situation for the content ecosystem.",
-          'likecoin',
-        )}
-      </p>
-      <ParagraphTitle text={__('Decentralized Governance', 'likecoin')} />
-      <p>{localizedDecentralizedGovernance}</p>
+
+      <h2>{__('What is LikeCoin', 'likecoin')}</h2>
+      <p>{localizedLikeCoinIntroduction}</p>
+
+      <h2>{__('Why Web3', 'likecoin')}</h2>
+      <p>{localizedWeb3Introduction}</p>
+
       <iframe
         className="lcp-github-sponsor-card"
         src="https://github.com/sponsors/likecoin/card"
