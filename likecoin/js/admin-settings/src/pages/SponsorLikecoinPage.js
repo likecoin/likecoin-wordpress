@@ -1,6 +1,7 @@
 import { __ } from '@wordpress/i18n';
 import { createInterpolateElement, createElement } from '@wordpress/element';
 import Link from '../components/Link';
+import Banner from '../assets/w3p_banner.png';
 
 function SponsorLikecoinPage() {
   const localizedIntroduction = createInterpolateElement(
@@ -95,6 +96,7 @@ function SponsorLikecoinPage() {
 
   return (
     <div className="likecoin">
+      <img src={Banner} alt="Word3Press Banner"></img>
       <h2>{__('What is Web3Press?', 'likecoin')}</h2>
       <p>{localizedIntroduction}</p>
       <h3>{__('Sell your posts', 'likecoin')}</h3>
