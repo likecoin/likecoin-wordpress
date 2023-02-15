@@ -105,7 +105,7 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                       onClick={(e) => {
                         e.preventDefault();
                         document
-                          .querySelector('[aria-label="LikeCoin Plugin"]')
+                          .querySelector('[aria-label="Web3Press"]')
                           .click();
                       }}
                     >

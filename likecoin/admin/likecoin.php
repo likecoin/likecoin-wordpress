@@ -110,7 +110,7 @@ function likecoin_show_plugin() {
 	if ( $post && $is_block_editor ) {
 		likecoin_register_sidebar( $post );
 	} else {
-		add_meta_box( 'like-coin', __( 'LikeCoin Plugin', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
+		add_meta_box( 'like-coin', __( 'Web3Press', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
 	}
 }
 /**

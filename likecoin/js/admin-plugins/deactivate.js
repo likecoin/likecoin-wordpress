@@ -14,7 +14,7 @@ jQuery(() => {
     }).text(__('Please let us understand how we can improve by filling in a survey here.'));
     const wrapper = jQuery('<div></div>', {
       id: 'likecoin-deactivate-dialog',
-      title: __('LikeCoin Plugin Feedback'),
+      title: __('Web3Press Feedback'),
     });
     text2.append(link);
     wrapper.append(text1);

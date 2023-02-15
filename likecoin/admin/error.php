@@ -62,10 +62,10 @@ function likecoin_show_admin_errors() {
 	$error   = get_transient( "likecoin_errors_{$user_id}" );
 	if ( $error ) {
 		if ( 'publish' === $error['type'] ) {
-			$title       = __( 'LikeCoin publish Error', LC_PLUGIN_SLUG );
+			$title       = __( 'Web3Press Error', LC_PLUGIN_SLUG );
 			$option_page = LC_PUBLISH_SITE_OPTIONS_PAGE;
 		} else {
-			$title       = __( 'LikeCoin plugin Error:', LC_PLUGIN_SLUG );
+			$title       = __( 'Web3Press Error:', LC_PLUGIN_SLUG );
 			$option_page = LC_BUTTON_SITE_OPTIONS_PAGE;
 		}
 		?>
