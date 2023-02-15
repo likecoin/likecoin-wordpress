@@ -22,7 +22,7 @@ Web3Press is based on LikeCoin, an application-specific blockchain that the comm
 = Why Web3 =
 The Internet has been evolving in the past decades and becoming increasingly decentralized. In Web1, information was 1-way-broadcast; in Web2, information was user-generated. In Web3, the concept of ownership is applied to every piece of data. Echoing “Democratise Publishing”, the vision of WordPress, Web3Press pushes one more step forward: the freedom to OWN. Oh yes, it’s free, as in freedom.
 
-https://www.youtube.com/watch?v=iyquF_ClMeQ
+https://www.youtube.com/watch?v=zHmAidvifQw
 
 = SELL YOUR POSTS =
 Let readers support you by buying your posts while reading.  A mini NFT Widget is embedded into your WordPress posts to let readers collect their favorites.
