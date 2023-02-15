@@ -240,7 +240,7 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	$wordpress_publish_status = get_post_status( $post->ID );
 	if ( isset( $status['error'] ) ) {
 		?>
-		<h3><?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?></h3>
+		<h3><?php esc_html_e( 'Web3Press publish', LC_PLUGIN_SLUG ); ?></h3>
 		<?php
 		esc_html_e( 'Error: ', LC_PLUGIN_SLUG );
 		echo esc_html( $status['error'] );
@@ -249,7 +249,7 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 	?>
 
 	<h3>
-		<?php esc_html_e( 'LikeCoin publish', LC_PLUGIN_SLUG ); ?>
+		<?php esc_html_e( 'Web3Press publish', LC_PLUGIN_SLUG ); ?>
 		<button id="lcPublishRefreshBtn" class="button" style="vertical-align:middle">
 			<span class="dashicons dashicons-image-rotate" style="vertical-align:middle"></span>
 		</button>

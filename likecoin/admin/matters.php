@@ -323,7 +323,7 @@ function likecoin_handle_matters_api_error( $error ) {
 		if ( 'TOKEN_INVALID' === $error_code ) {
 			likecoin_logout_matters_session();
 			likecoin_set_admin_errors(
-				__( 'Matters session expired. Please login again in LikeCoin publish settings', LC_PLUGIN_SLUG ),
+				__( 'Matters session expired. Please login again in Web3Press publish settings', LC_PLUGIN_SLUG ),
 				'publish'
 			);
 		} else {
