@@ -4,7 +4,7 @@ import { useSelect, useDispatch } from '@wordpress/data';
 import { __ } from '@wordpress/i18n';
 import { count as wordCount } from '@wordpress/wordcount';
 import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
-import LikeCoinIcon from '../components/LikeCoinIcon';
+import Web3PressIcon from '../components/Web3PressIcon';
 import SideBarStatusRow from '../components/SideBarStatusRow';
 import StatusTitle from '../components/StatusTitle';
 import MoreInfoIcon from '../components/MoreInfoIcon';
@@ -14,7 +14,7 @@ import MetaPopUpStatusDetails from '../components/MetaPopUpStatusDetails';
 import Tag from '../components/Tag';
 import PublishStatus from '../components/PublishStatus';
 import LicensePicker from '../components/LicensePicker';
-import LikeCoinIconPinbar from '../components/LikeCoinIconPinbar';
+import Web3PressIconPinbar from '../components/Web3PressPinbar';
 
 const { likecoHost, likerlandHost } = window.wpApiSettings;
 
@@ -28,7 +28,7 @@ function LikeCoinPluginSideBar(props) {
   const [showPublishISCNButton, setShowPublisnISCNButton] = useState(true);
   const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const [showNFTButton, setShowNFTButton] = useState(true);
-  const [pinBarIconColor, setPinBarIconColor] = useState('#28646E');
+  const [pinBarIconColor, setPinBarIconColor] = useState('#3973B9');
   const isPluginSidebarOpened = useSelect((select) => select('core/edit-post')
     .isPluginSidebarOpened());
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
@@ -58,7 +58,7 @@ function LikeCoinPluginSideBar(props) {
     if (isPluginSidebarOpened) {
       setPinBarIconColor('white');
     } else {
-      setPinBarIconColor('#28646E');
+      setPinBarIconColor('#3973B9');
     }
   }, [isPluginSidebarOpened, setPinBarIconColor]);
 
@@ -66,14 +66,14 @@ function LikeCoinPluginSideBar(props) {
     <PluginSidebar
       name='likecoin-sidebar'
       title={__('Web3Press', 'likecoin')}
-      icon={<LikeCoinIconPinbar color={pinBarIconColor} />}
+      icon={<Web3PressIconPinbar color={pinBarIconColor} />}
     >
       <div className='divOuterHolder'>
         <div className='dePubMainSidebarDiv'>
           <p className='dePubStatusRed'>{__('Decentralized Publishing', 'likecoin')}</p>
         </div>
         <div className='likeCoinIconOuterDiv'>
-          <LikeCoinIcon color='#9B9B9B' />
+          <Web3PressIcon color='#9B9B9B' />
         </div>
       </div>
       {!isCurrentPostPublished && (

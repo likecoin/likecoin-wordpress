@@ -1,7 +1,7 @@
 import { PluginPostPublishPanel } from '@wordpress/edit-post';
 import { __ } from '@wordpress/i18n';
 import { useState } from 'react';
-import LikeCoinIcon from '../components/LikeCoinIcon';
+import Web3PressIcon from '../components/Web3PressIcon';
 import ShowLessIcon from '../components/ShowLessIcon';
 import ShowMoreIcon from '../components/ShowMoreIcon';
 
@@ -16,10 +16,10 @@ function LikeCoinPluginPostPublishPanel(props) {
       <div className='divOuterHolderStatusInfoPanel'>
         <div className='flexBoxRow'>
           <div className='dePubDiv'>
-            <p className='dePubStatusRed'>Decentralized Publishing</p>
+            <p className='dePubStatusRed'>{__('Web3Press', 'likecoin')}</p>
           </div>
           <div className='likeCoinIconOuterDiv'>
-            <LikeCoinIcon color='#9B9B9B' />
+            <Web3PressIcon color='#9B9B9B' />
           </div>
           <div onClick={handleShowMore} className='marginLeftAuto'>
             {!showMore && <ShowMoreIcon />}
