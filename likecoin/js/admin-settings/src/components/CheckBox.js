@@ -5,7 +5,11 @@ function CheckBox(props) {
     props.handleCheck(!props.checked);
   };
   return (
-    <FormTableRow title={props.title} details={props.details}>
+    <FormTableRow
+      title={props.title}
+      details={props.details}
+      append={props.append}
+    >
       <input
         type="checkbox"
         checked={props.checked}
@@ -13,7 +17,6 @@ function CheckBox(props) {
         onChange={handleCheck}
         ref={props.checkRef}
       />
-      {props.append}
     </FormTableRow>
   );
 }
