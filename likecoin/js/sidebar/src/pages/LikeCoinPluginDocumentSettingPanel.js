@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { PluginDocumentSettingPanel } from '@wordpress/edit-post';
 import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
-import LikeCoinIcon from '../components/LikeCoinIcon';
+import Web3PressIcon from '../components/Web3PressIcon';
 import PublishStatus from '../components/PublishStatus';
 import StatusTitle from '../components/StatusTitle';
 
@@ -27,9 +27,9 @@ function LikeCoinPluginDocumentSettingPanel(props) {
   return (
     <PluginDocumentSettingPanel
       name='depub-panel'
-      title={__('Decentralized Publishing', 'likecoin')}
+      title={__('Web3Press', 'likecoin')}
       className='depub-panel'
-      icon={<LikeCoinIcon color='#9B9B9B' paddingLeft='10px' />}
+      icon={<Web3PressIcon color='#9B9B9B' paddingLeft='10px' />}
     >
       <div className='postStatusInfoPanelOuterDiv'>
         <div className='flexBoxRow'>
