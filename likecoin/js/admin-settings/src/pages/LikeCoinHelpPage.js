@@ -60,7 +60,7 @@ function LikeCoinHelpPage() {
         <p>{__('You need to publish your post first, then you can find the Publish button on the editing sidebar.', 'likecoin')}</p>
       </div>
       <div className="lcp-card">
-        <h3>{__('Publish alone with licence', 'likecoin')}</h3>
+        <h3>{__('Publish along with licence', 'likecoin')}</h3>
         <p>{__('You can set your preferred licence on the editing sidebar.', 'likecoin')}</p>
       </div>
       <div className="lcp-card">
