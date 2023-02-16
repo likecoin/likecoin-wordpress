@@ -51,9 +51,9 @@ function likecoin_display_admin_pages() {
 		__( 'Plugin Setting', 'likecoin' ),
 		'edit_posts',
 		'likecoin',
-		'likecoin_load_admin_js'
+		'likecoin_show_likecoin_admin_main_page_content'
 	);
-	add_action( 'load-' . $likecoin_admin_plugin_page, 'likecoin_load_admin_js' );
+	add_action( 'load-' . $likecoin_admin_plugin_page, 'likecoin_load_menu_admin_js' );
 
 	global $likecoin_button_page;
 	$likecoin_button_page = add_submenu_page(
@@ -61,10 +61,10 @@ function likecoin_display_admin_pages() {
 		__( 'Web3Press', 'likecoin' ),
 		__( 'Liker ID', 'likecoin' ),
 		'edit_posts',
-		'/likecoin#/liker-id',
-		'likecoin_load_admin_js'
+		'likecoin_liker_id',
+		'likecoin_show_likecoin_admin_main_page_content'
 	);
-	add_action( 'load-' . $likecoin_button_page, 'likecoin_load_admin_js' );
+	add_action( 'load-' . $likecoin_button_page, 'likecoin_load_menu_admin_js' );
 
 	global $likecoin_help_page;
 	$likecoin_help_page = add_submenu_page(
@@ -72,10 +72,10 @@ function likecoin_display_admin_pages() {
 		__( 'Web3Press', 'likecoin' ),
 		__( 'Getting Started', 'likecoin' ),
 		'edit_posts',
-		'/likecoin#/help',
-		'likecoin_load_admin_js'
+		'likecoin_help',
+		'likecoin_show_likecoin_admin_main_page_content'
 	);
-	add_action( 'load-' . $likecoin_help_page, 'likecoin_load_admin_js' );
+	add_action( 'load-' . $likecoin_help_page, 'likecoin_load_menu_admin_js' );
 }
 /**
  * Show default UI for admin main page.
@@ -85,6 +85,21 @@ function likecoin_show_likecoin_admin_main_page_content() {
 	<div id="likecoin-admin-settings"></div>
 	<?php
 }
+
+/**
+ * Load JavaScript files from React and menu hashtag hack.
+ */
+function likecoin_load_menu_admin_js() {
+	likecoin_load_admin_js();
+	wp_enqueue_script(
+		'likecoin-admin-menu',
+		LC_URI . 'assets/js/admin-menu/index.js',
+		array(),
+		LC_PLUGIN_VERSION,
+		true
+	);
+}
+
 /**
  * Allow php to load JavaScript files from React.
  */
