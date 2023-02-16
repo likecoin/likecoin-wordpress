@@ -6,7 +6,8 @@ function FormTableRow(props) {
       </th>
       <td>
         {props.children}
-        {!!props.details && <p class="description">{props.details}</p>}
+        {!!props.details && <span class="description">{props.details}</span>}
+        {props.append}
       </td>
     </tr>
   );

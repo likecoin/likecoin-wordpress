@@ -49,12 +49,14 @@ function AdvancedWidgetSetting(_, ref) {
             'likecoin',
           )}
           append={(
-            <a
-              href='#'
-              onClick={handleResetDefault}
-            >
-              {__('Reset to default', 'likecoin')}
-            </a>
+            <p>
+              <a
+                href='#'
+                onClick={handleResetDefault}
+              >
+                {__('Reset to default', 'likecoin')}
+              </a>
+            </p>
           )}
           checkRef={perPostOptionEnabledRef}
         />
