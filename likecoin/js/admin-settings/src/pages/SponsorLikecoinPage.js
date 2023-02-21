@@ -133,9 +133,9 @@ function SponsorLikecoinPage() {
       <iframe
           src="https://newsletter.like.co/embed"
           width="100%"
-          height="320"
+          height="150"
           title={__('Subscribe to LikeCoin newsletter', 'likecoin')}
-          style={{ border: '1px solid #EEE', maxWidth: '480px' }}
+          style={{ border: '1px solid #EEE', maxWidth: '420px' }}
           frameborder="0"
           scrolling="no"
         />
