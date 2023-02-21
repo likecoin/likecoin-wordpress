@@ -83,7 +83,7 @@ function likecoin_handle_init_and_upgrade() {
  */
 function likecoin_handle_activated( $plugin ) {
 	if ( plugin_basename( __FILE__ ) === $plugin ) {
-		wp_safe_redirect( esc_url( admin_url( 'options-general.php?page=likecoin#/help' ) ) );
+		wp_safe_redirect( esc_url( admin_url( 'admin.php?page=likecoin_help#/help' ) ) );
 		exit();
 	}
 }
