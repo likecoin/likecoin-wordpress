@@ -1,4 +1,4 @@
 <?php return array(
 	'dependencies' => array( 'lodash', 'react', 'wp-api-fetch', 'wp-data', 'wp-element', 'wp-i18n' ),
-	'version'      => '302141cc1b50f8968625b9f1c3ecfb32',
+	'version'      => '6a7e8c3c7dfa7d67761d22a4b47821c1',
 );
