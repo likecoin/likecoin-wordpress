@@ -32,6 +32,18 @@ function LikeCoinHelpPage() {
       }),
     },
   );
+  const localizedSubscribe = createInterpolateElement(
+    __(
+      'Follow us by entering your email below, or visit our <Blog/> for latest update.',
+      'likecoin',
+    ),
+    {
+      Blog: createElement(Link, {
+        text: __('blog', 'likecoin'),
+        linkAddress: 'https://blog.like.co/?utm_source=wordpress&utm_medium=plugin&utm_campaign=getting_started',
+      }),
+    },
+  );
   return (
     <div className="lcp-nav-tab-panel likecoin">
       <Section title={__('Getting Started', 'likecoin')} />
@@ -40,18 +52,31 @@ function LikeCoinHelpPage() {
         <p>{faucetDescription}</p>
       </div>
       <div className="lcp-card">
-        <h2>{__('2. You are ready, let’s publish.', 'likecoin')}</h2>
+        <h2>{__('2. You are now ready, let’s start publishing.', 'likecoin')}</h2>
         <p>{__('Here is a video to help you understand how to publish a Writing NFT', 'likecoin')}</p>
         <iframe
           height="315"
           src="https://www.youtube.com/embed/zHmAidvifQw"
-          title="YouTube video player"
+          title={__('Quickstart Video', 'likecoin')}
           frameborder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowfullscreen
           style={{ width: '100%', maxWidth: '560px' }}
         />
         <p>{localizedIntroduction}</p>
+      </div>
+      <div className="lcp-card">
+        <h2>{__('3. Subscribe to our newsletter for upcoming features', 'likecoin')}</h2>
+        <p>{localizedSubscribe}</p>
+        <iframe
+          src="https://newsletter.like.co/embed"
+          width="100%"
+          height="150"
+          title={__('Subscribe to LikeCoin newsletter', 'likecoin')}
+          style={{ border: '1px solid #EEE', background: 'white', maxWidth: '420px' }}
+          frameborder="0"
+          scrolling="no"
+        />
       </div>
       <hr />
       <Section title={__('Useful Tips', 'likecoin')} />

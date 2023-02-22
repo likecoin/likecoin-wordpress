@@ -20,6 +20,8 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
+
 /**
  * Inclue required files.
  */
@@ -151,3 +153,23 @@ function likecoin_enqueue_admin_js() {
 		)
 	);
 }
+
+/**
+ * Show welcome message on plugin activate.
+ */
+function likecoin_show_admin_welcome() {
+	$is_welcome = get_transient( 'likecoin_welcome_notice' );
+	if ( $is_welcome ) {
+		?>
+		<div class="notice notice-success">
+			<p><?php echo esc_html( __( 'Welcome to Web3Press!', LC_PLUGIN_SLUG ) . ' ' . __( 'To receive our latest feature updates, ', LC_PLUGIN_SLUG ) ); ?>
+				<a taget="_blank" rel="noopener" href="<?php echo esc_url( 'https://newsletter.like.co/' ); ?> ">
+				<?php esc_html_e( 'Click here to subscribe to our newsletter.', LC_PLUGIN_SLUG ); ?>
+				</a>
+			</p>
+		</div>
+		<?php
+		delete_transient( 'likecoin_welcome_notice' );
+	}
+}
+

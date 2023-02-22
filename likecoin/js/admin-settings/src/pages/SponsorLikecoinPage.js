@@ -92,6 +92,18 @@ function SponsorLikecoinPage() {
       }),
     },
   );
+  const localizedSubscribe = createInterpolateElement(
+    __(
+      'Follow us by entering your email below, or visit our <Blog/> for latest update.',
+      'likecoin',
+    ),
+    {
+      Blog: createElement(Link, {
+        text: __('blog', 'likecoin'),
+        linkAddress: 'https://blog.like.co/?utm_source=wordpress&utm_medium=plugin&utm_campaign=about_page',
+      }),
+    },
+  );
 
   return (
     <div className="likecoin">
@@ -108,18 +120,35 @@ function SponsorLikecoinPage() {
       <h3>{__('Preserve Content', 'likecoin')}</h3>
       <p>{localizedDecentralizedRegistry}</p>
 
+      <hr />
       <h2>{__('What is LikeCoin', 'likecoin')}</h2>
       <p>{localizedLikeCoinIntroduction}</p>
 
       <h2>{__('Why Web3', 'likecoin')}</h2>
       <p>{localizedWeb3Introduction}</p>
 
+      <hr />
+      <h2>{__('Subscribe to our Newsletter', 'likecoin')}</h2>
+      <p>{localizedSubscribe}</p>
+      <iframe
+          src="https://newsletter.like.co/embed"
+          width="100%"
+          height="150"
+          title={__('Subscribe to LikeCoin newsletter', 'likecoin')}
+          style={{ border: '1px solid #EEE', maxWidth: '420px' }}
+          frameborder="0"
+          scrolling="no"
+        />
+
+      <hr />
+      <h2>{__('Sponsor us on GitHub', 'likecoin')}</h2>
       <iframe
         className="lcp-github-sponsor-card"
         src="https://github.com/sponsors/likecoin/card"
         title="Sponsor likecoin"
-        height="225"
-        width="660"
+        height="150"
+        width="100%"
+        style={{ maxWidth: '660px' }}
       />
     </div>
   );
