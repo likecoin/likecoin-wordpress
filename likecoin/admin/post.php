@@ -256,15 +256,26 @@ function likecoin_format_post_to_json_data( $post ) {
  * @param object| $post WordPress post object.
  */
 function likecoin_get_post_content_with_relative_image_url( $post ) {
-	$image_urls            = array();
-	$content               = apply_filters( 'the_content', $post->post_content );
+	$image_urls = array();
+	$content    = apply_filters( 'the_content', $post->post_content );
+	if ( ! class_exists( 'DOMDocument' ) ) {
+		// phpcs:disable WordPress.PHP.DevelopmentFunctions.error_log_trigger_error
+		trigger_error( 'DOMDocument not found! Please install PHP DOM extension', E_USER_WARNING );
+		return array(
+			'content' => $content,
+			'images'  => $image_urls,
+		);
+	}
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
 	$dom_content           = $dom_document->loadHTML( '<template>' . mb_convert_encoding( $content, 'HTML-ENTITIES' ) . '</template>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
 	libxml_clear_errors();
 	libxml_use_internal_errors( $libxml_previous_state );
 	if ( false === $dom_content ) {
-		return $content;
+		return array(
+			'content' => $content,
+			'images'  => $image_urls,
+		);
 	}
 	$images          = $dom_document->getElementsByTagName( 'img' );
 	$site_url_parsed = wp_parse_url( get_site_url() );

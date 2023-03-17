@@ -34,6 +34,9 @@ require_once dirname( __FILE__ ) . '/error.php';
  * @param string| $filename Title of audio file.
  */
 function likecoin_generate_matters_player_widget( $filename ) {
+	if ( ! class_exists( 'DOMDocument' ) ) {
+		return '';
+	}
 	$dom_document          = new DOMDocument();
 	$libxml_previous_state = libxml_use_internal_errors( true );
 	$dom_content           = $dom_document->loadHTML( '<div class="player"><header><div class="meta"><h4 class="title">' . $filename . '</h4><div class="time"><span class="current"></span><span class="duration"></span></div></div><span class="play paused"></span></header><footer><div class="progress-bar"><span></span></div></footer></div>', LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD );
@@ -73,7 +76,7 @@ function likecoin_append_footer_link_element( $dom_document ) {
  */
 function likecoin_replace_matters_attachment_url( $content, $params ) {
 	$post_id = $params ['post_id'];
-	if ( ! $content ) {
+	if ( ! $content || ! class_exists( 'DOMDocument' ) ) {
 		return $content;
 	}
 	$image_infos            = get_post_meta( $post_id, LC_MATTERS_IMAGE_INFO, true );
@@ -367,7 +370,7 @@ function likecoin_upload_url_image_to_matters( $matters_draft_id, $post ) {
 	}
 	$post_id = $post->ID;
 	$content = $post->post_content;
-	if ( ! $content ) {
+	if ( ! $content || ! class_exists( 'DOMDocument' ) ) {
 		return $content;
 	}
 	$dom_document          = new DOMDocument();
