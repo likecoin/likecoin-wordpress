@@ -279,7 +279,7 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 		$url           = explode( '?', $url )[0];
 		$parsed        = wp_parse_url( $url );
 		$host          = $parsed['host'];
-		if ( $attachment_id > 0 || $host === $site_host ) {
+		if ( $attachment_id > 0 || ( $host === $site_host && ! empty( $url ) ) ) {
 			$image_key = $key + 1; // 0 is for featured image.
 			$image->setAttribute( 'src', './' . $image_key );
 			$image->removeAttribute( 'srcset' );
