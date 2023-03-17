@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 3.0.3
+Stable tag: 3.0.4
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -149,6 +149,11 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 3. Plugin Options
 
 == Changelog ==
+
+= 3.0.4 =
+
+- Fix invalid array index access when post images contain redirect
+- Mitigate API crash when PHP DOM extension is not installed. Note that DOM extension is required for image upload to work properly when publishing.
 
 = 3.0.3 =
 
