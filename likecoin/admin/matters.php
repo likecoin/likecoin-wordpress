@@ -108,7 +108,7 @@ function likecoin_replace_matters_attachment_url( $content, $params ) {
 		if ( ! $attachment_id && $classes && preg_match( '/wp-image-([0-9]+)/i', $classes, $class_id ) && absint( $class_id[1] ) ) {
 			$attachment_id = $class_id[1];
 		}
-		if ( ! $attachment_id && $url ) {
+		if ( ! $attachment_id && ! empty( $url ) ) {
 			$attachment_id = attachment_url_to_postid( $url );
 			// if its url image.
 			if ( isset( $image_infos ) && isset( $image_infos[ $url ] ) ) {
@@ -396,6 +396,9 @@ function likecoin_upload_url_image_to_matters( $matters_draft_id, $post ) {
 		$url                        = explode( '?', $url )[0];
 		$current_image_urls[ $url ] = $image;
 		$image_url                  = $url;
+		if ( empty( $url ) ) {
+			continue;
+		}
 		// if it's uploaded image, then skip likecoin_post_url_image_to_matters.
 		$classes       = $image->getAttribute( 'class' );
 		$attachment_id = intval( $image->getAttribute( 'data-attachment-id' ) );
@@ -545,6 +548,9 @@ function likecoin_post_url_image_to_matters( $matters_draft_id, $image_url ) {
 	$file_path      = $image_url;
 	$headers        = get_headers( $file_path, true );
 	$file_mime_type = $headers['Content-Type'];
+	if ( is_array( $file_mime_type ) ) {
+		$file_mime_type = end( $file_mime_type );
+	}
 	if ( ! ( substr( $file_mime_type, 0, 5 ) === 'image' ) ) {
 		return;
 	}
