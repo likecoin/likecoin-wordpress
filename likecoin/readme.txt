@@ -10,7 +10,7 @@ Stable tag: 3.0.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Web3Press - Earn as you write, Collect as you read.
+Web3Press - Publish your posts as NFT and sell it right away; build your community in the Web3 way.
 
 == Description ==
 The best product for your fans, is your IDEA.  Web3Press publishes your posts to the blockchain, enabling you to write as usual but publish differently.
