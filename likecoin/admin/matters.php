@@ -452,7 +452,7 @@ function likecoin_save_to_matters( $post_id, $post, $update = true ) {
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
-	$tags             = likecoin_get_post_tags( $post );
+	$tags             = likecoin_get_post_tags( $post, 5 );
 
 	$api = LikeCoin_Matters_API::get_instance();
 	if ( $update && $matters_draft_id ) {
@@ -507,7 +507,7 @@ function likecoin_publish_to_matters( $post_id, $post ) {
 	}
 	$matters_draft_id = isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : null;
 	$title            = apply_filters( 'the_title_rss', $post->post_title );
-	$tags             = likecoin_get_post_tags( $post );
+	$tags             = likecoin_get_post_tags( $post, 5 );
 	$api              = LikeCoin_Matters_API::get_instance();
 	if ( ! $matters_draft_id ) {
 		$content = likecoin_filter_matters_post_content( $post );
