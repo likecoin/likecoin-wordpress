@@ -167,8 +167,9 @@ function likecoin_get_default_post_style() {
  * Get all tags names in a post
  *
  * @param WP_Post| $post Post object.
+ * @param integer| $limit Number of tags.
  */
-function likecoin_get_post_tags( $post ) {
+function likecoin_get_post_tags( $post, $limit = 0 ) {
 	$post_id   = $post->ID;
 	$func      = function( $terms ) {
 		return htmlspecialchars_decode( $terms->name );
@@ -178,7 +179,11 @@ function likecoin_get_post_tags( $post ) {
 	if ( ! $post_tags ) {
 		$post_tags = array();
 	}
-	return array_map( $func, $post_tags );
+	$result = array_map( $func, $post_tags );
+	if ( $limit ) {
+		$result = array_slice( $result, 0, $limit );
+	}
+	return $result;
 }
 
 /**
