@@ -13,7 +13,7 @@
  * Plugin Name:  Web3Press by LikeCoin
  * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
  * Description:  Publishes your posts to the blockchain. Sell your posts, share your work, build community, preserve content.
- * Version:      3.0.4
+ * Version:      3.0.5
  * Author:       LikeCoin
  * Author URI:   https://like.co/
  * License:      GPLv3
@@ -41,7 +41,7 @@ define( 'LC_URI', plugin_dir_url( __FILE__ ) );
 define( 'LC_DIR', plugin_dir_path( __FILE__ ) );
 define( 'LC_PLUGIN_SLUG', 'likecoin' );
 define( 'LC_PLUGIN_NAME', 'Web3Press By LikeCoin' );
-define( 'LC_PLUGIN_VERSION', '3.0.4' );
+define( 'LC_PLUGIN_VERSION', '3.0.5' );
 
 require_once dirname( __FILE__ ) . '/includes/constant/options.php';
 require_once dirname( __FILE__ ) . '/public/likecoin.php';
