@@ -115,7 +115,7 @@ function likecoin_parse_iscn_status( $publish_params, $post ) {
 	}
 	$result['ipfs_status']      = 'Pending';
 	$result['is_dev_published'] = false;
-	if ( ! empty( $iscn_hash ) ) {
+	if ( ! empty( $iscn_id ) ) {
 		if ( $iscn_mainnet_info ) {
 			$result['iscn_id'] = $iscn_id;
 			$result['status']  = __( 'Published', LC_PLUGIN_SLUG );

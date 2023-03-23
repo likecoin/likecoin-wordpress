@@ -7,11 +7,13 @@ import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
 
 const { siteurl, likecoHost, likerlandHost } = window.wpApiSettings;
 
-const ISCN_WIDGET_ORIGIN = `https://${likecoHost}`;
+const ISCN_WIDGET_ORIGIN = `https://app.${likecoHost}`;
 const NFT_WIDGET_ORIGIN = `https://app.${likecoHost}`;
 const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
 
 function LikeCoinPlugin() {
+  const currentPost = useSelect((select) => select('core/editor')
+    .getCurrentPost());
   const {
     DBLIKEPayAmount,
     DBMemo,
@@ -160,7 +162,8 @@ function LikeCoinPlugin() {
   const openISCNWidget = useCallback(() => {
     const iscnId = encodeURIComponent(ISCNId || '');
     const redirectString = encodeURIComponent(siteurl);
-    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&platform=wordpress&redirect_uri=${redirectString}&iscn_id=${iscnId}`;
+    const urlString = encodeURIComponent(currentPost.link || '');
+    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/nft/url?opener=1&platform=wordpress&redirect_uri=${redirectString}&url=${urlString}&iscn_id=${iscnId}&update=${iscnId ? 1 : 0}`;
     try {
       const popUp = window.open(
         popUpWidget,
@@ -177,7 +180,7 @@ function LikeCoinPlugin() {
     } catch (error) {
       console.error(error);
     }
-  }, [ISCNId, onPostMessageCallback]);
+  }, [ISCNId, currentPost.link, onPostMessageCallback]);
   useEffect(() => {
     setTitle(DBArticleTitle);
     if (DBAuthorDescription) {

@@ -36,7 +36,7 @@ const MAIN_STATUS_TEXT_MAP = {
   onRegisterISCN: mainStatusRegisterISCN,
 };
 
-const ISCN_WIDGET_ORIGIN = `https://${window.wpApiSettings.likecoHost}`;
+const ISCN_WIDGET_ORIGIN = `https://app.${window.wpApiSettings.likecoHost}`;
 
 function updateMainTitleField(signalCSSClass, text) {
   mainTitleField.textContent = '';
@@ -283,11 +283,13 @@ async function onISCNCallback(data) {
 async function onSubmitToISCN(e) {
   if (e) e.preventDefault();
   const { siteurl } = wpApiSettings;
+  const { url } = lcPostInfo;
   lcPostInfo.mainStatus = 'onRegisterISCN';
   updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
   const redirectString = encodeURIComponent(siteurl);
   const iscnId = encodeURIComponent(lcPostInfo.iscnId || '');
-  const likeCoISCNWidget = `${ISCN_WIDGET_ORIGIN}/in/widget/iscn-ar?opener=1&blocking=1&platform=wordpress&redirect_uri=${redirectString}&iscn_id=${iscnId}`;
+  const urlString = encodeURIComponent(url);
+  const likeCoISCNWidget = `${ISCN_WIDGET_ORIGIN}/nft/url?opener=1&platform=wordpress&redirect_uri=${redirectString}&url=${urlString}&iscn_id=${iscnId}&update=${iscnId ? 1 : 0}`;
   const ISCNWindow = window.open(
     likeCoISCNWidget,
     'likeCoISCNWindow',
