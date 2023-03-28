@@ -1,6 +1,7 @@
 import { PluginSidebar } from '@wordpress/edit-post';
 import { useState, useEffect } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
+import { CheckboxControl } from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { count as wordCount } from '@wordpress/wordcount';
 import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
@@ -15,6 +16,7 @@ import Tag from '../components/Tag';
 import PublishStatus from '../components/PublishStatus';
 import LicensePicker from '../components/LicensePicker';
 import Web3PressIconPinbar from '../components/Web3PressPinbar';
+import { BUTTON_INFO_STORE_NAME } from '../store/button-info-store';
 
 const { likecoHost, likerlandHost } = window.wpApiSettings;
 
@@ -22,6 +24,11 @@ function LikeCoinPluginSideBar(props) {
   const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));
   const { setISCNLicense } = useDispatch(ISCN_INFO_STORE_NAME);
   const iscnLicense = useSelect((select) => select(ISCN_INFO_STORE_NAME).getLicense());
+  const {
+    isWidgetEnabled: isEnabledButton,
+    isOptionDisabled: isHideButtonSetting,
+  } = useSelect((select) => select(BUTTON_INFO_STORE_NAME).getButtonSettings());
+  const { setButtonSettings, postButtonSettings } = useDispatch(BUTTON_INFO_STORE_NAME);
   const numberOfWords = wordCount(content, 'words', {});
   const [showMetaData, setShowMetaData] = useState(false);
   const [ISCNVersionString, setISCNVersionString] = useState(true);
@@ -49,6 +56,11 @@ function LikeCoinPluginSideBar(props) {
   }, [props.ISCNVersion, props.ISCNTimestamp]);
   function handleOnLicenseSelect(license) {
     setISCNLicense(license);
+  }
+  function handleOnButtonSettingChange() {
+    const isEnabled = !isEnabledButton;
+    postButtonSettings({ isEnabled });
+    setButtonSettings({ isWidgetEnabled: isEnabled });
   }
   function handleShowMetaData(e) {
     e.preventDefault();
@@ -171,6 +183,17 @@ function LikeCoinPluginSideBar(props) {
           status={ISCNVersionString}
         />
       </div>
+      {!isHideButtonSetting && (
+        <div className='divOuterHolderMainSidebar'>
+          <StatusTitle title={__('Widget', 'likecoin')} />
+          <CheckboxControl
+              label={__('Enable in-post widget', 'likecoin')}
+              help={__('Embed widget in this post (Overrides site setting)', 'likecoin')}
+              checked={!!isEnabledButton}
+              onChange={handleOnButtonSettingChange}
+          />
+        </div>
+      )}
       <div className='divOuterHolderMainSidebar'>
         <LicensePicker
           defaultLicense={iscnLicense}

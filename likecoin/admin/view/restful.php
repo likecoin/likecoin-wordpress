@@ -268,6 +268,48 @@ function likecoin_get_web_monetization_data( $request ) {
 
 
 /**
+ * Get likecoin button settings for a post
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_Error|WP_REST_Response
+ */
+function likecoin_rest_get_button_settings( $request ) {
+	$post_id = $request['id'];
+	$post    = get_post( $post_id );
+	if ( ! isset( $post ) ) {
+		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
+	}
+	$data = likecoin_get_meta_box_button_params( $post, true );
+	return new WP_REST_Response( $data, 200 );
+}
+
+/**
+ * Update likecoin button settings for a post
+ *
+ * @param WP_REST_Request $request Full data about the request.
+ * @return WP_Error|WP_REST_Response
+ */
+function likecoin_rest_update_button_settings( $request ) {
+	$post_id = $request['id'];
+	$post    = get_post( $post_id );
+	if ( ! isset( $post ) ) {
+		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
+	}
+	$params = $request->get_json_params();
+	if ( isset( $params['is_widget_enabled'] ) ) {
+		$option = get_post_meta( $post_id, LC_OPTION_WIDGET_OPTION, true );
+		if ( ! isset( $option ) || ! is_array( $option ) ) {
+			$option = array();
+		}
+		$option[ LC_OPTION_WIDGET_POSITION ] = $params['is_widget_enabled'];
+		update_post_meta( $post_id, LC_OPTION_WIDGET_OPTION, $option );
+	}
+	return new WP_REST_Response( $params, 200 );
+}
+
+
+
+/**
  * Add refresh publish status endpoint
  *
  * @param WP_REST_Request $request Full data about the request.

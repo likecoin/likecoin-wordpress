@@ -166,6 +166,34 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
+				'/posts/(?P<id>\d+)/button/settings',
+				array(
+					'methods'             => 'GET',
+					'callback'            => 'likecoin_rest_get_button_settings',
+					'args'                => array(
+						'id' => array(
+							'validate_callback' => 'likecoin_is_numeric',
+						),
+					),
+					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
+				'/posts/(?P<id>\d+)/button/settings',
+				array(
+					'methods'             => 'POST',
+					'callback'            => 'likecoin_rest_update_button_settings',
+					'args'                => array(
+						'id' => array(
+							'validate_callback' => 'likecoin_is_numeric',
+						),
+					),
+					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
+				)
+			);
+			register_rest_route(
+				'likecoin/v1',
 				'/posts/(?P<id>\d+)/iscn/refresh',
 				array(
 					'methods'             => 'POST',
