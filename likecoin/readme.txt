@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.1
 Requires PHP: 5.4
-Stable tag: 3.0.5
+Stable tag: 3.0.6
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -149,6 +149,10 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 3. Plugin Options
 
 == Changelog ==
+
+= 3.0.6 =
+
+- Add widget settings in editor sidebar. Please allow per post widget settings in plugin advanced settings first.
 
 = 3.0.5 =
 
