@@ -45,6 +45,7 @@ define( 'LC_PLUGIN_VERSION', '3.0.6' );
 
 require_once dirname( __FILE__ ) . '/includes/constant/options.php';
 require_once dirname( __FILE__ ) . '/public/likecoin.php';
+require_once dirname( __FILE__ ) . '/blocks/blocks.php';
 require_once dirname( __FILE__ ) . '/admin/restful.php';
 require_once dirname( __FILE__ ) . '/admin/matters.php';
 require_once dirname( __FILE__ ) . '/admin/internet-archive.php';
@@ -132,6 +133,7 @@ function likecoin_add_all_hooks() {
 	register_activation_hook( __FILE__, 'likecoin_handle_init_and_upgrade' );
 	add_action( 'upgrader_process_complete', 'likecoin_handle_init_and_upgrade' );
 	add_action( 'init', 'likecoin_handle_init_and_upgrade' );
+	add_action( 'init', 'likecoin_block_init' );
 	add_action( 'plugins_loaded', 'likecoin_load_plugin_textdomain' );
 	add_action( 'activated_plugin', 'likecoin_handle_activated' );
 	register_uninstall_hook( __FILE__, 'likecoin_handle_uninstall' );
