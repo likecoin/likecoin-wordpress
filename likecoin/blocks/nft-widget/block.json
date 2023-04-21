@@ -13,10 +13,28 @@
 	"attributes": {
 		"iscnId": {
 			"type": "string"
+		},
+		"isShowCover": {
+			"type": "boolean",
+			"default": true
+		},
+		"isShowLikeBar": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"textdomain": "likecoin",
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css"
+	"style": "file:./style-index.css",
+	"variations": [
+		{
+			"name": "likecoin/nft-widget-mini",
+			"title": "Writing NFT Widget (Mini)",
+			"attributes": {
+				"isShowCover": false,
+				"isShowLikeBar": false
+			}
+		}
+	]
 }

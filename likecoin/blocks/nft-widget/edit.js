@@ -33,22 +33,40 @@ import './editor.scss';
  */
 export default function Edit({
   setAttributes,
+  attributes,
 }) {
   const iscnInfo = useSelect('core/editor').getEditedPostAttribute('meta').lc_iscn_info;
   const [iscnId, setIscnId] = useState('');
+
   useEffect(() => {
     const newiscnId = (iscnInfo && iscnInfo.iscn_id) || '';
     setIscnId(newiscnId);
     setAttributes({ iscnId: iscnInfo.iscn_id });
   }, [iscnInfo, setAttributes]);
+
+  const {
+    isShowCover,
+    isShowLikeBar,
+  } = attributes;
+  let querystring = `type=wp&integration=wordpress_plugin&iscn_id=${encodeURIComponent(iscnId)}`;
+  let height = 440;
+  if (!isShowCover) {
+    querystring += '&cover=0';
+    height -= 260;
+  }
+  if (!isShowLikeBar) {
+    querystring += '&like_bar=0';
+    height -= 60;
+  }
+
   return (
     <figure {...useBlockProps()}>
       {!iscnId && <span>{__('Please publish the post and mint NFT before using this widget', 'likecoin')}</span>}
       {iscnId && <iframe
         title={__('NFT Widget', 'likecoin')}
         frameborder="0"
-        style={{ height: '480px', width: '360px' }}
-        src={`https://button.like.co/in/embed/iscn/button?type=wp&integration=wordpress_plugin&iscn_id=${encodeURIComponent(iscnId)}`}
+        style={{ height: `${height}px`, width: '360px' }}
+        src={`https://button.like.co/in/embed/iscn/button?${querystring}`}
       />}
     </figure>
   );

@@ -17,14 +17,28 @@ import { __ } from '@wordpress/i18n';
  * @return {WPElement} Element to render.
  */
 export default function save({ attributes }) {
-  const { iscnId } = attributes;
+  const {
+    iscnId,
+    isShowCover,
+    isShowLikeBar,
+  } = attributes;
+  let querystring = `type=wp&integration=wordpress_plugin&iscn_id=${encodeURIComponent(iscnId)}`;
+  let height = 440;
+  if (!isShowCover) {
+    querystring += '&cover=0';
+    height -= 260;
+  }
+  if (!isShowLikeBar) {
+    querystring += '&like_bar=0';
+    height -= 60;
+  }
   return (
     <figure {...useBlockProps.save()}>
       {iscnId && <iframe
         title={__('NFT Widget', 'likecoin')}
         frameborder="0"
-        style={{ height: '480px', width: '360px' }}
-        src={`https://button.like.co/in/embed/iscn/button?type=wp&integration=wordpress_plugin&iscn_id=${encodeURIComponent(iscnId)}`}
+        style={{ height: `${height}px`, width: '360px' }}
+        src={`https://button.like.co/in/embed/iscn/button?${querystring}`}
       />}
     </figure>
   );
