@@ -1,14 +1,19 @@
 {
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 2,
-	"name": "likecoin/demo",
+	"name": "likecoin/nft-widget",
 	"version": "0.1.0",
-	"title": "Likecoin Edge",
+	"title": "Writing NFT Widget",
 	"category": "widgets",
 	"icon": "smiley",
-	"description": "Example block scaffolded with Create Block tool.",
+	"description": "Writing NFT widget with customable size and style",
 	"supports": {
 		"html": false
+	},
+	"attributes": {
+		"iscnId": {
+			"type": "string"
+		}
 	},
 	"textdomain": "likecoin",
 	"editorScript": "file:./index.js",

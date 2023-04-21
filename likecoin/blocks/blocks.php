@@ -24,5 +24,5 @@
  * Register current directory as blocks
  */
 function likecoin_block_init() {
-	register_block_type( LC_DIR . 'assets/blocks/demo' );
+	register_block_type( LC_DIR . 'assets/blocks/nft-widget' );
 }

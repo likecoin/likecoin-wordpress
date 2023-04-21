@@ -11,7 +11,9 @@ import { __ } from '@wordpress/i18n';
  *
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
+import { useEffect, useState } from 'react';
 import { useBlockProps } from '@wordpress/block-editor';
+import { useSelect } from '@wordpress/data';
 
 /**
  * Lets webpack process CSS, SASS or SCSS files referenced in JavaScript files.
@@ -29,10 +31,25 @@ import './editor.scss';
  *
  * @return {WPElement} Element to render.
  */
-export default function Edit() {
-	return (
-		<p { ...useBlockProps() }>
-			{ __( 'Likecoin Edge – hello from the editor!', 'likecoin-edge' ) }
-		</p>
-	);
+export default function Edit({
+  setAttributes,
+}) {
+  const iscnInfo = useSelect('core/editor').getEditedPostAttribute('meta').lc_iscn_info;
+  const [iscnId, setIscnId] = useState('');
+  useEffect(() => {
+    const newiscnId = (iscnInfo && iscnInfo.iscn_id) || '';
+    setIscnId(newiscnId);
+    setAttributes({ iscnId: iscnInfo.iscn_id });
+  }, [iscnInfo, setAttributes]);
+  return (
+    <figure {...useBlockProps()}>
+      {!iscnId && <span>{__('Please publish the post and mint NFT before using this widget', 'likecoin')}</span>}
+      {iscnId && <iframe
+        title={__('NFT Widget', 'likecoin')}
+        frameborder="0"
+        style={{ height: '480px', width: '360px' }}
+        src={`https://button.like.co/in/embed/iscn/button?type=wp&integration=wordpress_plugin&iscn_id=${encodeURIComponent(iscnId)}`}
+      />}
+    </figure>
+  );
 }
