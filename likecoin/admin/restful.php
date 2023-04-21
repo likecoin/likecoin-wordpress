@@ -51,6 +51,31 @@ function likecoin_get_current_user_edit_post_permission( $request ) {
  * Add plugin restful routes
  */
 function likecoin_init_restful_service() {
+	register_post_meta(
+		'',
+		LC_ISCN_INFO,
+		array(
+			'type'         => 'object',
+			'description'  => 'ISCN information of the post',
+			'single'       => true,
+			'show_in_rest' => array(
+				'schema'           => array(
+					'type'       => 'object',
+					'properties' => array(
+						'iscn_id'              => array(
+							'type' => 'string',
+						),
+						'additionalProperties' => array(
+							'type' => 'string',
+						),
+					),
+				),
+				'prepare_callback' => function ( $value ) {
+					return $value;
+				},
+			),
+		)
+	);
 	add_action(
 		'rest_api_init',
 		function () {
