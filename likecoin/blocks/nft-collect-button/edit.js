@@ -67,7 +67,7 @@ export default function Edit({
               <TextControl
                 label={__('Collect Button Text', 'likecoin')}
                 value={attributes.ctaButtonLabel || 'Collect Now'}
-                onChange={value => setAttributes({ ctaButtonLabel: value })}
+                onChange={(value) => setAttributes({ ctaButtonLabel: value })}
               />
             </PanelRow>
           </PanelBody>

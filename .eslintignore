@@ -5,3 +5,4 @@ vendor
 **/dist
 **/build
 **/assets/js/*
+**/assets/blocks/*

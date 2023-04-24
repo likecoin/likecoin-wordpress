@@ -14,7 +14,7 @@
 	},
 	"attributes": {
 		"align": {
-		  "type": "string"
+		  	"type": "string"
 		},
 		"iscnId": {
 			"type": "string"

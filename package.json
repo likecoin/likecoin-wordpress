@@ -35,16 +35,16 @@
     "@wordpress/plugins": "^4.0.6",
     "@wordpress/wordcount": "^3.2.3",
     "axios": "^0.21.4",
-    "babel-eslint": "^10.1.0",
     "lodash": "^4.17.21",
     "react": "^17.0.2",
     "react-router-dom": "^6.4.4"
   },
   "devDependencies": {
+    "@babel/eslint-parser": "^7.21.3",
     "@wordpress/browserslist-config": "^5.5.0",
     "@wordpress/scripts": "^26.2.0",
     "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-react-app": "^6.0.0",
+    "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-jest": "^27.1.6",
