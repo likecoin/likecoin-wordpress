@@ -25,4 +25,5 @@
  */
 function likecoin_block_init() {
 	register_block_type( LC_DIR . 'assets/blocks/nft-widget' );
+	register_block_type( LC_DIR . 'assets/blocks/nft-collect-button' );
 }
