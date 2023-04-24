@@ -26,6 +26,10 @@
 		"isShowLikeBar": {
 			"type": "boolean",
 			"default": true
+		},
+		"ctaButtonLabel" : {
+			"type": "string",
+			"default": ""
 		}
 	},
 	"textdomain": "likecoin",

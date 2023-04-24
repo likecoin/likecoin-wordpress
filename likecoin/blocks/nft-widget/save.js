@@ -21,10 +21,12 @@ export default function save({ attributes }) {
     iscnId,
     isShowCover,
     isShowLikeBar,
+    ctaButtonLabel,
   } = attributes;
   const query = {
     type: 'wp',
     integration: 'wordpress_plugin',
+    cta_button_label: ctaButtonLabel,
     iscn_id: iscnId,
   };
   const width = 360;

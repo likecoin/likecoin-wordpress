@@ -12,7 +12,8 @@ import { __ } from '@wordpress/i18n';
  * @see https://developer.wordpress.org/block-editor/reference-guides/packages/packages-block-editor/#useblockprops
  */
 import { useEffect, useState } from 'react';
-import { useBlockProps } from '@wordpress/block-editor';
+import { useBlockProps, InspectorControls } from '@wordpress/block-editor';
+import { TextControl, PanelBody, PanelRow } from '@wordpress/components';
 import { useSelect } from '@wordpress/data';
 
 /**
@@ -47,10 +48,12 @@ export default function Edit({
   const {
     isShowCover,
     isShowLikeBar,
+    ctaButtonLabel,
   } = attributes;
   const query = {
     type: 'wp',
     integration: 'wordpress_plugin',
+    cta_button_label: ctaButtonLabel,
     iscn_id: iscnId,
   };
   const width = 360;
@@ -68,16 +71,29 @@ export default function Edit({
   return (
     <figure {...useBlockProps()}>
       {!iscnId && <span>{__('Please publish the post and mint NFT before using this widget', 'likecoin')}</span>}
-      {iscnId && <iframe
-        title={__('NFT Widget', 'likecoin')}
-        frameborder="0"
-        style={{
-          aspectRatio,
-          width: `${width}px`,
-          pointerEvents: 'none',
-        }}
-        src={`https://button.like.co/in/embed/iscn/button?${querystring}`}
-      />}
+      {iscnId && <div>
+        <InspectorControls>
+          <PanelBody title={__('Widget Settings', 'likecoin')} initialOpen={ true }>
+            <PanelRow>
+              <TextControl
+                label={__('Collect Button Text', 'likecoin')}
+                value={attributes.ctaButtonLabel || 'Collect Now'}
+                onChange={value => setAttributes({ ctaButtonLabel: value })}
+              />
+            </PanelRow>
+          </PanelBody>
+        </InspectorControls>
+        <iframe
+          title={__('NFT Widget', 'likecoin')}
+          frameborder="0"
+          style={{
+            aspectRatio,
+            width: `${width}px`,
+            pointerEvents: 'none',
+          }}
+          src={`https://button.like.co/in/embed/iscn/button?${querystring}`}
+        />
+      </div>}
     </figure>
   );
 }
