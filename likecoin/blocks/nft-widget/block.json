@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Writing NFT Widget",
 	"category": "widgets",
-	"icon": "smiley",
+	"icon": "welcome-widgets-menus",
 	"description": "Writing NFT widget with customable size and style",
 	"supports": {
 		"html": false
@@ -24,6 +24,11 @@
 		}
 	},
 	"textdomain": "likecoin",
+	"example": {
+		"attributes": {
+			"iscnId": "iscn://likecoin-chain/ucJ8rgrEMak8Sw6b28sfVCdWOdOEmH3dTHluy07kwzM/1"
+		}
+	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": "file:./style-index.css",
@@ -34,6 +39,13 @@
 			"attributes": {
 				"isShowCover": false,
 				"isShowLikeBar": false
+			},
+			"example": {
+				"attributes": {
+					"iscnId": "iscn://likecoin-chain/ucJ8rgrEMak8Sw6b28sfVCdWOdOEmH3dTHluy07kwzM/1",
+					"isShowCover": false,
+					"isShowLikeBar": false
+				}
 			}
 		}
 	]
