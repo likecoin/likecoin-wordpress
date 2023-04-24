@@ -7,10 +7,15 @@
 	"category": "widgets",
 	"icon": "welcome-widgets-menus",
 	"description": "Writing NFT widget with customable size and style",
+	"keywords": [ "nft", "web3", "likecoin", "writing nft", "widget" ],
 	"supports": {
+		"align": true,
 		"html": false
 	},
 	"attributes": {
+		"align": {
+		  "type": "string"
+		},
 		"iscnId": {
 			"type": "string"
 		},

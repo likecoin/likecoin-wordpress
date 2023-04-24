@@ -22,22 +22,29 @@ export default function save({ attributes }) {
     isShowCover,
     isShowLikeBar,
   } = attributes;
-  let querystring = `type=wp&integration=wordpress_plugin&iscn_id=${encodeURIComponent(iscnId)}`;
+  const query = {
+    type: 'wp',
+    integration: 'wordpress_plugin',
+    iscn_id: iscnId,
+  };
+  const width = 360;
   let height = 440;
   if (!isShowCover) {
-    querystring += '&cover=0';
+    query.cover = '0';
     height -= 260;
   }
   if (!isShowLikeBar) {
-    querystring += '&like_bar=0';
+    query.like_bar = '0';
     height -= 60;
   }
+  const aspectRatio = (width / height).toFixed(4);
+  const querystring = new URLSearchParams(query).toString();
   return (
     <figure {...useBlockProps.save()}>
       {iscnId && <iframe
         title={__('NFT Widget', 'likecoin')}
         frameborder="0"
-        style={{ height: `${height}px`, width: '360px' }}
+        style={{ aspectRatio, width: `${width}px` }}
         src={`https://button.like.co/in/embed/iscn/button?${querystring}`}
       />}
     </figure>
