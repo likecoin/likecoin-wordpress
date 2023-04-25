@@ -1,12 +1,12 @@
-=== Web3Press - Decentralize Publishing with Writing NFT by LikeCoin ===
+=== Web3Press - Decentralize Publishing with Writing NFT ===
 
 Contributors: likecoin,williamchong007,ckxpress
 Tags: web3, NFT, depub, LikeCoin, blockchain, publishing, decentralized
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
-Tested up to: 6.1
+Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 3.0.6
+Stable tag: 3.1.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -149,6 +149,11 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 3. Plugin Options
 
 == Changelog ==
+
+= 3.1.0 =
+
+- Migrate to app.like.co for the whole publishing flow.
+- Add Writing NFT Widget, Writing NFT Widget (Mini) and Writing NFT Collect Button blocks in Gutenberg editor.
 
 = 3.0.6 =
 
