@@ -1,0 +1,67 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 2,
+  "name": "likecoin/nft-widget",
+  "version": "0.1.0",
+  "title": "Writing NFT Widget",
+  "category": "widgets",
+  "icon": "welcome-widgets-menus",
+  "description": "Writing NFT widget with customable size and style",
+  "keywords": [
+    "nft",
+    "web3",
+    "likecoin",
+    "writing nft",
+    "widget"
+  ],
+  "supports": {
+    "align": true,
+    "html": false
+  },
+  "attributes": {
+    "align": {
+      "type": "string"
+    },
+    "iscnId": {
+      "type": "string"
+    },
+    "isShowCover": {
+      "type": "boolean",
+      "default": true
+    },
+    "isShowLikeBar": {
+      "type": "boolean",
+      "default": true
+    },
+    "ctaButtonLabel": {
+      "type": "string",
+      "default": ""
+    }
+  },
+  "textdomain": "likecoin",
+  "example": {
+    "attributes": {
+      "iscnId": "iscn://likecoin-chain/ucJ8rgrEMak8Sw6b28sfVCdWOdOEmH3dTHluy07kwzM/1"
+    }
+  },
+  "editorScript": "file:./index.js",
+  "editorStyle": "file:./index.css",
+  "style": "file:./style-index.css",
+  "variations": [
+    {
+      "name": "likecoin/nft-widget-mini",
+      "title": "Writing NFT Widget (Mini)",
+      "attributes": {
+        "isShowCover": false,
+        "isShowLikeBar": false
+      },
+      "example": {
+        "attributes": {
+          "iscnId": "iscn://likecoin-chain/ucJ8rgrEMak8Sw6b28sfVCdWOdOEmH3dTHluy07kwzM/1",
+          "isShowCover": false,
+          "isShowLikeBar": false
+        }
+      }
+    }
+  ]
+}
