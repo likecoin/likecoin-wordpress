@@ -147,6 +147,7 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 1. Writing NFT widget in a Post
 2. LikeCoin button in a Post
 3. Plugin Options
+4. Editor Blocks
 
 == Changelog ==
 
