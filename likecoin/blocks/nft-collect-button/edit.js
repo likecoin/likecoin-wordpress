@@ -77,7 +77,7 @@ export default function Edit({
           frameborder="0"
           style={{
             height,
-            minWidth: width,
+            width,
             pointerEvents: 'none',
           }}
           src={`https://button.like.co/in/embed/nft/button?${querystring}`}

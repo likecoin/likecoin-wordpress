@@ -35,7 +35,7 @@ export default function save({ attributes }) {
       {iscnId && <iframe
         title={__('NFT Widget', 'likecoin')}
         frameborder="0"
-        style={{ height, minWidth: width }}
+        style={{ height, width }}
         src={`https://button.like.co/in/embed/nft/button?${querystring}`}
       />}
     </figure>
