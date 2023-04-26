@@ -5,7 +5,7 @@
 	"version": "0.1.0",
 	"title": "Writing NFT Widget",
 	"category": "widgets",
-	"icon": "welcome-widgets-menus",
+	"icon": "embed-generic",
 	"description": "Writing NFT widget with customable size and style",
 	"keywords": [ "nft", "web3", "likecoin", "writing nft", "widget" ],
 	"supports": {
