@@ -1,7 +1,9 @@
 import { PluginSidebar } from '@wordpress/edit-post';
 import { useState, useEffect } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { CheckboxControl } from '@wordpress/components';
+import {
+  CheckboxControl, TextControl, PanelBody, PanelRow,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { count as wordCount } from '@wordpress/wordcount';
 import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
@@ -22,7 +24,11 @@ const { likecoHost, likerlandHost } = window.wpApiSettings;
 
 function LikeCoinPluginSideBar(props) {
   const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));
-  const { setISCNLicense } = useDispatch(ISCN_INFO_STORE_NAME);
+  const {
+    postISCNInfoData,
+    postArweaveInfoData,
+    setISCNLicense,
+  } = useDispatch(ISCN_INFO_STORE_NAME);
   const iscnLicense = useSelect((select) => select(ISCN_INFO_STORE_NAME).getLicense());
   const {
     isWidgetEnabled: isEnabledButton,
@@ -252,6 +258,24 @@ function LikeCoinPluginSideBar(props) {
           </div>
         )}
       </div>
+      <PanelBody title={__('Override Post metadata', 'likecoin')} initialOpen={ false }>
+        <PanelRow>
+          <TextControl
+            label={__('ISCN ID', 'likecoin')}
+            value={props.ISCNId}
+            onChange={(value) => postISCNInfoData({ iscnId: value })}
+          />
+        </PanelRow>
+        <PanelRow>
+          <TextControl
+            label={__('Arweave ID', 'likecoin')}
+            value={props.arweaveId}
+            onChange={(value) => {
+              postArweaveInfoData({ arweaveId: value });
+            }}
+          />
+        </PanelRow>
+      </PanelBody>
     </PluginSidebar>
   );
 }

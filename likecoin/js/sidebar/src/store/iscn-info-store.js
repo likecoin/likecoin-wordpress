@@ -86,7 +86,7 @@ const actions = {
     yield {
       type: 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE',
       data: {
-        arweaveId: res.arweave_id, ipfsHash: res.ipfs_hash,
+        arweaveId: res.data.arweave_id,
       },
     };
   },
