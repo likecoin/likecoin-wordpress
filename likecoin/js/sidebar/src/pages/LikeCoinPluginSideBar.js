@@ -1,7 +1,9 @@
 import { PluginSidebar } from '@wordpress/edit-post';
 import { useState, useEffect } from 'react';
 import { useSelect, useDispatch } from '@wordpress/data';
-import { CheckboxControl } from '@wordpress/components';
+import {
+  CheckboxControl, TextControl, Panel, PanelBody, PanelRow,
+} from '@wordpress/components';
 import { __ } from '@wordpress/i18n';
 import { count as wordCount } from '@wordpress/wordcount';
 import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
@@ -22,7 +24,11 @@ const { likecoHost, likerlandHost } = window.wpApiSettings;
 
 function LikeCoinPluginSideBar(props) {
   const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));
-  const { setISCNLicense } = useDispatch(ISCN_INFO_STORE_NAME);
+  const {
+    postISCNInfoData,
+    postArweaveInfoData,
+    setISCNLicense,
+  } = useDispatch(ISCN_INFO_STORE_NAME);
   const iscnLicense = useSelect((select) => select(ISCN_INFO_STORE_NAME).getLicense());
   const {
     isWidgetEnabled: isEnabledButton,
@@ -138,7 +144,7 @@ function LikeCoinPluginSideBar(props) {
               className='blueBackgroundWhiteTextBtn'
               onClick={props.handleNFTAction}
             >
-              { props.NFTClassId ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
+              {props.NFTClassId ? __('View NFT', 'likecoin') : __('Mint NFT', 'likecoin')}
             </button>
           </div>
         </div>
@@ -187,10 +193,10 @@ function LikeCoinPluginSideBar(props) {
         <div className='divOuterHolderMainSidebar'>
           <StatusTitle title={__('Widget', 'likecoin')} />
           <CheckboxControl
-              label={__('Enable in-post widget', 'likecoin')}
-              help={__('Embed widget in this post (Overrides site setting)', 'likecoin')}
-              checked={!!isEnabledButton}
-              onChange={handleOnButtonSettingChange}
+            label={__('Enable in-post widget', 'likecoin')}
+            help={__('Embed widget in this post (Overrides site setting)', 'likecoin')}
+            checked={!!isEnabledButton}
+            onChange={handleOnButtonSettingChange}
           />
         </div>
       )}
@@ -252,6 +258,26 @@ function LikeCoinPluginSideBar(props) {
           </div>
         )}
       </div>
+      <Panel>
+        <PanelBody title={__('Advanced', 'likecoin')} initialOpen={false}>
+          <PanelRow>
+            <TextControl
+              label={__('Override ISCN ID', 'likecoin')}
+              value={props.ISCNId}
+              onChange={(value) => postISCNInfoData({ iscnId: value })}
+            />
+          </PanelRow>
+          <PanelRow>
+            <TextControl
+              label={__('Override Arweave ID', 'likecoin')}
+              value={props.arweaveId}
+              onChange={(value) => {
+                postArweaveInfoData({ arweaveId: value });
+              }}
+            />
+          </PanelRow>
+        </PanelBody>
+      </Panel>
     </PluginSidebar>
   );
 }
