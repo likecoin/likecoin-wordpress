@@ -52,8 +52,7 @@ function LikeCoinPluginSideBar(props) {
   }, [isCurrentPostPublished, props.ISCNId]);
   useEffect(() => {
     setShowUpdateISCNButton(!!(isCurrentPostPublished
-      && props.ISCNTimestamp
-      && Date.parse(`${postDate}Z`) > props.ISCNTimestamp)); // force parsing as gmt
+      && Date.parse(`${postDate}Z`) > (props.ISCNTimestamp || 0))); // force parsing as gmt
   }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
   useEffect(() => setShowNFTButton(!!props.ISCNId), [props.ISCNId]);
   useEffect(() => {
