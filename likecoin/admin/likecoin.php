@@ -28,7 +28,6 @@
 require_once dirname( __FILE__ ) . '/ajax.php';
 require_once dirname( __FILE__ ) . '/editor.php';
 require_once dirname( __FILE__ ) . '/metabox.php';
-require_once dirname( __FILE__ ) . '/sidebar.php';
 require_once dirname( __FILE__ ) . '/plugin-action.php';
 require_once dirname( __FILE__ ) . '/post.php';
 require_once dirname( __FILE__ ) . '/matters.php';
@@ -86,6 +85,17 @@ function likecoin_enqueue_plugins_screen_scripts() {
 function likecoin_admin_init() {
 	likecoin_add_privacy_policy_content();
 }
+
+/**
+ * Add likecoin metabox for legacy editor
+ */
+function likecoin_add_metabox() {
+	if ( likecoin_is_block_editor() ) {
+		return;
+	}
+	add_meta_box( 'like-coin', __( 'Web3Press', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
+}
+
 /**
  * Check if it's block editor or not
  */
@@ -101,18 +111,7 @@ function likecoin_is_block_editor() {
 	}
 	return false;
 }
-/**
- * Show plugin based on if gutenberg(sidebar) or classic(metabox) editor
- */
-function likecoin_show_plugin() {
-	$is_block_editor = likecoin_is_block_editor();
-	global $post;
-	if ( $post && $is_block_editor ) {
-		likecoin_register_sidebar( $post );
-	} else {
-		add_meta_box( 'like-coin', __( 'Web3Press', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
-	}
-}
+
 /**
  * Run all admin related WordPress hook
  *
@@ -133,5 +132,5 @@ function likecoin_add_admin_hooks( $basename ) {
 	add_action( 'admin_notices', 'likecoin_show_admin_welcome' );
 	add_action( 'manage_posts_columns', 'likecoin_add_posts_columns', 10, 2 );
 	add_action( 'manage_posts_custom_column', 'likecoin_populate_posts_columns', 10, 2 );
-	add_action( 'add_meta_boxes', 'likecoin_show_plugin' ); // show sidebar or metaboxes.
+	add_action( 'add_meta_boxes', 'likecoin_add_metabox' );
 }

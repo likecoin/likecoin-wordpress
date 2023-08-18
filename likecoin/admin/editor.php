@@ -32,6 +32,11 @@ function likecoin_load_editor_scripts() {
 	if ( ! function_exists( 'has_blocks' ) ) {
 		return;
 	}
+	global $post;
+	$post_id = null;
+	if ( $post ) {
+		$post_id = $post->ID;
+	}
 	$asset_file = include plugin_dir_path( __FILE__ ) . '/../assets/js/sidebar/index.asset.php';
 	wp_enqueue_style(
 		'lc_js_editor',
@@ -39,13 +44,24 @@ function likecoin_load_editor_scripts() {
 		array(),
 		$asset_file['version']
 	);
-	wp_enqueue_script(
+	wp_register_script(
 		'lc_js_editor',
 		LC_URI . 'assets/js/sidebar/index.js',
 		$asset_file['dependencies'],
 		$asset_file['version'],
 		true
 	);
+	wp_localize_script(
+		'lc_js_editor',
+		'likecoinApiSettings',
+		array(
+			'siteurl'       => get_site_url(),
+			'postId'        => $post_id,
+			'likecoHost'    => LC_LIKE_CO_HOST,
+			'likerlandHost' => LC_LIKER_LAND_HOST,
+		)
+	);
+	wp_enqueue_script( 'lc_js_editor' );
 }
 
 /**
