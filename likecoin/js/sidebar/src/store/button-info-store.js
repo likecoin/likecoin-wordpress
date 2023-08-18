@@ -3,7 +3,7 @@ import { createAndRegisterReduxStore } from './util';
 
 const {
   postId,
-} = window.wpApiSettings;
+} = window.likecoinApiSettings;
 
 // eslint-disable-next-line import/prefer-default-export
 export const BUTTON_INFO_STORE_NAME = 'likecoin/button_info_store';

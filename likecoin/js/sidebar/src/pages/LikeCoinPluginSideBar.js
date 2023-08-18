@@ -20,7 +20,7 @@ import LicensePicker from '../components/LicensePicker';
 import Web3PressIconPinbar from '../components/Web3PressPinbar';
 import { BUTTON_INFO_STORE_NAME } from '../store/button-info-store';
 
-const { likecoHost, likerlandHost } = window.wpApiSettings;
+const { likecoHost, likerlandHost } = window.likecoinApiSettings;
 
 function LikeCoinPluginSideBar(props) {
   const content = useSelect((select) => select('core/editor').getEditedPostAttribute('content'));

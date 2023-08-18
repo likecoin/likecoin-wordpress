@@ -4,7 +4,7 @@ import { createAndRegisterReduxStore } from './util';
 
 const {
   postId, likecoHost,
-} = window.wpApiSettings;
+} = window.likecoinApiSettings;
 
 // eslint-disable-next-line import/prefer-default-export
 export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';

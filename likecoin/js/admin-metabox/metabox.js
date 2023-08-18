@@ -1,4 +1,4 @@
-/* global jQuery, wpApiSettings, lcPostInfo, lcStringInfo */
+/* global jQuery, likecoinApiSettings, lcPostInfo, lcStringInfo */
 
 const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
 
@@ -36,7 +36,7 @@ const MAIN_STATUS_TEXT_MAP = {
   onRegisterISCN: mainStatusRegisterISCN,
 };
 
-const ISCN_WIDGET_ORIGIN = `https://app.${window.wpApiSettings.likecoHost}`;
+const ISCN_WIDGET_ORIGIN = `https://app.${window.likecoinApiSettings.likecoHost}`;
 
 function updateMainTitleField(signalCSSClass, text) {
   mainTitleField.textContent = '';
@@ -86,10 +86,10 @@ async function onRefreshPublishStatus(e) {
   } = lcPostInfo;
   const res = await jQuery.ajax({
     type: 'POST',
-    url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/refresh`,
+    url: `${likecoinApiSettings.root}likecoin/v1/posts/${likecoinApiSettings.postId}/iscn/refresh`,
     method: 'POST',
     beforeSend: (xhr) => {
-      xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+      xhr.setRequestHeader('X-WP-Nonce', likecoinApiSettings.nonce);
     },
   });
   const { matters, ipfs, arweave } = res;
@@ -103,7 +103,7 @@ async function onRefreshPublishStatus(e) {
       text: iscnId,
       rel: 'noopener',
       target: '_blank',
-      href: `https://app.${window.wpApiSettings.likecoHost}/view/${iscnIdString}`,
+      href: `https://app.${window.likecoinApiSettings.likecoHost}/view/${iscnIdString}`,
     });
     updateFieldStatusElement(ISCNStatusTextField, ISCNLink);
   }
@@ -232,13 +232,13 @@ async function onArweaveIdCallback(data) {
     try {
       await jQuery.ajax({
         type: 'POST',
-        url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/arweave`,
+        url: `${likecoinApiSettings.root}likecoin/v1/posts/${likecoinApiSettings.postId}/iscn/arweave`,
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(payload),
         method: 'POST',
         beforeSend: (xhr) => {
-          xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+          xhr.setRequestHeader('X-WP-Nonce', likecoinApiSettings.nonce);
         },
       });
     } catch (err) {
@@ -260,13 +260,13 @@ async function onISCNCallback(data) {
     }
     await jQuery.ajax({
       type: 'POST',
-      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/metadata`,
+      url: `${likecoinApiSettings.root}likecoin/v1/posts/${likecoinApiSettings.postId}/iscn/metadata`,
       dataType: 'json',
       contentType: 'application/json; charset=UTF-8',
       data: JSON.stringify({ iscnHash: txHash, iscnId }),
       method: 'POST',
       beforeSend: (xhr) => {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', likecoinApiSettings.nonce);
       },
     });
     lcPostInfo.iscnHash = txHash;
@@ -282,7 +282,7 @@ async function onISCNCallback(data) {
 
 async function onSubmitToISCN(e) {
   if (e) e.preventDefault();
-  const { siteurl } = wpApiSettings;
+  const { siteurl } = likecoinApiSettings;
   const { url } = lcPostInfo;
   lcPostInfo.mainStatus = 'onRegisterISCN';
   updateFieldStatusText(ISCNStatusTextField, getStatusText(lcPostInfo.mainStatus));
@@ -312,11 +312,11 @@ async function onISCNWidgetReady() {
   try {
     const res = await jQuery.ajax({
       type: 'GET',
-      url: `${wpApiSettings.root}likecoin/v1/posts/${wpApiSettings.postId}/iscn/arweave/upload`,
+      url: `${likecoinApiSettings.root}likecoin/v1/posts/${likecoinApiSettings.postId}/iscn/arweave/upload`,
       dataType: 'json',
       method: 'GET',
       beforeSend: (xhr) => {
-        xhr.setRequestHeader('X-WP-Nonce', wpApiSettings.nonce);
+        xhr.setRequestHeader('X-WP-Nonce', likecoinApiSettings.nonce);
       },
     });
     const {

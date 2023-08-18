@@ -5,7 +5,7 @@ import LikeCoinPluginSideBar from './LikeCoinPluginSideBar';
 import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
 import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
 
-const { siteurl, likecoHost, likerlandHost } = window.wpApiSettings;
+const { siteurl, likecoHost, likerlandHost } = window.likecoinApiSettings;
 
 const ISCN_WIDGET_ORIGIN = `https://app.${likecoHost}`;
 const NFT_WIDGET_ORIGIN = `https://app.${likecoHost}`;
