@@ -434,7 +434,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 		wp_register_style( 'lc_css_common', LC_URI . 'assets/css/likecoin.css', false, LC_PLUGIN_VERSION );
 		wp_enqueue_style( 'lc_css_common' );
 		$asset_file = include plugin_dir_path( __FILE__ ) . '/../assets/js/admin-metabox/metabox.asset.php';
-		wp_enqueue_script(
+		wp_register_script(
 			'lc_js_metabox',
 			LC_URI . 'assets/js/admin-metabox/metabox.js',
 			$asset_file['dependencies'],
@@ -443,7 +443,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 		);
 		wp_localize_script(
 			'lc_js_metabox',
-			'wpApiSettings',
+			'likecoinApiSettings',
 			array(
 				'root'          => esc_url_raw( rest_url() ),
 				'siteurl'       => get_site_url(),
@@ -490,6 +490,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'draft'                   => __( 'Draft', LC_PLUGIN_SLUG ),
 			)
 		);
+		wp_enqueue_style( 'lc_js_metabox' );
 }
 
 /**
