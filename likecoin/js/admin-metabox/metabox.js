@@ -82,7 +82,7 @@ async function onRefreshPublishStatus(e) {
     iscnId,
     isMattersPublished,
     lastModifiedTime,
-    iscnTimestamp,
+    iscnTimestamp = 0,
   } = lcPostInfo;
   const res = await jQuery.ajax({
     type: 'POST',
