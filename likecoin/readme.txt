@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.2
 Requires PHP: 5.4
-Stable tag: 3.1.2
+Stable tag: 3.1.3
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -150,6 +150,11 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 4. Editor Blocks
 
 == Changelog ==
+
+= 3.1.3 =
+
+- Fix metabox js not enqueued properly
+
 
 = 3.1.2 =
 
