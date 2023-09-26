@@ -490,7 +490,7 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 				'draft'                   => __( 'Draft', LC_PLUGIN_SLUG ),
 			)
 		);
-		wp_enqueue_style( 'lc_js_metabox' );
+		wp_enqueue_script( 'lc_js_metabox' );
 }
 
 /**
