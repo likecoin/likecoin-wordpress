@@ -31,7 +31,7 @@ function LikeCoinPluginPostPublishPanel(props) {
             <div className='flexBoxRow'>
               <div>
                 <p className='flexBoxRowNormalText'>
-                  {__('Register your content to decetralized publishing', 'likecoin')}
+                  {__('Register your content to decentralized publishing', 'likecoin')}
                 </p>
               </div>
             </div>
