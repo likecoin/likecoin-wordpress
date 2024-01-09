@@ -77,9 +77,10 @@ function likecoin_add_likecoin_meta_header() {
 /**
  * Add LikeCoin Button if LikerId exist
  *
- * @param string| $likecoin_id The Liker ID of owner of LikeCoin Button.
+ * @param string|  $likecoin_id The Liker ID of owner of LikeCoin Button.
+ * @param boolean| $is_shortcode If the button is added by shortcode, ignores $widget_is_enabled if true.
  */
-function likecoin_add_likebutton( $likecoin_id = '' ) {
+function likecoin_add_likebutton( $likecoin_id = '', $is_shortcode = false ) {
 	global $post;
 	$option = get_option( LC_BUTTON_OPTION_NAME );
 	$type   = $option[ LC_OPTION_BUTTON_DISPLAY_OPTION ];
@@ -126,7 +127,7 @@ function likecoin_add_likebutton( $likecoin_id = '' ) {
 		}
 	};
 	$widget_is_enabled = ! empty( $widget_position ) && 'none' !== $widget_position;
-	if ( ! $widget_is_enabled ) {
+	if ( ! $widget_is_enabled && ! $is_shortcode ) {
 		return '';
 	}
 
@@ -181,5 +182,5 @@ function likecoin_likecoin_shortcode( $atts = array(), $content = null, $tag = '
 		),
 		$atts
 	);
-	return likecoin_add_likebutton( $filtered['liker-id'] );
+	return likecoin_add_likebutton( $filtered['liker-id'], true );
 }
