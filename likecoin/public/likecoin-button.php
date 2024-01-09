@@ -77,7 +77,8 @@ function likecoin_add_likecoin_meta_header() {
 /**
  * Add LikeCoin Button if LikerId exist
  *
- * @param string| $likecoin_id The Liker ID of owner of LikeCoin Button.
+ * @param string|  $likecoin_id The Liker ID of owner of LikeCoin Button.
+ * @param boolean| $is_shortcode If the button is added by shortcode, ignores $widget_is_enabled if true.
  */
 function likecoin_add_likebutton( $likecoin_id = '', $is_shortcode = false ) {
 	global $post;
