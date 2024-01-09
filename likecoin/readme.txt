@@ -4,9 +4,9 @@ Contributors: likecoin,williamchong007,ckxpress
 Tags: web3, NFT, depub, LikeCoin, blockchain, publishing, decentralized
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
-Tested up to: 6.2
+Tested up to: 6.4
 Requires PHP: 5.4
-Stable tag: 3.1.3
+Stable tag: 3.2.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -150,6 +150,10 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 4. Editor Blocks
 
 == Changelog ==
+
+= 3.2.0 =
+
+- Show widget from [likecoin] shortcode even if widget display is disabled
 
 = 3.1.3 =
 
