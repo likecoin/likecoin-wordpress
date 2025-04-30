@@ -389,7 +389,7 @@ function likecoin_add_button_meta_box( $button_params ) {
 							value="bottom"
 							<?php
 							if ( $button_checked ) {
-								esc_attr_e( 'checked' );}
+								esc_attr_e( 'checked', LC_PLUGIN_SLUG );}
 							?>
 						>
 						<label><?php esc_html_e( 'Embed LikeCoin button in this post', LC_PLUGIN_SLUG ); ?></label>
