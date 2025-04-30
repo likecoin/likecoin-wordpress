@@ -65,31 +65,6 @@ function likecoin_update_user_id() {
 	exit();
 }
 
-// we are passing these values to Matters api, no need for filtering.
-// phpcs:disable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-/**
- *  POST handler of Matters login proxy
- */
-function likecoin_matters_login() {
-	check_admin_referer( 'likecoin_matters_login' );
-
-	if ( ! isset( $_POST[ LC_OPTION_MATTERS_ID_FIELD ] ) || ! isset( $_POST[ LC_OPTION_MATTERS_PASSWORD_FIELD ] ) ) {
-		wp_send_json_error( array( 'error' => 'MISSING_FIELDS' ) );
-	}
-	$matters_id           = $_POST[ LC_OPTION_MATTERS_ID_FIELD ];
-	$matters_password     = $_POST[ LC_OPTION_MATTERS_PASSWORD_FIELD ];
-	$results              = LikeCoin_Matters_API::get_instance()->login( $matters_id, $matters_password );
-	$matters_access_token = isset( $results['data']['userLogin']['token'] ) ? $results['data']['userLogin']['token'] : null;
-	$user_info_results    = array();
-	if ( isset( $matters_access_token ) ) {
-		$user_info_results = LikeCoin_Matters_API::get_instance()->query_user_info( $matters_access_token );
-		wp_send_json( array_merge( $results['data'], array( 'viewer' => $user_info_results ) ) );
-	} else {
-		wp_send_json( $results );
-	}
-}
-// phpcs:enable WordPress.Security.ValidatedSanitizedInput.MissingUnslash, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-
 /**
  *  POST handler of editor fetching admin notices/error message
  */

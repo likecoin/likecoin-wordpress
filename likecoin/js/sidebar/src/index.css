@@ -72,14 +72,6 @@
 	cursor: pointer;
 }
 
-.sidebarStatusTitleOuterDivMatters {
-	display: flex;
-	flex-direction: row;
-
-	width: 100%;
-	padding: 10px 10px 0 0;
-}
-
 .postStatusInfoPanelOuterDiv {
 	display: flex;
 	flex-direction: row;

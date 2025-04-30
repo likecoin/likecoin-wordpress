@@ -22,8 +22,6 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
-require_once dirname( __FILE__ ) . '/matters.php';
-
 /**
  * Parse the publish params into array of status
  *
@@ -34,9 +32,6 @@ function likecoin_parse_publish_status( $publish_params ) {
 		return array( 'error' => $publish_params['error'] );
 	}
 	$result = array(
-		'matters' => array(
-			'status' => __( '-', LC_PLUGIN_SLUG ),
-		),
 		'ipfs'    => array(
 			'status' => __( '-', LC_PLUGIN_SLUG ),
 		),
@@ -56,24 +51,6 @@ function likecoin_parse_publish_status( $publish_params ) {
 		$result['arweave']['ipfs_url']          = 'https://ipfs.io/ipfs/' . $publish_params['arweave_ipfs_hash'];
 		$result['arweave']['arweave_id']        = $publish_params['arweave_id'];
 		$result['arweave']['url']               = 'https://arweave.net/' . $publish_params['arweave_id'];
-	}
-	if ( ! empty( $publish_params['published'] ) ) {
-		if ( ! empty( $publish_params['article_hash'] ) ) {
-			$result['matters']['status']     = __( 'Published', LC_PLUGIN_SLUG );
-			$result['matters']['article_id'] = $publish_params['article_id'];
-			$result['matters']['ipfs_hash']  = $publish_params['ipfs_hash'];
-			$result['matters']['url']        = likecoin_matters_get_article_link(
-				$publish_params['matters_id'],
-				$publish_params['article_hash'],
-				$publish_params['article_slug']
-			);
-		} else {
-			$result['matters']['status'] = __( 'Pending', LC_PLUGIN_SLUG );
-		}
-	} else {
-		$result['matters']['status']     = __( 'Draft', LC_PLUGIN_SLUG );
-		$result['matters']['article_id'] = $publish_params['draft_id'];
-		$result['matters']['url']        = likecoin_matters_get_draft_link( $publish_params['draft_id'] );
 	}
 	if ( ! empty( $publish_params['arweave_ipfs_hash'] ) ) { // use Arweave IPFS as default.
 		$result['ipfs']['status'] = __( 'Published', LC_PLUGIN_SLUG );
@@ -196,35 +173,18 @@ function likecoin_get_meta_box_button_params( $post ) {
  * @param boolean| $force Force update status.
  */
 function likecoin_get_meta_box_publish_params( $post, $force = false ) {
-	$option             = get_option( LC_PUBLISH_OPTION_NAME );
-	$is_matters_enabled = ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_DRAFT ] ) || ! empty( $option[ LC_OPTION_SITE_MATTERS_AUTO_PUBLISH ] );
-	$matters_info       = likecoin_refresh_post_matters_status( $post, $force );
-	$arweave_info       = get_post_meta( $post->ID, LC_ARWEAVE_INFO, true );
-	if ( isset( $matters_info['error'] ) ) {
-		$publish_params = array(
-			'error' => $matters_info['error'],
-		);
-	} else {
-		$post_id        = $post->ID;
-		$iscn_main_info = get_post_meta( $post_id, LC_ISCN_INFO, true );
-		$iscn_info      = $iscn_main_info ? $iscn_main_info : get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-		$matters_id     = isset( $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] ) ? $option[ LC_OPTION_SITE_MATTERS_USER ] [ LC_MATTERS_ID_FIELD ] : '';
-		$publish_params = array(
-			'is_matters_enabled' => $is_matters_enabled,
-			'matters_id'         => isset( $matters_info['article_author'] ) ? $matters_info['article_author'] : $matters_id,
-			'draft_id'           => isset( $matters_info['draft_id'] ) ? $matters_info['draft_id'] : '',
-			'published'          => isset( $matters_info['published'] ) ? $matters_info['published'] : '',
-			'article_id'         => isset( $matters_info['article_id'] ) ? $matters_info['article_id'] : '',
-			'article_hash'       => isset( $matters_info['article_hash'] ) ? $matters_info['article_hash'] : '',
-			'article_slug'       => isset( $matters_info['article_slug'] ) ? $matters_info['article_slug'] : '',
-			'ipfs_hash'          => isset( $matters_info['ipfs_hash'] ) ? $matters_info['ipfs_hash'] : '',
-			'iscn_hash'          => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
-			'iscn_id'            => isset( $iscn_info['iscn_id'] ) ? $iscn_info['iscn_id'] : '',
-			'iscn_timestamp'     => isset( $iscn_info['last_saved_time'] ) ? $iscn_info['last_saved_time'] : '',
-			'arweave_id'         => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
-			'arweave_ipfs_hash'  => isset( $arweave_info['ipfs_hash'] ) ? $arweave_info['ipfs_hash'] : '',
-		);
-	}
+	$option         = get_option( LC_PUBLISH_OPTION_NAME );
+	$arweave_inf    = get_post_meta( $post->ID, LC_ARWEAVE_INFO, true );
+	$post_id        = $post->ID;
+	$iscn_main_info = get_post_meta( $post_id, LC_ISCN_INFO, true );
+	$iscn_info      = $iscn_main_info ? $iscn_main_info : get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
+	$publish_params = array(
+		'iscn_hash'         => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
+		'iscn_id'           => isset( $iscn_info['iscn_id'] ) ? $iscn_info['iscn_id'] : '',
+		'iscn_timestamp'    => isset( $iscn_info['last_saved_time'] ) ? $iscn_info['last_saved_time'] : '',
+		'arweave_id'        => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
+		'arweave_ipfs_hash' => isset( $arweave_info['ipfs_hash'] ) ? $arweave_info['ipfs_hash'] : '',
+	);
 	return $publish_params;
 }
 /**
@@ -315,35 +275,6 @@ function likecoin_add_publish_meta_box( $publish_params, $post ) {
 					<?php } ?>
 				</td>
 			</tr>
-			<tr>
-				<th><label><?php esc_html_e( 'Matters Article ID', LC_PLUGIN_SLUG ); ?></label></th>
-				<td id="
-				<?php
-				if ( $publish_params['is_matters_enabled'] ) {
-					echo esc_attr( 'lcMattersStatus' );}
-				?>
-				">
-					<?php
-					if ( ! $publish_params['is_matters_enabled'] ) {
-						?>
-						<a href="<?php echo esc_url( admin_url( 'admin.php?page=likecoin#/' . LC_PUBLISH_SITE_OPTIONS_PAGE ) ); ?>">
-						<?php esc_html_e( 'Please setup matters publishing settings first.', LC_PLUGIN_SLUG ); ?>
-						</a>
-						<?php
-					} elseif ( 'Published' === $status['matters']['status'] ) {
-						?>
-						<a class="lc-components-button is-tertiary" rel="noopener" target="_blank" href="<?php echo esc_url( $status['matters']['url'] ); ?>">
-							<?php echo esc_html( $status['matters']['article_id'] ); ?>
-						</a>
-					<?php } elseif ( ! empty( $status['matters']['article_id'] ) ) { ?>
-						<a class="lc-components-button is-tertiary" rel="noopener" target="_blank" href="<?php echo esc_url( $status['matters']['url'] ); ?>">
-							<?php echo esc_html( $status['matters']['status'] ); ?>
-						</a>
-					<?php } else { ?>
-						-
-					<?php } ?>
-				</td>
-			</tr>
 		</tbody>
 	</table>
 	<?php
@@ -417,15 +348,13 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 		<?php likecoin_add_publish_meta_box( $publish_params, $post ); ?>
 	</div>
 	<?php
-		$post_id                  = $post->ID;
-		$post_title               = $post->post_title;
-		$post_tags                = likecoin_get_post_tags( $post );
-		$post_url                 = get_permalink( $post );
-		$matters_ipfs_hash        = $publish_params['ipfs_hash'];
-		$matters_published_status = $publish_params['published'];
-		$arweave_info             = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
-		$arweave_id               = '';
-		$arweave_ipfs_hash        = '';
+		$post_id           = $post->ID;
+		$post_title        = $post->post_title;
+		$post_tags         = likecoin_get_post_tags( $post );
+		$post_url          = get_permalink( $post );
+		$arweave_info      = get_post_meta( $post_id, LC_ARWEAVE_INFO, true );
+		$arweave_id        = '';
+		$arweave_ipfs_hash = '';
 	if ( is_array( $arweave_info ) ) {
 		$arweave_id        = $arweave_info['arweave_id'];
 		$arweave_ipfs_hash = $arweave_info['ipfs_hash'];
@@ -457,19 +386,17 @@ function likecoin_add_meta_box( $post, $button_params, $publish_params ) {
 			'lc_js_metabox',
 			'lcPostInfo',
 			array(
-				'id'                 => $post_id,
-				'title'              => $post_title,
-				'lastModifiedTime'   => get_post_modified_time( 'U', true, $post_id ),
-				'mattersIPFSHash'    => $matters_ipfs_hash,
-				'isMattersPublished' => $matters_published_status,
-				'arweaveIPFSHash'    => $arweave_ipfs_hash,
-				'iscnHash'           => $publish_params['iscn_hash'],
-				'iscnId'             => $publish_params['iscn_id'],
-				'iscnTimestamp'      => $publish_params['iscn_timestamp'],
-				'tags'               => $post_tags,
-				'url'                => $post_url,
-				'arweaveId'          => $arweave_id,
-				'mainStatus'         => 'initial',
+				'id'               => $post_id,
+				'title'            => $post_title,
+				'lastModifiedTime' => get_post_modified_time( 'U', true, $post_id ),
+				'arweaveIPFSHash'  => $arweave_ipfs_hash,
+				'iscnHash'         => $publish_params['iscn_hash'],
+				'iscnId'           => $publish_params['iscn_id'],
+				'iscnTimestamp'    => $publish_params['iscn_timestamp'],
+				'tags'             => $post_tags,
+				'url'              => $post_url,
+				'arweaveId'        => $arweave_id,
+				'mainStatus'       => 'initial',
 			)
 		);
 		wp_localize_script(

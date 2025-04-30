@@ -28,12 +28,6 @@ const INITIAL_STATE = {
   DBISCNVersion: 0,
   DBISCNTimestamp: 0,
   DBNFTClassId: '',
-  DBMattersIPFSHash: '',
-  DBMattersPublishedArticleHash: '',
-  DBMattersDraftId: '',
-  DBMattersArticleId: '',
-  DBMattersId: '',
-  DBMattersArticleSlug: '',
 };
 const actions = {
   getISCNInfo() {
@@ -173,11 +167,6 @@ const resolvers = {
         tags,
         arweaveId,
         arweaveIPFSHash,
-        mattersIPFSHash,
-        mattersPublishedArticleHash,
-        mattersArticleId,
-        mattersId,
-        mattersArticleSlug,
       } = response;
       return actions.setISCNInfo({
         ...iscnData,
@@ -192,11 +181,6 @@ const resolvers = {
         tags,
         arweaveId,
         arweaveIPFSHash,
-        mattersIPFSHash,
-        mattersPublishedArticleHash,
-        mattersArticleId,
-        mattersId,
-        mattersArticleSlug,
       });
     } catch (error) {
       return actions.setHTTPErrors(error.message);
@@ -238,11 +222,6 @@ const reducer = (state = INITIAL_STATE, action) => {
         DBArticleURL: action.data.url,
         DBArticleTags: action.data.tags,
         DBArweaveId: action.data.arweaveId,
-        DBMattersIPFSHash: action.data.mattersIPFSHash,
-        DBMattersPublishedArticleHash: action.data.mattersPublishedArticleHash,
-        DBMattersArticleId: action.data.mattersArticleId,
-        DBMattersId: action.data.mattersId,
-        DBMattersArticleSlug: action.data.mattersArticleSlug,
       };
     }
     case 'SET_NFT_INFO': {

@@ -7,8 +7,6 @@ import PublishStatus from '../components/PublishStatus';
 import StatusTitle from '../components/StatusTitle';
 
 function LikeCoinPluginDocumentSettingPanel(props) {
-  const [showMattersDraftLink, setShowMattersDraftLink] = useState(false);
-  const [showMattersArticleLink, setShowMattersArticleLink] = useState(false);
   const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const [showNFTButton, setShowNFTButton] = useState(true);
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
@@ -19,10 +17,6 @@ function LikeCoinPluginDocumentSettingPanel(props) {
       && Date.parse(`${postDate}Z`) > (props.ISCNTimestamp || 0))); // force parsing as gmt;
   }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
   useEffect(() => setShowNFTButton(!!props.ISCNId), [props.ISCNId]);
-  useEffect(() => {
-    setShowMattersDraftLink(!isCurrentPostPublished && props.mattersDraftId);
-    setShowMattersArticleLink(isCurrentPostPublished && props.mattersArticleId);
-  }, [isCurrentPostPublished, props]);
   return (
     <PluginDocumentSettingPanel
       name='depub-panel'
@@ -38,36 +32,6 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                 isCurrentPostPublished={isCurrentPostPublished}
                 ISCNId={props.ISCNId}
               />
-              {showMattersDraftLink && (
-                <div className='flexBoxRow'>
-                  <StatusTitle title={__('Distribution', 'likecoin')} />
-                  <div>
-                    <a
-                      rel='noopener noreferrer'
-                      target='_blank'
-                      className='icon'
-                      href={`https://matters.news/me/drafts/${props.mattersDraftId}`}
-                    >
-                      Matters
-                    </a>
-                  </div>
-                </div>
-              )}
-              {showMattersArticleLink && (
-                <div className='flexBoxRow'>
-                  <StatusTitle title={__('Distribution', 'likecoin')} />
-                  <div>
-                    <a
-                      rel='noopener noreferrer'
-                      target='_blank'
-                      className='icon'
-                      href={`https://matters.news/@${props.mattersId}/${props.mattersArticleSlug}-${props.mattersPublishedArticleHash}`}
-                    >
-                      Matters
-                    </a>
-                  </div>
-                </div>
-              )}
               <div className='postStatusInfoRowOuterDiv'>
                 {!isCurrentPostPublished && (
                   <button
