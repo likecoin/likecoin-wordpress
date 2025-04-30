@@ -47,7 +47,6 @@ require_once dirname( __FILE__ ) . '/includes/constant/options.php';
 require_once dirname( __FILE__ ) . '/public/likecoin.php';
 require_once dirname( __FILE__ ) . '/blocks/blocks.php';
 require_once dirname( __FILE__ ) . '/admin/restful.php';
-require_once dirname( __FILE__ ) . '/admin/matters.php';
 require_once dirname( __FILE__ ) . '/admin/internet-archive.php';
 
 /**
@@ -126,7 +125,6 @@ function likecoin_add_all_hooks() {
 		require_once dirname( __FILE__ ) . '/admin/likecoin.php';
 		likecoin_add_admin_hooks( plugin_basename( __FILE__ ) );
 	}
-	likecoin_add_matters_hook();
 	likecoin_add_internet_archive_hook();
 	likecoin_hook_restful_hook();
 	likecoin_add_public_hooks();

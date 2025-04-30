@@ -36,9 +36,6 @@ require_once dirname( __FILE__ ) . '/view.php';
 function likecoin_get_publish_option_for_restful() {
 	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
 	// Don't give access token to frontend, not useful and security risk.
-	if ( isset( $publish_options['site_matters_user']['access_token'] ) ) {
-		unset( $publish_options['site_matters_user']['access_token'] );
-	}
 	if ( isset( $publish_options[ LC_OPTION_IA_SECRET ] ) ) {
 		unset( $publish_options[ LC_OPTION_IA_SECRET ] );
 	}
@@ -144,15 +141,6 @@ function likecoin_get_user_data( $request ) {
 function likecoin_post_site_publish_options_data( $request ) {
 	$publish_options = get_option( LC_PUBLISH_OPTION_NAME );
 	$params          = $request->get_json_params();
-	if ( isset( $params['siteMattersAutoSaveDraft'] ) ) {
-		$publish_options['site_matters_auto_save_draft'] = $params['siteMattersAutoSaveDraft'];
-	}
-	if ( isset( $params['siteMattersAutoPublish'] ) ) {
-		$publish_options['site_matters_auto_publish'] = $params['siteMattersAutoPublish'];
-	}
-	if ( isset( $params['siteMattersAddFooterLink'] ) ) {
-		$publish_options['site_matters_add_footer_link'] = $params['siteMattersAddFooterLink'];
-	}
 	if ( isset( $params['ISCNBadgeStyleOption'] ) ) {
 		$publish_options['iscn_badge_style_option'] = $params['ISCNBadgeStyleOption'];
 	}
@@ -165,55 +153,6 @@ function likecoin_post_site_publish_options_data( $request ) {
 	if ( isset( $params['siteInternetArchiveSecret'] ) ) {
 		$publish_options[ LC_OPTION_IA_SECRET ] = $params['siteInternetArchiveSecret'];
 	}
-	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
-	$return_payload = likecoin_get_publish_option_for_restful();
-	$result['code'] = 200;
-	$result['data'] = $return_payload;
-	return rest_ensure_response( $result );
-}
-/**
- * Post matters login data to WordPress database.
- *
- * @param WP_REST_Request $request Full data about the request.
- */
-function likecoin_login_matters( $request ) {
-	$params               = $request->get_json_params();
-	$matters_id           = $params['mattersId'];
-	$matters_password     = $params['mattersPassword'];
-	$api                  = LikeCoin_Matters_API::get_instance();
-	$results              = $api->login( $matters_id, $matters_password );
-	$matters_access_token = isset( $results['data']['userLogin']['token'] ) ? $results['data']['userLogin']['token'] : null;
-	$user_info_results    = array();
-	if ( isset( $matters_access_token ) ) {
-		$user_info_results             = $api->query_user_info( $matters_access_token );
-		$matters_info                  = array();
-		$matters_info['matters_token'] = $matters_access_token;
-		$matters_info['matters_id']    = $user_info_results['userName'];
-		likecoin_save_site_matters_login_data( $matters_info );
-		return rest_ensure_response( array_merge( $results['data'], array( 'viewer' => $user_info_results ) ) );
-	} else {
-		return rest_ensure_response( $results );
-	}
-}
-/**
- * Log out from Matters
- *
- * @param WP_REST_Request $request Full data about the request.
- */
-function likecoin_logout_matters( $request ) {
-	likecoin_logout_matters_session();
-	$result['code'] = 200;
-	return rest_ensure_response( $result );
-}
-/**
- * Post matters login data to WordPress database.
- *
- * @param array | $matters_info valid matters login info.
- */
-function likecoin_save_site_matters_login_data( $matters_info ) {
-	$publish_options                                      = get_option( LC_PUBLISH_OPTION_NAME );
-	$publish_options['site_matters_user']['matters_id']   = $matters_info['matters_id'];
-	$publish_options['site_matters_user']['access_token'] = $matters_info['matters_token'];
 	update_option( LC_PUBLISH_OPTION_NAME, $publish_options );
 	$return_payload = likecoin_get_publish_option_for_restful();
 	$result['code'] = 200;
@@ -339,18 +278,11 @@ function likecoin_rest_prepare_post_iscn_register_data( $request ) {
 	if ( ! isset( $post ) ) {
 		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
 	}
-	$files          = likecoin_format_post_to_json_data( $post );
-	$response       = array(
+	$files                         = likecoin_format_post_to_json_data( $post );
+	$response                      = array(
 		'files' => $files,
 	);
-	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
-	if ( isset( $publish_params['ipfs_hash'] ) ) {
-		$response['mattersIPFSHash']             = $publish_params['ipfs_hash'];
-		$response['mattersId']                   = $publish_params['matters_id'];
-		$response['mattersPublishedArticleHash'] = $publish_params['article_hash'];
-		$response['mattersArticleId']            = $publish_params['article_id'];
-		$response['mattersArticleSlug']          = $publish_params['article_slug'];
-	}
+	$publish_params                = likecoin_get_meta_box_publish_params( $post, true );
 	$iscn_related_post_meta        = likecoin_get_post_iscn_meta( $post );
 	$response['title']             = $iscn_related_post_meta['title'];
 	$response['author']            = $iscn_related_post_meta['author'];
@@ -445,14 +377,6 @@ function likecoin_get_iscn_full_info( $request ) {
 	if ( is_array( $arweave_info ) ) {
 		$iscn_full_info['arweaveId']       = $arweave_info['arweave_id'];
 		$iscn_full_info['arweaveIPFSHash'] = $arweave_info['ipfs_hash'];
-	}
-	$publish_params = likecoin_get_meta_box_publish_params( $post, true );
-	if ( is_array( $publish_params ) ) {
-		$iscn_full_info['mattersIPFSHash']             = $publish_params['ipfs_hash'];
-		$iscn_full_info['mattersArticleId']            = $publish_params['article_id'];
-		$iscn_full_info['mattersPublishedArticleHash'] = $publish_params['article_hash'];
-		$iscn_full_info['mattersId']                   = $publish_params['matters_id'];
-		$iscn_full_info['mattersArticleSlug']          = $publish_params['article_slug'];
 	}
 	$iscn_related_post_meta              = likecoin_get_post_iscn_meta( $post );
 	$iscn_full_info['title']             = $iscn_related_post_meta['title'];

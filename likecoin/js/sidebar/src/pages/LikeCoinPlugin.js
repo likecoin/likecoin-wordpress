@@ -25,14 +25,8 @@ function LikeCoinPlugin() {
     DBArticleTags,
     DBISCNId,
     DBArweaveId,
-    DBMattersIPFSHash,
-    DBMattersPublishedArticleHash,
     DBISCNVersion,
     DBISCNTimestamp,
-    DBMattersDraftId,
-    DBMattersArticleId,
-    DBMattersId,
-    DBMattersArticleSlug,
     DBLicense,
   } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectISCNInfo());
   const {
@@ -52,16 +46,8 @@ function LikeCoinPlugin() {
   const [ISCNId, setISCNId] = useState(DBISCNId);
   const [NFTClassId, setNFTClassId] = useState(DBNFTClassId);
   const [arweaveId, setArweaveId] = useState(DBArweaveId);
-  const [mattersIPFSHash, setMattersIPFSHash] = useState(DBMattersIPFSHash);
-  const [mattersPublishedArticleHash, setMattersPublishedArticleHash] = useState(
-    DBMattersPublishedArticleHash,
-  );
   const [ISCNVersion, setISCNVersion] = useState(DBISCNVersion);
   const [ISCNTimestamp, setISCNTimestamp] = useState(DBISCNTimestamp);
-  const [mattersDraftId, setMattersDraftId] = useState(DBMattersDraftId);
-  const [mattersArticleId, setMattersArticleId] = useState(DBMattersArticleId);
-  const [mattersId, setMattersId] = useState(DBMattersId);
-  const [mattersArticleSlug, setMattersArticleSlug] = useState(DBMattersArticleSlug);
   const [fingerprints, setFingerprints] = useState([]);
   const [shouldStartProcess, setShouldStartProcess] = useState(false);
   const [shouldSendISCNRegisterData, setShouldSendISCNRegisterData] = useState(false);
@@ -207,11 +193,6 @@ function LikeCoinPlugin() {
     setNFTClassId(DBNFTClassId);
     setISCNVersion(DBISCNVersion);
     setISCNTimestamp(DBISCNTimestamp);
-    setMattersDraftId(DBMattersDraftId);
-    setMattersArticleId(DBMattersArticleId);
-    setMattersId(DBMattersId);
-    setMattersArticleSlug(DBMattersArticleSlug);
-    setMattersPublishedArticleHash(DBMattersPublishedArticleHash);
     setArweaveId(DBArweaveId);
   }, [
     DBLIKEPayAmount,
@@ -226,24 +207,8 @@ function LikeCoinPlugin() {
     DBISCNVersion,
     DBISCNTimestamp,
     DBNFTClassId,
-    DBMattersDraftId,
-    DBMattersArticleId,
-    DBMattersId,
-    DBMattersArticleSlug,
-    DBMattersPublishedArticleHash,
     DBArweaveId,
   ]);
-  useEffect(() => {
-    setMattersIPFSHash(DBMattersIPFSHash);
-    const fingerprintsArr = [];
-    if (DBMattersIPFSHash && DBMattersIPFSHash !== '-') {
-      const mattersIPFSHashFingerprint = `ipfs://${DBMattersIPFSHash}`;
-      fingerprintsArr.push(mattersIPFSHashFingerprint);
-    }
-    if (fingerprintsArr.length > 1) {
-      setFingerprints(fingerprintsArr);
-    }
-  }, [DBMattersIPFSHash]);
   useEffect(() => {
     if (shouldStartProcess) {
       openISCNWidget();
@@ -301,12 +266,6 @@ function LikeCoinPlugin() {
         ISCNVersion={ISCNVersion}
         ISCNTimestamp={ISCNTimestamp}
         NFTClassId={NFTClassId}
-        mattersDraftId={mattersDraftId}
-        mattersArticleId={mattersArticleId}
-        mattersId={mattersId}
-        mattersArticleSlug={mattersArticleSlug}
-        mattersIPFSHash={mattersIPFSHash}
-        mattersPublishedArticleHash={mattersPublishedArticleHash}
         title={title}
         authorDescription={authorDescription}
         description={description}
@@ -322,12 +281,6 @@ function LikeCoinPlugin() {
         ISCNVersion={ISCNVersion}
         ISCNTimestamp={ISCNTimestamp}
         NFTClassId={NFTClassId}
-        mattersDraftId={mattersDraftId}
-        mattersArticleId={mattersArticleId}
-        mattersId={mattersId}
-        mattersArticleSlug={mattersArticleSlug}
-        mattersIPFSHash={mattersIPFSHash}
-        mattersPublishedArticleHash={mattersPublishedArticleHash}
       />
       <LikeCoinPluginPostPublishPanel handleRegisterISCN={handleRegisterISCN} />
     </>

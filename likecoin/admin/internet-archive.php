@@ -25,8 +25,8 @@
 /**
  * Send a post URL to IA for archive
  *
- * @param int|     $post_id Post id to be saved to matters.
- * @param WP_Post| $post Post object to be saved to matters.
+ * @param int|     $post_id Post id to be saved to ia.
+ * @param WP_Post| $post Post object to be saved to ia.
  */
 function likecoin_post_to_internet_archive( $post_id, $post ) {
 

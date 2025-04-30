@@ -25,7 +25,6 @@
 /**
  * Require files
  */
-require_once dirname( __FILE__ ) . '/matters.php';
 require_once dirname( __FILE__ ) . '/view/restful.php';
 
 /**
@@ -120,28 +119,6 @@ function likecoin_init_restful_service() {
 					'callback'            => 'likecoin_get_user_data',
 					'permission_callback' => function () {
 						return current_user_can( 'edit_posts' );
-					},
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
-				'/option/publish/settings/matters',
-				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_login_matters',
-					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
-					},
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
-				'/option/publish/settings/matters',
-				array(
-					'methods'             => 'DELETE',
-					'callback'            => 'likecoin_logout_matters',
-					'permission_callback' => function () {
-						return current_user_can( 'manage_options' );
 					},
 				)
 			);
@@ -298,5 +275,4 @@ function likecoin_init_restful_service() {
  */
 function likecoin_hook_restful_hook() {
 	likecoin_init_restful_service();
-	likecoin_add_matters_restful_hook();
 }

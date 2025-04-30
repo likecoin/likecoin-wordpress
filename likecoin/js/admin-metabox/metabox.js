@@ -74,13 +74,11 @@ function updateFieldStatusText(statusField, text) {
 
 async function onRefreshPublishStatus(e) {
   if (e) e.preventDefault();
-  const mattersTextField = document.querySelector('#lcMattersStatus');
   const arweaveTextField = document.querySelector('#lcArweaveStatus');
   const ipfsTextField = document.querySelector('#lcIPFSStatus');
   const {
     iscnHash,
     iscnId,
-    isMattersPublished,
     lastModifiedTime,
     iscnTimestamp = 0,
   } = lcPostInfo;
@@ -92,10 +90,8 @@ async function onRefreshPublishStatus(e) {
       xhr.setRequestHeader('X-WP-Nonce', likecoinApiSettings.nonce);
     },
   });
-  const { matters, ipfs, arweave } = res;
+  const { ipfs, arweave } = res;
   const isWordpressPublished = res.wordpress_published;
-  lcPostInfo.isMattersPublished = res.matters.status;
-  lcPostInfo.mattersIPFSHash = res.matters.ipfs_hash;
   if (iscnHash && iscnId) { // state done
     const iscnIdString = encodeURIComponent(iscnId);
     updateMainTitleField('iscn-status-green', lcStringInfo.mainTitleDone);
@@ -168,31 +164,6 @@ async function onRefreshPublishStatus(e) {
       href: url,
     });
     updateFieldStatusElement(ipfsTextField, IPFSLink);
-  }
-  if (matters.url) {
-    const { url } = matters;
-    const articleId = matters.article_id;
-    let mattersLink;
-    if (isMattersPublished === 'Published') {
-      mattersLink = createElementWithAttrbutes('a', {
-        text: articleId,
-        rel: 'noopener',
-        target: '_blank',
-        href: url,
-      });
-    } else if (articleId.length !== 0) {
-      mattersLink = createElementWithAttrbutes('a', {
-        text: draft,
-        rel: 'noopener',
-        target: '_blank',
-        href: url,
-      });
-    } else {
-      mattersLink = createElementWithAttrbutes('p', {
-        text: '-',
-      });
-    }
-    updateFieldStatusElement(mattersTextField, mattersLink);
   }
 }
 
@@ -327,13 +298,8 @@ async function onISCNWidgetReady() {
       author,
       authorDescription,
       description,
-      mattersIPFSHash,
     } = res;
     const fingerprints = [];
-    if (mattersIPFSHash) {
-      const mattersIPFSHashFingerprint = `ipfs://${mattersIPFSHash}`;
-      fingerprints.push(mattersIPFSHashFingerprint);
-    }
     ISCNWindow.postMessage(JSON.stringify({
       action: 'SUBMIT_ISCN_DATA',
       data: {
