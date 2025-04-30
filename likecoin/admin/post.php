@@ -238,14 +238,32 @@ function likecoin_format_post_to_json_data( $post ) {
 		$image_data[] = $feature_img_data;
 	}
 	foreach ( $image_data as $image ) {
-		$url       = $image['url'];
-		$key       = $image['key'];
+		$url = $image['url'];
+		$key = $image['key'];
+
+		if ( ! likecoin_is_valid_image_path( $url ) ) {
+			continue;
+		}
+
+		global $wp_filesystem;
+		if ( ! $wp_filesystem ) {
+			require_once ABSPATH . '/wp-admin/includes/file.php';
+			WP_Filesystem();
+		}
+
+		$img_body = $wp_filesystem->get_contents( $url );
+		if ( false === $img_body ) {
+			continue;
+		}
+
+		// Verify if the file is an image.
 		$file_info = new finfo( FILEINFO_MIME_TYPE );
-		// phpcs:disable WordPress.WP.AlternativeFunctions
-		$img_body = file_get_contents( $url );
-		// phpcs:enable WordPress.WP.AlternativeFunctions
 		$mime_type = $file_info->buffer( $img_body );
-		$files[]   = array(
+		if ( strpos( $mime_type, 'image/' ) !== 0 ) {
+			continue;
+		}
+
+		$files[] = array(
 			'filename' => $key,
 			'mimeType' => $mime_type,
 			'data'     => base64_encode( $img_body ),
@@ -253,6 +271,38 @@ function likecoin_format_post_to_json_data( $post ) {
 	}
 	// phpcs:enable WordPress.PHP.DiscouragedPHPFunctions.obfuscation_base64_encode
 	return $files;
+}
+
+/**
+ * Verify image path is valid and under wp_upload_dir
+ *
+ * @param string $file_path file path to check.
+ * @return bool True if file path is valid, false otherwise.
+ */
+function likecoin_is_valid_image_path( $file_path ) {
+	if ( ! file_exists( $file_path ) ) {
+		return false;
+	}
+
+	if ( ! is_file( $file_path ) ) {
+		return false;
+	}
+
+	$valid_extensions = array( 'jpg', 'jpeg', 'png', 'gif', 'webp', 'svg' );
+	$file_extension   = strtolower( pathinfo( $file_path, PATHINFO_EXTENSION ) );
+	if ( ! in_array( $file_extension, $valid_extensions, true ) ) {
+		return false;
+	}
+
+	$upload_dir      = wp_upload_dir();
+	$upload_base_dir = wp_normalize_path( $upload_dir['basedir'] );
+	$file_path       = wp_normalize_path( $file_path );
+
+	if ( strpos( $file_path, $upload_base_dir ) !== 0 ) {
+		return false;
+	}
+
+	return true;
 }
 
 /**
@@ -299,10 +349,14 @@ function likecoin_get_post_content_with_relative_image_url( $post ) {
 			$image_key = $key + 1; // 0 is for featured image.
 			$image->setAttribute( 'src', './' . $image_key );
 			$image->removeAttribute( 'srcset' );
-			$relative_path = ltrim( $parsed['path'], '/' );
-			$image_path    = ABSPATH . $relative_path;
+			$image_path = $url;
 			if ( $attachment_id > 0 ) {
 				$image_path = get_attached_file( $attachment_id );
+			} else {
+				$relative_path = ltrim( $parsed['path'], '/' );
+				// Remove ./ and ../ in path.
+				$relative_path = preg_replace( '/(?:\.\.\/|\.\/)+/', '', $relative_path );
+				$image_path    = ABSPATH . $relative_path;
 			}
 			$image_urls[] = array(
 				'key' => $image_key,
