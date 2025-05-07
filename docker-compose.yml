@@ -4,7 +4,7 @@ services:
   wp:
     depends_on:
     - mysql
-    image: wordpress:php7.2-fpm-alpine
+    image: wordpress:6.8-php8.4-fpm-alpine
     environment:
       WORDPRESS_DB_USER: wordpress
       WORDPRESS_DB_PASSWORD: password
@@ -16,7 +16,7 @@ services:
       - ./likecoin:/var/www/html/wp-content/plugins/likecoin
 
   mysql:
-    image: mariadb:10.7
+    image: mariadb:10.11
     ports:
       - "3306:3306"
     volumes:

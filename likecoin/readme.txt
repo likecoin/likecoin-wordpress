@@ -4,9 +4,9 @@ Contributors: likecoin,williamchong007,ckxpress
 Tags: web3, NFT, depub, LikeCoin, blockchain, publishing, decentralized
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
-Tested up to: 6.4
+Tested up to: 6.8
 Requires PHP: 5.4
-Stable tag: 3.2.0
+Stable tag: 3.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
