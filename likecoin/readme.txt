@@ -151,6 +151,11 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 
 == Changelog ==
 
+= 3.3.0 =
+
+- Remove matters integration. We will develop new features with matters after LikeCoin is migrated to EVM chain.
+- Fix a security vulnerability that might allow contributors to access arbitrary file on host. Now only images under the WordPress upload directory will be processed and uploaded to Arweave when the post is published on decentralized storage.
+
 = 3.2.0 =
 
 - Show widget from [likecoin] shortcode even if widget display is disabled
