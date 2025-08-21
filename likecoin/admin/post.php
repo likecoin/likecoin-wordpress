@@ -25,7 +25,7 @@
 /**
  * Require files
  */
-require_once dirname( __FILE__ ) . '/../public/likecoin-button.php';
+require_once __DIR__ . '/../public/likecoin-button.php';
 
 /**
  * Get default style defined in matters library.
@@ -171,7 +171,7 @@ function likecoin_get_default_post_style() {
  */
 function likecoin_get_post_tags( $post, $limit = 0 ) {
 	$post_id   = $post->ID;
-	$func      = function( $terms ) {
+	$func      = function ( $terms ) {
 		return htmlspecialchars_decode( $terms->name );
 	};
 	$post_tags = get_the_tags( $post_id );

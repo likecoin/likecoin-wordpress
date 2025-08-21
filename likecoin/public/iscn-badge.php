@@ -23,7 +23,7 @@
 /**
  * Require shared functions
  */
-require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
+require_once __DIR__ . '/../includes/likecoin.php';
 
 /**
  * Add iscn badge if hashed transaction id exist;

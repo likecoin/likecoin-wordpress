@@ -23,7 +23,7 @@
 /**
  * Require files
  */
-require_once dirname( __FILE__ ) . '/post.php';
+require_once __DIR__ . '/post.php';
 
 /**
  * Get ISCN register related post metadata.

@@ -25,13 +25,13 @@
 /**
  * Require admin files
  */
-require_once dirname( __FILE__ ) . '/ajax.php';
-require_once dirname( __FILE__ ) . '/editor.php';
-require_once dirname( __FILE__ ) . '/metabox.php';
-require_once dirname( __FILE__ ) . '/plugin-action.php';
-require_once dirname( __FILE__ ) . '/post.php';
-require_once dirname( __FILE__ ) . '/error.php';
-require_once dirname( __FILE__ ) . '/view/view.php';
+require_once __DIR__ . '/ajax.php';
+require_once __DIR__ . '/editor.php';
+require_once __DIR__ . '/metabox.php';
+require_once __DIR__ . '/plugin-action.php';
+require_once __DIR__ . '/post.php';
+require_once __DIR__ . '/error.php';
+require_once __DIR__ . '/view/view.php';
 
 /**
  * Adds privacy policy to wp global privacy policy

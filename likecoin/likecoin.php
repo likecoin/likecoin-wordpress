@@ -43,11 +43,11 @@ define( 'LC_PLUGIN_SLUG', 'likecoin' );
 define( 'LC_PLUGIN_NAME', 'Web3Press By LikeCoin' );
 define( 'LC_PLUGIN_VERSION', '3.3.0' );
 
-require_once dirname( __FILE__ ) . '/includes/constant/options.php';
-require_once dirname( __FILE__ ) . '/public/likecoin.php';
-require_once dirname( __FILE__ ) . '/blocks/blocks.php';
-require_once dirname( __FILE__ ) . '/admin/restful.php';
-require_once dirname( __FILE__ ) . '/admin/internet-archive.php';
+require_once __DIR__ . '/includes/constant/options.php';
+require_once __DIR__ . '/public/likecoin.php';
+require_once __DIR__ . '/blocks/blocks.php';
+require_once __DIR__ . '/admin/restful.php';
+require_once __DIR__ . '/admin/internet-archive.php';
 
 /**
  * Handle plugin init and upgrade
@@ -72,7 +72,6 @@ function likecoin_handle_init_and_upgrade() {
 	if ( version_compare( $version, LC_PLUGIN_VERSION ) < 0 ) {
 		update_option( 'likecoin_plugin_version', LC_PLUGIN_VERSION );
 	}
-
 }
 
 
@@ -114,7 +113,7 @@ function likecoin_handle_uninstall() {
  * Loads localization .mo files
  */
 function likecoin_load_plugin_textdomain() {
-	load_plugin_textdomain( LC_PLUGIN_SLUG, false, basename( dirname( __FILE__ ) ) . '/languages/' );
+	load_plugin_textdomain( LC_PLUGIN_SLUG, false, basename( __DIR__ ) . '/languages/' );
 }
 
 /**
@@ -122,7 +121,7 @@ function likecoin_load_plugin_textdomain() {
  */
 function likecoin_add_all_hooks() {
 	if ( is_admin() ) {
-		require_once dirname( __FILE__ ) . '/admin/likecoin.php';
+		require_once __DIR__ . '/admin/likecoin.php';
 		likecoin_add_admin_hooks( plugin_basename( __FILE__ ) );
 	}
 	likecoin_add_internet_archive_hook();

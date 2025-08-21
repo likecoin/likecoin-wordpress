@@ -23,7 +23,7 @@
 /**
  * Require shared functions
  */
-require_once dirname( __FILE__ ) . '/../includes/likecoin.php';
+require_once __DIR__ . '/../includes/likecoin.php';
 
 /**
  * Get Liker ID and wallet from post
@@ -125,7 +125,7 @@ function likecoin_add_likebutton( $likecoin_id = '', $is_shortcode = false ) {
 					break;
 			}
 		}
-	};
+	}
 	$widget_is_enabled = ! empty( $widget_position ) && 'none' !== $widget_position;
 	if ( ! $widget_is_enabled && ! $is_shortcode ) {
 		return '';
@@ -171,11 +171,9 @@ function likecoin_add_likebutton( $likecoin_id = '', $is_shortcode = false ) {
 /**
  * Handle [likecoin] shortcode
  *
- * @param array|  $atts [$tag] attributes.
- * @param string| $content Post content.
- * @param string| $tag The name of the [$tag] (i.e. the name of the shortcode).
+ * @param array| $atts [$tag] attributes.
  */
-function likecoin_likecoin_shortcode( $atts = array(), $content = null, $tag = '' ) {
+function likecoin_likecoin_shortcode( $atts = array() ) {
 	$filtered = shortcode_atts(
 		array(
 			'liker-id' => '',

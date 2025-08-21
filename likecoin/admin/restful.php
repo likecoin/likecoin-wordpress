@@ -25,7 +25,7 @@
 /**
  * Require files
  */
-require_once dirname( __FILE__ ) . '/view/restful.php';
+require_once __DIR__ . '/view/restful.php';
 
 /**
  * Check post ID is numeric
