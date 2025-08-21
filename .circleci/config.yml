@@ -3,7 +3,7 @@ jobs:
   php_lint:
     working_directory: ~/likecoin-wordpress
     docker:
-      - image: composer:2.0.8
+      - image: composer:2.8.9
     steps:
       - checkout
       - restore_cache:
@@ -11,13 +11,6 @@ jobs:
       - run:
           name: Install phpcs
           command: composer install
-      - run:
-          name: Install wp php standard
-          command: |
-            if [ ! -d ./wpcs ]; then
-              git clone -b 2.3.0 https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards.git ./wpcs
-            fi
-            ./vendor/bin/phpcs --config-set installed_paths `pwd`/wpcs
       - run:
           name: Basic Lint Test
           command: ./vendor/bin/phpcs likecoin --standard=WordPress-Extra --extensions=php --ignore=*/assets/js/*,*/assets/blocks/*
