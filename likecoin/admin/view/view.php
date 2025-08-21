@@ -25,7 +25,7 @@
 /**
  * Inclue required files.
  */
-require_once dirname( __FILE__ ) . '/../../includes/constant/options.php';
+require_once __DIR__ . '/../../includes/constant/options.php';
 
 
 /**

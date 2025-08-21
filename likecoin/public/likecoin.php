@@ -23,9 +23,9 @@
 /**
  * Require public files
  */
-require_once dirname( __FILE__ ) . '/likecoin-button.php';
-require_once dirname( __FILE__ ) . '/web-monetization.php';
-require_once dirname( __FILE__ ) . '/iscn-badge.php';
+require_once __DIR__ . '/likecoin-button.php';
+require_once __DIR__ . '/web-monetization.php';
+require_once __DIR__ . '/iscn-badge.php';
 
 /**
  * Add Likecoin Content Filter

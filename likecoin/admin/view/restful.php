@@ -25,10 +25,10 @@
 /**
  * Require Matters files
  */
-require_once dirname( __FILE__ ) . '/../metabox.php';
-require_once dirname( __FILE__ ) . '/../post.php';
-require_once dirname( __FILE__ ) . '/../iscn.php';
-require_once dirname( __FILE__ ) . '/view.php';
+require_once __DIR__ . '/../metabox.php';
+require_once __DIR__ . '/../post.php';
+require_once __DIR__ . '/../iscn.php';
+require_once __DIR__ . '/view.php';
 
 /**
  * Remove access token from publisb option
@@ -74,10 +74,8 @@ function likecoin_post_main_plugin_options( $request ) {
 }
 /**
  * Get options data from WordPress database.
- *
- * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_get_main_plugin_options( $request ) {
+function likecoin_get_main_plugin_options() {
 	$plugin_options = get_option( LC_BUTTON_OPTION_NAME );
 	if ( ! $plugin_options ) {
 		return;
@@ -117,10 +115,8 @@ function likecoin_post_user_data( $request ) {
 }
 /**
  * Get user data from WordPress database.
- *
- * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_get_user_data( $request ) {
+function likecoin_get_user_data() {
 	$user          = wp_get_current_user();
 	$user_id       = $user->ID;
 	$likecoin_user = get_user_meta( $user_id, 'lc_likecoin_user', true );
@@ -161,10 +157,8 @@ function likecoin_post_site_publish_options_data( $request ) {
 }
 /**
  * Get publish option data from WordPress database.
- *
- * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_get_site_publish_data( $request ) {
+function likecoin_get_site_publish_data() {
 	$return_payload = likecoin_get_publish_option_for_restful();
 	// incl. login and publish data.
 	if ( ! $return_payload ) {
@@ -191,10 +185,8 @@ function likecoin_post_web_monetization_data( $request ) {
 }
 /**
  * Get web monetization data from WordPress database.
- *
- * @param WP_REST_Request $request Full data about the request.
  */
-function likecoin_get_web_monetization_data( $request ) {
+function likecoin_get_web_monetization_data() {
 	$monetization_options = get_option( LC_MONETIZATION_OPTION_NAME );
 	if ( ! $monetization_options ) {
 		$monetization_options = array();
@@ -202,7 +194,6 @@ function likecoin_get_web_monetization_data( $request ) {
 	$result['code'] = 200;
 	$result['data'] = $monetization_options;
 	return rest_ensure_response( $result );
-
 }
 
 
@@ -387,4 +378,3 @@ function likecoin_get_iscn_full_info( $request ) {
 	$iscn_full_info['tags']              = $iscn_related_post_meta['tags'];
 	return new WP_REST_Response( $iscn_full_info, 200 );
 }
-

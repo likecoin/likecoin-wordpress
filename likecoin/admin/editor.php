@@ -22,7 +22,7 @@
 
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
-require_once dirname( __FILE__ ) . '/metabox.php';
+require_once __DIR__ . '/metabox.php';
 
 /**
  * Load custom frontend js for Gutenberg editor
@@ -94,9 +94,8 @@ function likecoin_add_posts_columns( $columns ) {
  * Populate custom posts columnsParameters
  *
  * @param string| $column The name of the column to display..
- * @param int|    $post_id The current post ID.
  */
-function likecoin_populate_posts_columns( $column, $post_id ) {
+function likecoin_populate_posts_columns( $column ) {
 	global $post;
 	switch ( $column ) {
 		case 'iscn':

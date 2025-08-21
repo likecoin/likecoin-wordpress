@@ -169,10 +169,9 @@ function likecoin_get_meta_box_button_params( $post ) {
 /**
  * Get publish related params for metabox
  *
- * @param object|  $post WordPress post object.
- * @param boolean| $force Force update status.
+ * @param object| $post WordPress post object.
  */
-function likecoin_get_meta_box_publish_params( $post, $force = false ) {
+function likecoin_get_meta_box_publish_params( $post ) {
 	$option         = get_option( LC_PUBLISH_OPTION_NAME );
 	$arweave_inf    = get_post_meta( $post->ID, LC_ARWEAVE_INFO, true );
 	$post_id        = $post->ID;
