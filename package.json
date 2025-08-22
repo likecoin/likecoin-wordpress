@@ -42,7 +42,7 @@
   "devDependencies": {
     "@babel/eslint-parser": "^7.21.3",
     "@wordpress/browserslist-config": "^5.5.0",
-    "@wordpress/scripts": "^26.2.0",
+    "@wordpress/scripts": "^30.17.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-config-react-app": "^7.0.1",
     "eslint-plugin-flowtype": "^8.0.3",
