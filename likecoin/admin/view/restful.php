@@ -258,33 +258,6 @@ function likecoin_rest_refresh_publish_status( $request ) {
 }
 
 /**
- * Get post data and metadata as json
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|WP_REST_Response
- */
-function likecoin_rest_prepare_post_iscn_register_data( $request ) {
-	$post_id = $request['id'];
-	$post    = get_post( $post_id );
-	if ( ! isset( $post ) ) {
-		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
-	}
-	$files                         = likecoin_format_post_to_json_data( $post );
-	$response                      = array(
-		'files' => $files,
-	);
-	$publish_params                = likecoin_get_meta_box_publish_params( $post, true );
-	$iscn_related_post_meta        = likecoin_get_post_iscn_meta( $post );
-	$response['title']             = $iscn_related_post_meta['title'];
-	$response['author']            = $iscn_related_post_meta['author'];
-	$response['authorDescription'] = $iscn_related_post_meta['author_description'];
-	$response['description']       = $iscn_related_post_meta['description'];
-	$response['url']               = $iscn_related_post_meta['url'];
-	$response['tags']              = $iscn_related_post_meta['tags'];
-	return new WP_REST_Response( $response, 200 );
-}
-
-/**
  * Add likecoin arweave Id and IPFS data saving endpoint.
  *
  * @param WP_REST_Request $request Full data about the request.
