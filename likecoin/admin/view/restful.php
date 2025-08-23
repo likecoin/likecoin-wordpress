@@ -237,26 +237,6 @@ function likecoin_rest_update_button_settings( $request ) {
 	return new WP_REST_Response( $params, 200 );
 }
 
-
-
-/**
- * Add refresh publish status endpoint
- *
- * @param WP_REST_Request $request Full data about the request.
- * @return WP_Error|WP_REST_Response
- */
-function likecoin_rest_refresh_publish_status( $request ) {
-	$post_id = $request['id'];
-	$post    = get_post( $post_id );
-	if ( ! isset( $post ) ) {
-		return new WP_Error( 'post_not_found', __( 'Post was not found', LC_PLUGIN_SLUG ), array( 'status' => 404 ) );
-	}
-	$publish_params              = likecoin_get_meta_box_publish_params( $post, true );
-	$data                        = likecoin_parse_publish_status( $publish_params );
-	$data['wordpress_published'] = get_post_status( $post_id );
-	return new WP_REST_Response( $data, 200 );
-}
-
 /**
  * Add likecoin arweave Id and IPFS data saving endpoint.
  *
