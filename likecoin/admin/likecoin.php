@@ -66,16 +66,6 @@ function likecoin_admin_init() {
 }
 
 /**
- * Add likecoin metabox for legacy editor
- */
-function likecoin_add_metabox() {
-	if ( likecoin_is_block_editor() ) {
-		return;
-	}
-	add_meta_box( 'like-coin', __( 'Web3Press', LC_PLUGIN_SLUG ), 'likecoin_display_meta_box' );
-}
-
-/**
  * Check if it's block editor or not
  */
 function likecoin_is_block_editor() {
@@ -109,5 +99,4 @@ function likecoin_add_admin_hooks( $basename ) {
 	add_action( 'admin_notices', 'likecoin_show_admin_welcome' );
 	add_action( 'manage_posts_columns', 'likecoin_add_posts_columns', 10, 2 );
 	add_action( 'manage_posts_custom_column', 'likecoin_populate_posts_columns', 10, 2 );
-	add_action( 'add_meta_boxes', 'likecoin_add_metabox' );
 }

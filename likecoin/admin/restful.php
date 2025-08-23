@@ -196,20 +196,6 @@ function likecoin_init_restful_service() {
 			);
 			register_rest_route(
 				'likecoin/v1',
-				'/posts/(?P<id>\d+)/iscn/refresh',
-				array(
-					'methods'             => 'POST',
-					'callback'            => 'likecoin_rest_refresh_publish_status',
-					'args'                => array(
-						'id' => array(
-							'validate_callback' => 'likecoin_is_numeric',
-						),
-					),
-					'permission_callback' => 'likecoin_get_current_user_edit_post_permission',
-				)
-			);
-			register_rest_route(
-				'likecoin/v1',
 				'/posts/(?P<id>\d+)/iscn/arweave',
 				array(
 					'methods'             => 'POST',
