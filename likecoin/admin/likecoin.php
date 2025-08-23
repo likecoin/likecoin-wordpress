@@ -59,26 +59,6 @@ function likecoin_add_privacy_policy_content() {
 }
 
 /**
- * Enqueue deactivation script in plugins screen
- */
-function likecoin_enqueue_plugins_screen_scripts() {
-	$screen = get_current_screen();
-	if ( 'plugins' === $screen->id ) {
-		wp_register_style( 'lc_jquery_ui', LC_URI . 'assets/css/vendor/jquery-ui-1.13.2.css', false, '1.13.2' );
-		wp_enqueue_style( 'lc_jquery_ui' );
-		$asset_file = include plugin_dir_path( __FILE__ ) . '/../assets/js/admin-plugins/deactivate.asset.php';
-		wp_enqueue_script(
-			'lc_js_plugins',
-			LC_URI . 'assets/js/admin-plugins/deactivate.js',
-			array( 'jquery-ui-core', 'jquery-ui-dialog', 'wp-i18n' ),
-			$asset_file['version'],
-			true
-		);
-
-	}
-}
-
-/**
  * Run all functions for admin_init hook
  */
 function likecoin_admin_init() {
@@ -117,7 +97,6 @@ function likecoin_is_block_editor() {
  * @param string| $basename plugin base path.
  */
 function likecoin_add_admin_hooks( $basename ) {
-	add_action( 'current_screen', 'likecoin_enqueue_plugins_screen_scripts' );
 	add_action( 'admin_menu', 'likecoin_display_admin_pages' );
 	add_action( 'admin_init', 'likecoin_admin_init' );
 	add_filter( 'plugin_action_links_' . $basename, 'likecoin_modify_plugin_action_links' );
