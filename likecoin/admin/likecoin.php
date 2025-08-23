@@ -97,6 +97,4 @@ function likecoin_add_admin_hooks( $basename ) {
 	add_action( 'enqueue_block_editor_assets', 'likecoin_load_editor_scripts' );
 	add_action( 'admin_notices', 'likecoin_show_admin_errors' );
 	add_action( 'admin_notices', 'likecoin_show_admin_welcome' );
-	add_action( 'manage_posts_columns', 'likecoin_add_posts_columns', 10, 2 );
-	add_action( 'manage_posts_custom_column', 'likecoin_populate_posts_columns', 10, 2 );
 }
