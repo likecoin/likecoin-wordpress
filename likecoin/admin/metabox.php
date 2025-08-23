@@ -23,55 +23,6 @@
 // phpcs:disable WordPress.WP.I18n.NonSingularStringLiteralDomain
 
 /**
- * Parse the publish params into array of status
- *
- * @param object| $publish_params Params for displaying publish related settings.
- * @param object| $post WordPress post object.
- */
-function likecoin_parse_iscn_status( $publish_params, $post ) {
-	$post_id             = $post->ID;
-	$result              = array();
-	$iscn_testnet_info   = get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	$iscn_mainnet_info   = get_post_meta( $post_id, LC_ISCN_INFO, true );
-	$post_status         = get_post_status( $post );
-	$iscn_hash           = $publish_params['iscn_hash'];
-	$iscn_id             = $publish_params['iscn_id'];
-	$iscn_view_page_url  = null;
-	$iscn_badge_endpoint = null;
-	if ( $iscn_mainnet_info ) {
-		$iscn_view_page_url  = 'https://' . LC_LIKE_CO_HOST . '/in/tx/iscn/';
-		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/';
-		$iscn_card_endpoint  = 'https://app.' . LC_LIKE_CO_HOST . '/view/';
-	} elseif ( $iscn_testnet_info ) {
-		$iscn_view_page_url  = 'https://like.co/in/tx/iscn/dev/';
-		$iscn_badge_endpoint = 'https://static.like.co/badge/iscn/dev/';
-	}
-	$result['ipfs_status']      = 'Pending';
-	$result['is_dev_published'] = false;
-	if ( ! empty( $iscn_id ) ) {
-		if ( $iscn_mainnet_info ) {
-			$result['iscn_id'] = $iscn_id;
-			$result['status']  = __( 'Published', LC_PLUGIN_SLUG );
-			$result['url']     = $iscn_card_endpoint . rawurlencode( $iscn_id );
-		} else {
-			$result['is_dev_published'] = true;
-			$result['status']           = __( 'Published (testnet)', LC_PLUGIN_SLUG );
-			$result['url']              = $iscn_view_page_url . $iscn_hash;
-		}
-		$result['ipfs_status'] = 'Published';
-		$result['hash']        = $iscn_hash;
-	} elseif ( 'publish' === $post_status ) {
-		$result['status']       = __( 'Click to Publish', LC_PLUGIN_SLUG );
-		$result['ipfs_status']  = 'Published';
-		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit#likecoin_submit_iscn';
-	} else {
-		$result['status']       = '-';
-		$result['redirect_url'] = '/wp-admin/post.php?post=' . $post_id . '&action=edit#likecoin_submit_iscn';
-	}
-	return $result;
-}
-
-/**
  * Get button related params for metabox
  *
  * @param object| $post WordPress post object.
@@ -103,25 +54,4 @@ function likecoin_get_meta_box_button_params( $post ) {
 		'show_no_id_error'  => $show_no_id_error,
 	);
 	return $button_params;
-}
-
-/**
- * Get publish related params for metabox
- *
- * @param object| $post WordPress post object.
- */
-function likecoin_get_meta_box_publish_params( $post ) {
-	$option         = get_option( LC_PUBLISH_OPTION_NAME );
-	$arweave_inf    = get_post_meta( $post->ID, LC_ARWEAVE_INFO, true );
-	$post_id        = $post->ID;
-	$iscn_main_info = get_post_meta( $post_id, LC_ISCN_INFO, true );
-	$iscn_info      = $iscn_main_info ? $iscn_main_info : get_post_meta( $post_id, LC_ISCN_DEV_INFO, true );
-	$publish_params = array(
-		'iscn_hash'         => isset( $iscn_info['iscn_hash'] ) ? $iscn_info['iscn_hash'] : '',
-		'iscn_id'           => isset( $iscn_info['iscn_id'] ) ? $iscn_info['iscn_id'] : '',
-		'iscn_timestamp'    => isset( $iscn_info['last_saved_time'] ) ? $iscn_info['last_saved_time'] : '',
-		'arweave_id'        => isset( $arweave_info['arweave_id'] ) ? $arweave_info['arweave_id'] : '',
-		'arweave_ipfs_hash' => isset( $arweave_info['ipfs_hash'] ) ? $arweave_info['ipfs_hash'] : '',
-	);
-	return $publish_params;
 }
