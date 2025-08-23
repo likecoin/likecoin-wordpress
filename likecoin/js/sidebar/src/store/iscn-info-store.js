@@ -9,7 +9,6 @@ const {
 // eslint-disable-next-line import/prefer-default-export
 export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
 
-const getISCNRegisterDataEndPoint = `/likecoin/v1/posts/${postId}/iscn/arweave/upload`;
 const saveArweaveInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/arweave`;
 const getISCNInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
 const saveISCNInfoEndPoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
@@ -41,12 +40,6 @@ const actions = {
       data,
     };
   },
-  setISCNLicense(license) {
-    return {
-      type: 'SET_ISCN_LICENSE',
-      license,
-    };
-  },
   getNFTInfo(iscnId) {
     return {
       type: 'GET_NFT_INFO',
@@ -64,13 +57,6 @@ const actions = {
       type: 'SET_ERROR_MESSAGE',
       errorMsg,
     };
-  },
-  * fetchISCNRegisterData() {
-    const res = yield { type: 'GET_ISCN_REGISTER_DATA' };
-    if (!res) {
-      throw new Error('NO_ISCN_REGISTER_DATA_RETURNED');
-    }
-    return res;
   },
   * postArweaveInfoData(data) {
     const res = yield { type: 'POST_ARWEAVE_INFO_DATA', data };
@@ -117,11 +103,6 @@ const controls = {
   },
   GET_NFT_INFO(action) {
     return axios.get(`${getNFTMintInfoEndpoint}${encodeURIComponent(action.iscnId)}`);
-  },
-  GET_ISCN_REGISTER_DATA() {
-    return apiFetch({
-      path: getISCNRegisterDataEndPoint,
-    });
   },
   POST_ARWEAVE_INFO_DATA(action) {
     return apiFetch({
@@ -228,12 +209,6 @@ const reducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         DBNFTClassId: action.data.classId,
-      };
-    }
-    case 'SET_ISCN_LICENSE': {
-      return {
-        ...state,
-        DBLicense: action.license,
       };
     }
     case 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE': {

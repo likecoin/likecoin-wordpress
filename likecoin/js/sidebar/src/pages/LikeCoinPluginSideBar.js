@@ -27,7 +27,6 @@ function LikeCoinPluginSideBar(props) {
   const {
     postISCNInfoData,
     postArweaveInfoData,
-    setISCNLicense,
   } = useDispatch(ISCN_INFO_STORE_NAME);
   const iscnLicense = useSelect((select) => select(ISCN_INFO_STORE_NAME).getLicense());
   const {
@@ -38,30 +37,17 @@ function LikeCoinPluginSideBar(props) {
   const numberOfWords = wordCount(content, 'words', {});
   const [showMetaData, setShowMetaData] = useState(false);
   const [ISCNVersionString, setISCNVersionString] = useState(true);
-  const [showPublishISCNButton, setShowPublisnISCNButton] = useState(true);
-  const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const [showNFTButton, setShowNFTButton] = useState(true);
   const [pinBarIconColor, setPinBarIconColor] = useState('#3973B9');
   const isPluginSidebarOpened = useSelect((select) => select('core/edit-post')
     .isPluginSidebarOpened());
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
-  const postDate = useSelect((select) => select('core/editor').getEditedPostAttribute('modified_gmt'));
-  useEffect(() => {
-    setShowPublisnISCNButton(!!isCurrentPostPublished && !props.ISCNId);
-  }, [isCurrentPostPublished, props.ISCNId]);
-  useEffect(() => {
-    setShowUpdateISCNButton(!!(isCurrentPostPublished
-      && Date.parse(`${postDate}Z`) > (props.ISCNTimestamp || 0))); // force parsing as gmt
-  }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
-  useEffect(() => setShowNFTButton(!!props.ISCNId), [props.ISCNId]);
+  useEffect(() => setShowNFTButton(!!props.NFTClassId), [props.NFTClassId]);
   useEffect(() => {
     const iscnVersionString = props.ISCNVersion ? `${props.ISCNVersion} (${(new Date(props.ISCNTimestamp)).toGMTString()})` : '-';
     setISCNVersionString(iscnVersionString);
   }, [props.ISCNVersion, props.ISCNTimestamp]);
-  function handleOnLicenseSelect(license) {
-    setISCNLicense(license);
-  }
   function handleOnButtonSettingChange() {
     const isEnabled = !isEnabledButton;
     postButtonSettings({ isEnabled });
@@ -93,49 +79,6 @@ function LikeCoinPluginSideBar(props) {
           <Web3PressIcon color='#9B9B9B' />
         </div>
       </div>
-      {!isCurrentPostPublished && (
-        <div className='divOuterHolder'>
-          <div className='divInnerHolder'>
-            <button
-              className='blueBackgroundWhiteTextBtn'
-              onClick={(e) => {
-                e.preventDefault();
-                document
-                  .getElementsByClassName(
-                    'editor-post-publish-button__button',
-                  )[0]
-                  .click();
-              }}
-            >
-              {__('Publish your post first', 'likecoin')}
-            </button>
-          </div>
-        </div>
-      )}
-      {showPublishISCNButton && (
-        <div className='divOuterHolder'>
-          <div className='divInnerHolder'>
-            <button
-              className='blueBackgroundWhiteTextBtn'
-              onClick={props.handleRegisterISCN}
-            >
-              {__('Publish', 'likecoin')}
-            </button>
-          </div>
-        </div>
-      )}
-      {showUpdateISCNButton && (
-        <div className='divOuterHolder'>
-          <div className='divInnerHolder'>
-            <button
-              className='blueBackgroundWhiteTextBtn'
-              onClick={props.handleRegisterISCN}
-            >
-              {__('Update', 'likecoin')}
-            </button>
-          </div>
-        </div>
-      )}
       {showNFTButton && (
         <div className='divOuterHolder'>
           <div className='divInnerHolder'>
@@ -200,11 +143,11 @@ function LikeCoinPluginSideBar(props) {
         </div>
       )}
       <div className='divOuterHolderMainSidebar'>
-        <LicensePicker
-          defaultLicense={iscnLicense}
-          onSelect={handleOnLicenseSelect}
-          disabled={!(!isCurrentPostPublished || showPublishISCNButton || showUpdateISCNButton)}
-        />
+        {isCurrentPostPublished && (<LicensePicker
+            defaultLicense={iscnLicense}
+            disabled
+          />
+        )}
       </div>
       <div className='divOuterHolderMainSidebar'>
         <div

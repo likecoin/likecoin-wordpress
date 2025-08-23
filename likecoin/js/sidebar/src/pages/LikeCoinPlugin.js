@@ -1,22 +1,13 @@
 import { useState, useEffect, useCallback } from 'react';
-import { useSelect, useDispatch } from '@wordpress/data';
+import { useSelect } from '@wordpress/data';
 import LikeCoinPluginDocumentSettingPanel from './LikeCoinPluginDocumentSettingPanel';
 import LikeCoinPluginSideBar from './LikeCoinPluginSideBar';
-import LikeCoinPluginPostPublishPanel from './LikeCoinPluginPostPublishPanel';
 import { ISCN_INFO_STORE_NAME } from '../store/iscn-info-store';
 
-const { siteurl, likecoHost, likerlandHost } = window.likecoinApiSettings;
-
-const ISCN_WIDGET_ORIGIN = `https://app.${likecoHost}`;
-const NFT_WIDGET_ORIGIN = `https://app.${likecoHost}`;
-const ISCN_RECORD_NOTE = 'LikeCoin WordPress Plugin';
+const { likerlandHost } = window.likecoinApiSettings;
 
 function LikeCoinPlugin() {
-  const currentPost = useSelect((select) => select('core/editor')
-    .getCurrentPost());
   const {
-    DBLIKEPayAmount,
-    DBMemo,
     DBArticleTitle,
     DBAuthorDescription,
     DBDescription,
@@ -27,16 +18,10 @@ function LikeCoinPlugin() {
     DBArweaveId,
     DBISCNVersion,
     DBISCNTimestamp,
-    DBLicense,
   } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectISCNInfo());
   const {
     DBNFTClassId,
   } = useSelect((select) => select(ISCN_INFO_STORE_NAME).selectNFTInfo(DBISCNId));
-  const {
-    fetchISCNRegisterData,
-    postArweaveInfoData,
-    postISCNInfoData,
-  } = useDispatch(ISCN_INFO_STORE_NAME);
   const [title, setTitle] = useState(DBArticleTitle);
   const [authorDescription, setAuthorDescription] = useState(DBAuthorDescription);
   const [description, setDescription] = useState(DBDescription);
@@ -48,125 +33,7 @@ function LikeCoinPlugin() {
   const [arweaveId, setArweaveId] = useState(DBArweaveId);
   const [ISCNVersion, setISCNVersion] = useState(DBISCNVersion);
   const [ISCNTimestamp, setISCNTimestamp] = useState(DBISCNTimestamp);
-  const [fingerprints, setFingerprints] = useState([]);
-  const [shouldStartProcess, setShouldStartProcess] = useState(false);
-  const [shouldSendISCNRegisterData, setShouldSendISCNRegisterData] = useState(false);
-  const [popUpWindow, setPopUpWindow] = useState(null);
-  const onArweaveCallback = useCallback(
-    (data) => {
-      const {
-        ipfsHash, arweaveId: newArweaveId,
-      } = data;
-      setArweaveId(newArweaveId);
-      postArweaveInfoData({
-        ipfsHash, arweaveId: newArweaveId,
-      });
-    },
-    [postArweaveInfoData],
-  );
-  const onISCNCallback = useCallback(
-    (data) => {
-      const {
-        tx_hash: txHash, iscnId, iscnVersion, timestamp,
-      } = data;
-      postISCNInfoData({
-        iscnHash: txHash,
-        iscnId,
-        iscnVersion,
-        timestamp,
-        license: DBLicense,
-      });
-    },
-    [DBLicense, postISCNInfoData],
-  );
-  const sendISCNRegisterData = useCallback(async () => {
-    popUpWindow.postMessage(JSON.stringify({ action: 'INIT_WIDGET' }), ISCN_WIDGET_ORIGIN);
-    const data = await fetchISCNRegisterData();
-    const {
-      files,
-      title: refreshedTitle,
-      tags: refreshedTags,
-      url: refreshedUrl,
-      author: refreshedAuthor,
-      authorDescription: refreshedAuthorDescription,
-      description: refreshedDescription,
-    } = data;
-    setTitle(refreshedTitle);
-    setTags(refreshedTags);
-    setUrl(refreshedUrl);
-    setAuthor(refreshedAuthor);
-    setAuthorDescription(refreshedAuthorDescription);
-    setDescription(refreshedDescription);
-    const payload = JSON.stringify({
-      action: 'SUBMIT_ISCN_DATA',
-      data: {
-        metadata: {
-          fingerprints,
-          name: refreshedTitle,
-          tags: refreshedTags,
-          url: refreshedUrl,
-          author: refreshedAuthor,
-          authorDescription: refreshedAuthorDescription,
-          description: refreshedDescription,
-          type: 'article',
-          license: DBLicense,
-          recordNotes: ISCN_RECORD_NOTE,
-          memo: ISCN_RECORD_NOTE,
-        },
-        files,
-      },
-    });
-    popUpWindow.postMessage(payload, ISCN_WIDGET_ORIGIN);
-  }, [DBLicense, fetchISCNRegisterData, fingerprints, popUpWindow]);
 
-  const onPostMessageCallback = useCallback(
-    async (event) => {
-      if (event
-          && event.data
-          && (event.origin === ISCN_WIDGET_ORIGIN || event.origin === NFT_WIDGET_ORIGIN)
-          && typeof event.data === 'string') {
-        try {
-          const { action, data } = JSON.parse(event.data);
-          if (action === 'ISCN_WIDGET_READY') {
-            setShouldSendISCNRegisterData(true);
-          } else if (action === 'ARWEAVE_SUBMITTED') {
-            onArweaveCallback(data);
-          } else if (action === 'ISCN_SUBMITTED') {
-            onISCNCallback(data);
-          } else if (action === 'NFT_MINT_DATA') {
-            if (data.classId) setNFTClassId(data.classId);
-          } else {
-            console.warn(`Unknown event: ${action}`);
-          }
-        } catch (err) {
-          console.error(err);
-        }
-      }
-    },
-    [onArweaveCallback, onISCNCallback],
-  );
-  const openISCNWidget = useCallback(() => {
-    const iscnId = encodeURIComponent(ISCNId || '');
-    const redirectString = encodeURIComponent(siteurl);
-    const urlString = encodeURIComponent(currentPost.link || '');
-    const popUpWidget = `${ISCN_WIDGET_ORIGIN}/nft/url?opener=1&platform=wordpress&redirect_uri=${redirectString}&url=${urlString}&iscn_id=${iscnId}&update=${iscnId ? 1 : 0}`;
-    try {
-      const popUp = window.open(
-        popUpWidget,
-        'likePayWindow',
-        'menubar=no,location=no,width=576,height=768',
-      );
-      if (!popUp || popUp.closed || typeof popUp.closed == 'undefined') {
-        // TODO: show error in UI
-        console.error('POPUP_BLOCKED');
-        return;
-      }
-      setPopUpWindow(popUp);
-      window.addEventListener('message', onPostMessageCallback, false);
-    } catch (error) {
-      console.error(error);
-    }
-  }, [ISCNId, currentPost.link, onPostMessageCallback]);
   useEffect(() => {
     setTitle(DBArticleTitle);
     if (DBAuthorDescription) {
@@ -195,8 +62,6 @@ function LikeCoinPlugin() {
     setISCNTimestamp(DBISCNTimestamp);
     setArweaveId(DBArweaveId);
   }, [
-    DBLIKEPayAmount,
-    DBMemo,
     DBArticleTitle,
     DBAuthorDescription,
     DBDescription,
@@ -209,57 +74,19 @@ function LikeCoinPlugin() {
     DBNFTClassId,
     DBArweaveId,
   ]);
-  useEffect(() => {
-    if (shouldStartProcess) {
-      openISCNWidget();
-      setShouldStartProcess(false);
-    }
-    if (shouldSendISCNRegisterData) {
-      sendISCNRegisterData();
-      setShouldSendISCNRegisterData(false);
-    }
-  }, [
-    shouldStartProcess,
-    shouldSendISCNRegisterData,
-    openISCNWidget,
-    sendISCNRegisterData,
-  ]);
 
-  async function handleRegisterISCN(e) {
-    e.preventDefault();
-    setShouldStartProcess(true);
-  }
-
-  const onNFTPostMessageCallback = async (event) => {
-    if (event && event.data && event.origin === NFT_WIDGET_ORIGIN && typeof event.data === 'string') {
-      try {
-        const { action, data } = JSON.parse(event.data);
-        if (action === 'NFT_MINT_DATA') {
-          if (data.classId) setNFTClassId(data.classId);
-        } else {
-          console.warn(`Unknown event: ${action}`);
-        }
-      } catch (err) {
-        console.error(err);
-      }
-    }
-  };
   const handleNFTAction = useCallback((e) => {
     e.preventDefault();
     if (!ISCNId) return;
-    const redirectString = encodeURIComponent(siteurl);
-    const nftUrl = NFTClassId ? `https://${likerlandHost}/nft/class/${encodeURIComponent(
+    if (!NFTClassId) return;
+    const nftUrl = `https://${likerlandHost}/nft/class/${encodeURIComponent(
       NFTClassId,
-    )}` : `${NFT_WIDGET_ORIGIN}/nft/iscn/${encodeURIComponent(ISCNId)}?opener=1&platform=wordpress&redirect_uri=${redirectString}`;
-    const nftWindow = window.open(nftUrl, '_blank');
-    if (nftWindow && !NFTClassId) {
-      window.addEventListener('message', onNFTPostMessageCallback, false);
-    }
+    )}`;
+    window.open(nftUrl, '_blank');
   }, [ISCNId, NFTClassId]);
   return (
     <>
       <LikeCoinPluginSideBar
-        handleRegisterISCN={handleRegisterISCN}
         handleNFTAction={handleNFTAction}
         ISCNId={ISCNId}
         arweaveId={arweaveId}
@@ -274,7 +101,6 @@ function LikeCoinPlugin() {
         url={url}
       />
       <LikeCoinPluginDocumentSettingPanel
-        handleRegisterISCN={handleRegisterISCN}
         handleNFTAction={handleNFTAction}
         ISCNId={ISCNId}
         arweaveId={arweaveId}
@@ -282,7 +108,6 @@ function LikeCoinPlugin() {
         ISCNTimestamp={ISCNTimestamp}
         NFTClassId={NFTClassId}
       />
-      <LikeCoinPluginPostPublishPanel handleRegisterISCN={handleRegisterISCN} />
     </>
   );
 }

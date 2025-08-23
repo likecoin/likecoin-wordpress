@@ -4,18 +4,11 @@ import { __ } from '@wordpress/i18n';
 import { useSelect } from '@wordpress/data';
 import Web3PressIcon from '../components/Web3PressIcon';
 import PublishStatus from '../components/PublishStatus';
-import StatusTitle from '../components/StatusTitle';
 
 function LikeCoinPluginDocumentSettingPanel(props) {
-  const [showUpdateISCNButton, setShowUpdateISCNButton] = useState(true);
   const [showNFTButton, setShowNFTButton] = useState(true);
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
-  const postDate = useSelect((select) => select('core/editor').getEditedPostAttribute('modified_gmt'));
-  useEffect(() => {
-    setShowUpdateISCNButton(!!(isCurrentPostPublished
-      && Date.parse(`${postDate}Z`) > (props.ISCNTimestamp || 0))); // force parsing as gmt;
-  }, [isCurrentPostPublished, postDate, props.ISCNTimestamp]);
   useEffect(() => setShowNFTButton(!!props.ISCNId), [props.ISCNId]);
   return (
     <PluginDocumentSettingPanel
@@ -58,12 +51,6 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                     }}
                   >
                     <button
-                      className='blueBackgroundWhiteTextSmallBtn'
-                      onClick={props.handleRegisterISCN}
-                    >
-                      {__('Publish', 'likecoin')}
-                    </button>
-                    <button
                       className='whiteBackgroundBlueTextSmallBtn'
                       onClick={(e) => {
                         e.preventDefault();
@@ -75,14 +62,6 @@ function LikeCoinPluginDocumentSettingPanel(props) {
                       {__('Details', 'likecoin')}
                     </button>
                   </div>
-                )}
-                {showUpdateISCNButton && (
-                  <button
-                    className='blueBackgroundWhiteTextSmallBtn'
-                    onClick={props.handleRegisterISCN}
-                  >
-                    {__('Update', 'likecoin')}
-                  </button>
                 )}
                 {showNFTButton && (
                   <button
