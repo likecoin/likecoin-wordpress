@@ -3,7 +3,7 @@
   "version": "3.3.0",
   "description": "",
   "engines": {
-    "node": ">=14"
+    "node": ">=20"
   },
   "scripts": {
     "dev:admin:settings": "wp-scripts start likecoin/js/admin-settings/src/index.js --output-path=likecoin/assets/js/admin-settings",
@@ -17,36 +17,27 @@
     "lint:style": "wp-scripts lint-style --fix",
     "format:js": "wp-scripts format",
     "lint:js:fix": "npm run lint:js -- --fix",
-    "lint:pkg-json": "wp-scripts lint-pkg-json",
-    "prettier": "prettier --write ./src"
+    "lint:pkg-json": "wp-scripts lint-pkg-json"
   },
   "dependencies": {
     "@wordpress/api-fetch": "^6.1.3",
-    "@wordpress/blocks": "^11.1.4",
-    "@wordpress/data": "^6.1.3",
+    "@wordpress/block-editor": "^12.26.0",
+    "@wordpress/blocks": "^12.3.5",
+    "@wordpress/data": "^9.2.8",
     "@wordpress/edit-post": "^5.0.17",
     "@wordpress/element": "^4.0.1",
     "@wordpress/i18n": "^4.2.2",
-    "@wordpress/icons": "^6.1.1",
-    "@wordpress/plugins": "^4.0.6",
+    "@wordpress/plugins": "^6.26.0",
     "@wordpress/wordcount": "^3.2.3",
     "axios": "^1.6.0",
     "lodash": "^4.17.21",
-    "react": "^17.0.2",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "react-router-dom": "^6.4.4"
   },
   "devDependencies": {
-    "@babel/eslint-parser": "^7.21.3",
-    "@wordpress/browserslist-config": "^5.5.0",
-    "@wordpress/scripts": "^26.2.0",
-    "eslint-config-airbnb-base": "^14.1.0",
-    "eslint-config-react-app": "^7.0.1",
-    "eslint-plugin-flowtype": "^8.0.3",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jest": "^27.1.6",
-    "eslint-plugin-testing-library": "^5.9.1",
-    "postcss": "^8.4.5",
-    "stylelint-order": "^5.0.0",
-    "webpack": "^5.75.0"
+    "@wordpress/scripts": "^27.9.0",
+    "eslint-config-airbnb": "^19.0.4",
+    "stylelint-order": "^5.0.0"
   }
 }
