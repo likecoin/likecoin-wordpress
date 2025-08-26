@@ -47,6 +47,6 @@
     "eslint-plugin-testing-library": "^5.9.1",
     "postcss": "^8.4.5",
     "stylelint-order": "^5.0.0",
-    "webpack": "^5.75.0"
+    "webpack": "^5.99.8"
   }
 }
