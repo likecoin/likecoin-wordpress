@@ -70,6 +70,7 @@ const resolvers = {
   },
 };
 
+// eslint-disable-next-line default-param-last
 const reducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case 'SET_SITE_PUBLISH_OPTIONS': {

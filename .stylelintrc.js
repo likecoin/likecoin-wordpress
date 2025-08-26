@@ -1,6 +1,7 @@
 module.exports = {
   plugins: ['stylelint-order'],
   extends: ['stylelint-config-recommended'],
+  customSyntax: 'postcss-scss',
   rules: {
     'selector-pseudo-class-no-unknown': [
       true,
