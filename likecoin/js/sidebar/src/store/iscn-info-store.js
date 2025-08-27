@@ -1,18 +1,20 @@
 import axios from 'axios';
 import apiFetch from '@wordpress/api-fetch';
-import { createAndRegisterReduxStore } from './util';
+import {
+  createAndRegisterReduxStore, ACTION_TYPES, API_ENDPOINTS, STORE_NAMES, createReducer,
+} from './index';
 
 const {
   postId, likecoHost,
 } = window.likecoinApiSettings;
 
 // eslint-disable-next-line import/prefer-default-export
-export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
+export const ISCN_INFO_STORE_NAME = STORE_NAMES.ISCN_INFO;
 
-const saveArweaveInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/arweave`;
-const getISCNInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
-const saveISCNInfoEndPoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
-const getNFTMintInfoEndpoint = `https://api.${likecoHost}/likernft/mint?iscn_id=`;
+const saveArweaveInfoEndpoint = API_ENDPOINTS.ARWEAVE_INFO(postId);
+const getISCNInfoEndpoint = API_ENDPOINTS.ISCN_METADATA(postId);
+const saveISCNInfoEndPoint = API_ENDPOINTS.ISCN_METADATA(postId);
+const getNFTMintInfoEndpoint = API_ENDPOINTS.NFT_MINT_INFO(likecoHost, '');
 
 const INITIAL_STATE = {
   DBArticleTitle: '',
@@ -31,53 +33,53 @@ const INITIAL_STATE = {
 const actions = {
   getISCNInfo() {
     return {
-      type: 'GET_ISCN_INFO',
+      type: ACTION_TYPES.ISCN_INFO.GET_INFO,
     };
   },
   setISCNInfo(data) {
     return {
-      type: 'SET_ISCN_INFO',
+      type: ACTION_TYPES.ISCN_INFO.SET_INFO,
       data,
     };
   },
   getNFTInfo(iscnId) {
     return {
-      type: 'GET_NFT_INFO',
+      type: ACTION_TYPES.ISCN_INFO.GET_NFT_INFO,
       iscnId,
     };
   },
   setNFTInfo(data) {
     return {
-      type: 'SET_NFT_INFO',
+      type: ACTION_TYPES.ISCN_INFO.SET_NFT_INFO,
       data,
     };
   },
   setHTTPErrors(errorMsg) {
     return {
-      type: 'SET_ERROR_MESSAGE',
+      type: ACTION_TYPES.COMMON.SET_ERROR_MESSAGE,
       errorMsg,
     };
   },
   * postArweaveInfoData(data) {
-    const res = yield { type: 'POST_ARWEAVE_INFO_DATA', data };
+    const res = yield { type: ACTION_TYPES.ISCN_INFO.POST_ARWEAVE_DATA, data };
     if (!res) {
       throw new Error('NO_ARWEAVE_INFO_RETURNED');
     }
     yield {
-      type: 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE',
+      type: ACTION_TYPES.ISCN_INFO.UPDATE_ARWEAVE_STATE,
       data: {
         arweaveId: res.data.arweave_id,
       },
     };
   },
   * postISCNInfoData(data) {
-    const res = yield { type: 'POST_ISCN_INFO_DATA', data };
+    const res = yield { type: ACTION_TYPES.ISCN_INFO.POST_ISCN_DATA, data };
     if (!res) {
       throw new Error('NO_ISCN_INFO_RETURNED');
     }
     const { iscn_id: iscnId, iscnVersion, iscnTimestamp } = res;
     yield {
-      type: 'UPDATE_ISCN_ID_GLOBAL_STATE',
+      type: ACTION_TYPES.ISCN_INFO.UPDATE_ISCN_STATE,
       data: {
         iscnId,
         iscnTimestamp,
@@ -96,15 +98,15 @@ const selectors = {
 };
 
 const controls = {
-  GET_ISCN_INFO() {
+  [ACTION_TYPES.ISCN_INFO.GET_INFO]() {
     return apiFetch({
       path: getISCNInfoEndpoint,
     });
   },
-  GET_NFT_INFO(action) {
+  [ACTION_TYPES.ISCN_INFO.GET_NFT_INFO](action) {
     return axios.get(`${getNFTMintInfoEndpoint}${encodeURIComponent(action.iscnId)}`);
   },
-  POST_ARWEAVE_INFO_DATA(action) {
+  [ACTION_TYPES.ISCN_INFO.POST_ARWEAVE_DATA](action) {
     return apiFetch({
       method: 'POST',
       path: saveArweaveInfoEndpoint,
@@ -114,7 +116,7 @@ const controls = {
       },
     });
   },
-  POST_ISCN_INFO_DATA(action) {
+  [ACTION_TYPES.ISCN_INFO.POST_ISCN_DATA](action) {
     return apiFetch({
       method: 'POST',
       path: saveISCNInfoEndPoint,
@@ -186,52 +188,40 @@ const resolvers = {
     }
   },
 };
-// eslint-disable-next-line default-param-last
-const reducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case 'SET_ISCN_INFO': {
-      return {
-        ...state,
-        DBISCNId: action.data.iscnId,
-        DBISCNVersion: action.data.iscnVersion,
-        DBISCNTimestamp: action.data.iscnTimestamp,
-        DBLicense: action.data.license,
-        DBNFTClassId: action.data.nftClassId,
-        DBArticleTitle: action.data.title,
-        DBAuthorDescription: action.data.authorDescription,
-        DBDescription: action.data.description,
-        DBAuthor: action.data.author,
-        DBArticleURL: action.data.url,
-        DBArticleTags: action.data.tags,
-        DBArweaveId: action.data.arweaveId,
-      };
-    }
-    case 'SET_NFT_INFO': {
-      return {
-        ...state,
-        DBNFTClassId: action.data.classId,
-      };
-    }
-    case 'UPDATE_ARWEAVE_UPLOAD_AND_IPFS_GLOBAL_STATE': {
-      const { arweaveId } = action.data;
-      return {
-        ...state,
-        DBArweaveId: arweaveId,
-      };
-    }
-    case 'UPDATE_ISCN_ID_GLOBAL_STATE': {
-      return {
-        ...state,
-        DBISCNId: action.data.iscnId,
-        DBISCNVersion: action.data.iscnVersion,
-        DBISCNTimestamp: action.data.iscnTimestamp * 1000,
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-};
+const reducer = createReducer({
+  [ACTION_TYPES.ISCN_INFO.SET_INFO]: (state, action) => ({
+    ...state,
+    DBISCNId: action.data.iscnId,
+    DBISCNVersion: action.data.iscnVersion,
+    DBISCNTimestamp: action.data.iscnTimestamp,
+    DBLicense: action.data.license,
+    DBNFTClassId: action.data.nftClassId,
+    DBArticleTitle: action.data.title,
+    DBAuthorDescription: action.data.authorDescription,
+    DBDescription: action.data.description,
+    DBAuthor: action.data.author,
+    DBArticleURL: action.data.url,
+    DBArticleTags: action.data.tags,
+    DBArweaveId: action.data.arweaveId,
+  }),
+  [ACTION_TYPES.ISCN_INFO.SET_NFT_INFO]: (state, action) => ({
+    ...state,
+    DBNFTClassId: action.data.classId,
+  }),
+  [ACTION_TYPES.ISCN_INFO.UPDATE_ARWEAVE_STATE]: (state, action) => {
+    const { arweaveId } = action.data;
+    return {
+      ...state,
+      DBArweaveId: arweaveId,
+    };
+  },
+  [ACTION_TYPES.ISCN_INFO.UPDATE_ISCN_STATE]: (state, action) => ({
+    ...state,
+    DBISCNId: action.data.iscnId,
+    DBISCNVersion: action.data.iscnVersion,
+    DBISCNTimestamp: action.data.iscnTimestamp * 1000,
+  }),
+}, INITIAL_STATE);
 
 const storeConfig = {
   reducer,

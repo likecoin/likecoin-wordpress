@@ -1,15 +1,17 @@
 import apiFetch from '@wordpress/api-fetch';
-import { createAndRegisterReduxStore } from './util';
+import {
+  createAndRegisterReduxStore, ACTION_TYPES, API_ENDPOINTS, STORE_NAMES, createReducer,
+} from './index';
 
 const {
   postId,
 } = window.likecoinApiSettings;
 
 // eslint-disable-next-line import/prefer-default-export
-export const BUTTON_INFO_STORE_NAME = 'likecoin/button_info_store';
+export const BUTTON_INFO_STORE_NAME = STORE_NAMES.BUTTON_INFO;
 
-const getButtonSettingsEndpoint = `/likecoin/v1/posts/${postId}/button/settings`;
-const postButtonSettingsEndpoint = `/likecoin/v1/posts/${postId}/button/settings`;
+const getButtonSettingsEndpoint = API_ENDPOINTS.BUTTON_SETTINGS(postId);
+const postButtonSettingsEndpoint = API_ENDPOINTS.BUTTON_SETTINGS(postId);
 
 const INITIAL_STATE = {
   isWidgetEnabled: false,
@@ -19,24 +21,24 @@ const INITIAL_STATE = {
 const actions = {
   getButtonSettings() {
     return {
-      type: 'GET_BUTTON_SETTINGS',
+      type: ACTION_TYPES.BUTTON_INFO.GET_SETTINGS,
     };
   },
   setButtonSettings(data) {
     return {
-      type: 'SET_BUTTON_SETTINGS',
+      type: ACTION_TYPES.BUTTON_INFO.SET_SETTINGS,
       data,
     };
   },
   * fetchButtonSettings() {
-    const res = yield { type: 'GET_BUTTON_SETTINGS' };
+    const res = yield { type: ACTION_TYPES.BUTTON_INFO.GET_SETTINGS };
     if (!res) {
       throw new Error('FETCH_BUTTON_SETTINGS_ERROR');
     }
     return res;
   },
   * postButtonSettings(data) {
-    const res = yield { type: 'POST_BUTTON_SETTINGS', data };
+    const res = yield { type: ACTION_TYPES.BUTTON_INFO.POST_SETTINGS, data };
     if (!res) {
       throw new Error('FAIL_TO_POST_BUTTON_SETTINGS');
     }
@@ -48,12 +50,12 @@ const selectors = {
 };
 
 const controls = {
-  GET_BUTTON_SETTINGS() {
+  [ACTION_TYPES.BUTTON_INFO.GET_SETTINGS]() {
     return apiFetch({
       path: getButtonSettingsEndpoint,
     });
   },
-  POST_BUTTON_SETTINGS(action) {
+  [ACTION_TYPES.BUTTON_INFO.POST_SETTINGS](action) {
     return apiFetch({
       method: 'POST',
       path: postButtonSettingsEndpoint,
@@ -79,27 +81,21 @@ const resolvers = {
     });
   },
 };
-// eslint-disable-next-line default-param-last
-const reducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case 'SET_BUTTON_SETTINGS': {
-      const {
-        isWidgetEnabled,
-        isOptionDisabled,
-        isLikerIdMissing,
-      } = action.data;
-      return {
-        ...state,
-        isWidgetEnabled,
-        isOptionDisabled,
-        isLikerIdMissing,
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-};
+const reducer = createReducer({
+  [ACTION_TYPES.BUTTON_INFO.SET_SETTINGS]: (state, action) => {
+    const {
+      isWidgetEnabled,
+      isOptionDisabled,
+      isLikerIdMissing,
+    } = action.data;
+    return {
+      ...state,
+      isWidgetEnabled,
+      isOptionDisabled,
+      isLikerIdMissing,
+    };
+  },
+}, INITIAL_STATE);
 
 const storeConfig = {
   reducer,
