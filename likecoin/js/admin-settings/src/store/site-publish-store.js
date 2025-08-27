@@ -1,11 +1,13 @@
 import apiFetch from '@wordpress/api-fetch';
-import { createAndRegisterReduxStore } from './util';
+import {
+  createAndRegisterReduxStore, ACTION_TYPES, API_ENDPOINTS, STORE_NAMES, createReducer,
+} from './index';
 
 // eslint-disable-next-line import/prefer-default-export
-export const SITE_PUBLISH_STORE_NAME = 'likecoin/site_publish';
+export const SITE_PUBLISH_STORE_NAME = STORE_NAMES.SITE_PUBLISH;
 
-const getPublishOptionEndpoint = '/likecoin/v1/option/publish';
-const postPublishOptionsEndpoint = '/likecoin/v1/option/publish';
+const getPublishOptionEndpoint = API_ENDPOINTS.SITE_PUBLISH;
+const postPublishOptionsEndpoint = API_ENDPOINTS.SITE_PUBLISH;
 
 const INITIAL_STATE = {
   DBSiteInternetArchiveEnabled: false,
@@ -16,25 +18,25 @@ const INITIAL_STATE = {
 const actions = {
   getSitePublishOptions(path) {
     return {
-      type: 'GET_SITE_PUBLISH_OPTIONS',
+      type: ACTION_TYPES.SITE_PUBLISH.GET_OPTIONS,
       path,
     };
   },
   setSitePublishOptions(options) {
     return {
-      type: 'SET_SITE_PUBLISH_OPTIONS',
+      type: ACTION_TYPES.SITE_PUBLISH.SET_OPTIONS,
       options,
     };
   },
   setHTTPErrors(errorMsg) {
     return {
-      type: 'SET_ERROR_MESSAGE',
+      type: ACTION_TYPES.COMMON.SET_ERROR_MESSAGE,
       errorMsg,
     };
   },
   * postSitePublishOptions(options) {
-    yield { type: 'POST_SITE_PUBLISH_OPTIONS_TO_DB', data: options };
-    yield { type: 'CHANGE_SITE_PUBLISH_OPTIONS_GLOBAL_STATE', data: options };
+    yield { type: ACTION_TYPES.SITE_PUBLISH.POST_OPTIONS_TO_DB, data: options };
+    yield { type: ACTION_TYPES.SITE_PUBLISH.CHANGE_GLOBAL_STATE, data: options };
   },
 };
 
@@ -43,10 +45,10 @@ const selectors = {
 };
 
 const controls = {
-  GET_SITE_PUBLISH_OPTIONS(action) {
+  [ACTION_TYPES.SITE_PUBLISH.GET_OPTIONS](action) {
     return apiFetch({ path: action.path });
   },
-  POST_SITE_PUBLISH_OPTIONS_TO_DB(action) {
+  [ACTION_TYPES.SITE_PUBLISH.POST_OPTIONS_TO_DB](action) {
     return apiFetch({
       method: 'POST',
       path: postPublishOptionsEndpoint,
@@ -70,33 +72,25 @@ const resolvers = {
   },
 };
 
-// eslint-disable-next-line default-param-last
-const reducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case 'SET_SITE_PUBLISH_OPTIONS': {
-      return {
-        DBSiteInternetArchiveEnabled: action.options.lc_internet_archive_enabled,
-        DBSiteInternetArchiveAccessKey: action.options.lc_internet_archive_access_key,
-        DBISCNBadgeStyleOption: action.options.iscn_badge_style_option,
-      };
-    }
-    case 'CHANGE_SITE_PUBLISH_OPTIONS_GLOBAL_STATE': {
-      // HACK: remove all undefined data to prevent unneeded overwrite
-      const updateObject = JSON.parse(JSON.stringify({
-        DBSiteInternetArchiveEnabled: action.data.siteInternetArchiveEnabled,
-        DBSiteInternetArchiveAccessKey: action.data.siteInternetArchiveAccessKey,
-        DBISCNBadgeStyleOption: action.data.ISCNBadgeStyleOption,
-      }));
-      return {
-        ...state,
-        ...updateObject,
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-};
+const reducer = createReducer({
+  [ACTION_TYPES.SITE_PUBLISH.SET_OPTIONS]: (state, action) => ({
+    DBSiteInternetArchiveEnabled: action.options.lc_internet_archive_enabled,
+    DBSiteInternetArchiveAccessKey: action.options.lc_internet_archive_access_key,
+    DBISCNBadgeStyleOption: action.options.iscn_badge_style_option,
+  }),
+  [ACTION_TYPES.SITE_PUBLISH.CHANGE_GLOBAL_STATE]: (state, action) => {
+    // HACK: remove all undefined data to prevent unneeded overwrite
+    const updateObject = JSON.parse(JSON.stringify({
+      DBSiteInternetArchiveEnabled: action.data.siteInternetArchiveEnabled,
+      DBSiteInternetArchiveAccessKey: action.data.siteInternetArchiveAccessKey,
+      DBISCNBadgeStyleOption: action.data.ISCNBadgeStyleOption,
+    }));
+    return {
+      ...state,
+      ...updateObject,
+    };
+  },
+}, INITIAL_STATE);
 
 const storeConfig = {
   reducer,

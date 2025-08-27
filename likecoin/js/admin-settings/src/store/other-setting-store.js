@@ -1,34 +1,36 @@
 import apiFetch from '@wordpress/api-fetch';
-import { createAndRegisterReduxStore } from './util';
+import {
+  createAndRegisterReduxStore, ACTION_TYPES, API_ENDPOINTS, STORE_NAMES, createReducer,
+} from './index';
 
 // eslint-disable-next-line import/prefer-default-export
-export const OTHER_SETTING_STORE_NAME = 'likecoin/other_settings';
+export const OTHER_SETTING_STORE_NAME = STORE_NAMES.OTHER_SETTINGS;
 
-const webMonetizationEndpoint = '/likecoin/v1/option/web-monetization';
+const webMonetizationEndpoint = API_ENDPOINTS.WEB_MONETIZATION;
 const INITIAL_STATE = {
   DBPaymentPointer: '',
 };
 const actions = {
   setPaymentPointer(paymentPointer) {
     return {
-      type: 'SET_PAYMENT_POINTER',
+      type: ACTION_TYPES.OTHER_SETTINGS.SET_PAYMENT_POINTER,
       paymentPointer,
     };
   },
   getPaymentPointer() {
     return {
-      type: 'GET_PAYMENT_POINTER',
+      type: ACTION_TYPES.OTHER_SETTINGS.GET_PAYMENT_POINTER,
     };
   },
   setHTTPErrors(errorMsg) {
     return {
-      type: 'SET_ERROR_MESSAGE',
+      type: ACTION_TYPES.COMMON.SET_ERROR_MESSAGE,
       errorMsg,
     };
   },
   * postPaymentPointer(paymentPointer) {
-    yield { type: 'POST_PAYMENT_POINTER', paymentPointer }; // change DB
-    yield { type: 'CHANGE_PAYMENT_POINTER_GLOBAL_STATE', paymentPointer }; // change global state
+    yield { type: ACTION_TYPES.OTHER_SETTINGS.POST_PAYMENT_POINTER, paymentPointer };
+    yield { type: ACTION_TYPES.OTHER_SETTINGS.CHANGE_PAYMENT_POINTER_GLOBAL_STATE, paymentPointer };
   },
 };
 
@@ -37,10 +39,10 @@ const selectors = {
 };
 
 const controls = {
-  GET_PAYMENT_POINTER() {
+  [ACTION_TYPES.OTHER_SETTINGS.GET_PAYMENT_POINTER]() {
     return apiFetch({ path: webMonetizationEndpoint });
   },
-  POST_PAYMENT_POINTER(action) {
+  [ACTION_TYPES.OTHER_SETTINGS.POST_PAYMENT_POINTER](action) {
     return apiFetch({
       method: 'POST',
       path: webMonetizationEndpoint,
@@ -60,24 +62,14 @@ const resolvers = {
     }
   },
 };
-// eslint-disable-next-line default-param-last
-const reducer = (state = INITIAL_STATE, action) => {
-  switch (action.type) {
-    case 'SET_PAYMENT_POINTER': {
-      return {
-        DBPaymentPointer: action.paymentPointer,
-      };
-    }
-    case 'CHANGE_PAYMENT_POINTER_GLOBAL_STATE': {
-      return {
-        DBPaymentPointer: action.paymentPointer,
-      };
-    }
-    default: {
-      return state;
-    }
-  }
-};
+const reducer = createReducer({
+  [ACTION_TYPES.OTHER_SETTINGS.SET_PAYMENT_POINTER]: (state, action) => ({
+    DBPaymentPointer: action.paymentPointer,
+  }),
+  [ACTION_TYPES.OTHER_SETTINGS.CHANGE_PAYMENT_POINTER_GLOBAL_STATE]: (state, action) => ({
+    DBPaymentPointer: action.paymentPointer,
+  }),
+}, INITIAL_STATE);
 const storeConfig = {
   reducer,
   controls,

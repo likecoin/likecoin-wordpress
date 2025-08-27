@@ -1,18 +1,20 @@
 import axios from 'axios';
 import apiFetch from '@wordpress/api-fetch';
-import { createAndRegisterReduxStore } from './util';
+import {
+  createAndRegisterReduxStore, API_ENDPOINTS, STORE_NAMES,
+} from './index';
 
 const {
   postId, likecoHost,
 } = window.likecoinApiSettings;
 
 // eslint-disable-next-line import/prefer-default-export
-export const ISCN_INFO_STORE_NAME = 'likecoin/iscn_info_store';
+export const ISCN_INFO_STORE_NAME = STORE_NAMES.ISCN_INFO;
 
-const saveArweaveInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/arweave`;
-const getISCNInfoEndpoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
-const saveISCNInfoEndPoint = `/likecoin/v1/posts/${postId}/iscn/metadata`;
-const getNFTMintInfoEndpoint = `https://api.${likecoHost}/likernft/mint?iscn_id=`;
+const saveArweaveInfoEndpoint = API_ENDPOINTS.ARWEAVE_INFO(postId);
+const getISCNInfoEndpoint = API_ENDPOINTS.ISCN_METADATA(postId);
+const saveISCNInfoEndPoint = API_ENDPOINTS.ISCN_METADATA(postId);
+const getNFTMintInfoEndpoint = API_ENDPOINTS.NFT_MINT_INFO(likecoHost, '');
 
 const INITIAL_STATE = {
   DBArticleTitle: '',
