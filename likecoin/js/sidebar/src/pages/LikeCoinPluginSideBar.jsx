@@ -50,7 +50,7 @@ function LikeCoinPluginSideBar({
   const numberOfWords = wordCount(content, 'words', {});
   const [showMetaData, setShowMetaData] = useState(false);
   const [ISCNVersionString, setISCNVersionString] = useState(true);
-  const [showNFTButton, setShowNFTButton] = useState(true);
+  const [showNFTButton, setShowNFTButton] = useState(false);
   const [pinBarIconColor, setPinBarIconColor] = useState('#3973B9');
   const isPluginSidebarOpened = useSelect((select) => select('core/edit-post')
     .isPluginSidebarOpened());
@@ -125,7 +125,7 @@ function LikeCoinPluginSideBar({
         {ISCNId && (
           <SideBarStatusRow
             title={__('NFT', 'likecoin')}
-            status={NFTClassId || __('Mint Now', 'likecoin')}
+            status={NFTClassId || '-'}
             link={
               NFTClassId
                 ? `https://${likerlandHost}/nft/class/${encodeURIComponent(

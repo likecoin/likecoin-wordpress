@@ -11,10 +11,10 @@ function LikeCoinPluginDocumentSettingPanel({
   NFTClassId,
   handleNFTAction,
 }) {
-  const [showNFTButton, setShowNFTButton] = useState(true);
+  const [showNFTButton, setShowNFTButton] = useState(false);
   const isCurrentPostPublished = useSelect((select) => select('core/editor')
     .isCurrentPostPublished());
-  useEffect(() => setShowNFTButton(!!ISCNId), [ISCNId]);
+  useEffect(() => setShowNFTButton(!!NFTClassId), [NFTClassId]);
   return (
     <PluginDocumentSettingPanel
       name="depub-panel"

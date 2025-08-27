@@ -28,13 +28,9 @@ function LicensePicker({ onSelect, disabled, defaultLicense }) {
   return (
     <>
       <StatusTitle title={__('License:', 'likecoin')} />
-      <select name="license" onChange={handleSelect} disabled={disabled ? true : null}>
+      <select name="license" onChange={handleSelect} disabled={disabled} value={defaultLicense}>
         {OPTIONS.map((o) => (
-          <option
-            key={o.value}
-            selected={o.value === defaultLicense ? true : null}
-            value={o.value}
-          >
+          <option key={o.value} value={o.value}>
             {o.name}
           </option>
         ))}
