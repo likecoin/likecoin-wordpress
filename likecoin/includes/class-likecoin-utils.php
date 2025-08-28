@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin web monetization
+ * LikeCoin Utilities Class
  *
- * Add header for web monetization standard
+ * Shared utility functions for admin and public use
  *
  * @package   LikeCoin
  *
@@ -20,23 +20,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-/**
- * Require shared functions
- */
-require_once __DIR__ . '/../includes/likecoin.php';
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * Add web monetization header if payment pointer exists
+ * LikeCoin Utilities Class
+ *
+ * @since 3.3.0
  */
-function likecoin_add_web_monetization_header() {
-	$option          = get_option( LC_MONETIZATION_OPTION_NAME );
-	$payment_pointer = isset( $option[ LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER ] ) ? $option[ LC_OPTION_SITE_MONETIZATION_PAYMENT_POINTER ] : '';
+class LikeCoin_Utils {
 
-	if ( ! empty( $payment_pointer ) ) {
-		?>
-			<meta
-				name="monetization"
-				content="<?php echo esc_attr( $payment_pointer ); ?>">
-		<?php
+	/**
+	 * Get post author's Liker ID object from post
+	 *
+	 * @since 3.3.0
+	 * @param WP_Post $post WordPress post object.
+	 * @return array|false User's LikeCoin data or false if not found.
+	 */
+	public static function get_author_likecoin_user( $post ) {
+		$author        = $post->post_author;
+		$likecoin_user = get_user_meta( $author, LC_USER_LIKECOIN_USER, true );
+		return $likecoin_user;
 	}
 }
