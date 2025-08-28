@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin admin post editor functions
+ * LikeCoin Post Class
  *
- * Define functions used for post editor pages
+ * Handles post-related functionality and meta data
  *
  * @package   LikeCoin
  *
@@ -20,19 +20,28 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-// phpcs:disable WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 
 /**
- * Require files
+ * LikeCoin Post Class
+ *
+ * @since 3.3.0
  */
-require_once __DIR__ . '/../public/likecoin-button.php';
+class LikeCoin_Post {
 
-/**
- * Get default style defined in matters library.
- * Refer to https://github.com/thematters/matters-html-formatter/blob/main/src/makeHtmlBundle/formatHTML/articleTemplate.ts for details.
- */
-function likecoin_get_default_post_style() {
-	return '<style>
+	/**
+	 * Get default style defined in matters library
+	 *
+	 * Refer to https://github.com/thematters/matters-html-formatter/blob/main/src/makeHtmlBundle/formatHTML/articleTemplate.ts for details.
+	 *
+	 * @since 3.3.0
+	 * @return string Default post styling CSS.
+	 */
+	public static function get_default_post_style() {
+		return '<style>
 	html, body {
 	  margin: 0;
 	  padding: 0;
@@ -161,50 +170,55 @@ function likecoin_get_default_post_style() {
 	  word-break: break-all;
 	}
   </style>';
-}
-
-/**
- * Get all tags names in a post
- *
- * @param WP_Post| $post Post object.
- * @param integer| $limit Number of tags.
- */
-function likecoin_get_post_tags( $post, $limit = 0 ) {
-	$post_id   = $post->ID;
-	$func      = function ( $terms ) {
-		return htmlspecialchars_decode( $terms->name );
-	};
-	$post_tags = get_the_tags( $post_id );
-
-	if ( ! $post_tags ) {
-		$post_tags = array();
-	}
-	$result = array_map( $func, $post_tags );
-	if ( $limit ) {
-		$result = array_slice( $result, 0, $limit );
-	}
-	return $result;
-}
-
-/**
- * Save the post-specific widget option to post meta and user meta
- *
- * @param int| $post_id The post id of the target post.
- */
-function likecoin_save_postdata( $post_id ) {
-	/* Check nonce */
-	if ( ! ( isset( $_POST['lc_metabox_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['lc_metabox_nonce'] ), 'lc_save_post' ) ) ) {
-		return;
 	}
 
-	if ( isset( $_POST[ LC_OPTION_WIDGET_OPTION ] ) ) {
-		$option = array(
-			LC_OPTION_WIDGET_POSITION => sanitize_key( $_POST[ LC_OPTION_WIDGET_OPTION ] ),
-		);
-		update_post_meta(
-			$post_id,
-			LC_OPTION_WIDGET_OPTION,
-			$option
-		);
+	/**
+	 * Get all tags names in a post
+	 *
+	 * @since 3.3.0
+	 * @param WP_Post $post  Post object.
+	 * @param int     $limit Number of tags.
+	 * @return array Array of tag names.
+	 */
+	public static function get_post_tags( $post, $limit = 0 ) {
+		$post_id   = $post->ID;
+		$func      = function ( $terms ) {
+			return htmlspecialchars_decode( $terms->name );
+		};
+		$post_tags = get_the_tags( $post_id );
+
+		if ( ! $post_tags ) {
+			$post_tags = array();
+		}
+		$result = array_map( $func, $post_tags );
+		if ( $limit ) {
+			$result = array_slice( $result, 0, $limit );
+		}
+		return $result;
+	}
+
+	/**
+	 * Save the post-specific widget option to post meta and user meta
+	 *
+	 * @since 3.3.0
+	 * @param int $post_id The post id of the target post.
+	 * @return void
+	 */
+	public static function save_postdata( $post_id ) {
+		// Check nonce.
+		if ( ! ( isset( $_POST['lc_metabox_nonce'] ) && wp_verify_nonce( sanitize_key( $_POST['lc_metabox_nonce'] ), 'lc_save_post' ) ) ) {
+			return;
+		}
+
+		if ( isset( $_POST[ LC_OPTION_WIDGET_OPTION ] ) ) {
+			$option = array(
+				LC_OPTION_WIDGET_POSITION => sanitize_key( $_POST[ LC_OPTION_WIDGET_OPTION ] ),
+			);
+			update_post_meta(
+				$post_id,
+				LC_OPTION_WIDGET_OPTION,
+				$option
+			);
+		}
 	}
 }
