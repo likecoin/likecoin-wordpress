@@ -6,7 +6,7 @@ Feel free to open up an issue in case you have any doubt, or before you start wo
 
 ## Development Setup
 
-We use docker-based development workflow, please refer to [setup](https://github.com/likecoin/likecoin-wordpress#development-setup) section of [README.md](https://github.com/likecoin/likecoin-wordpress/blob/master/README.md).
+We use docker-based development workflow, please refer to [setup](https://github.com/nftpress/nftpress#development-setup) section of [README.md](https://github.com/likecoin/nftpress/blob/master/README.md).
 
 ## Issues / Bug reports
 
@@ -22,6 +22,6 @@ We use docker-based development workflow, please refer to [setup](https://github
 
 - [WordPress Coding Standards](https://github.com/WordPress-Coding-Standards/WordPress-Coding-Standards) for php, [airbnb](https://github.com/airbnb/javascript) for javascript.
 
-- It must pass all [tests](https://github.com/likecoin/likecoin-wordpress#test)
+- It must pass all [tests](https://github.com/likecoin/nftpress#test)
 
 - We try our best to review PRs as soon as possible, be patient in case there is a hold up.

@@ -1,13 +1,13 @@
 version: 2
 jobs:
   php_lint:
-    working_directory: ~/likecoin-wordpress
+    working_directory: ~/nftpress
     docker:
       - image: composer:2.8.9
     steps:
       - checkout
       - restore_cache:
-          key: likecoin-wordpress-{{ .Environment.CACHE_UUID }}-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
+          key: nftpress-{{ .Environment.CACHE_UUID }}-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
       - run:
           name: Install phpcs
           command: composer install
@@ -18,18 +18,18 @@ jobs:
           name: Complete Lint Test
           command: ./vendor/bin/phpcs likecoin --standard=WordPress --extensions=php --ignore=*/assets/js/*,*/assets/blocks/*
       - save_cache:
-          key: likecoin-wordpress-{{ .Environment.CACHE_UUID }}-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
+          key: nftpress-{{ .Environment.CACHE_UUID }}-{{ checksum "composer.json" }}-{{ checksum "composer.lock" }}
           paths:
             - ./vendor
             - ./wpcs
   eslint:
-    working_directory: ~/likecoin-wordpress
+    working_directory: ~/nftpress
     docker:
       - image: node:14
     steps:
       - checkout
       - restore_cache:
-          key: likecoin-wordpress-{{ .Environment.CACHE_UUID }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: nftpress-{{ .Environment.CACHE_UUID }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
       - run:
           name: Dependencies
           command: npm install
@@ -37,11 +37,11 @@ jobs:
           name: Lint Test
           command: npm run lint
       - save_cache:
-          key: likecoin-wordpress-{{ .Environment.CACHE_UUID }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
+          key: nftpress-{{ .Environment.CACHE_UUID }}-{{ checksum "package.json" }}-{{ checksum "package-lock.json" }}
           paths:
             - ./node_modules
   build_zip:
-    working_directory: ~/likecoin-wordpress
+    working_directory: ~/nftpress
     docker:
       - image: alpine:3.8
     steps:

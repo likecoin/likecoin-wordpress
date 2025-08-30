@@ -38,7 +38,7 @@ Register content metadata (ISCN) on LikeCoin chain, storing the content file on 
 
 == Contribution ==
 
-LikeCoin is an open-source project. You are welcome to contribute to the plugin on [Github](https://github.com/likecoin/likecoin-wordpress) if you are a developer.
+LikeCoin is an open-source project. You are welcome to contribute to the plugin on [Github](https://github.com/likecoin/nftpress) if you are a developer.
 
 == Installation ==
 

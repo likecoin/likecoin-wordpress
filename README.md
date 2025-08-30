@@ -1,11 +1,9 @@
-# Web3Press WordPress Plugin By LikeCoin
+# NFTPress WordPress Plugin By BROWN
 
-[![WordPress plugin downloads](https://img.shields.io/wordpress/plugin/dt/likecoin.svg)](https://wordpress.org/plugins/likecoin/)
+[![WordPress plugin downloads](https://img.shields.io/wordpress/plugin/dt/likecoin.svg)](https://wordpress.org/plugins/nftpress/)
 [![WordPress plugin rating](https://img.shields.io/wordpress/plugin/r/likecoin.svg)](https://wordpress.org/plugins/likecoin/)
-[![WordPress plugin version](https://img.shields.io/wordpress/plugin/v/likecoin.svg)](https://wordpress.org/plugins/likecoin/)
-[![WordPress version tested](https://img.shields.io/wordpress/v/likecoin.svg)](https://wordpress.org/plugins/likecoin/)
-[![CircleCI](https://circleci.com/gh/likecoin/likecoin-wordpress.svg?style=svg)](https://circleci.com/gh/likecoin/likecoin-wordpress)
-[![Greenkeeper badge](https://badges.greenkeeper.io/likecoin/likecoin-wordpress.svg)](https://greenkeeper.io/)
+[![WordPress plugin version](https://img.shields.io/wordpress/plugin/v/likecoin.svg)](https://wordpress.org/plugins/nftpress/)
+[![WordPress version tested](https://img.shields.io/wordpress/v/likecoin.svg)](https://wordpress.org/plugins/nftpress/)
 
 Integrates Liker ID functionality into your own WordPress site.
 
