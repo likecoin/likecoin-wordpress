@@ -7,11 +7,11 @@
  * @package   LikeCoin
  * @author    LikeCoin <team@like.co>
  * @license   GPLv3
- * @link      https://github.com/likecoin/likecoin-wordpress
+ * @link      https://github.com/likecoin/nftpress
  * @copyright 2018 LikerLand
 
  * Plugin Name:  Web3Press by LikeCoin
- * Plugin URI:   https://github.com/likecoin/likecoin-wordpress
+ * Plugin URI:   https://github.com/likecoin/nftpress
  * Description:  Publishes your posts to the blockchain. Sell your posts, share your work, build community, preserve content.
  * Version:      3.3.0
  * Author:       LikeCoin
