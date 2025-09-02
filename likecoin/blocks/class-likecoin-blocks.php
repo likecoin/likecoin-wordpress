@@ -1,8 +1,8 @@
 <?php
 /**
- * LikeCoin utility functions
+ * LikeCoin Blocks Class
  *
- * Utility functions shared by admin and public
+ * Register Gutenberg blocks for LikeCoin functionality
  *
  * @package   LikeCoin
  *
@@ -20,13 +20,26 @@
  * along with this program.  If not, see <https://www.gnu.org/licenses/>.
  */
 
+// Prevent direct access.
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
- * Get post author's Liker ID object from post
+ * LikeCoin Blocks Class
  *
- * @param object| $post WordPress post object.
+ * @since 3.3.0
  */
-function likecoin_get_author_likecoin_user( $post ) {
-	$author        = $post->post_author;
-	$likecoin_user = get_user_meta( $author, LC_USER_LIKECOIN_USER, true );
-	return $likecoin_user;
+class LikeCoin_Blocks {
+
+	/**
+	 * Register Gutenberg blocks
+	 *
+	 * @since 3.3.0
+	 * @return void
+	 */
+	public static function init() {
+		register_block_type( LC_DIR . 'assets/blocks/nft-widget' );
+		register_block_type( LC_DIR . 'assets/blocks/nft-collect-button' );
+	}
 }
