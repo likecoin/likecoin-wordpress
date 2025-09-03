@@ -7,7 +7,24 @@
 [![CircleCI](https://circleci.com/gh/likecoin/likecoin-wordpress.svg?style=svg)](https://circleci.com/gh/likecoin/likecoin-wordpress)
 [![Greenkeeper badge](https://badges.greenkeeper.io/likecoin/likecoin-wordpress.svg)](https://greenkeeper.io/)
 
-Integrates Liker ID functionality into your own WordPress site.
+## Important Migration Notice
+
+**This plugin is transitioning from liker.land to 3ook.com** - the next evolution of decentralized bookstore technology.
+
+### What's Changing:
+- **Read-Only State**: The plugin will enter read-only mode during the migration preparation
+- **No More NFT Publishing**: All publish to ISCN and NFT functions have been removed
+- **Widget Migration**: LikeCoin buttons and NFT widgets will migrate to 3ook.com widgets
+- **New Features**: Display book collections from 3ook.com or recommend specific books
+
+### What Still Works:
+- Control display settings for LikeCoin buttons and NFT widgets
+- Update ISCN ID and Arweave ID for posts
+- Assign Liker ID to site or post (will be removed in next version)
+- Internet Archive integration and payment pointer functions
+
+### About 3ook.com:
+3ook.com is a decentralized bookstore running on EVM blockchain - the next evolution of liker.land. Like its predecessor, it focuses on empowering creators and building decentralized communities around content.
 
 ## Development Setup
 
