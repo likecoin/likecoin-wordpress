@@ -1,7 +1,7 @@
-=== Web3Press - Decentralize Publishing with Writing NFT ===
+=== Web3Press - Migrating to 3ook.com Decentralized Bookstore ===
 
 Contributors: likecoin,williamchong007,ckxpress
-Tags: web3, NFT, depub, LikeCoin, blockchain, publishing, decentralized
+Tags: web3, blockchain, publishing, decentralized, books, 3ook, bookstore
 Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.8
@@ -10,31 +10,45 @@ Stable tag: 3.3.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
-Web3Press - Publish your posts as NFT and sell it right away; build your community in the Web3 way.
+FINAL LEGACY VERSION: Read-only maintenance version before 3ook.com transition. No new publishing features.
 
 == Description ==
-The best product for your fans, is your IDEA.  Web3Press publishes your posts to the blockchain, enabling you to write as usual but publish differently.
 
-Web3Press provides a creative business model, especially for open content. No paywall or advertisement anymore. Your readers buy your posts because they love your words. Readers’ collections add a touch of class to their web3 portfolio.  If you are looking for ways to monetize, build communities with your readers and preserve your content, this plugin is for you.  
+**FINAL LEGACY VERSION NOTICE**
 
-Web3Press is based on LikeCoin, an application-specific blockchain that the community and infrastructure focus on the creator’s economy.
+This is the **final version** of the Web3Press LikeCoin plugin before the transition to 3ook.com. Version 4.0.0 serves as a read-only legacy version.
 
-= Why Web3 =
-The Internet has been evolving in the past decades and becoming increasingly decentralized. In Web1, information was 1-way-broadcast; in Web2, information was user-generated. In Web3, the concept of ownership is applied to every piece of data. Echoing “Democratise Publishing”, the vision of WordPress, Web3Press pushes one more step forward: the freedom to OWN. Oh yes, it’s free, as in freedom.
+**CURRENT STATUS (v4.0.0):**
+- Plugin is in **read-only legacy mode** 
+- All NFT publishing and ISCN publishing functions have been **removed**
+- This is a **maintenance version only** - no new features will be added
+- Existing content display and management features remain functional
 
-https://www.youtube.com/watch?v=zHmAidvifQw
+**WHAT STILL WORKS (Legacy Features):**
+- Display control for existing LikeCoin buttons and NFT widgets
+- Update ISCN ID and Arweave ID for existing posts
+- Assign Liker ID to site or post (legacy functionality)
+- Internet Archive integration
+- Payment pointer functionality
 
-= SELL YOUR POSTS =
-Let readers support you by buying your posts while reading.  A mini NFT Widget is embedded into your WordPress posts to let readers collect their favorites.
+**LEGACY MAINTENANCE:**
+- All existing content and widgets remain fully functional
+- Portfolio access maintained at liker.land
+- Display settings and configurations preserved
+- No user action required for continued operation
 
-= BE PROUD OF YOUR WORK =
-Share your [NFT portfolio](https://liker.land?utm_source=WordPress) to show-off and sell your published articles.
+= About the Future 3ook.com Version =
+The next major release will be a completely new 3ook.com plugin with:
+- Book collection displays from 3ook.com
+- Book recommendation features
+- Enhanced discovery and community tools
+- Full EVM blockchain integration
 
-= BUILD YOUR COMMUNITY =
-Connect your fans by sending NFT gifts with warm greetings.  Publish your content to platforms like Matters.news automatically.
-
-= PRESERVE YOUR CONTENT =
-Register content metadata (ISCN) on LikeCoin chain, storing the content file on IPFS and Arweave, backup on Internet Archive, all in one plugin.
+= Important Notes =
+- **This v4.0.0 is maintenance-only** - no new blockchain publishing
+- Existing users can continue managing current content normally  
+- Future 3ook.com features will be in a new major plugin version release
+- No migration action required from users at this time
 
 == Contribution ==
 
@@ -68,37 +82,35 @@ To learn more, please visit [liker.land](https://liker.land) or [product documen
 
 == Frequently Asked Questions ==
 
-= How to collect Writing NFT? =
+= What happened to NFT publishing features? =
 
-Collect via the "NFT widget" embedded in the content or on the user’s portfolio page.  Readers can pay by Credit/Debit card but need to install Keplr wallet to collect Writing NFT.
+NFT publishing and ISCN registration features have been **removed** as part of the migration to 3ook.com. These features will be replaced with new book publishing capabilities on the 3ook.com platform.
 
-= How to list Writing NFT for sale? =
+= Can I still manage my existing NFT content? =
 
-After installing the Web3Press plugin, writers can publish their posts as NFTs, and readers can then collect via the NFT widget.
+Yes! You can still:
+- Control display settings for existing LikeCoin buttons and NFT widgets
+- Update ISCN ID and Arweave ID for your posts
+- Access your existing NFT collection at [liker.land](https://liker.land)
 
-= On what basis does the price of Writing NFT changes? =
+= What is 3ook.com? =
 
-The price changes dynamically based on the supply and demand of the NFT.  Writers do not need to set the price and quantity.  Readers do not need to set the bidding price, too; collect when the price feels right.  The market price will decrease when someone sells in the secondary market.
+3ook.com is the next evolution of liker.land - a decentralized bookstore running on EVM blockchain. It focuses on book creation, discovery, and community building while maintaining the decentralized principles of its predecessor.
 
-= I do not have Liker ID.  Can I buy or sell Writing NFT? =
+= When will 3ook.com features be available? =
 
-Yes.  Readers can buy Writing NFT by credit/debit card or LikeCoin, but they must have Keplr installed to keep the NFT.  Writers can mint and hence list NFT for sale as long as they have enough LikeCoin in their Keplr wallet.  In both cases, Liker ID is not mandatory.
+The migration is in progress. New 3ook.com widget integration will be rolled out gradually, allowing you to:
+- Display your book collections from 3ook.com
+- Recommend specific books to your readers
+- Benefit from enhanced discovery features
 
-= Where can I check out my NFT collection? =
+= Will my existing content be affected? =
 
-At [NFT portfolio](https://liker.land) page.
+No. Your existing posts, widgets, and content remain functional. The migration only affects publishing new NFTs - existing content display and management continue to work normally.
 
-= How to sell Writing NFT in the secondary market? =
+= Do I need to do anything during the migration? =
 
-Mark the price of your NFT for sale on the NFT portfolio page.  Readers can then collect at any NFT widget.
-
-= How to set the quantity for sale? =
-
-There is no upper limit in principle.  However, as the market price increases as sales continue, the minting of NFT will stop automatically when the price reaches a point that is out of the market’s expectation.
-
-= How to transfer NFT? =
-
-It can be done at the NFT portfolio page, detail instructions [here](https://docs.like.co/general-guides/writing-nft/transfer-writing-nft).
+No action is required. The plugin will automatically transition to support 3ook.com features when they become available. You can continue using existing functionality normally.
 
 = How to check my LikeCoin balance? =
 

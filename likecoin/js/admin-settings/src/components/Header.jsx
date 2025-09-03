@@ -11,7 +11,7 @@ function Header() {
         rel="noopener noreferrer"
         target="_blank"
       >
-        {__('Your Portfolio', 'likecoin')}
+        {__('Your Portfolio (Legacy)', 'likecoin')}
         &nbsp;
         <span className="dashicons dashicons-external" />
       </a>

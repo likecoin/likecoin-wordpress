@@ -16,25 +16,21 @@ function LikeCoinHelpPage() {
       }),
     },
   );
-  const faucetDescription = createInterpolateElement(
+  const migrationDescription = createInterpolateElement(
     __(
-      'Never heard of <LikeCoin>LikeCoin</LikeCoin>? Don’t worry, <Link>here</Link> are some for you to get started.',
+      'Learn about the transition from liker.land to 3ook.com. Read <MigrationGuide>our detailed migration guide</MigrationGuide> for complete information.',
       'likecoin',
     ),
     {
-      LikeCoin: createElement(Link, {
-        text: __('LikeCoin', 'likecoin'),
-        linkAddress: 'https://like.co',
-      }),
-      Link: createElement(Link, {
-        text: __('here', 'likecoin'),
-        linkAddress: `https://faucet.like.co/?platform=wordpress&referrer=${encodeURIComponent(document.location.origin)}`,
+      MigrationGuide: createElement(Link, {
+        text: __('our detailed migration guide', 'likecoin'),
+        linkAddress: 'https://review.3ook.com/p/liker-land-3ookcom',
       }),
     },
   );
   const localizedSubscribe = createInterpolateElement(
     __(
-      'Follow us by entering your email below, or visit our <Blog/> for latest update.',
+      'Follow us by entering your email below, or visit our <Blog/> for updates on the upcoming 3ook.com version.',
       'likecoin',
     ),
     {
@@ -47,26 +43,37 @@ function LikeCoinHelpPage() {
   return (
     <div className="lcp-nav-tab-panel likecoin">
       <Section title={__('Getting Started', 'likecoin')} />
-      <div className="lcp-card">
-        <h2>{__('1. Get some LikeCoin tokens to get started', 'likecoin')}</h2>
-        <p>{faucetDescription}</p>
+      <div
+        className="lcp-card"
+        style={{
+          background: '#fff3cd', border: '1px solid #ffeaa7', padding: '15px', marginBottom: '20px',
+        }}
+      >
+        <h2 style={{ color: '#856404' }}>{__('Final Legacy Version Notice', 'likecoin')}</h2>
+        <p><strong>{__('This is the final version of Web3Press LikeCoin plugin', 'likecoin')}</strong></p>
+        <p>{__('Version 4.0.0 is a read-only legacy version. All NFT publishing features have been removed. Future 3ook.com features will be in a new major plugin version.', 'likecoin')}</p>
       </div>
       <div className="lcp-card">
-        <h2>{__('2. You are now ready, let’s start publishing.', 'likecoin')}</h2>
-        <p>{__('Here is a video to help you understand how to publish a Writing NFT', 'likecoin')}</p>
-        <iframe
-          height="315"
-          src="https://www.youtube.com/embed/zHmAidvifQw"
-          title={__('Quickstart Video', 'likecoin')}
-          frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          style={{ width: '100%', maxWidth: '560px' }}
-        />
+        <h2>{__('1. Current Plugin Status', 'likecoin')}</h2>
+        <p>
+          <strong>{__('Legacy Mode:', 'likecoin')}</strong>
+          {' '}
+          {__('This is a maintenance-only version. No new publishing features.', 'likecoin')}
+        </p>
+        <p>
+          <strong>{__('Still Works:', 'likecoin')}</strong>
+          {' '}
+          {__('Display settings, ISCN/Arweave ID updates, Internet Archive integration.', 'likecoin')}
+        </p>
+      </div>
+      <div className="lcp-card">
+        <h2>{__('2. About the Migration to 3ook.com', 'likecoin')}</h2>
+        <p>{__('This version is read-only. All blockchain publishing features have been removed as we transition to 3ook.com.', 'likecoin')}</p>
+        <p>{migrationDescription}</p>
         <p>{localizedIntroduction}</p>
       </div>
       <div className="lcp-card">
-        <h2>{__('3. Subscribe to our newsletter for upcoming features', 'likecoin')}</h2>
+        <h2>{__('3. Stay updated on 3ook.com transition', 'likecoin')}</h2>
         <p>{localizedSubscribe}</p>
         <iframe
           src="https://newsletter.like.co/embed"
@@ -79,18 +86,18 @@ function LikeCoinHelpPage() {
         />
       </div>
       <hr />
-      <Section title={__('Useful Tips', 'likecoin')} />
+      <Section title={__('Legacy Version Tips', 'likecoin')} />
       <div className="lcp-card">
-        <h3>{__('Publish your post before you mint Writing NFT', 'likecoin')}</h3>
-        <p>{__('You need to publish your post first, then you can find the Publish button on the editing sidebar.', 'likecoin')}</p>
+        <h3>{__('Managing existing widgets and buttons', 'likecoin')}</h3>
+        <p>{__('You can still control display settings for existing LikeCoin buttons and NFT widgets through the plugin settings.', 'likecoin')}</p>
       </div>
       <div className="lcp-card">
-        <h3>{__('Publish along with licence', 'likecoin')}</h3>
-        <p>{__('You can set your preferred licence on the editing sidebar.', 'likecoin')}</p>
+        <h3>{__('Updating metadata for existing posts', 'likecoin')}</h3>
+        <p>{__('ISCN ID and Arweave ID can still be updated for existing posts through the editor sidebar.', 'likecoin')}</p>
       </div>
       <div className="lcp-card">
-        <h3>{__('Encourage your readers to collect Writing NFT of your works', 'likecoin')}</h3>
-        <p>{__('Let your readers aware they can collect Writing NFT of your works. Let them know it is meaningful to support you.', 'likecoin')}</p>
+        <h3>{__('Accessing your legacy portfolio', 'likecoin')}</h3>
+        <p>{__('Your existing NFT collection remains accessible at liker.land. Use the "Your Portfolio (Legacy)" link in the header.', 'likecoin')}</p>
       </div>
     </div>
   );
