@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Internet Archive Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Internet_Archive {
 
 	/**
 	 * Send a post URL to Internet Archive for archiving
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param int     $post_id Post id to be saved to IA.
 	 * @param WP_Post $post    Post object to be saved to IA.
 	 * @return void
@@ -73,7 +73,7 @@ class LikeCoin_Internet_Archive {
 	/**
 	 * Check whether Internet Archive publish options are enabled
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return bool True if Internet Archive integration is enabled and configured.
 	 */
 	public static function should_hook_internet_archive_publish() {
@@ -86,7 +86,7 @@ class LikeCoin_Internet_Archive {
 	/**
 	 * Setup Internet Archive related post hooks according to configuration
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function add_internet_archive_hook() {

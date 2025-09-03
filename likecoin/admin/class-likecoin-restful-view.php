@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin RESTful View Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Restful_View {
 
 	/**
 	 * Ensure admin utilities are loaded
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private static function ensure_admin_utilities() {
@@ -47,7 +47,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Remove access token from publish option for REST API response
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return array Publish options without sensitive data.
 	 */
 	public static function get_publish_option_for_restful() {
@@ -62,7 +62,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Post main plugin options data to WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response REST API response.
 	 */
@@ -121,7 +121,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Get main plugin options data from WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return WP_REST_Response|null REST API response or null if no options.
 	 */
 	public static function get_main_plugin_options() {
@@ -139,7 +139,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Post user data to WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response REST API response.
 	 */
@@ -188,7 +188,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Get user data from WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return WP_REST_Response|null REST API response or null if no user data.
 	 */
 	public static function get_user_data() {
@@ -208,7 +208,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Post site publish options data to WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response REST API response.
 	 */
@@ -240,7 +240,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Get site publish data from WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return WP_REST_Response REST API response.
 	 */
 	public static function get_site_publish_data() {
@@ -257,7 +257,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Post web monetization data to WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response REST API response.
 	 */
@@ -284,7 +284,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Get web monetization data from WordPress database
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return WP_REST_Response REST API response.
 	 */
 	public static function get_web_monetization_data() {
@@ -300,7 +300,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Get button settings for a specific post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response|WP_Error REST API response or error.
 	 */
@@ -322,7 +322,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Update button settings for a specific post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response|WP_Error REST API response or error.
 	 */
@@ -351,7 +351,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Save Arweave metadata for a post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response|WP_Error REST API response or error.
 	 */
@@ -387,7 +387,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Update ISCN hash and version for a post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response|WP_Error REST API response or error.
 	 */
@@ -435,7 +435,7 @@ class LikeCoin_Restful_View {
 	/**
 	 * Get full ISCN information for a post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request Full data about the request.
 	 * @return WP_REST_Response|WP_Error REST API response or error.
 	 */

@@ -28,7 +28,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Post Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Post {
 
@@ -37,7 +37,7 @@ class LikeCoin_Post {
 	 *
 	 * Refer to https://github.com/thematters/matters-html-formatter/blob/main/src/makeHtmlBundle/formatHTML/articleTemplate.ts for details.
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return string Default post styling CSS.
 	 */
 	public static function get_default_post_style() {
@@ -175,7 +175,7 @@ class LikeCoin_Post {
 	/**
 	 * Get all tags names in a post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_Post $post  Post object.
 	 * @param int     $limit Number of tags.
 	 * @return array Array of tag names.
@@ -200,7 +200,7 @@ class LikeCoin_Post {
 	/**
 	 * Save the post-specific widget option to post meta and user meta
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param int $post_id The post id of the target post.
 	 * @return void
 	 */

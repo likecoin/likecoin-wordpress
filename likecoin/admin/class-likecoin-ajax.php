@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Admin Ajax Handler Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Ajax {
 
 	/**
 	 * Initialize AJAX handlers
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function init() {
@@ -46,7 +46,7 @@ class LikeCoin_Ajax {
 	/**
 	 * Admin post handler of user LikeCoinId/data update
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function update_user_id() {
@@ -95,7 +95,7 @@ class LikeCoin_Ajax {
 	/**
 	 * POST handler of editor fetching admin notices/error message
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function get_admin_errors_restful() {

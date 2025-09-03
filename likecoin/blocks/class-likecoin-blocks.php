@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Blocks Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Blocks {
 
 	/**
 	 * Register Gutenberg blocks
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function init() {

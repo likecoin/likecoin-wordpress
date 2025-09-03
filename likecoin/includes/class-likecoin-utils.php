@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Utilities Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Utils {
 
 	/**
 	 * Get post author's Liker ID object from post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_Post $post WordPress post object.
 	 * @return array|false User's LikeCoin data or false if not found.
 	 */

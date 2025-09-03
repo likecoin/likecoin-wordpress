@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin RESTful Service Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Restful {
 
 	/**
 	 * Check if ID is numeric
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param mixed $id ID to check.
 	 * @return bool True if numeric, false otherwise.
 	 */
@@ -46,7 +46,7 @@ class LikeCoin_Restful {
 	/**
 	 * Get current user edit post permission
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_REST_Request $request REST request object.
 	 * @return bool True if user can edit post, false otherwise.
 	 */
@@ -58,7 +58,7 @@ class LikeCoin_Restful {
 	/**
 	 * Initialize RESTful service endpoints
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function init_restful_service() {
@@ -270,7 +270,7 @@ class LikeCoin_Restful {
 	/**
 	 * Hook RESTful service initialization
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function hook_restful_hook() {

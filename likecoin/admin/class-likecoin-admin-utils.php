@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Admin Utilities Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Admin_Utils {
 
 	/**
 	 * Get metabox button parameters for a post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_Post $post         Post object.
 	 * @return array Button parameters.
 	 */
@@ -74,7 +74,7 @@ class LikeCoin_Admin_Utils {
 	/**
 	 * Load editor scripts for block editor
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function load_editor_scripts() {
@@ -120,7 +120,7 @@ class LikeCoin_Admin_Utils {
 	/**
 	 * Get ISCN metadata for a post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_Post $post Post object.
 	 * @return array ISCN metadata.
 	 */
@@ -151,7 +151,7 @@ class LikeCoin_Admin_Utils {
 	/**
 	 * Modify plugin action links in the plugins list
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param array $links Existing action links.
 	 * @return array Modified action links.
 	 */

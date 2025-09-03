@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Admin Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Admin {
 
 	/**
 	 * Plugin basename
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @var string
 	 */
 	private $plugin_basename;
@@ -43,7 +43,7 @@ class LikeCoin_Admin {
 	/**
 	 * Constructor
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param string $plugin_basename The plugin basename.
 	 */
 	public function __construct( $plugin_basename ) {
@@ -54,7 +54,7 @@ class LikeCoin_Admin {
 	/**
 	 * Initialize admin functionality
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function init() {
@@ -64,7 +64,7 @@ class LikeCoin_Admin {
 	/**
 	 * Load admin dependencies
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function load_dependencies() {
@@ -80,7 +80,7 @@ class LikeCoin_Admin {
 	/**
 	 * Define admin hooks
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function define_hooks() {
@@ -97,7 +97,7 @@ class LikeCoin_Admin {
 	/**
 	 * Run all functions for admin_init hook
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function admin_init() {
@@ -107,7 +107,7 @@ class LikeCoin_Admin {
 	/**
 	 * Add privacy policy to wp global privacy policy
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function add_privacy_policy_content() {
@@ -137,7 +137,7 @@ class LikeCoin_Admin {
 	/**
 	 * Check if it's block editor or not
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return bool
 	 */
 	public static function is_block_editor() {
