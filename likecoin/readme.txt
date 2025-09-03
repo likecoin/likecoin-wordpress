@@ -6,7 +6,7 @@ Donate link: https://github.com/sponsors/likecoin
 Requires at least: 5.3
 Tested up to: 6.8
 Requires PHP: 5.4
-Stable tag: 3.3.0
+Stable tag: 4.0.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
 
@@ -19,7 +19,7 @@ FINAL LEGACY VERSION: Read-only maintenance version before 3ook.com transition. 
 This is the **final version** of the Web3Press LikeCoin plugin before the transition to 3ook.com. Version 4.0.0 serves as a read-only legacy version.
 
 **CURRENT STATUS (v4.0.0):**
-- Plugin is in **read-only legacy mode** 
+- Plugin is in **read-only legacy mode**
 - All NFT publishing and ISCN publishing functions have been **removed**
 - This is a **maintenance version only** - no new features will be added
 - Existing content display and management features remain functional
@@ -38,7 +38,7 @@ This is the **final version** of the Web3Press LikeCoin plugin before the transi
 - No user action required for continued operation
 
 = About the Future 3ook.com Version =
-The next major release will be a completely new 3ook.com plugin with:
+The next major release will be a new 3ook.com plugin with:
 - Book collection displays from 3ook.com
 - Book recommendation features
 - Enhanced discovery and community tools
@@ -46,7 +46,7 @@ The next major release will be a completely new 3ook.com plugin with:
 
 = Important Notes =
 - **This v4.0.0 is maintenance-only** - no new blockchain publishing
-- Existing users can continue managing current content normally  
+- Existing users can continue managing current content normally
 - Future 3ook.com features will be in a new major plugin version release
 - No migration action required from users at this time
 
@@ -162,6 +162,44 @@ The post author's account must be linked to a Liker ID for the LikeCoin button t
 4. Editor Blocks
 
 == Changelog ==
+
+= 4.0.0 =
+
+**FINAL LEGACY VERSION - READ-ONLY MODE**
+
+This is the **FINAL VERSION** of the LikeCoin WordPress plugin before the transition to 3ook.com. This version removes publishing capabilities and serves as a read-only legacy version.
+
+**BREAKING CHANGES:**
+- **REMOVED**: All NFT publishing and ISCN registration features
+- **REMOVED**: Matters.news integration
+- **READ-ONLY MODE**: No new content can be published to blockchain
+- **LEGACY STATUS**: This is the last version before 3ook.com transition
+
+**WHAT STILL WORKS (Legacy Features):**
+- Display control for existing LikeCoin buttons and NFT widgets
+- ISCN ID and Arweave ID metadata updates for existing posts
+- Liker ID assignment (legacy functionality)
+- Internet Archive integration and backup functionality
+- Web monetization and payment pointer features
+
+**LEGACY MAINTENANCE:**
+- Existing content and widgets remain fully functional
+- Portfolio access maintained at liker.land
+- All display settings and configurations preserved
+- No new features will be added to this version
+
+**WHAT'S NEXT:**
+The next major plugin version will be the 3ook.com version with new functionality:
+- Book collection displays from 3ook.com
+- Book recommendation features
+- Enhanced discovery and community tools
+- Full EVM blockchain integration
+
+**IMPORTANT NOTES:**
+- This is a **maintenance/legacy version only**
+- No new blockchain publishing capabilities
+- Existing users can continue managing current content
+- Future 3ook.com features will be in a new major plugin version release
 
 = 3.3.0 =
 

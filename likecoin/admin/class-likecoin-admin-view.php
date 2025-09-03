@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Admin View Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Admin_View {
 
 	/**
 	 * Set up Admin Page menus on the left sidebar
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function display_admin_pages() {
@@ -92,7 +92,7 @@ class LikeCoin_Admin_View {
 	/**
 	 * Show default UI for admin main page
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function show_admin_main_page_content() {
@@ -104,7 +104,7 @@ class LikeCoin_Admin_View {
 	/**
 	 * Load JavaScript files from React and menu hashtag hack
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function load_menu_admin_js() {
@@ -121,7 +121,7 @@ class LikeCoin_Admin_View {
 	/**
 	 * Load JavaScript files from React
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function load_admin_js() {
@@ -154,7 +154,7 @@ class LikeCoin_Admin_View {
 	/**
 	 * Enqueue admin JavaScript with localized data
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function enqueue_admin_js() {
@@ -172,7 +172,7 @@ class LikeCoin_Admin_View {
 	/**
 	 * Show admin welcome notice
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function show_admin_welcome() {

@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Public Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Public {
 
 	/**
 	 * Constructor
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 */
 	public function __construct() {
 		$this->load_dependencies();
@@ -44,7 +44,7 @@ class LikeCoin_Public {
 	/**
 	 * Initialize public functionality
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function init() {
@@ -54,7 +54,7 @@ class LikeCoin_Public {
 	/**
 	 * Load public dependencies
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function load_dependencies() {
@@ -65,7 +65,7 @@ class LikeCoin_Public {
 	/**
 	 * Define public hooks
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function define_hooks() {
@@ -79,7 +79,7 @@ class LikeCoin_Public {
 	/**
 	 * Add LikeCoin Content Filter
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param string $content The original post content.
 	 * @return string
 	 */
@@ -102,7 +102,7 @@ class LikeCoin_Public {
 	/**
 	 * Extend HTTP request waiting time
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return int
 	 */
 	public function extend_timeout() {

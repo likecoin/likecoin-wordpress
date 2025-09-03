@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Public Utilities Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Public_Utils {
 
 	/**
 	 * Add web monetization header if payment pointer is set
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function add_web_monetization_header() {
@@ -48,7 +48,7 @@ class LikeCoin_Public_Utils {
 	/**
 	 * Add ISCN badge for a post if ISCN exists (legacy format)
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_Post $post Post object.
 	 * @return string ISCN badge HTML or empty string.
 	 */

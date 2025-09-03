@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * Main LikeCoin plugin loader class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 final class LikeCoin_Loader {
 
 	/**
 	 * Plugin instance
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @var LikeCoin_Loader
 	 */
 	private static $instance;
@@ -43,7 +43,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Plugin version
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @var string
 	 */
 	private $version;
@@ -51,7 +51,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Plugin directory path
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @var string
 	 */
 	private $plugin_path;
@@ -59,7 +59,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Plugin directory URL
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @var string
 	 */
 	private $plugin_url;
@@ -67,7 +67,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Constructor
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 */
 	private function __construct() {
 		$this->version     = LC_PLUGIN_VERSION;
@@ -78,7 +78,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Get plugin instance
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return LikeCoin_Loader
 	 */
 	public static function get_instance() {
@@ -91,7 +91,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Initialize the plugin
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function init() {
@@ -104,7 +104,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Load plugin dependencies
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function load_dependencies() {
@@ -131,7 +131,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Load admin-specific dependencies
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function load_admin_dependencies() {
@@ -144,7 +144,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Define admin hooks
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function define_admin_hooks() {
@@ -158,7 +158,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Define public hooks
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function define_public_hooks() {
@@ -173,7 +173,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Define activation hooks
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	private function define_activation_hooks() {
@@ -189,7 +189,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Handle plugin activation
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function handle_activation() {
@@ -199,7 +199,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Handle plugin upgrade
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function handle_upgrade() {
@@ -209,7 +209,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Handle plugin initialization
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function handle_init() {
@@ -219,7 +219,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Handle plugin initialization and upgrade logic
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function handle_init_and_upgrade() {
@@ -247,7 +247,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Handle plugin activation redirect
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param string $plugin Plugin path being activated.
 	 * @return void
 	 */
@@ -262,7 +262,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Handle plugin uninstall
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function handle_uninstall() {
@@ -287,7 +287,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Load plugin text domain
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public function load_textdomain() {
@@ -297,7 +297,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Get plugin basename
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return string
 	 */
 	private function get_plugin_basename() {
@@ -307,7 +307,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Get plugin file path
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return string
 	 */
 	private function get_plugin_file() {
@@ -317,7 +317,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Get plugin version
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return string
 	 */
 	public function get_version() {
@@ -327,7 +327,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Get plugin path
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return string
 	 */
 	public function get_plugin_path() {
@@ -337,7 +337,7 @@ final class LikeCoin_Loader {
 	/**
 	 * Get plugin URL
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return string
 	 */
 	public function get_plugin_url() {

@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Error Handler Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Error {
 
 	/**
 	 * Set error message into transient based on current user ID
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param string $message Error message.
 	 * @param string $type    Type of error.
 	 * @return void
@@ -52,7 +52,7 @@ class LikeCoin_Error {
 	/**
 	 * Get error message in transient based on current user ID
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return array|false Error data or false if no error.
 	 */
 	public static function get_admin_errors() {
@@ -64,7 +64,7 @@ class LikeCoin_Error {
 	/**
 	 * Clear error message in transient based on current user ID
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function clear_admin_errors() {
@@ -75,7 +75,7 @@ class LikeCoin_Error {
 	/**
 	 * Render admin notice for error message in transient based on current user ID
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function show_admin_errors() {

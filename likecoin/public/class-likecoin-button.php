@@ -28,14 +28,14 @@ if ( ! defined( 'ABSPATH' ) ) {
 /**
  * LikeCoin Button Class
  *
- * @since 3.3.0
+ * @since 4.0.0
  */
 class LikeCoin_Button {
 
 	/**
 	 * Get Liker ID and wallet from post
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param WP_Post $post The target post for querying liker id.
 	 * @return array Array containing id and wallet.
 	 */
@@ -62,7 +62,7 @@ class LikeCoin_Button {
 	/**
 	 * Add LikeCoin header if LikerId exists
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @return void
 	 */
 	public static function add_likecoin_meta_header() {
@@ -89,7 +89,7 @@ class LikeCoin_Button {
 	/**
 	 * Add LikeCoin Button if LikerId exists
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param string $likecoin_id   The Liker ID of owner of LikeCoin Button.
 	 * @param bool   $is_shortcode  If the button is added by shortcode, ignores $widget_is_enabled if true.
 	 * @return string Button HTML code or empty string.
@@ -185,7 +185,7 @@ class LikeCoin_Button {
 	/**
 	 * Handle [likecoin] shortcode
 	 *
-	 * @since 3.3.0
+	 * @since 4.0.0
 	 * @param array $atts Shortcode attributes.
 	 * @return string Button HTML code.
 	 */
