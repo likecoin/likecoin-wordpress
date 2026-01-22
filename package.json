@@ -30,7 +30,7 @@
     "@wordpress/plugins": "^6.26.0",
     "@wordpress/wordcount": "^3.2.3",
     "axios": "^1.6.0",
-    "lodash": "^4.17.21",
+    "lodash": "^4.17.23",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
     "react-router-dom": "^6.4.4"
